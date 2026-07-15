@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Users
   class CommentsController < ApplicationController
     include UserMethods
     include PaginationMethods
 
-    layout "site"
+    layout :site_layout
 
     before_action :authorize_web
     before_action :set_locale

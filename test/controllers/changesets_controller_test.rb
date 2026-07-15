@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class ChangesetsControllerTest < ActionDispatch::IntegrationTest
@@ -91,8 +93,8 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
   ##
   # This should display the last 20 changesets closed in a specific area
   def test_index_bbox
-    changesets = create_list(:changeset, 10, :num_changes => 1, :min_lat => 50000000, :max_lat => 50000001, :min_lon => 50000000, :max_lon => 50000001)
-    other_changesets = create_list(:changeset, 10, :num_changes => 1, :min_lat => 0, :max_lat => 1, :min_lon => 0, :max_lon => 1)
+    changesets = create_list(:changeset, 10, :num_changes => 1, :bbox => [5, 5, 5, 5])
+    other_changesets = create_list(:changeset, 10, :num_changes => 1, :bbox => [0, 0, 1, 1])
 
     # First check they all show up without a bbox parameter
     get history_path(:format => "html", :list => "1"), :xhr => true
@@ -115,6 +117,127 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
     assert_template "index"
 
     check_index_result(changesets)
+  end
+
+  def test_index_bbox_across_antimeridian_with_changesets_close_to_antimeridian
+    west_of_antimeridian_changeset = create(:changeset, :num_changes => 1, :bbox => [176, 0, 178, 1])
+    east_of_antimeridian_changeset = create(:changeset, :num_changes => 1, :bbox => [-178, 0, -176, 1])
+
+    get history_path(:format => "html", :list => "1")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset, west_of_antimeridian_changeset])
+
+    # negative longitudes
+    get history_path(:format => "html", :list => "1", :bbox => "-190,-10,-170,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset, west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-183,-10,-177,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset, west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-181,-10,-177,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-183,-10,-179,10")
+    assert_response :success
+    check_index_result([west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-181,-10,-179,10")
+    assert_response :success
+    check_index_result([])
+
+    # positive longitudes
+    get history_path(:format => "html", :list => "1", :bbox => "170,-10,190,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset, west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "177,-10,183,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset, west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "177,-10,181,10")
+    assert_response :success
+    check_index_result([west_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "179,-10,183,10")
+    assert_response :success
+    check_index_result([east_of_antimeridian_changeset])
+
+    get history_path(:format => "html", :list => "1", :bbox => "179,-10,181,10")
+    assert_response :success
+    check_index_result([])
+  end
+
+  def test_index_bbox_across_antimeridian_with_changesets_around_globe
+    changeset1 = create(:changeset, :num_changes => 1, :bbox => [-150, 40, -140, 50])
+    changeset2 = create(:changeset, :num_changes => 1, :bbox => [-30, -30, -20, -20])
+    changeset3 = create(:changeset, :num_changes => 1, :bbox => [10, 60, 20, 70])
+    changeset4 = create(:changeset, :num_changes => 1, :bbox => [150, -60, 160, -50])
+
+    # no bbox, get all changesets
+    get history_path(:format => "html", :list => "1")
+    assert_response :success
+    check_index_result([changeset4, changeset3, changeset2, changeset1])
+
+    # large enough bbox within normal range
+    get history_path(:format => "html", :list => "1", :bbox => "-170,-80,170,80")
+    assert_response :success
+    check_index_result([changeset4, changeset3, changeset2, changeset1])
+
+    # bbox for [1,2] within normal range
+    get history_path(:format => "html", :list => "1", :bbox => "-160,-80,0,80")
+    assert_response :success
+    check_index_result([changeset2, changeset1])
+
+    # bbox for [1,4] containing antimeridian with negative lon
+    get history_path(:format => "html", :list => "1", :bbox => "-220,-80,-100,80")
+    assert_response :success
+    check_index_result([changeset4, changeset1])
+
+    # bbox for [1,4] containing antimeridian with positive lon
+    get history_path(:format => "html", :list => "1", :bbox => "100,-80,220,80")
+    assert_response :success
+    check_index_result([changeset4, changeset1])
+
+    # large enough bbox outside normal range
+    get history_path(:format => "html", :list => "1", :bbox => "-220,-80,220,80")
+    assert_response :success
+    check_index_result([changeset4, changeset3, changeset2, changeset1])
+  end
+
+  ##
+  # Test that -180..180 longitudes don't result in empty bbox
+  def test_index_bbox_entire_world
+    changeset = create(:changeset, :num_changes => 1, :bbox => [30, 60, 31, 61])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-180,-80,-180,80")
+    assert_response :success
+    check_index_result([])
+
+    get history_path(:format => "html", :list => "1", :bbox => "180,-80,180,80")
+    assert_response :success
+    check_index_result([])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-180,-80,180,80")
+    assert_response :success
+    check_index_result([changeset])
+  end
+
+  ##
+  # Test that -270..270 longitudes don't result in 90..-90 bbox
+  def test_index_bbox_larger_than_entire_world
+    changeset1 = create(:changeset, :num_changes => 1, :bbox => [30, 60, 31, 61])
+    changeset2 = create(:changeset, :num_changes => 1, :bbox => [130, 60, 131, 61])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-90,-80,90,80")
+    assert_response :success
+    check_index_result([changeset1])
+
+    get history_path(:format => "html", :list => "1", :bbox => "-270,-80,270,80")
+    assert_response :success
+    check_index_result([changeset2, changeset1])
   end
 
   ##
@@ -285,6 +408,15 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_show_linkified_comment
+    changeset = create(:changeset)
+    create(:changeset_tag, :changeset => changeset, :k => "comment", :v => "Check out http://example.com/ & special <characters>!")
+    sidebar_browse_check :changeset_path, changeset.id, "changesets/show"
+    assert_dom "p", :text => %r{Check out http://example.com/ & special <characters>!} do
+      assert_dom "a[href='http://example.com/']", :text => "http://example.com/"
+    end
+  end
+
   def test_show_closed_changeset
     changeset = create(:changeset, :closed)
 
@@ -389,12 +521,12 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
   ##
   # This should display the last 20 changesets closed in a specific area
   def test_feed_bbox
-    changeset = create(:changeset, :num_changes => 1, :min_lat => 5 * GeoRecord::SCALE, :min_lon => 5 * GeoRecord::SCALE, :max_lat => 5 * GeoRecord::SCALE, :max_lon => 5 * GeoRecord::SCALE)
+    changeset = create(:changeset, :num_changes => 1, :bbox => [5, 5, 5, 5])
     create(:changeset_tag, :changeset => changeset)
     create(:changeset_tag, :changeset => changeset, :k => "website", :v => "http://example.com/")
-    closed_changeset = create(:changeset, :closed, :num_changes => 1, :min_lat => 5 * GeoRecord::SCALE, :min_lon => 5 * GeoRecord::SCALE, :max_lat => 5 * GeoRecord::SCALE, :max_lon => 5 * GeoRecord::SCALE)
-    _elsewhere_changeset = create(:changeset, :num_changes => 1, :min_lat => -5 * GeoRecord::SCALE, :min_lon => -5 * GeoRecord::SCALE, :max_lat => -5 * GeoRecord::SCALE, :max_lon => -5 * GeoRecord::SCALE)
-    _empty_changeset = create(:changeset, :num_changes => 0, :min_lat => -5 * GeoRecord::SCALE, :min_lon => -5 * GeoRecord::SCALE, :max_lat => -5 * GeoRecord::SCALE, :max_lon => -5 * GeoRecord::SCALE)
+    closed_changeset = create(:changeset, :closed, :num_changes => 1, :bbox => [5, 5, 5, 5])
+    _elsewhere_changeset = create(:changeset, :num_changes => 1, :bbox => [-5, -5, -5, -5])
+    _empty_changeset = create(:changeset, :num_changes => 0, :bbox => [5, 5, 5, 5])
 
     get history_feed_path(:format => :atom, :bbox => "4.5,4.5,5.5,5.5")
     assert_response :success
@@ -446,11 +578,15 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
   ##
   # check the result of a index
   def check_index_result(changesets)
-    assert_select "ol.changesets", :count => [changesets.size, 1].min do
-      assert_select "li", :count => changesets.size
+    if changesets.empty?
+      assert_select "ol", :count => 0
+    else
+      assert_select "ol", :count => 1 do
+        assert_select "li", :count => changesets.size
 
-      changesets.each do |changeset|
-        assert_select "li#changeset_#{changeset.id}", :count => 1
+        changesets.each do |changeset|
+          assert_select "li#changeset_#{changeset.id}", :count => 1
+        end
       end
     end
   end
@@ -460,26 +596,30 @@ class ChangesetsControllerTest < ActionDispatch::IntegrationTest
   def check_feed_result(changesets)
     assert_operator changesets.size, :<=, 20
 
-    assert_select "feed", :count => [changesets.size, 1].min do
-      assert_select "> title", :count => 1, :text => /^Changesets/
-      assert_select "> entry", :count => changesets.size do |entries|
-        entries.zip(changesets) do |entry, changeset|
-          assert_select entry, "> id", :text => changeset_url(:id => changeset.id)
+    if changesets.empty?
+      assert_select "feed", :count => 0
+    else
+      assert_select "feed", :count => 1 do
+        assert_select "> title", :count => 1, :text => /^Changesets/
+        assert_select "> entry", :count => changesets.size do |entries|
+          entries.zip(changesets) do |entry, changeset|
+            assert_select entry, "> id", :text => changeset_url(:id => changeset.id)
 
-          changeset_comment = changeset.tags["comment"]
-          if changeset_comment
-            assert_select entry, "> title", :count => 1, :text => "Changeset #{changeset.id} - #{changeset_comment}"
-          else
-            assert_select entry, "> title", :count => 1, :text => "Changeset #{changeset.id}"
-          end
-
-          assert_select entry, "> content > xhtml|div > xhtml|table" do
-            if changeset.tags.empty?
-              assert_select "> xhtml|tr > xhtml|td > xhtml|table", :count => 0
+            changeset_comment = changeset.tags["comment"]
+            if changeset_comment
+              assert_select entry, "> title", :count => 1, :text => "Changeset #{changeset.id} - #{changeset_comment}"
             else
-              assert_select "> xhtml|tr > xhtml|td > xhtml|table", :count => 1 do
-                changeset.tags.each_key do |key|
-                  assert_select "> xhtml|tr > xhtml|td", :text => /^#{key} = /
+              assert_select entry, "> title", :count => 1, :text => "Changeset #{changeset.id}"
+            end
+
+            assert_select entry, "> content > xhtml|div > xhtml|table" do
+              if changeset.tags.empty?
+                assert_select "> xhtml|tr > xhtml|td > xhtml|table", :count => 0
+              else
+                assert_select "> xhtml|tr > xhtml|td > xhtml|table", :count => 1 do
+                  changeset.tags.each_key do |key|
+                    assert_select "> xhtml|tr > xhtml|td", :text => /^#{key} = /
+                  end
                 end
               end
             end

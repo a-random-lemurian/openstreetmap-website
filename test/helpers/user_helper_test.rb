@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserHelperTest < ActionView::TestCase
@@ -107,12 +109,6 @@ class UserHelperTest < ActionView::TestCase
 
     thumbnail = user_thumbnail(user)
     assert_match %r{^<img .* width="50" height="50" .* />$}, thumbnail
-  end
-
-  def test_auth_button
-    button = auth_button("google")
-    img_tag = "<img alt=\"Google logo\" class=\"rounded-1\" src=\"/images/auth_providers/google.svg\" width=\"36\" height=\"36\" />"
-    assert_equal("<a class=\"auth_button btn btn-outline-secondary border p-2\" title=\"Log in with Google\" rel=\"nofollow\" data-method=\"post\" href=\"/auth/google\">#{img_tag}</a>", button)
   end
 
   private

@@ -1,7 +1,7 @@
 import globals from "globals";
 import js from "@eslint/js";
 import erb from "eslint-plugin-erb";
-import stylisticJs from "@stylistic/eslint-plugin-js";
+import stylistic from "@stylistic/eslint-plugin";
 
 export default [
   js.configs.recommended,
@@ -16,7 +16,7 @@ export default [
   },
   {
     plugins: {
-      "@stylistic": stylisticJs
+      "@stylistic": stylistic
     },
     languageOptions: {
       ecmaVersion: 2021,
@@ -29,8 +29,11 @@ export default [
         L: "readonly",
         Matomo: "readonly",
         OSM: "writable",
+        Popper: "readonly",
         Turbo: "readonly",
-        plurals: "readonly",
+        bootstrap: "readonly",
+        maplibregl: "readonly",
+        polyline: "readonly",
         updateLinks: "readonly"
       }
     },
@@ -46,6 +49,7 @@ export default [
     rules: {
       "@stylistic/array-bracket-newline": ["error", "consistent"],
       "@stylistic/array-bracket-spacing": "error",
+      "@stylistic/arrow-spacing": "error",
       "@stylistic/block-spacing": "error",
       "@stylistic/brace-style": ["error", "1tbs", { allowSingleLine: true }],
       "@stylistic/comma-dangle": "error",
@@ -54,7 +58,7 @@ export default [
       "@stylistic/computed-property-spacing": "error",
       "@stylistic/dot-location": ["error", "property"],
       "@stylistic/eol-last": "error",
-      "@stylistic/func-call-spacing": "error",
+      "@stylistic/function-call-spacing": "error",
       "@stylistic/indent": ["error", 2, {
         CallExpression: { arguments: "first" },
         FunctionDeclaration: { parameters: "first" },
@@ -68,7 +72,7 @@ export default [
       "@stylistic/no-floating-decimal": "error",
       "@stylistic/no-mixed-operators": "error",
       "@stylistic/no-multi-spaces": "error",
-      "@stylistic/no-multiple-empty-lines": "error",
+      "@stylistic/no-multiple-empty-lines": ["error", { max: 1 }],
       "@stylistic/no-trailing-spaces": "error",
       "@stylistic/no-whitespace-before-property": "error",
       "@stylistic/object-curly-newline": ["error", { consistent: true }],
@@ -161,6 +165,16 @@ export default [
         assert: "readonly",
         should: "readonly"
       }
+    }
+  },
+  {
+    // Additional configuration for index modules
+    files: ["app/**/index_modules/*.js"],
+    languageOptions: {
+      sourceType: "module"
+    },
+    rules: {
+      "no-invalid-this": "off"
     }
   },
   {

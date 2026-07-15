@@ -69,15 +69,6 @@ mr:
       way_node: मार्गातील गाठ
       way_tag: मार्ग खूणपताका
     attributes:
-      client_application:
-        name: नाव (आवश्यक)
-        url: मुख्य ऍप्लिकेशन URL (आवश्यक)
-        allow_read_prefs: वापरकर्त्याच्या पसंती वाचा
-        allow_write_prefs: वापरकर्त्याच्या पसंती बदला
-        allow_write_api: नकाशात बदल करा
-        allow_read_gpx: वैयक्तिक GPS आनुरेखा वाचा
-        allow_write_gpx: GPS अनुरेख चढवा
-        allow_write_notes: टीपा बदला
       diary_comment:
         body: मायना
       diary_entry:
@@ -178,10 +169,6 @@ mr:
     show:
       title: खाते संपादा
       current email address: वर्तमान ईमेल पत्ता
-      openid:
-        link text: हे काय आहे?
-      contributor terms:
-        link text: हे काय आहे?
       save changes button: बदल जतन करा
     terms:
       show:
@@ -205,8 +192,6 @@ mr:
       one: '%{count} मार्ग'
       other: '%{count} मार्ग'
     download_xml: XML उतरवा
-    view_history: इतिहास पहा
-    view_details: तपशील पहा
     location: 'ठिकाण:'
     node:
       title_html: 'गाठ: %{name}'
@@ -324,8 +309,6 @@ mr:
       title_nearby: जवळपासच्या सदस्यांच्या अनुदिनी
       user_title: '%{user}ची अनुदिनी'
       in_language_title: '%{language} भाषेतील अनुदिनीतील नोंदी'
-      new: अनुदिनीत नवी नोंद
-      new_title: आपल्या अनुदिनीत नवी नोंद लिहा
       no_entries: रिक्त अनुदिनी
     page:
       recent_entries: रोजनिशीतील अलीकडील नोंदी
@@ -371,6 +354,9 @@ mr:
       all:
         title: ओपनस्ट्रीटमॅप अनुदिनीतील नोंदी
         description: ओपनस्ट्रीटमॅप सदस्यांकडून अलीकडील अनुदिनी-नोंदी
+    navigation:
+      new: अनुदिनीत नवी नोंद
+      new_title: आपल्या अनुदिनीत नवी नोंद लिहा
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -796,33 +782,36 @@ mr:
         level8: शहर सिमा
         level9: खेडे सिमा
         level10: उपनगर सिमा
-    results:
-      no_results: परिणाम सापडले नाही
-      more_results: अधिक निकाल
+  searches:
+    queries:
+      create:
+        no_results: परिणाम सापडले नाही
+        more_results: अधिक निकाल
   layouts:
     logo:
       alt_text: ओपनस्ट्रीटमॅप संकेतचित्र
-    home: स्वगृह स्थानावर जा
-    logout: सनोंद-निर्गम
-    log_in: सनोंद-प्रवेश
-    sign_up: नोंदणी करा
     start_mapping: नकाशा आरेखन सुरु करा
-    edit: संपादन करा
-    history: इतिहास
-    export: निर्यात
-    gps_traces: GPS अनुरेख
-    user_diaries: सदस्य अनुदिनी
-    edit_with: '%{editor} वापरून संपादन करा'
     intro_header: ओपनस्ट्रीटमॅपवर स्वागत आहे!
     intro_text: ओपनस्ट्रीटमॅप हा जगाचा नकाशा आहे, जो आपल्यासारख्या लोकांनी तयार केला
       आहे, व जो खुल्या परवान्यांतर्गत वापरास मुक्त आहे.
     partners_partners: भागीदार
-    help: साहाय्य
-    about: आमच्याबद्दल
-    copyright: प्रताधिकार
-    communities: समुदाय
     learn_more: अधिक जाणून घ्या
-    more: अधिक
+    header:
+      about: आमच्याबद्दल
+      communities: समुदाय
+      copyright: प्रताधिकार
+      edit: संपादन करा
+      edit_with: '%{editor} वापरून संपादन करा'
+      export: निर्यात
+      gps_traces: GPS अनुरेख
+      help: साहाय्य
+      history: इतिहास
+      home: स्वगृह स्थानावर जा
+      log_out: सनोंद-निर्गम
+      log_in: सनोंद-प्रवेश
+      more: अधिक
+      sign_up: नोंदणी करा
+      user_diaries: सदस्य अनुदिनी
   user_mailer:
     diary_comment_notification:
       subject: '[OpenStreetMap] %{user}ने एका अनुदिनीतील नोंदीवर अभिप्राय दिला'
@@ -943,20 +932,29 @@ mr:
     update:
       flash changed: आपला परवलीचा शब्द बदलण्यात आला आहे.
   preferences:
-    show:
-      title: माझे प्राधान्ये
-      save: पसंती अद्ययावत करा
+    basic_preferences:
+      show:
+        title: माझे प्राधान्ये
+        save: पसंती अद्ययावत करा
   profiles:
-    edit:
-      title: रूपरेखा संपादा
-      image: 'चित्र:'
-      gravatar:
-        gravatar: Gravatar वापरा
-      new image: चित्र जोडा
-      keep image: वर्तमान चित्र राखा
-      delete image: वर्तमान चित्र काढून टाका
-      replace image: वर्तमान चित्र बदला
-      image size hint: (किमान १००x१०० आकाराची चौरस चित्रे उत्तम)
+    profile_sections:
+      navigation:
+        image: 'चित्र:'
+    descriptions:
+      show:
+        title: रूपरेखा संपादा
+    links:
+      show:
+        title: रूपरेखा संपादा
+    images:
+      show:
+        gravatar:
+          gravatar: Gravatar वापरा
+        new image: चित्र जोडा
+        keep image: वर्तमान चित्र राखा
+        delete image: वर्तमान चित्र काढून टाका
+        replace image: वर्तमान चित्र बदला
+        image size hint: (किमान १००x१०० आकाराची चौरस चित्रे उत्तम)
   sessions:
     new:
       tab_title: सनोंद प्रवेश करा
@@ -983,6 +981,7 @@ mr:
       lede_text: OpenStreetMap हा मानचित्रकारांनी उभारलेला एक प्रकल्प आहे ज्यात जगभरातील
         रस्ते, पायवाट, कॅफे, रेल्वे स्थानक व इतर बऱ्याच गोष्टींचा डेटा योगदानातून
         तयार व व्यवस्थापित केला जातो.
+    about_section:
       local_knowledge_title: स्थानिक ज्ञान
       local_knowledge_html: OpenStreetMap स्थानिक ज्ञानावर भर देते. OSM अचूक आणि अद्ययावत
         असल्याची पडताळणी करण्यासाठी योगदानकर्ते उपग्रह प्रतिमा, GPS उपकरणे व सामान्य
@@ -1009,24 +1008,21 @@ mr:
         credit_1_html: |-
           &ldquo;&copy; OpenStreetMap
           contributors&rdquo; असे श्रेय तुम्हाला दर्शवणे आवश्यक आहे.
-        more_title_html: अधिक शोध
-        contributors_title_html: आमचे योगदाते
-        contributors_intro_html: 'आमचे योगदानकर्ते हे हजारोंच्या संख्येतील व्यक्ति
-          आहेत.आम्ही मुक्त परवान्यांतर्गत असलेला डाटा हा राष्ट्रीय नकाशा संस्थेंकडून
-          व त्यातील इतर स्रोतांतून घेऊन त्याचा अंतर्भाव करतो:'
         infringement_title_html: प्रताधिकार भंग
         infringement_1_html: OSM योगदानकर्त्यांना कोणत्याही प्रतीलीपी अधिकार राखवलेल्या
           (उदा. Google नकाशे किंवा मुद्रित नकाशे अश्या) स्त्रोतांमधून कोणतीही माहिती
           प्रतीलिपी अधिकार धारकांच्या स्पष्ट परवानगीशिवाय जोडू नये याची आठवण करून
           दिली जाते.
+        contributors_title_html: आमचे योगदाते
+        contributors_intro_html: 'आमचे योगदानकर्ते हे हजारोंच्या संख्येतील व्यक्ति
+          आहेत.आम्ही मुक्त परवान्यांतर्गत असलेला डाटा हा राष्ट्रीय नकाशा संस्थेंकडून
+          व त्यातील इतर स्रोतांतून घेऊन त्याचा अंतर्भाव करतो:'
     index:
       js_1: आपण जावास्क्रीप्ट चालवू न शकणारा न्याहाळक वापरत आहात, किंवा जावास्क्रीप्ट
         निष्क्रिय आहे.
       js_2: ओपनस्ट्रीटमॅप सरकत्या नकाशासाठी जावास्क्रीप्टचा वापर करते.
       license:
         copyright: प्रताधिकार ओपनस्ट्रीटमॅप आणि योगदाते, खुल्या परवान्यांतर्गत
-      remote_failed: संपादन अयशस्वी - JOSM किंवा Merkaartor चालू केले आहे आणि रिमोट
-        निरंत्रण पर्याय सक्षम असल्याची खात्री करा
     not_public_flash:
       not_public: आपण आपली संपादने सार्वजनिक ठेवलेली नाहित.
       not_public_description_html: नकाशा संपादण्यासाठी संपादने सार्वजनिक असणे आवश्यक
@@ -1096,15 +1092,15 @@ mr:
           नाव किंवा रस्त्याची गती मर्यादा.'
         node: गाठ
       start_mapping: नकाशा आरेखन सुरु करा
-      add_a_note:
-        title: संपादन करण्यास वेळ नाही?टिप्पणी जोडा!
-        para_1: |-
-          जर आपणास काही छोटेसेच ठिक करुन हवे आहे व आपल्यापाशी प्रवेशाचा व संपादन शिकण्यास वेळ नाही
+    add_a_note:
+      title: संपादन करण्यास वेळ नाही?टिप्पणी जोडा!
+      para_1: |-
+        जर आपणास काही छोटेसेच ठिक करुन हवे आहे व आपल्यापाशी प्रवेशाचा व संपादन शिकण्यास वेळ नाही
 
-          तर एक टिप्पणी जोडणे सोपे आहे.
+        तर एक टिप्पणी जोडणे सोपे आहे.
     communities:
       title: समुदाय
-  map_keys:
+  legend_panes:
     show:
       entries:
         motorway: द्रुतगतीमार्ग
@@ -1155,6 +1151,16 @@ mr:
         construction: निर्माणाधीन रस्ते
         bicycle_shop: सायकल दुकान
         toilets: स्वच्छतागृह
+  share_panes:
+    show:
+      link: दुवा किंवा HTML
+      long_link: दुवा
+      short_link: लघुदुवा
+      embed: HTML
+      image: चित्र
+      scale: 'प्रमाण:'
+      custom_dimensions: पारंपारीक मोजमाप स्थापा
+      download: अधिभारण करा
   traces:
     visibility:
       private: खाजगी (फक्त अनामिक म्हणून सामायिक केलेले, अक्रमित बिंदू)
@@ -1243,7 +1249,6 @@ mr:
       my_dashboard: माझे फलक
       blocks on me: माझ्यावरील निर्बंध
       blocks by me: माझ्याकडून निर्बंध
-      edit_profile: रूपरेखा संपादा
       send message: संदेश पाठवा
       diary: अनुदिनी
       edits: संपादने
@@ -1302,22 +1307,12 @@ mr:
     close: बंद करा
     share:
       title: सहभाग करा
-      cancel: रद्द करा
-      image: चित्र
-      link: दुवा किंवा HTML
-      long_link: दुवा
-      short_link: लघुदुवा
-      embed: HTML
-      custom_dimensions: पारंपारीक मोजमाप स्थापा
-      scale: 'प्रमाण:'
-      download: अधिभारण करा
-      short_url: लघु-URL
       view_larger_map: मोठा नकाशा पहा
     embed:
       report_problem: समस्या कळवा
     map:
-      locate:
-        title: माझे ठिकाण दाखवा
+      geolocate_control:
+        find_my_location: माझे ठिकाण दाखवा
       base:
         cycle_map: सायकल नकाशा
         transport_map: परिवहन नकाशा

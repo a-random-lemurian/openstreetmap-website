@@ -13,9 +13,11 @@
 # Author: LR Guanzon
 # Author: Leeheonjin
 # Author: Macofe
+# Author: Maro21
 # Author: Marwin H.H.
 # Author: McDutchie
 # Author: Yivan000
+# Author: Ysrael214
 # Author: 아라
 ---
 tl:
@@ -84,16 +86,6 @@ tl:
       way_node: Buko ng Daan
       way_tag: Tatak ng Daan
     attributes:
-      client_application:
-        name: Pangalan (Kailangan)
-        url: URL ng Pangunahing Aplikasyon (Kailangan)
-        callback_url: URL ng Pagtawag-Pabalik
-        support_url: URL ng Pagtangkilik
-        allow_read_prefs: basahin ang kanilang mga kanaisan ng tagagamit
-        allow_write_prefs: baguhin ang kanilang mga kanaisan ng tagagamit
-        allow_write_api: baguhin ang mapa
-        allow_read_gpx: basahin ang kanilang pribadong mga bakas ng GPS
-        allow_write_notes: baguhin ang mga tala
       diary_comment:
         body: Katawan
       diary_entry:
@@ -227,18 +219,11 @@ tl:
       title: Baguhin ang akawnt
       current email address: Pangkasalukuyang Tirahan ng E-liham
       external auth: Panlabas na Pagpapatunay
-      openid:
-        link text: ano ba ito?
-      contributor terms:
+      contributor_terms:
         heading: Mga Tuntunin sa Tagapag-ambag
         agreed: Sumang-ayon ka sa bagong mga Tuntunin na Pangtagapag-ambag.
-        not yet agreed: Hindi ka sumang-ayon sa bagong mga Tuntunin na Pangtagapag-ambag.
-        review link text: Mangyaring sundan ang kawing na ito ayon sa kaluwagan ng
-          iyong panahon upang muling suriin at tanggapin ang bagong mga Tuntunin na
-          Pangtagapag-ambag.
         agreed_with_pd: Ipinahayag mo rin na itinuturing mo ang mga pamamatnugot mo
           bilang nasa loob ng Nasasakupan ng Madla.
-        link text: ano ba ito?
       save changes button: Sagipin ang mga Pagbabago
     go_public:
       heading: Pangmadlang pamamatnugot
@@ -288,8 +273,6 @@ tl:
       one: 1 daan
       other: '%{count} mga daan'
     download_xml: Ikargang paibaba ang XML
-    view_history: Tingnan ang kasaysayan
-    view_details: Tingnan ang mga detalye
     location: Pook (lokasyon)
     node:
       title_html: 'Buko: %{name}'
@@ -433,9 +416,6 @@ tl:
       title_nearby: Mga talaarawan ng Kanugnog na mga Tagagamit
       user_title: Talaarawan ni %{user}
       in_language_title: Mga Pagpapasok sa Talaarawan na nasa %{language}
-      new: Bagong Pagpapasok sa Talaarawan
-      new_title: Bumuo ng isang bagong pagpapasok sa loob ng talaarawan mo ng tagagamit
-      my_diary: Aking Talaarawan
       no_entries: Walang mga pagpapasok sa talaarawan
     page:
       recent_entries: Kamakailang mga pagpapasok sa talaarawan
@@ -486,6 +466,10 @@ tl:
         title: Mga ipinasok sa talaarawan ng OpenStreetMap
         description: Kamakailang mga pagpapasok sa talaarawan mula sa mga tagagamit
           ng OpenStreetMap
+    navigation:
+      my_diary: Aking Talaarawan
+      new: Bagong Pagpapasok sa Talaarawan
+      new_title: Bumuo ng isang bagong pagpapasok sa loob ng talaarawan mo ng tagagamit
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -1063,12 +1047,19 @@ tl:
         level9: Hangganan ng Nayon
         level10: Hangganan ng Kanugnog ng Lungsod
         level11: Hangganan ng Kapitbahayan
-    results:
-      no_results: Walang natagpuang mga kinalabasan
-      more_results: Marami pang mga kinalabasan
+  searches:
+    queries:
+      create:
+        no_results: Walang natagpuang mga kinalabasan
+        more_results: Marami pang mga kinalabasan
   directions:
-    search:
+    show:
       title: Mga Direksyon
+      distance: Layo
+      time: Oras
+      ascend: Umakyat
+      descend: Pagbaba
+      directions_courtesy_html: Mga direksyon mula sa kagandahang-loob ng %{link}
   issues:
     index:
       title: Mga isyu
@@ -1139,28 +1130,29 @@ tl:
   layouts:
     logo:
       alt_text: Logo ng OpenStreetMap
-    home: Pumunta sa kinalalagayan ng tahanan
-    logout: Umalis mula sa pagkakalagda
-    log_in: Lumagda
-    sign_up: Magpatala
     start_mapping: Simulan ang Pagmamapa
-    edit: Baguhin
-    history: Kasaysayan
-    export: Iluwas
-    issues: Mga isyu
-    gps_traces: Mga Bakas ng GPS
-    user_diaries: Mga Talaarawan ng mga Tagagamit
-    edit_with: Mamatnugot sa pamamagitan ng %{editor}
     intro_header: Maligayang pagdating sa OpenStreetMap!
     intro_text: Ang OpenStreetMap ay isang mapa ng mundo na nilikha ng mga taong katulad
       mo at malayang gamitin sa ilalim ng isang bukas na lisensya.
     partners_partners: mga kawaksi
     tou: Pagtatakda sa Paggamit
-    help: Tulong
-    about: Patungkol
-    copyright: Karapatang-sipi
     learn_more: Umalam pa
-    more: Marami pa
+    header:
+      about: Patungkol
+      copyright: Karapatang-sipi
+      edit: Baguhin
+      edit_with: Mamatnugot sa pamamagitan ng %{editor}
+      export: Iluwas
+      gps_traces: Mga Bakas ng GPS
+      help: Tulong
+      history: Kasaysayan
+      home: Pumunta sa kinalalagayan ng tahanan
+      issues: Mga isyu
+      log_out: Umalis mula sa pagkakalagda
+      log_in: Lumagda
+      more: Marami pa
+      sign_up: Magpatala
+      user_diaries: Mga Talaarawan ng mga Tagagamit
   user_mailer:
     diary_comment_notification:
       subject: '[OpenStreetMap] Si %{user} ay nagbigay ng puna sa ipinasok mo sa talaarawan'
@@ -1193,7 +1185,7 @@ tl:
       subject: Tagumpay ng Pag-angkat ng GPX ng [OpenStreetMap]
     signup_confirm:
       subject: '[OpenStreetMap] Maligayang pagdating sa OpenStreetMap'
-      greeting: Kamusta!
+      greeting: Kumusta!
       created: Isang tao (sana ikaw) ay kakagawa lang ng account sa %{site_url}.
       confirm: 'Bago kami gumawa ng anumang bagay, kailangan naming kumpirmahin na
         ang kahilingang ito ay nagmula sa iyo, kaya kung nangyari ito, mangyaring
@@ -1286,6 +1278,9 @@ tl:
       success: Natiyak ang pagpapalit ng tirahan ng sulatroniko!
       failure: Isang tirahan ng e-liham ang natiyak nang may ganitong kahalip.
       unknown_token: Tila lumipas o hindi umiiral ang kahalip na iyan.
+    gravatar:
+      disabled: Hindi na pinagana ang Gravatar.
+      enabled: Pinagana ang pagpapakita ng iyong Gravatar.
   messages:
     new:
       title: Magpadala ng mensahe
@@ -1374,24 +1369,28 @@ tl:
     update:
       flash changed: Napalitan na ang hudyat mo.
   profiles:
-    edit:
-      cancel: Huwag ituloy
-      image: Larawan
-      gravatar:
-        gravatar: Gamitin ang Gravatar
-        what_is_gravatar: Ano ang Gravatar?
-        disabled: Hindi na pinagana ang Gravatar.
-        enabled: Pinagana ang pagpapakita ng iyong Gravatar.
-      new image: Magdagdag ng isang larawan
-      keep image: Panatilihin ang kasalukuyang larawan
-      delete image: Tanggalin ang pangkasalukuyang larawan
-      replace image: Palitan ang pangkasalukuyang larawan
-      image size hint: (pinakamahusay ang parisukat na mga larawan na hindi bababa
-        sa 100x100)
-      home location: Kinalalagyan ng Tahanan
-      no home location: Hindi mo naipasok ang kinalalagyan ng tahanan mo.
-      update home location on click: Isapanahon ang kinalalagyan ng tahanan kapag
-        pinindot ko ang ibabaw ng mapa?
+    profile_sections:
+      navigation:
+        image: Larawan
+    descriptions:
+      show:
+        cancel: Huwag ituloy
+    images:
+      show:
+        gravatar:
+          gravatar: Gamitin ang Gravatar
+          what_is_gravatar: Ano ang Gravatar?
+        new image: Magdagdag ng isang larawan
+        keep image: Panatilihin ang kasalukuyang larawan
+        delete image: Tanggalin ang pangkasalukuyang larawan
+        replace image: Palitan ang pangkasalukuyang larawan
+        image size hint: (pinakamahusay ang parisukat na mga larawan na hindi bababa
+          sa 100x100)
+    locations:
+      show:
+        no home location: Hindi mo naipasok ang kinalalagyan ng tahanan mo.
+        update home location on click: Isapanahon ang kinalalagyan ng tahanan kapag
+          pinindot ko ang ibabaw ng mapa?
   sessions:
     new:
       tab_title: Lumagda
@@ -1441,6 +1440,7 @@ tl:
       lede_text: Ang OpenStreetMap ay nilikha ng isang komunidad ng mga nagmamapa
         na nag-aambag at nagpapanatili ng dato tungkol sa mga kalsada, mga daanan,
         mga kapihan, mga istasyon ng tren, at iba pa, sa buong mundo.
+    about_section:
       local_knowledge_title: Kaalamang Lokal
       community_driven_title: Hinimok ng Komunidad
       open_data_title: Bukas na Dato
@@ -1465,7 +1465,11 @@ tl:
           mong gawin ang sumusunod na dalawang bagay:'
         attribution_example:
           title: Halimbawa ng Atribusyon
-        more_title_html: Ang pagtuklas ng mas marami pang iba
+        infringement_title_html: Paglabag sa karapatang-sipi
+        infringement_1_html: Ang mga tagapag-ambag ng OSM ay pinaalalahanan na huwag
+          magdagdag ng datos mula sa anumang mapagkukunan na may karapatang-sipi na
+          nakalaan (halimbawa, Google Maps o naka-print na mga mapa) nang walang pahintulot
+          mula sa mga may hawak ng karapatang-sipi.
         contributors_title_html: Mga tagapag-ambag namin
         contributors_intro_html: 'Ang aming mga tagapag-ambag ay libu-libong mga tao.
           Isinasama rin namin ang mga datos na may bukas na lisensya mula sa mga pambansang
@@ -1474,11 +1478,6 @@ tl:
           ay hindi nagpapahiwatig na ang orihinal na tagapagbigay ng dato ay tumatangkilik
           sa OpenStreetMap, nagbibigay ng anumang garantiya, o tumatanggap ng anumang
           pananagutan.
-        infringement_title_html: Paglabag sa karapatang-sipi
-        infringement_1_html: Ang mga tagapag-ambag ng OSM ay pinaalalahanan na huwag
-          magdagdag ng datos mula sa anumang mapagkukunan na may karapatang-sipi na
-          nakalaan (halimbawa, Google Maps o naka-print na mga mapa) nang walang pahintulot
-          mula sa mga may hawak ng karapatang-sipi.
     index:
       js_1: Maaaring gumagamit ka ng isang pantingin-tingin na hindi tumatangkilik
         ng JavaScript, o hindi mo pinagagana ang JavaScript.
@@ -1486,8 +1485,6 @@ tl:
       license:
         copyright: Karapatang-sipi ng OpenStreetMap at mga tagapag-ambag nito, sa
           ilalim ng isang bukas na lisensya
-      remote_failed: Nabigo ang pamamatnugot - tiyaking naikarga ang JOSM or Merkaartor
-        at kung gumagana ang pagpipilian ng malayong pantaban
     not_public_flash:
       not_public: Hindi mo pa naitatakda ang mga pamamatnugot mo upang maging pangmadla.
       not_public_description_html: Hindi mo na maaaring baguhin ang mapa maliban na
@@ -1559,7 +1556,11 @@ tl:
       rules:
         title: Mga Patakaran!
       start_mapping: Simulan ang Pagmamapa
-  map_keys:
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: Lumapit upang makita ang mga tala sa mapa
+      map_data_zoom_in_tooltip: Lumapit upang makita ang datos ng mapa
+  legend_panes:
     show:
       entries:
         motorway: Daanan ng Sasakyang may Motor
@@ -1571,9 +1572,9 @@ tl:
         track: Bakas
         bridleway: Daanan ng Kabayo
         cycleway: Daanan ng bisikleta
-        cycleway_national: Pambansang daanan ng bisikleta
-        cycleway_regional: Panrehiyong daanan ng bisikleta
-        cycleway_local: Pampook na daanan ng bisikleta
+        national_bike_route: Pambansang daanan ng bisikleta
+        regional_bike_route: Panrehiyong daanan ng bisikleta
+        local_bike_route: Pampook na daanan ng bisikleta
         footway: Lakaran ng tao
         rail: Daambakal
         subway: Daanang pang-ilalim
@@ -1617,6 +1618,19 @@ tl:
         bicycle_shop: Tindahan ng Bisikleta
         bicycle_parking: Paradahan ng bisikleta
         toilets: Mga banyo
+  share_panes:
+    show:
+      link: Kawing o HTML
+      include_marker: Isama ang pananda
+      long_link: Kawing
+      short_link: Maliit na Kawing
+      embed: HTML
+      paste_html: Idikit ang HTML na ibabaon sa websayt
+      geo_uri: Geo URI
+      image: Larawan
+      format: 'Anyo:'
+      scale: 'Sukat:'
+      custom_dimensions: Magtakda ng pansariling mga dimensyon
   traces:
     visibility:
       private: Pribado (ipinamamahagi lang bilang hindi nagpapakilala, hindi nakaayos
@@ -1712,9 +1726,6 @@ tl:
       account_settings: Mga Katakdaan ng Akawnt
       oauth2_authorizations: Mga pahintulot para sa OAuth 2
     auth_providers:
-      openid:
-        title: Lumagda gamit ang OpenID
-        alt: Lumagda gamit ang isang OpenID URL
       google:
         title: Lumagda gamit ang Google
         alt: Lumagda gamit ang isang Google OpenID
@@ -1804,25 +1815,26 @@ tl:
       created from: 'Nilikha magmula sa:'
       status: 'Katayuan:'
       spam score: 'Puntos ng Basurang Liham:'
-      role:
-        administrator: Isang tagapangasiwa ang tagagamit na ito
-        moderator: Isang tagapamagitan ang tagagamit na ito
-        grant:
-          administrator: Bigyan ng pagpapapuntang pangtagapangasiwa
-          moderator: Bigyan ng pagpapapuntang pangtagapamagitan
-        revoke:
-          administrator: Bawiin ang pagpapapuntang pangtagapangasiwa
-          moderator: Bawiin ang pagpapapuntang pangtagapamagitan
       block_history: Mga masiglang paghahadlang
       moderator_history: Mga ibinigay na paghahadlang
       comments: Mga puna
       create_block: Hadlangan ang tagagamit na ito
       activate_user: Pasiglahin ang tagagamit na ito
       confirm_user: Tiyakin ang tagagamit na ito
-      hide_user: Itago ang Tagagamit na ito
-      unhide_user: Huwag itago ang Tagagamit na ito
-      delete_user: Burahin ang Tagagamit na ito
       confirm: Tiyakin
+      title:
+        administrator: Isang tagapangasiwa ang tagagamit na ito
+        moderator: Isang tagapamagitan ang tagagamit na ito
+      grant:
+        administrator: Bigyan ng pagpapapuntang pangtagapangasiwa
+        moderator: Bigyan ng pagpapapuntang pangtagapamagitan
+        are_you_sure: Nakatitiyak kang nais mong ibigay ang gampaning `%{role}' sa
+          tagagamit na si `%{name}'?
+      revoke:
+        administrator: Bawiin ang pagpapapuntang pangtagapangasiwa
+        moderator: Bawiin ang pagpapapuntang pangtagapamagitan
+        are_you_sure: Nakatitiyak ka bang nais mong bawiin ang gampaning `%{role}'
+          mula sa tagagamit na si `%{name}'?
     go_public:
       flash success: Pangmadla na ngayon ang lahat ng mga binago mo, at pinapayagan
         ka nang mamatnugot.
@@ -1842,7 +1854,6 @@ tl:
         heading: Mga tagagamit
       page:
         confirm: Tiyakin ang Napiling mga Tagagamit
-        hide: Itago ang Napiling mga Tagagamit
         empty: Walang natagpuan na katugmang mga tagagamit
       user:
         summary_html: Nilikha ang %{name} mula sa %{ip_address} noong %{date}
@@ -1864,12 +1875,6 @@ tl:
       not_a_role: Ang bagting na `%{role}' ay hindi isang tanggap na gampanin.
       already_has_role: Ang tagagamit ay may gampanin nang %{role}.
       doesnt_have_role: Ang tagagamit ay walang gampaning %{role}.
-    grant:
-      are_you_sure: Nakatitiyak kang nais mong ibigay ang gampaning `%{role}' sa tagagamit
-        na si `%{name}'?
-    revoke:
-      are_you_sure: Nakatitiyak ka bang nais mong bawiin ang gampaning `%{role}' mula
-        sa tagagamit na si `%{name}'?
   user_blocks:
     model:
       non_moderator_update: Kailangang isang tagapangasiwa upang makalikha o magsapanahon
@@ -1972,29 +1977,15 @@ tl:
     close: Isara
     share:
       title: Ibahagi
-      cancel: Huwag ituloy
-      image: Larawan
-      link: Kawing o HTML
-      long_link: Kawing
-      short_link: Maliit na Kawing
-      geo_uri: Geo URI
-      embed: HTML
-      custom_dimensions: Magtakda ng pansariling mga dimensyon
-      format: 'Anyo:'
-      scale: 'Sukat:'
-      short_url: Maiksing URL
-      include_marker: Isama ang pananda
-      center_marker: Igitna ang mapa sa pananda
-      paste_html: Idikit ang HTML na ibabaon sa websayt
       view_larger_map: Tingnan ang Mas Malaking Mapa
-    key:
+    legend:
       title: Susi ng Mapa
       tooltip: Susi ng Mapa
     map:
-      zoom:
-        in: Lumapit
-      locate:
-        title: Ipakita ang Aking Lokasyon
+      navigation_control:
+        zoom_in: Lumapit
+      geolocate_control:
+        find_my_location: Ipakita ang Aking Lokasyon
       base:
         standard: Pamantayan
         cycle_map: Mapa ng Pagbibisikleta
@@ -2009,17 +2000,11 @@ tl:
       edit_disabled_tooltip: Lumapit upang baguhin ang mapa
       createnote_tooltip: Maglagay ng tala sa mapa
       createnote_disabled_tooltip: Lumapit upang ilagay ang tala sa mapa
-      map_notes_zoom_in_tooltip: Lumapit upang makita ang mga tala sa mapa
-      map_data_zoom_in_tooltip: Lumapit upang makita ang datos ng mapa
       queryfeature_tooltip: Usisain ang mga tampok
       queryfeature_disabled_tooltip: Lumapit upang usisain ang mga tampok
     directions:
-      ascend: Umakyat
-      descend: Pagbaba
-      distance: Layo
       errors:
         no_route: Walang nakitang ruta sa pagitan ng dalawang mga lokasyon.
-        no_place: Paumanhin - hindi mahanap ang %{place}
       instructions:
         continue_without_exit: Magpatuloy sa %{name}
         slight_right_without_exit: Bahagyang pakanan papunta sa %{name}
@@ -2084,7 +2069,6 @@ tl:
           %{name}
         exit_roundabout: Exit sa rotondang daan patungong %{name}
         unnamed: Kalsadang walang pangalan
-        courtesy: Mga direksyon mula sa kagandahang-loob ng %{link}
         exit_counts:
           first: Ika-1
           second: Ika-2
@@ -2096,7 +2080,6 @@ tl:
           eighth: Ika-8
           ninth: Ika-9
           tenth: Ika-10
-      time: Oras
     query:
       node: Buko
       way: Daan

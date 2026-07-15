@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserBlocksTest < ActionDispatch::IntegrationTest
@@ -41,7 +43,7 @@ class UserBlocksTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     assert_response :success
-    post "/login", :params => { "username" => moderator.email, "password" => "test", :referer => "/user_blocks/#{block.id}/edit" }
+    post "/login", :params => { "username" => moderator.email, "password" => "s3cr3t", :referer => "/user_blocks/#{block.id}/edit" }
     assert_response :redirect
     follow_redirect!
     assert_response :success

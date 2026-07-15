@@ -1,19 +1,19 @@
+# frozen_string_literal: true
+
 # The ChangesetController is the RESTful interface to Changeset objects
 
 module Api
   class ChangesetsController < ApiController
     include QueryMethods
 
-    before_action :check_api_writable, :only => [:create, :update, :upload]
+    before_action :check_api_writable, :only => [:create, :update]
     before_action :setup_user_auth, :only => [:show]
-    before_action :authorize, :only => [:create, :update, :upload, :close]
+    before_action :authorize, :only => [:create, :update]
 
     authorize_resource
 
-    before_action :require_public_data, :only => [:create, :update, :upload, :close]
-    before_action :set_request_formats, :except => [:create, :close, :upload]
-
-    skip_around_action :api_call_timeout, :only => [:upload]
+    before_action :require_public_data, :only => [:create, :update]
+    before_action :set_request_formats, :except => [:create]
 
     # Helper methods for checking consistency
     include ConsistencyValidations
@@ -60,7 +60,7 @@ module Api
     # Return XML giving the basic info about the changeset. Does not
     # return anything about the nodes, ways and relations in the changeset.
     def show
-      @changeset = Changeset.find(params[:id])
+      @changeset = Changeset.find(params.expect(:id))
       if params[:include_discussion].presence
         @comments = @changeset.comments
         @comments = @comments.unscope(:where => :visible) if params[:show_hidden_comments].presence && can?(:create, :changeset_comment_visibility)
@@ -88,49 +88,6 @@ module Api
     end
 
     ##
-    # marks a changeset as closed. this may be called multiple times
-    # on the same changeset, so is idempotent.
-    def close
-      changeset = Changeset.find(params[:id])
-      check_changeset_consistency(changeset, current_user)
-
-      # to close the changeset, we'll just set its closed_at time to
-      # now. this might not be enough if there are concurrency issues,
-      # but we'll have to wait and see.
-      changeset.set_closed_time_now
-
-      changeset.save!
-      head :ok
-    end
-
-    ##
-    # Upload a diff in a single transaction.
-    #
-    # This means that each change within the diff must succeed, i.e: that
-    # each version number mentioned is still current. Otherwise the entire
-    # transaction *must* be rolled back.
-    #
-    # Furthermore, each element in the diff can only reference the current
-    # changeset.
-    #
-    # Returns: a diffResult document, as described in
-    # http://wiki.openstreetmap.org/wiki/OSM_Protocol_Version_0.6
-    def upload
-      changeset = Changeset.find(params[:id])
-      check_changeset_consistency(changeset, current_user)
-
-      diff_reader = DiffReader.new(request.raw_post, changeset)
-      Changeset.transaction do
-        result = diff_reader.commit
-        # the number of changes in this changeset has already been
-        # updated and is visible in this transaction so we don't need
-        # to allow for any more when checking the limit
-        check_rate_limit(0)
-        render :xml => result.to_s
-      end
-    end
-
-    ##
     # updates a changeset's tags. none of the changeset's attributes are
     # user-modifiable, so they will be ignored.
     #
@@ -139,7 +96,7 @@ module Api
     #
     # after succesful update, returns the XML of the changeset.
     def update
-      @changeset = Changeset.find(params[:id])
+      @changeset = Changeset.find(params.expect(:id))
       new_changeset = Changeset.from_xml(request.raw_post)
 
       check_changeset_consistency(@changeset, current_user)

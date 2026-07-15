@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class CompressedRequestsTest < ActionDispatch::IntegrationTest
@@ -38,7 +40,7 @@ class CompressedRequestsTest < ActionDispatch::IntegrationTest
     post "/api/0.6/changeset/#{changeset.id}/upload",
          :params => diff,
          :headers => bearer_authorization_header(user).merge(
-           "HTTP_CONTENT_TYPE" => "application/xml"
+           "Content-Type" => "application/xml"
          )
     assert_response :success,
                     "can't upload an uncompressed diff to changeset: #{@response.body}"
@@ -86,8 +88,8 @@ class CompressedRequestsTest < ActionDispatch::IntegrationTest
     post "/api/0.6/changeset/#{changeset.id}/upload",
          :params => gzip_content(diff),
          :headers => bearer_authorization_header(user).merge(
-           "HTTP_CONTENT_ENCODING" => "gzip",
-           "HTTP_CONTENT_TYPE" => "application/xml"
+           "Content-Encoding" => "gzip",
+           "Content-Type" => "application/xml"
          )
     assert_response :success,
                     "can't upload a gzip compressed diff to changeset: #{@response.body}"
@@ -135,8 +137,8 @@ class CompressedRequestsTest < ActionDispatch::IntegrationTest
     post "/api/0.6/changeset/#{changeset.id}/upload",
          :params => deflate_content(diff),
          :headers => bearer_authorization_header(user).merge(
-           "HTTP_CONTENT_ENCODING" => "deflate",
-           "HTTP_CONTENT_TYPE" => "application/xml"
+           "Content-Encoding" => "deflate",
+           "Content-Type" => "application/xml"
          )
     assert_response :success,
                     "can't upload a deflate compressed diff to changeset: #{@response.body}"
@@ -155,8 +157,8 @@ class CompressedRequestsTest < ActionDispatch::IntegrationTest
     post "/api/0.6/changeset/#{changeset.id}/upload",
          :params => "",
          :headers => bearer_authorization_header(user).merge(
-           "HTTP_CONTENT_ENCODING" => "unknown",
-           "HTTP_CONTENT_TYPE" => "application/xml"
+           "Content-Encoding" => "unknown",
+           "Content-Type" => "application/xml"
          )
     assert_response :unsupported_media_type
   end

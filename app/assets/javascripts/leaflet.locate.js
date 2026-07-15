@@ -1,11 +1,11 @@
+//= require leaflet.locatecontrol/dist/L.Control.Locate.umd
+
 L.OSM.locate = function (options) {
   const control = L.control.locate({
-    icon: "icon geolocate",
-    iconLoading: "icon geolocate",
     strings: {
-      title: OSM.i18n.t("javascripts.map.locate.title"),
+      title: OSM.i18n.t("javascripts.map.geolocate_control.find_my_location"),
       popup: function (options) {
-        return OSM.i18n.t("javascripts.map.locate." + options.unit + "Popup", { count: options.distance });
+        return OSM.i18n.t("javascripts.map.geolocate_control." + options.unit + "Popup", { count: options.distance });
       }
     },
     ...options
@@ -19,7 +19,9 @@ L.OSM.locate = function (options) {
       .children("a")
       .attr("href", "#")
       .removeClass("leaflet-bar-part leaflet-bar-part-single")
-      .addClass("control-button");
+      .addClass("control-button")
+      .empty()
+      .append($("<i>").addClass("fs-5 bi bi-cursor-fill"));
     return container;
   };
 

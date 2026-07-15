@@ -1,6 +1,6 @@
-class ApplicationController < ActionController::Base
-  require "timeout"
+# frozen_string_literal: true
 
+class ApplicationController < ActionController::Base
   include SessionPersistence
 
   protect_from_forgery :with => :exception
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from RailsParam::InvalidParameterError, :with => :invalid_parameter
 
-  before_action :fetch_body
+  after_action :close_body
 
   attr_accessor :current_user, :oauth_token
 
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def self.allow_social_login(**options)
     content_security_policy(options) do |policy|
-      policy.form_action(*policy.form_action, "accounts.google.com", "*.facebook.com", "login.microsoftonline.com", "github.com", "meta.wikimedia.org")
+      policy.form_action(*policy.form_action, "accounts.google.com", "appleid.apple.com", "*.facebook.com", "login.microsoftonline.com", "github.com", "meta.wikimedia.org")
     end
   end
 
@@ -38,6 +38,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def site_layout
+    turbo_frame_request? ? "turbo_frame" : "site"
+  end
 
   def authorize_web(skip_terms: false)
     if session[:user]
@@ -74,6 +78,8 @@ class ApplicationController < ActionController::Base
 
   def require_user
     unless current_user
+      response.headers["Cache-Control"] = "private, no-store"
+
       if request.get?
         redirect_to login_path(:referer => request.fullpath)
       else
@@ -124,17 +130,11 @@ class ApplicationController < ActionController::Base
   end
 
   def check_api_readable
-    if api_status == "offline"
-      report_error "Database offline for maintenance", :service_unavailable
-      false
-    end
+    report_error "Database offline for maintenance", :service_unavailable if api_status == "offline"
   end
 
   def check_api_writable
-    unless api_status == "online"
-      report_error "Database offline for maintenance", :service_unavailable
-      false
-    end
+    report_error "Database offline for maintenance", :service_unavailable unless api_status == "online"
   end
 
   def database_status
@@ -162,10 +162,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_public_data
-    unless current_user.data_public?
-      report_error "You must make your edits public to upload new data", :forbidden
-      false
-    end
+    report_error "You must make your edits public to upload new data", :forbidden unless current_user.data_public?
   end
 
   # Report and error to the user
@@ -180,8 +177,8 @@ class ApplicationController < ActionController::Base
     if request.headers["X-Error-Format"]&.casecmp?("xml")
       result = OSM::API.new.xml_doc
       result.root.name = "osmError"
-      result.root << (XML::Node.new("status") << "#{Rack::Utils.status_code(status)} #{Rack::Utils::HTTP_STATUS_CODES[status]}")
-      result.root << (XML::Node.new("message") << message)
+      result.root << (LibXML::XML::Node.new("status") << "#{Rack::Utils.status_code(status)} #{Rack::Utils::HTTP_STATUS_CODES[status]}")
+      result.root << (LibXML::XML::Node.new("message") << message)
 
       render :xml => result.to_s
     else
@@ -194,6 +191,8 @@ class ApplicationController < ActionController::Base
                                Locale.list(params[:locale])
                              elsif current_user
                                current_user.preferred_languages
+                             elsif request.cookies["_osm_locale"]
+                               Locale.list(request.cookies["_osm_locale"])
                              else
                                Locale.list(http_accept_language.user_preferred_languages)
                              end
@@ -244,17 +243,20 @@ class ApplicationController < ActionController::Base
   #
   #   https://issues.apache.org/bugzilla/show_bug.cgi?id=44782
   #
-  # To work round this we call rewind on the body here, which is added
-  # as a filter, to force it to be fetched from Apache into a file.
-  def fetch_body
-    request.body.rewind
+  # To work round this we call close on the body here, which is added
+  # as a filter, to let Apache know we are done with it.
+  def close_body
+    request.body&.close
   end
 
   def map_layout
     policy = request.content_security_policy.clone
-
-    policy.connect_src(*policy.connect_src, "http://127.0.0.1:8111", Settings.nominatim_url, Settings.overpass_url, Settings.fossgis_osrm_url, Settings.graphhopper_url, Settings.fossgis_valhalla_url)
-    policy.form_action(*policy.form_action, "render.openstreetmap.org")
+    policy.connect_src(*policy.connect_src, "http://127.0.0.1:8111", "https://vector.openstreetmap.org", "https://api.maptiler.com",
+                       "https://tile.thunderforest.com", "https://render.openstreetmap.org", Settings.nominatim_url, Settings.overpass_url,
+                       Settings.fossgis_osrm_url, Settings.graphhopper_url, Settings.fossgis_valhalla_url, Settings.wikidata_api_url)
+    policy.form_action(*policy.form_action, "render.openstreetmap.org", "tile.thunderforest.com")
+    policy.img_src(*policy.img_src, Settings.wikimedia_commons_url, "upload.wikimedia.org")
+    policy.script_src(*policy.script_src, :wasm_unsafe_eval)
     policy.style_src(*policy.style_src, :unsafe_inline)
 
     request.content_security_policy = policy
@@ -274,22 +276,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def preferred_color_scheme(subject)
-    if current_user
-      current_user.preferences.find_by(:k => "#{subject}.color_scheme")&.v || "auto"
-    else
-      "auto"
-    end
-  end
-
-  helper_method :preferred_editor, :preferred_color_scheme
+  helper_method :preferred_editor
 
   def update_totp
     if Settings.key?(:totp_key)
       cookies["_osm_totp_token"] = {
         :value => ROTP::TOTP.new(Settings.totp_key, :interval => 3600).now,
-        :domain => "openstreetmap.org",
-        :expires => 1.hour.from_now
+        :domain => Settings.totp_domain,
+        :expires => 1.hour.from_now,
+        :secure => Settings.server_protocol == "https",
+        :httponly => true
       }
     end
   end
@@ -298,7 +294,7 @@ class ApplicationController < ActionController::Base
     Ability.new(current_user)
   end
 
-  def deny_access(_exception)
+  def deny_access(_exception = nil)
     if current_user
       set_locale
       respond_to do |format|

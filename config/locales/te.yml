@@ -8,6 +8,7 @@
 # Author: Kiranmayee
 # Author: Marwin H.H.
 # Author: McDutchie
+# Author: Rajadvamshi
 # Author: Ravichandra
 # Author: Thirumalgoud
 # Author: V Bhavya
@@ -57,6 +58,7 @@ te:
       message: సందేశం
       node: బుడిపె
       node_tag: బుడిపె ట్యాగ్
+      note: గమనిక
       old_node: పాత బుడిపె
       old_node_tag: పాత బుడిపె ట్యాగు
       old_relation: పాత సంబంధం
@@ -80,23 +82,12 @@ te:
       way_node: దారి గమనిక
       way_tag: దారి ట్యాగు
     attributes:
-      client_application:
-        name: పేరు (ఆవశ్యకం)
-        url: ప్రధాన అనువర్తనం URL (ఆవశ్యకం)
-        callback_url: కాల్‌బ్యాక్ URL
-        support_url: సపోర్ట్ URL
-        allow_read_prefs: వారి వాడుకరి అభిరుచులను చదవండి
-        allow_write_prefs: వారి వాడుకరి అభిరుచులను మార్చు
-        allow_write_diary: డైరీ ఎంట్రీలు, వ్యాఖ్యలు సృష్టించండి, మిత్రులను చేసుకోండి
-        allow_write_api: మ్యాపును సవరించండి
-        allow_read_gpx: వారు గోప్య GPS అనుసరణలను చదవండి
-        allow_write_gpx: GPS అనుసరణలను ఎక్కించండి
-        allow_write_notes: గమనికలను సవరించు
       diary_comment:
         body: వివరణ
       diary_entry:
         user: వాడుకరి
         title: విషయం
+        body: దేహం
         latitude: అక్షాంశం
         longitude: రేఖాంశం
         language_code: భాష
@@ -243,17 +234,11 @@ te:
       title: ఖాతా మార్పు
       current email address: ప్రస్తుత ఈమెయిలు చిరునామా
       external auth: బయటి ఆథెంటికేషను
-      openid:
-        link text: ఇది ఏమిటి?
-      contributor terms:
+      contributor_terms:
         heading: తోడ్పాటు నియమాలు
         agreed: మీరు కొత్త తోడ్పాటు నియమాలకు అంగీకరించారు.
-        not yet agreed: మీరు కొత్త తోడ్పాటు నియమాలకు అంగీకరించలేదు.
-        review link text: మీ వీలును బట్టి ఈ లింకుకు వెళ్ళి కొత్త తోడ్పాటు నియమాలను
-          చూసి, అంగీకరించండి.
         agreed_with_pd: మీరు చేసే దిద్దుబాట్లు బహిరంగ డొమెయిన్‌లో ఉంటాయని భావిస్తున్నట్లుగా
           కూడా ప్రకటించారు.
-        link text: ఇది ఏమిటి?
       save changes button: మార్పులను భద్రపరచు
       delete_account: ఖాతాని తొలగించు...
     go_public:
@@ -290,14 +275,22 @@ te:
         cancel: రద్దుచేయి
     terms:
       show:
+        title: నియమాలు
         heading: నియమాలు
+        heading_ct: పాలు నియమాలు
         read_tou: నేను వాడుక నియమాలను చదివాను, వాటికి అంగీకరిస్తున్నాను
         informal_translations: అనధికారిక అనువాదాలు
         continue: కొనసాగించు
+        cancel: రద్దు
         legale_select: 'నివసించే దేశం:'
         legale_names:
           france: ఫ్రాన్స్
           italy: ఇటలీ
+          rest_of_world: మిగిలిన ప్రపంచం
+      update:
+        terms accepted: కొత్త పాలు నిబంధనలను అంగీకరించినందుకు ధన్యవాదాలు!
+      terms_declined_flash:
+        terms_declined_link: ఈ వికీ పుట
   browse:
     version: సంచిక
     in_changeset: మార్పులసమితి
@@ -311,8 +304,6 @@ te:
       one: 1 దారి
       other: '%{count} దారులు'
     download_xml: XML ను దించుకోండి
-    view_history: చరిత్రను చూడండి
-    view_details: వివరాలను చూడండి
     location: 'ప్రాంతం:'
     node:
       title_html: 'బిందువు: %{name}'
@@ -459,9 +450,6 @@ te:
       title_nearby: చుట్టుపక్కల వాడుకరుల డైరీలు
       user_title: '%{user} దినచర్య'
       in_language_title: '%{language}లో ఉన్న డైరీ పద్దులు'
-      new: కొత్త దినచర్య పద్దు
-      new_title: నా వాడుకరి డైరీలో ఓ కొత్త పద్దు రాయండి
-      my_diary: నా డైరీ
       no_entries: డైరీ పద్దులు లేవు
     page:
       recent_entries: ఇటీవలి డైరీ పద్దులు
@@ -512,6 +500,10 @@ te:
       all:
         title: OpenStreetMap డైరీ పద్దులు
         description: OpenStreetMap వాడుకరులు ఇటీవల చేర్చిన డైరీ పద్దులు
+    navigation:
+      my_diary: నా డైరీ
+      new: కొత్త దినచర్య పద్దు
+      new_title: నా వాడుకరి డైరీలో ఓ కొత్త పద్దు రాయండి
   doorkeeper:
     flash:
       applications:
@@ -1287,12 +1279,19 @@ te:
         level9: గ్రామ పొలిమెర
         level10: శివారు సరిహద్దు
         level11: పేట సరిహద్దు
-    results:
-      no_results: ఫలితాలేమీ దొరకలేదు
-      more_results: మరిన్ని ఫలితాలు
+  searches:
+    queries:
+      create:
+        no_results: ఫలితాలేమీ దొరకలేదు
+        more_results: మరిన్ని ఫలితాలు
   directions:
-    search:
+    show:
       title: దిశలు
+      distance: దూరం
+      time: సమయం
+      ascend: ఎగుడు
+      descend: దిగుడు
+      directions_courtesy_html: దిశాసూచీలు %{link} వారి సౌజన్యంతో
   issues:
     index:
       title: అంశాలు
@@ -1328,14 +1327,13 @@ te:
       other_issues_against_this_user: ఈ వాడుకరికి వ్యతిరేకంగా ఉన్న ఇతర అంశాలు
       no_other_issues: ఈ వాడుకరిపై ఇక వేరే అంశాలేమీ లేవు.
       comments_on_this_issue: ఈ అంశంపై వ్యాఖ్యలు
+      comment_from_html: '%{comment_created_at} %{user_link} చేసిన వ్యాఖ్య'
     resolve:
       resolved: అంశం స్థితిని 'పరిష్కారమైంది' అని మార్చాం
     ignore:
       ignored: అంశం స్థితిని 'విస్మరించాం' అని మార్చాం
     reopen:
       reopened: అంశం స్థితిని 'తెరిచి ఉన్న' అని పెట్టాం
-    comments:
-      comment_from_html: '%{comment_created_at} %{user_link} చేసిన వ్యాఖ్య'
     reports:
       reported_by_html: '%{user} %{updated_at} న %{category} అని ఫిర్యాదు చేసారు'
     helper:
@@ -1348,7 +1346,6 @@ te:
   reports:
     new:
       title_html: '%{link} పై ఫిర్యాదు చెయ్యండి'
-      missing_params: కొత్త ఫిర్యాదును సృష్టించలేం
       disclaimer:
         intro: 'మీ ఫిర్యాదును మోడరేటర్లకు పంపించేముందు, దీన్ని నిశ్చయపరచుకోండి:'
         not_just_mistake: సమస్య కేవలం పొరపాటు కాదని మీకు నిశ్చయంగా తెలుసు
@@ -1383,28 +1380,29 @@ te:
   layouts:
     logo:
       alt_text: ఓపెన్&zwnj;స్ట్రీట్&zwnj;మాప్ చిహ్నం
-    home: నివాస ప్రాంతానికి వెళ్ళు
-    logout: నిష్క్రమించండి
-    log_in: ప్రవేశించండి
-    sign_up: నమోదవ్వండి
     start_mapping: మ్యాపింగు మొదలుపెట్టండి
-    edit: మార్చు
-    history: చరిత్ర
-    export: ఎగుమతి
-    issues: అంశాలు
-    gps_traces: GPS జాడలు
-    user_diaries: వాడుకరి డైరీలు
-    edit_with: '%{editor} తో సవరించండి'
     intro_header: ఓపెన్‌స్ట్రీట్‌మ్యాప్‌కి స్వాగతం!
     intro_text: OpenStreetMap, ఓ ప్రపంచ మ్యాపు. మీలాంటి వారే దీన్ని తయారు చేసారు.
       స్వేచ్ఛా లైసెన్సు ద్వారా స్వేచ్ఛగా దీన్ని వాడుకోవచ్చు.
     partners_partners: భాగస్వాములు
     tou: వాడుక నియమాలు
-    help: సహాయం
-    about: గురించి
-    copyright: నకలుహక్కులు
     learn_more: మరింత తెలుసుకోండి
-    more: మరిన్ని
+    header:
+      about: గురించి
+      copyright: నకలుహక్కులు
+      edit: మార్చు
+      edit_with: '%{editor} తో సవరించండి'
+      export: ఎగుమతి
+      gps_traces: GPS జాడలు
+      help: సహాయం
+      history: చరిత్ర
+      home: నివాస ప్రాంతానికి వెళ్ళు
+      issues: అంశాలు
+      log_out: నిష్క్రమించండి
+      log_in: ప్రవేశించండి
+      more: మరిన్ని
+      sign_up: నమోదవ్వండి
+      user_diaries: వాడుకరి డైరీలు
   user_mailer:
     diary_comment_notification:
       subject: '[OpenStreetMap] %{user} ఒక డైరీ పద్దుపై వ్యాఖ్యానించారు'
@@ -1546,6 +1544,9 @@ te:
       whitelist: మీకు స్పాము వ్యతిరేక వ్యవస్థ ఏదైనా ఉంటే, బహుశా అది ధ్రువీకరణ మెయిళ్ళను
         స్పాము ఫోల్డరు లోకి పంపిస్తుంది. అంచేత ఈ ఈ %{sender} ను వైట్‌లిస్టులో పెట్టండి.
         లేదంటే ధ్రువీకరణ అభ్యర్థనలకు మేమిచ్చే జవాబులు అందవు.
+    gravatar:
+      disabled: గ్రావతార్‌ను అచేతనం చేసాం.
+      enabled: మీ గ్రావతార్‌ను చూపించడం చేత్యనం చేసాం.
   messages:
     new:
       title: సందేశాన్ని పంపించు
@@ -1631,35 +1632,41 @@ te:
     update:
       flash changed: మీ సంకేతపదాన్ని మార్చాం.
   preferences:
-    show:
-      title: నా అభీష్టాలు
-      save: అభీష్టాలను తాజాకరించిఉ
-    update:
-      failure: అభీష్టాలను తాజాకరించలేక పోయాం.
-    update_success_flash:
-      message: అభీష్టాలను తాజాకరించాం.
+    preferences:
+      update:
+        failure: అభీష్టాలను తాజాకరించలేక పోయాం.
+      update_success_flash:
+        message: అభీష్టాలను తాజాకరించాం.
+    basic_preferences:
+      show:
+        title: నా అభీష్టాలు
+        save: అభీష్టాలను తాజాకరించిఉ
   profiles:
-    edit:
-      title: ప్రొఫైలును సవరించండి
-      save: ప్రొఫైలును తాజాకరించండి
-      cancel: రద్దుచేయి
-      image: బొమ్మ
-      gravatar:
-        gravatar: గ్రావతార్‌ని వాడు
-        what_is_gravatar: గ్రావతార్ అంటే ఏంటి?
-        disabled: గ్రావతార్‌ను అచేతనం చేసాం.
-        enabled: మీ గ్రావతార్‌ను చూపించడం చేత్యనం చేసాం.
-      new image: ఓ బొమ్మను చేర్చండి
-      keep image: ప్రస్తుత చిత్రాన్ని ఉంచు
-      delete image: ప్రస్తుత చిత్రాన్ని తొలగించు
-      replace image: ప్రస్తుత చిత్రాన్ని మార్చు
-      image size hint: (కనీసం 100x100 ఉండే చదరపు చిత్రం అయితే మేలు)
-      home location: ఇంటి స్థానం
-      no home location: మీరు మీ నివాస ప్రాంతాన్ని పేర్కొనలేదు.
-      update home location on click: మ్యాపుపై నొక్కినపుడు ఇంటి స్థానాన్ని తాజాకరించాలా?
-    update:
-      success: ప్రొఫైలును తాజాకరించాం.
-      failure: ప్రొఫైలును తాజాకరించలేక పోయాం.
+    profile_sections:
+      navigation:
+        image: బొమ్మ
+    descriptions:
+      show:
+        title: ప్రొఫైలును సవరించండి
+        save: ప్రొఫైలును తాజాకరించండి
+        cancel: రద్దుచేయి
+    links:
+      show:
+        title: ప్రొఫైలును సవరించండి
+    images:
+      show:
+        gravatar:
+          gravatar: గ్రావతార్‌ని వాడు
+          what_is_gravatar: గ్రావతార్ అంటే ఏంటి?
+        new image: ఓ బొమ్మను చేర్చండి
+        keep image: ప్రస్తుత చిత్రాన్ని ఉంచు
+        delete image: ప్రస్తుత చిత్రాన్ని తొలగించు
+        replace image: ప్రస్తుత చిత్రాన్ని మార్చు
+        image size hint: (కనీసం 100x100 ఉండే చదరపు చిత్రం అయితే మేలు)
+    locations:
+      show:
+        no home location: మీరు మీ నివాస ప్రాంతాన్ని పేర్కొనలేదు.
+        update home location on click: మ్యాపుపై నొక్కినపుడు ఇంటి స్థానాన్ని తాజాకరించాలా?
   sessions:
     new:
       tab_title: ప్రవేశం
@@ -1708,6 +1715,7 @@ te:
       lede_text: OpenStreetMap ను మ్యాపర్ల సముదాయం నిర్మిస్తోంది. ఈ సముదాయ సభ్యులు
         ప్రపంచ వ్యాప్తంగా రోడ్లు, రెస్టారెంట్లు, రైల్వే స్టేషన్లు లాంటి ఎన్నో అంశాల
         గురించి డేటాను చేర్చడం, నిర్వహించడం చేస్తున్నారు.
+    about_section:
       local_knowledge_title: స్థానిక పరిజ్ఞానం
       local_knowledge_html: OpenStreetMap స్థానిక పరిజ్ఞానానికి ప్రాముఖ్యత నిస్తుంది.
         ఇక్కడ తోడ్పాటునందించేవారు విహంగ చిత్రాలను, GPS డివైసులను, లో టెక్ క్షేత్య్ర
@@ -1729,19 +1737,21 @@ te:
         native_link: THIS_LANGUAGE_NAME_HERE కూర్పు
         mapping_link: మ్యాపింగు మొదలుపెట్టండి
       legal_babble:
-        introduction_1_open_data: ఓపెన్ డేటా
-        introduction_2_legal_code: చట్టపరమైన కోడ్
         credit_title_html: OpenStreetMap కు శ్రేయస్సు నివ్వడం ఎలా
         credit_1_html: |-
           మీరు &ldquo;&copy; OpenStreetMap
           contributors&rdquo; అనే క్రిడిట్ వాడాలి.
-        credit_3_attribution_guidelines: అట్రిబ్యూషన్ మార్గదర్శకాలు
-        credit_4_1_this_copyright_page: ఈ కాపీరైట్ పేజీ
+        credit_3_v2025_attribution_guidelines: అట్రిబ్యూషన్ మార్గదర్శకాలు
+        credit_4_v2025_this_copyright_page: ఈ కాపీరైట్ పేజీ
         attribution_example:
           alt: వెబ్‌పేజీలో OpenStreetMap కు శ్రేయస్సును ఎలా ఆపాదించాలో చెప్పే ఉదాహరణ
           title: ఆపాదింపు ఉదాహరణ
-        more_title_html: మరింత తెలుసుకోవడం
-        more_2_1_api_usage_policy: API వినియోగ విధానం
+        infringement_title_html: కాపీహక్కుల ఉల్లంఘన
+        infringement_2_1_takedown_procedure: తొలగింపు విధానం
+        infringement_2_1_online_filing_page: ఆన్‌లైన్ ఫైలింగ్ పేజీ
+        trademarks_title: ట్రేడ్‌మార్క్‌లు
+        trademarks_1_1_trademark_policy: ట్రేడ్మార్క్ విధానం
+        services_1_api_usage_policy: API వినియోగ విధానం
         contributors_title_html: మా కాంట్రిబ్యూటర్లు
         contributors_at_austria: ఆస్ట్రియా
         contributors_at_stadt_wien: స్టాడ్ట్ వీన్
@@ -1760,11 +1770,6 @@ te:
         contributors_za_south_africa: దక్షిణ అమెరికా
         contributors_gb_united_kingdom: యునైటెడ్ కింగ్‌డమ్
         contributors_2_contributors_page: సహకారుల పేజీ
-        infringement_title_html: కాపీహక్కుల ఉల్లంఘన
-        infringement_2_1_takedown_procedure: తొలగింపు విధానం
-        infringement_2_1_online_filing_page: ఆన్‌లైన్ ఫైలింగ్ పేజీ
-        trademarks_title: ట్రేడ్‌మార్క్‌లు
-        trademarks_1_1_trademark_policy: ట్రేడ్మార్క్ విధానం
     not_public_flash:
       user_page_link: వాడుకరి పేజీ
       anon_edits_link_text: ఇది ఇలా ఎందుకుందో తెలుసుకోండి.
@@ -1857,13 +1862,17 @@ te:
       rules:
         title: నియమాలు!
       start_mapping: మ్యాపింగు మొదలుపెట్టండి
-      add_a_note:
-        title: సరిదిద్దేంత సమయం లేదా? ఒక గమనికను చేర్చండి!
-        para_1: ఏదో చిన్న మార్పు చెయ్యాల్సిన అవసరాన్ని మీరు గమనించారనుకోండి. కానీ
-          ఇక్కడ నమోదు చేసుకుని, దిద్దుబాట్లు ఎలా చెయ్యాలో నేర్చుకుని పనిచేసేందుకు
-          తగినంత సమయం లేదు. అలాంటపుడు ఒక గమనిక చేరిస్తే సరిపోతుంది.
-        the_map: పటము
-  map_keys:
+    add_a_note:
+      title: సరిదిద్దేంత సమయం లేదా? ఒక గమనికను చేర్చండి!
+      para_1: ఏదో చిన్న మార్పు చెయ్యాల్సిన అవసరాన్ని మీరు గమనించారనుకోండి. కానీ ఇక్కడ
+        నమోదు చేసుకుని, దిద్దుబాట్లు ఎలా చెయ్యాలో నేర్చుకుని పనిచేసేందుకు తగినంత సమయం
+        లేదు. అలాంటపుడు ఒక గమనిక చేరిస్తే సరిపోతుంది.
+      the_map: పటము
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: మ్యాపు గమనికలు చూసేందుకు జూమిన్ చెయ్యి
+      map_data_zoom_in_tooltip: మ్యాపు డేటాను చూసేందుకు జూమిన్ చెయ్యి
+  legend_panes:
     show:
       entries:
         motorway: మోటార్‌వే
@@ -1874,9 +1883,9 @@ te:
         unclassified: వర్గీకరించని రోడ్డు
         track: ట్రాకు
         cycleway: సైకిలు దారి
-        cycleway_national: జాతీయ సైకిలు దారి
-        cycleway_regional: ప్రాంతీయ సైకిలు దారి
-        cycleway_local: స్థానిక సైకిలు దారి
+        national_bike_route: జాతీయ సైకిలు దారి
+        regional_bike_route: ప్రాంతీయ సైకిలు దారి
+        local_bike_route: స్థానిక సైకిలు దారి
         footway: కాల్దారి
         rail: రైలుమార్గం
         subway: కిందారి
@@ -1914,6 +1923,17 @@ te:
         bicycle_shop: సైకిలు దుకాణం
         bicycle_parking: సైకిలు పార్కింగు
         toilets: మరుగుదొడ్లు
+  share_panes:
+    show:
+      link: లింకు లేదా HTML
+      long_link: లంకె
+      short_link: పొట్టి లంకె
+      embed: HTML
+      geo_uri: Geo URI
+      image: బొమ్మ
+      format: 'ఆకృతి:'
+      scale: 'స్కేలు:'
+      download: దించుకోండి
   traces:
     visibility:
       private: ప్రైవేటు (అజ్ఞాత పేరిట మాత్రమే కనిపిస్తుంది, ఆర్డరు చేయని పాయింట్లతో)
@@ -2018,9 +2038,6 @@ te:
       oauth2_applications: OAuth 2 అనువర్తనాలు
       oauth2_authorizations: OAuth 2 ఆథరైజేషన్లు
     auth_providers:
-      openid:
-        title: OpenID తో లాగినవండి
-        alt: ఏదైనా OpenID URL తో లాగినవండి
       google:
         title: Google తో లాగినవండి
         alt: Google OpenID తో లాగినవండి
@@ -2073,7 +2090,6 @@ te:
       my_dashboard: నా డ్యాష్‌బోర్డు
       blocks on me: నా మీద నిరోధాలు
       blocks by me: నా నిరోధాలు
-      edit_profile: ప్రొఫైలును సవరించండి
       send message: సందేశాన్ని పంపించు
       diary: డైరీ
       edits: మార్పులు
@@ -2086,15 +2102,6 @@ te:
       email address: 'ఈమెయిలు చిరునామా:'
       status: 'స్థితి:'
       spam score: 'స్పామ్ స్కోరు:'
-      role:
-        administrator: ఈ వాడుకరి ఒక నిర్వాహకులు
-        moderator: ఈ వాడుకరి ఒక మోడరేటరు
-        grant:
-          administrator: నిర్వాహక హోదాను ఇవ్వండి
-          moderator: నిర్వాహక హోదాను ఇవ్వండి
-        revoke:
-          administrator: నిర్వాహక హోదాను తీసెయ్యండి
-          moderator: నిర్వాహక హోదాను తీసెయ్యండి
       block_history: క్రియాశీల నిరోధాలు
       comments: వ్యాఖ్యలు
       create_block: ఈ వాడుకరిని నిరోధించు
@@ -2102,11 +2109,19 @@ te:
       confirm_user: ఈ వాడుకరిని ధ్రువీకరించు
       unconfirm_user: ఈ వాడుకరి ధ్రువీకరణను రద్దుచెయ్యి
       unsuspend_user: ఈ వాడుకరి సస్పెన్షన్ను రద్దుచెయ్యి
-      hide_user: ఈ వాడుకరిని దాచు
-      unhide_user: ఈ వాడుకరిని చూపు
-      delete_user: ఈ వాడుకరిని తొలగించు
       confirm: నిర్ధారించు
       report: ఈ వాడుకరిపై ఫిర్యాదు చెయ్యి
+      title:
+        administrator: ఈ వాడుకరి ఒక నిర్వాహకులు
+        moderator: ఈ వాడుకరి ఒక మోడరేటరు
+      grant:
+        administrator: నిర్వాహక హోదాను ఇవ్వండి
+        moderator: నిర్వాహక హోదాను ఇవ్వండి
+        are_you_sure: వాడుకరి `%{name}' కి `%{role}' పాత్ర ఇవ్వాలని మీరు నిశ్చయించుకున్నారా?
+      revoke:
+        administrator: నిర్వాహక హోదాను తీసెయ్యండి
+        moderator: నిర్వాహక హోదాను తీసెయ్యండి
+        are_you_sure: వాడుకరి `%{name}' నుండి `%{role}' ను ఉపసంహరించాలని మీరు నిశ్చయించుకున్నారా?
     go_public:
       flash success: ఇప్పుడు మీ మార్పుచేర్పులన్నీ బహిరంగం, మీరు ఇక నుండి దిద్దుబాట్లు
         చేయవచ్చు.
@@ -2126,7 +2141,6 @@ te:
         heading: వాడుకరులు
       page:
         confirm: ఎంచుకున్న వాడూకరులను ధ్రువీకరించు
-        hide: ఎంచుకున్న వాడుకరులను దాచు
         empty: సరిపోలే వాడుకరులు కనబడలేదు
       user:
         summary_html: '%{name}, %{date} న %{ip_address} నుండి సృష్టించారు'
@@ -2162,10 +2176,6 @@ te:
       doesnt_have_role: ఈ వాడుకరికి %{role} అనే పాత్ర లేదు.
       not_revoke_admin_current_user: ప్రస్తుత వాడుకరి నుండి నిర్వాహక హోదాను తీసెయ్యడం
         విఫలమైంది.
-    grant:
-      are_you_sure: వాడుకరి `%{name}' కి `%{role}' పాత్ర ఇవ్వాలని మీరు నిశ్చయించుకున్నారా?
-    revoke:
-      are_you_sure: వాడుకరి `%{name}' నుండి `%{role}' ను ఉపసంహరించాలని మీరు నిశ్చయించుకున్నారా?
   user_blocks:
     model:
       non_moderator_update: నిరోధాన్ని విధించాలన్నా, తాజాకరించాలన్నా మోడరేటరై ఉండాలి.
@@ -2270,26 +2280,15 @@ te:
     close: మూసివేయి
     share:
       title: పంచుకోండి
-      cancel: రద్దుచేయి
-      image: బొమ్మ
-      link: లింకు లేదా HTML
-      long_link: లంకె
-      short_link: పొట్టి లంకె
-      geo_uri: Geo URI
-      embed: HTML
-      format: 'ఆకృతి:'
-      scale: 'స్కేలు:'
-      download: దించుకోండి
-      short_url: పొట్టి URL
-    key:
+    legend:
       title: పటం సూచిక
       tooltip: పటం సూచిక
     map:
-      zoom:
-        in: జూమ్ ఇన్
-        out: జూమ్ ఔట్
-      locate:
-        title: నేనున్న ప్రాంతాన్ని చూపించు
+      navigation_control:
+        zoom_in: జూమ్ ఇన్
+        zoom_out: జూమ్ ఔట్
+      geolocate_control:
+        find_my_location: నేనున్న ప్రాంతాన్ని చూపించు
         metersPopup:
           one: మీరు ఈ బిందువు నుండి ఒక మీటరు దూరం లోపే ఉన్నారు
           other: మీరు ఈ బిందువు నుండి %{count} మీటర్ల దూరం లోపే ఉన్నారు
@@ -2312,19 +2311,13 @@ te:
       edit_disabled_tooltip: మ్యాపును సరిదిద్దేందుకు జూమిన్ చెయ్యి
       createnote_tooltip: మ్యాపుకు ఒక గమనికను చేర్చండి
       createnote_disabled_tooltip: మ్యాపులో ఒక గమనిక చేర్చేందుకు జూమిన్ చెయ్యి
-      map_notes_zoom_in_tooltip: మ్యాపు గమనికలు చూసేందుకు జూమిన్ చెయ్యి
-      map_data_zoom_in_tooltip: మ్యాపు డేటాను చూసేందుకు జూమిన్ చెయ్యి
       queryfeature_tooltip: క్వెరీ విశేషాలు
       queryfeature_disabled_tooltip: క్వెరీ చిశేషాల కోసం జూమిన్ చెయ్యండి
     edit_help: మ్యాపును జరిపి, మీరు సరిదిద్దాలనుకున్న స్థలంపై జూమిన్ చేసి, అప్పుడు
       ఇక్కడ నొక్కండి.
     directions:
-      ascend: ఎగుడు
-      descend: దిగుడు
-      distance: దూరం
       errors:
         no_route: ఆ రెండు స్థలాల మధ్య దారి కనబడలేదు.
-        no_place: సారీ - '%{place}' కనబడలేదు.
       instructions:
         continue_without_exit: '%{name} పై కొనసాగండి'
         slight_right_without_exit: '%{name} వైపుగా కొద్దిగా కుడికి'
@@ -2392,7 +2385,6 @@ te:
           తీసుకోండి
         exit_roundabout: చుట్టు మలుపును వీడి %{name} పైకి వెళ్ళండి
         unnamed: పేరులేని రోడ్డు
-        courtesy: దిశాసూచీలు %{link} వారి సౌజన్యంతో
         exit_counts:
           first: 1 వ
           second: 2 వ
@@ -2404,7 +2396,6 @@ te:
           eighth: 8 వ
           ninth: 9 వ
           tenth: 10 వ
-      time: సమయం
     query:
       node: బుడిపె
       way: దారి

@@ -1,7 +1,7 @@
 //= depend_on settings.yml
 //= depend_on settings.local.yml
 //= depend_on layers.yml
-//= depend_on key.yml
+//= depend_on legend.yml
 
 OSM = {
   ...<%=
@@ -19,28 +19,29 @@ OSM = {
       graphhopper_url
       fossgis_osrm_url
       fossgis_valhalla_url
+      wikidata_api_url
+      wikimedia_commons_url
     ]
       .each_with_object({}) do |key, hash|
         hash[key.to_s.upcase] = Settings.send(key) if Settings.respond_to?(key)
       end.to_json
   %>,
 
+  cookies: Cookies.withAttributes({ path: "/", samesite: "lax", secure: <%= (Settings.server_protocol == "https").to_json %> }),
+
   DEFAULT_LOCALE: <%= I18n.default_locale.to_json %>,
 
-  LAYER_DEFINITIONS: <%= MapLayers::full_definitions("config/layers.yml").to_json %>,
-  LAYERS_WITH_MAP_KEY: <%= YAML.load_file(Rails.root.join("config/key.yml")).keys.to_json %>,
+  LAYER_DEFINITIONS: <%= MapLayers::full_definitions("config/layers.yml", :legends => "config/legend.yml").to_json %>,
 
-  MARKER_BLUE: <%= image_path("marker-blue.png").to_json %>,
-  MARKER_GREEN: <%= image_path("marker-green.png").to_json %>,
-  MARKER_RED: <%= image_path("marker-red.png").to_json %>,
-
-  MARKER_ICON: <%= image_path("leaflet/dist/images/marker-icon.png").to_json %>,
-  MARKER_ICON_2X: <%= image_path("leaflet/dist/images/marker-icon-2x.png").to_json %>,
-  MARKER_SHADOW: <%= image_path("leaflet/dist/images/marker-shadow.png").to_json %>,
-
-  NEW_NOTE_MARKER: <%= image_path("new_note_marker.svg").to_json %>,
-  OPEN_NOTE_MARKER: <%= image_path("open_note_marker.svg").to_json %>,
-  CLOSED_NOTE_MARKER: <%= image_path("closed_note_marker.svg").to_json %>,
+  MODULE_PATHS: <%=
+    %i[changeset directions element export history home index new_note note query search]
+      .each_with_object({}) { |module_name, hash| hash[:"index_#{module_name}"] = "index_modules/#{module_name}" }
+      .merge(
+        :mapbox_rtl_text => "@mapbox/mapbox-gl-rtl-text/dist/mapbox-gl-rtl-text.js",
+        :make_plural_cardinals => "make-plural/cardinals.js"
+      )
+      .transform_values { |path| javascript_path(path) }
+      .to_json %>,
 
   apiUrl: function (object) {
     const apiType = object.type === "note" ? "notes" : object.type;
@@ -57,12 +58,20 @@ OSM = {
 
   mapParams: function (search) {
     const params = new URLSearchParams(search || location.search),
+          geoURI = OSM.parseGeoURI(params.get("geouri")),
           mapParams = {};
 
     if (params.has("mlon") && params.has("mlat")) {
       mapParams.marker = true;
       mapParams.mlon = parseFloat(params.get("mlon"));
       mapParams.mlat = parseFloat(params.get("mlat"));
+      mapParams.mrad = parseFloat(params.get("mrad"));
+    }
+    if (geoURI) {
+      mapParams.marker = true;
+      mapParams.mlon = geoURI.coords.lng;
+      mapParams.mlat = geoURI.coords.lat;
+      mapParams.mrad = geoURI.uncertainty;
     }
 
     // Old-style object parameters; still in use for edit links e.g. /edit?way=1234
@@ -74,7 +83,7 @@ OSM = {
 
     const hash = OSM.parseHash();
 
-    const loc = Cookies.get("_osm_location")?.split("|");
+    const loc = OSM.cookies.get("_osm_location")?.split("|");
 
     function bboxToLatLngBounds({ minlon, minlat, maxlon, maxlat }) {
       return L.latLngBounds([minlat, minlon], [maxlat, maxlon]);
@@ -82,9 +91,7 @@ OSM = {
 
     // Decide on a map starting position. Various ways of doing this.
     if (hash.center) {
-      mapParams.lon = hash.center.lng;
-      mapParams.lat = hash.center.lat;
-      mapParams.zoom = hash.zoom;
+      Object.assign(mapParams, hash);
     } else if (params.has("bbox")) {
       const [minlon, minlat, maxlon, maxlat] = params.get("bbox").split(",");
       mapParams.bounds = bboxToLatLngBounds({ minlon, minlat, maxlon, maxlat });
@@ -94,6 +101,12 @@ OSM = {
       mapParams.lon = params.get("mlon");
       mapParams.lat = params.get("mlat");
       mapParams.zoom = params.get("zoom") || 12;
+    } else if (geoURI?.uncertainty > 0 && !("zoom" in geoURI)) {
+      mapParams.bounds = geoURI.coords.toBounds(geoURI.uncertainty * 4);
+    } else if (geoURI) {
+      mapParams.lon = geoURI.coords.lng;
+      mapParams.lat = geoURI.coords.lat;
+      mapParams.zoom = geoURI.zoom || 12;
     } else if (loc) {
       [mapParams.lon, mapParams.lat, mapParams.zoom] = loc;
     } else if (OSM.home) {
@@ -122,23 +135,44 @@ OSM = {
     return mapParams;
   },
 
+  parseGeoURI: function (geoURI) {
+    let url;
+    try {
+      url = new URL(geoURI);
+    } catch (e) { return; }
+    if (!url?.pathname || url.protocol !== "geo:") return;
+    const [path, ...params] = url.pathname.split(";");
+    let coords;
+    try {
+      coords = L.latLng(path.split(","));
+    } catch (e) { return; }
+    if (!coords) return;
+    const searchParams = new URLSearchParams(params.join("&").toLowerCase());
+    const crs = searchParams.get("crs");
+    if (crs && crs !== "wgs84") return;
+    const uncertainty = parseFloat(searchParams.get("u"));
+    const zoom = parseFloat(url.searchParams.get("z"));
+    const out = { coords };
+    if (uncertainty >= 0) out.uncertainty = uncertainty;
+    if (zoom >= 0) out.zoom = zoom;
+    return out;
+  },
+
   parseHash: function (hash = location.hash) {
-    const args = {};
-
     const i = hash.indexOf("#");
-    if (i < 0) {
-      return args;
-    }
+    if (i < 0) return {};
 
-    const hashParams = new URLSearchParams(hash.slice(i + 1));
-
-    const map = (hashParams.get("map") || "").split("/"),
+    const hashParams = new URLSearchParams(hash.slice(i + 1)),
+          map = (hashParams.get("map") || "").split("/"),
           zoom = parseInt(map[0], 10),
           lat = parseFloat(map[1]),
-          lon = parseFloat(map[2]);
+          lon = parseFloat(map[2]),
+          args = {};
 
     if (!isNaN(zoom) && !isNaN(lat) && !isNaN(lon)) {
       args.center = new L.LatLng(lat, lon);
+      args.lat = lat;
+      args.lon = lon;
       args.zoom = zoom;
     }
 
@@ -168,7 +202,8 @@ OSM = {
 
     layers = layers.replace("M", "");
 
-    let hash = "#map=" + [zoom, ...OSM.cropLocation(center, zoom)].join("/");
+    const { lat, lng } = OSM.cropLocation(center, zoom);
+    let hash = `#map=${zoom}/${lat}/${lng}`;
 
     if (layers) {
       hash += "&layers=" + layers;
@@ -186,27 +221,33 @@ OSM = {
   cropLocation: function (latLng, zoom) {
     const precision = OSM.zoomPrecision(zoom),
           wrapped = latLng.wrap();
-    return [wrapped.lat, wrapped.lng].map(c => c.toFixed(precision));
+    return {
+      lat: wrapped.lat.toFixed(precision),
+      lng: wrapped.lng.toFixed(precision)
+    };
   },
 
   locationCookie: function (map) {
     const zoom = map.getZoom(),
-          center = OSM.cropLocation(map.getCenter(), zoom).reverse();
-    return [...center, zoom, map.getLayersCode()].join("|");
+          { lat, lng } = OSM.cropLocation(map.getCenter(), zoom);
+    return [lng, lat, zoom, map.getLayersCode()].join("|");
   },
 
-  distance: function (latlng1, latlng2) {
-    const lat1 = latlng1.lat * Math.PI / 180,
-          lng1 = latlng1.lng * Math.PI / 180,
-          lat2 = latlng2.lat * Math.PI / 180,
-          lng2 = latlng2.lng * Math.PI / 180,
-          latdiff = lat2 - lat1,
-          lngdiff = lng2 - lng1;
+  isDark: function (subject) {
+    const data = `${subject}-theme`,
+          theme = $(`[data-${data}]`).first().data(data);
+    if (theme) return theme === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  },
 
-    return 6372795 * 2 * Math.asin(
-      Math.sqrt(
-        Math.pow(Math.sin(latdiff / 2), 2) +
-        (Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(lngdiff / 2), 2))
-      ));
-  }
+  showAlert: function (title, message) {
+    const modalTitle = document.getElementById("osm_alert_title");
+    modalTitle.textContent = title;
+    const modalBody = document.getElementById("osm_alert_message");
+    modalBody.textContent = message;
+    const alertModal = new bootstrap.Modal(document.getElementById("osm_alert_modal"));
+    alertModal.show();
+  },
+
+  MapLibre: {}
 };

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserCreationTest < ActionDispatch::IntegrationTest
@@ -8,8 +10,8 @@ class UserCreationTest < ActionDispatch::IntegrationTest
   end
 
   def teardown
-    OmniAuth.config.mock_auth[:openid] = nil
     OmniAuth.config.mock_auth[:google] = nil
+    OmniAuth.config.mock_auth[:apple] = nil
     OmniAuth.config.mock_auth[:facebook] = nil
     OmniAuth.config.mock_auth[:microsoft] = nil
     OmniAuth.config.mock_auth[:github] = nil
@@ -160,8 +162,7 @@ class UserCreationTest < ActionDispatch::IntegrationTest
 
     user.reload
     assert_predicate user, :active?
-
-    assert_equal user, User.authenticate(:username => new_email, :password => "testtest")
+    assert user.password_matches?("testtest")
   end
 
   # Check that the user can successfully recover their password
@@ -190,131 +191,6 @@ class UserCreationTest < ActionDispatch::IntegrationTest
                             :referer => referer }
           assert_response(:redirect)
           assert_redirected_to :controller => :confirmations, :action => :confirm, :display_name => display_name
-          follow_redirect!
-        end
-      end
-    end
-
-    # Check the e-mail
-    register_email = ActionMailer::Base.deliveries.first
-
-    assert_equal register_email.to.first, new_email
-    # Check that the confirm account url is correct
-    confirm_regex = Regexp.new("confirm_string=([a-zA-Z0-9%_-]*)")
-    email_text_parts(register_email).each do |part|
-      assert_match confirm_regex, part.body.to_s
-    end
-    confirm_string = CGI.unescape(email_text_parts(register_email).first.body.match(confirm_regex)[1])
-
-    # Check the page
-    assert_response :success
-    assert_template "confirmations/confirm"
-
-    # Go to the confirmation page
-    get "/user/#{display_name}/confirm", :params => { :referer => "/welcome", :confirm_string => confirm_string }
-    assert_response :success
-    assert_template "confirmations/confirm"
-
-    post "/user/#{display_name}/confirm", :params => { :referer => "/welcome", :confirm_string => confirm_string }
-    assert_response :redirect
-    follow_redirect!
-    assert_response :success
-    assert_template "site/welcome"
-  end
-
-  def test_user_create_openid_success
-    new_email = "newtester-openid@osm.org"
-    display_name = "new_tester-openid"
-    openid_url = "http://localhost:1000/new.tester"
-    auth_uid = "http://localhost:1123/new.tester"
-
-    OmniAuth.config.add_mock(:openid,
-                             :uid => auth_uid,
-                             :info => { :email => new_email, :name => display_name })
-
-    assert_difference("User.count") do
-      assert_difference("ActionMailer::Base.deliveries.size", 1) do
-        perform_enqueued_jobs do
-          post auth_path(:provider => "openid", :openid_url => openid_url, :origin => "/user/new")
-          assert_redirected_to auth_success_path(:provider => "openid", :openid_url => openid_url, :origin => "/user/new")
-          follow_redirect!
-          assert_redirected_to :controller => :users, :action => "new", :nickname => display_name, :email => new_email,
-                               :auth_provider => "openid", :auth_uid => auth_uid
-          follow_redirect!
-          post "/user",
-               :params => { :user => { :email => new_email,
-                                       :display_name => display_name,
-                                       :auth_provider => "openid",
-                                       :auth_uid => auth_uid } }
-        end
-      end
-    end
-
-    # Check the page
-    assert_redirected_to :controller => :confirmations, :action => :confirm, :display_name => display_name
-  end
-
-  def test_user_create_openid_duplicate_email
-    dup_user = create(:user)
-    display_name = "new_tester-openid"
-    auth_uid = "123454321"
-
-    OmniAuth.config.add_mock(:openid,
-                             :uid => auth_uid,
-                             :info => { :email => dup_user.email, :name => display_name })
-
-    post auth_path(:provider => "openid", :origin => "/user/new")
-    assert_redirected_to auth_success_path(:provider => "openid", :origin => "/user/new")
-    follow_redirect!
-    assert_redirected_to :controller => :users, :action => "new", :nickname => display_name, :email => dup_user.email,
-                         :auth_provider => "openid", :auth_uid => auth_uid
-    follow_redirect!
-
-    assert_response :success
-    assert_template "users/new"
-    assert_select "form > div > input.is-invalid#user_email"
-  end
-
-  def test_user_create_openid_failure
-    OmniAuth.config.mock_auth[:openid] = :connection_failed
-
-    assert_difference("User.count", 0) do
-      assert_difference("ActionMailer::Base.deliveries.size", 0) do
-        perform_enqueued_jobs do
-          post auth_path(:provider => "openid", :openid_url => "http://localhost:1123/new.tester", :origin => "/user/new")
-          follow_redirect!
-          assert_redirected_to auth_failure_path(:strategy => "openid", :message => "connection_failed", :origin => "/user/new")
-          follow_redirect!
-          assert_redirected_to "/user/new"
-        end
-      end
-    end
-  end
-
-  def test_user_create_openid_redirect
-    openid_url = "http://localhost:1000/new.tester"
-    auth_uid = "http://localhost:1123/new.tester"
-    new_email = "redirect_tester_openid@osm.org"
-    display_name = "redirect_tester_openid"
-
-    OmniAuth.config.add_mock(:openid,
-                             :uid => auth_uid,
-                             :info => { :email => new_email, :name => display_name })
-
-    assert_difference("User.count") do
-      assert_difference("ActionMailer::Base.deliveries.size", 1) do
-        perform_enqueued_jobs do
-          post auth_path(:provider => "openid", :openid_url => openid_url, :origin => "/user/new")
-          assert_redirected_to auth_success_path(:provider => "openid", :openid_url => openid_url, :origin => "/user/new")
-          follow_redirect!
-          assert_redirected_to :controller => :users, :action => "new", :nickname => display_name, :email => new_email,
-                               :auth_provider => "openid", :auth_uid => auth_uid
-          follow_redirect!
-          post "/user",
-               :params => { :user => { :email => new_email,
-                                       :display_name => display_name,
-                                       :auth_provider => "openid",
-                                       :auth_uid => auth_uid } }
           follow_redirect!
         end
       end
@@ -474,6 +350,149 @@ class UserCreationTest < ActionDispatch::IntegrationTest
     # Check the page
     assert_response :success
     assert_template "confirmations/confirm"
+
+    # Go to the confirmation page
+    get "/user/#{display_name}/confirm", :params => { :referer => "/welcome", :confirm_string => confirm_string }
+    assert_response :success
+    assert_template "confirmations/confirm"
+
+    post "/user/#{display_name}/confirm", :params => { :referer => "/welcome", :confirm_string => confirm_string }
+    assert_response :redirect
+    follow_redirect!
+    assert_response :success
+    assert_template "site/welcome"
+  end
+
+  def test_user_create_apple_success
+    new_email = "newtester-apple@osm.org"
+    email_hmac = UsersController.message_hmac(new_email)
+    display_name = "new_tester-apple"
+    auth_uid = "123454321"
+
+    OmniAuth.config.add_mock(:apple,
+                             :uid => auth_uid,
+                             :info => { :email => new_email, :name => display_name })
+
+    assert_difference("User.count") do
+      assert_no_difference("ActionMailer::Base.deliveries.size") do
+        perform_enqueued_jobs do
+          post auth_path(:provider => "apple", :origin => "/user/new")
+          assert_redirected_to auth_success_path(:provider => "apple")
+          follow_redirect!
+          assert_redirected_to :controller => :users, :action => "new", :nickname => display_name,
+                               :email => new_email, :email_hmac => email_hmac,
+                               :auth_provider => "apple", :auth_uid => auth_uid
+          post "/user",
+               :params => { :user => { :email => new_email,
+                                       :display_name => display_name,
+                                       :auth_provider => "apple",
+                                       :auth_uid => auth_uid },
+                            :email_hmac => email_hmac }
+          assert_redirected_to welcome_path
+          follow_redirect!
+        end
+      end
+    end
+
+    # Check the page
+    assert_response :success
+    assert_template "site/welcome"
+
+    ActionMailer::Base.deliveries.clear
+  end
+
+  def test_user_create_apple_duplicate_email
+    dup_user = create(:user)
+    display_name = "new_tester-apple"
+    auth_uid = "123454321"
+
+    OmniAuth.config.add_mock(:apple,
+                             :uid => auth_uid,
+                             :info => { :email => dup_user.email, :name => display_name })
+
+    post auth_path(:provider => "apple", :origin => "/user/new")
+    assert_redirected_to auth_success_path(:provider => "apple")
+    follow_redirect!
+    assert_redirected_to :controller => :users, :action => "new", :nickname => display_name, :email => dup_user.email,
+                         :email_hmac => UsersController.message_hmac(dup_user.email),
+                         :auth_provider => "apple", :auth_uid => auth_uid
+    follow_redirect!
+
+    assert_response :success
+    assert_template "users/new"
+    assert_select "form > div > input.is-invalid#user_email"
+
+    ActionMailer::Base.deliveries.clear
+  end
+
+  def test_user_create_apple_failure
+    OmniAuth.config.mock_auth[:apple] = :connection_failed
+
+    assert_difference("User.count", 0) do
+      assert_difference("ActionMailer::Base.deliveries.size", 0) do
+        perform_enqueued_jobs do
+          post auth_path(:provider => "apple", :origin => "/user/new")
+          assert_response :redirect
+          follow_redirect!
+          assert_redirected_to auth_failure_path(:strategy => "apple", :message => "connection_failed", :origin => "/user/new")
+          follow_redirect!
+          assert_redirected_to "/user/new"
+        end
+      end
+    end
+
+    ActionMailer::Base.deliveries.clear
+  end
+
+  def test_user_create_apple_redirect
+    orig_email = "redirect_tester_apple_orig@apple.com"
+    email_hmac = UsersController.message_hmac(orig_email)
+    new_email =  "redirect_tester_apple@osm.org"
+    display_name = "redirect_tester_apple"
+    auth_uid = "123454321"
+
+    OmniAuth.config.add_mock(:apple,
+                             :uid => auth_uid,
+                             :info => { :email => orig_email, :name => display_name })
+
+    assert_difference("User.count") do
+      assert_difference("ActionMailer::Base.deliveries.size", 1) do
+        perform_enqueued_jobs do
+          post auth_path(:provider => "apple", :origin => "/user/new")
+          assert_redirected_to auth_success_path(:provider => "apple")
+          follow_redirect!
+          assert_redirected_to :controller => :users, :action => "new", :nickname => display_name,
+                               :email => orig_email, :email_hmac => email_hmac,
+                               :auth_provider => "apple", :auth_uid => auth_uid
+          follow_redirect!
+          post "/user",
+               :params => { :user => { :email => new_email,
+                                       :email_hmac => email_hmac,
+                                       :display_name => display_name,
+                                       :auth_provider => "apple",
+                                       :auth_uid => auth_uid } }
+          assert_response :redirect
+          follow_redirect!
+        end
+      end
+    end
+
+    # Check the e-mail
+    register_email = ActionMailer::Base.deliveries.first
+
+    assert_equal register_email.to.first, new_email
+    # Check that the confirm account url is correct
+    confirm_regex = Regexp.new("confirm_string=([a-zA-Z0-9%_-]*)")
+    email_text_parts(register_email).each do |part|
+      assert_match confirm_regex, part.body.to_s
+    end
+    confirm_string = CGI.unescape(email_text_parts(register_email).first.body.match(confirm_regex)[1])
+
+    # Check the page
+    assert_response :success
+    assert_template "confirmations/confirm"
+
+    ActionMailer::Base.deliveries.clear
 
     # Go to the confirmation page
     get "/user/#{display_name}/confirm", :params => { :referer => "/welcome", :confirm_string => confirm_string }

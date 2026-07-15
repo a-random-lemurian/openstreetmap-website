@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -53,13 +55,8 @@ class ApiController < ApplicationController
     # make the current_user object from any auth sources we have
     setup_user_auth(:skip_blocks => skip_blocks, :skip_terms => skip_terms)
 
-    # handle authenticate pass/fail
-    unless current_user
-      # no auth, the user does not exist or the password was wrong
-      render :plain => errormessage, :status => :unauthorized
-
-      false
-    end
+    # error if we could not authenticate the user
+    render :plain => errormessage, :status => :unauthorized unless current_user
   end
 
   def current_ability

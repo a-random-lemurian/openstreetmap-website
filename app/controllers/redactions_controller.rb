@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class RedactionsController < ApplicationController
-  layout "site"
+  layout :site_layout
 
   before_action :authorize_web
   before_action :set_locale
@@ -70,6 +72,6 @@ class RedactionsController < ApplicationController
   private
 
   def lookup_redaction
-    @redaction = Redaction.find(params[:id])
+    @redaction = Redaction.find(params.expect(:id))
   end
 end

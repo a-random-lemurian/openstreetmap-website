@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 module Api
@@ -96,6 +98,13 @@ module Api
             end
           end
         end
+      end
+    end
+
+    def test_tracepoints_disabled
+      with_settings(:traces_disabled => true) do
+        get api_tracepoints_path(:bbox => "-0.1,-0.1,0.1,0.1")
+        assert_response :not_found
       end
     end
 

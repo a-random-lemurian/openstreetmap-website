@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), "..", "config", "environment")
+require_relative File.join("..", "config", "environment")
 
 if recipient = ARGV[0].match(/^c-(\d+)-(\d+)-(.*)$/)
   comment = DiaryComment.find(recipient[1])
@@ -33,6 +34,6 @@ mail = Mail.new($stdin.read
 message = Message.from_mail(mail, from, to)
 message.save!
 
-UserMailer.message_notification(message).deliver if message.notify_recipient?
+DirectMessageNotifier.with(:record => message).deliver_later if message.notify_recipient?
 
 exit 0

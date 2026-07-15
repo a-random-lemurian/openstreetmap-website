@@ -36,8 +36,6 @@ gu:
       user_preference: વપરાશકર્તા પસંદગી
       user_token: વપરાશકર્તા ટોકન
     attributes:
-      client_application:
-        name: નામ (જરૂરી)
       diary_entry:
         user: વપરાશકર્તા
         title: વિષય
@@ -115,10 +113,6 @@ gu:
         comment: ટિપ્પણી
   accounts:
     show:
-      openid:
-        link text: આ શું છે?
-      contributor terms:
-        link text: આ શું છે?
       save changes button: ફેરફારો સાચવો
       delete_account: ખાતું દૂર કરો...
     go_public:
@@ -142,7 +136,6 @@ gu:
     version: આવૃત્તિ
     no_comment: (કોઈ ટિપ્પણી નહીં)
     part_of: નો ભાગ
-    view_history: ઇતિહાસ જુઓ
     relation:
       members: સભ્યો
       members_count:
@@ -180,8 +173,6 @@ gu:
       title_nearby: નજીકના વપરાશકર્તાઓની ડાયરી
       user_title: '%{user}ની ડાયરી'
       in_language_title: '%{language} ભાષામાં ડાયરીની નોંધણીઓ'
-      new: ડાયરીની નવી નોંધણી
-      my_diary: મારી ડાયરી
       no_entries: ડાયરીમાં કોઈ નોંધણી નથી
     page:
       recent_entries: તાજેતરની ડાયરીની નોંધણીઓ
@@ -193,6 +184,9 @@ gu:
       discussion: ચર્ચા
     diary_comment:
       confirm: ખાતરી કરો
+    navigation:
+      my_diary: મારી ડાયરી
+      new: ડાયરીની નવી નોંધણી
   doorkeeper:
     scopes:
       address: તમારું ભૌતિક સરનામું જુઓ
@@ -503,8 +497,13 @@ gu:
         level8: શહેરની સીમા
         level9: ગામની સીમા
         level10: ઉપનગરની સીમા
-    results:
-      no_results: કોઈ પરિણામો ન મળ્યા
+  searches:
+    queries:
+      create:
+        no_results: કોઈ પરિણામો ન મળ્યા
+  directions:
+    show:
+      time: સમય
   issues:
     index:
       title: સમસ્યાઓ
@@ -549,21 +548,22 @@ gu:
   layouts:
     logo:
       alt_text: OpenStreetMapનો લોગો
-    home: ઘરના સ્થાન પર જાઓ
-    history: ઇતિહાસ
-    issues: સમસ્યાઓ
-    user_diaries: વપરાશકર્તા ડાયરીઓ
-    edit_with: '%{editor}ના ઉપયોગથી સંપાદન કરો'
     hosting_partners_2024_html: હોસ્ટિંગ %{fastly}, %{corpmembers}, અને અન્ય %{partners}
       દ્વારા સમર્થિત છે.
     partners_corpmembers: OSMF કોર્પોરેટ સભ્યો
     partners_partners: ભાગીદારો
     tou: વપરાશની શરતો
-    help: સહાયતા
-    about: વિશે
-    copyright: પ્રકાશનાધિકાર
     learn_more: વધુ જાણો
-    more: વધુ
+    header:
+      about: વિશે
+      copyright: પ્રકાશનાધિકાર
+      edit_with: '%{editor}ના ઉપયોગથી સંપાદન કરો'
+      help: સહાયતા
+      history: ઇતિહાસ
+      home: ઘરના સ્થાન પર જાઓ
+      issues: સમસ્યાઓ
+      more: વધુ
+      user_diaries: વપરાશકર્તા ડાયરીઓ
   user_mailer:
     diary_comment_notification:
       hi: નમસ્તે %{to_user},
@@ -609,25 +609,31 @@ gu:
       heading: '%{user} માટે ગુપ્તસંજ્ઞા ફરીથી ગોઠવો'
       reset: ગુપ્તસંજ્ઞા ફરીથી ગોઠવો
   preferences:
-    show:
-      title: મારી પસંદગીઓ
-      save: પસંદગી બદલો
-    update:
-      failure: પસંદગીઓ બદલી શકાય નહીં.
-    update_success_flash:
-      message: પસંદગીઓ બદલવામાં આવી છે.
+    preferences:
+      update:
+        failure: પસંદગીઓ બદલી શકાય નહીં.
+      update_success_flash:
+        message: પસંદગીઓ બદલવામાં આવી છે.
+    basic_preferences:
+      show:
+        title: મારી પસંદગીઓ
+        save: પસંદગી બદલો
   profiles:
-    edit:
-      title: પ્રોફાઇલમાં ફેરફાર કરો
-      save: પ્રોફાઇલ બદલો
-      cancel: રદ કરો
-      image: છબી
-      new image: છબી ઉમેરો
-      keep image: વર્તમાન છબી રાખો
-      delete image: વર્તમાન છબીને દૂર કરો
-      replace image: વર્તમાન છબીને બદલો
-      image size hint: (ચોરસ છબીઓ ઓછામાં ઓછી ૧૦૦x૧૦૦ સારી રીતે કામ કરે છે)
-      home location: ઘરનું સ્થાન
+    profile_sections:
+      navigation:
+        image: છબી
+    descriptions:
+      show:
+        title: પ્રોફાઇલમાં ફેરફાર કરો
+        save: પ્રોફાઇલ બદલો
+        cancel: રદ કરો
+    images:
+      show:
+        new image: છબી ઉમેરો
+        keep image: વર્તમાન છબી રાખો
+        delete image: વર્તમાન છબીને દૂર કરો
+        replace image: વર્તમાન છબીને બદલો
+        image size hint: (ચોરસ છબીઓ ઓછામાં ઓછી ૧૦૦x૧૦૦ સારી રીતે કામ કરે છે)
   sessions:
     new:
       or: અથવા
@@ -646,14 +652,14 @@ gu:
         older: જૂના વપરાશકર્તાઓ
         newer: નવા વપરાશકર્તાઓ
   site:
-    about:
+    about_section:
       local_knowledge_title: સ્થાનિક જ્ઞાન
       legal_1_1_terms_of_use: વપરાશની શરતો
       legal_1_1_privacy_policy: ગોપનિયતા નીતિ
       partners_title: ભાગીદારો
     copyright:
       legal_babble:
-        more_2_1_api_usage_policy: APIના ઉપયોગની નીતિ
+        services_1_api_usage_policy: APIના ઉપયોગની નીતિ
         contributors_ca_canada: કેનેડા
         contributors_fi_finland: ફિનલેન્ડ
         contributors_fr_france: ફ્રાન્સ
@@ -683,7 +689,7 @@ gu:
         editor: સંપાદક
       rules:
         title: નિયમો!
-  map_keys:
+  legend_panes:
     show:
       entries:
         main_road: મુખ્ય માર્ગ
@@ -716,6 +722,10 @@ gu:
         bicycle_parking: સાયકલ પાર્કિંગ
         bicycle_parking_small: નાનું સાયકલ પાર્કિંગ
         toilets: શૌચાલયો
+  share_panes:
+    show:
+      embed: HTML
+      image: છબી
   traces:
     show:
       filename: 'ફાઇલનામ:'
@@ -728,9 +738,6 @@ gu:
       details_without_tags_html: '%{time_ago} %{user} દ્વારા'
     index:
       wiki_page: વિકિ પાનું
-  application:
-    auth_providers:
-      openid_login_button: આગળ વધો
   oauth2_applications:
     index:
       permissions: પરવાનગીઓ
@@ -751,19 +758,16 @@ gu:
       uid: 'વપરાશકર્તા id:'
       email address: 'ઇમેઇલ સરનામું:'
       status: 'સ્થિતિ:'
-      role:
-        administrator: આ વપરાશકર્તા સંચાલક છે
-        moderator: આ વપરાશકર્તા ચોકીદાર છે
       create_block: આ વપરાશકર્તાને અવરોધિત કરો
       activate_user: આ વપરાશકર્તાને સક્રિય કરો
       confirm_user: આ વપરાશકર્તાની ખાતરી કરો
       unconfirm_user: આ વપરાશકર્તાની ખાતરી દૂર કરો
       unsuspend_user: આ વપરાશકર્તાનું નિલંબન દૂર કરો
-      hide_user: આ વપરાશકર્તાને છુપાવો
-      unhide_user: આ વપરાશકર્તાને દર્શાવો
-      delete_user: આ વપરાશકર્તાને દૂર કરી નાંખો
       confirm: ખાતરી કરો
       report: આ વપરાશકર્તાની જાણ કરો
+      title:
+        administrator: આ વપરાશકર્તા સંચાલક છે
+        moderator: આ વપરાશકર્તા ચોકીદાર છે
     go_public:
       flash success: તમારા બધા સંપાદનો હવે જાહેરમાં છે, અને હવે તમને સંપાદનો કરવાની
         મંજૂરી છે.
@@ -811,9 +815,6 @@ gu:
       title: 'નોંધ: %{id}'
       comment: ટિપ્પણી કરો
   javascripts:
-    share:
-      image: છબી
-      embed: HTML
     directions:
       instructions:
         exit_counts:
@@ -827,7 +828,6 @@ gu:
           eighth: આઠમું
           ninth: નવમું
           tenth: દસમું
-      time: સમય
   redactions:
     show:
       description: 'વર્ણન:'

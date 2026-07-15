@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   include EmailMethods
   include SessionMethods
   include UserMethods
 
-  layout "site"
+  layout :site_layout
 
   skip_before_action :verify_authenticity_token, :only => [:auth_success]
   before_action :authorize_web
@@ -18,31 +20,19 @@ class UsersController < ApplicationController
   allow_thirdparty_images :only => :show
   allow_social_login :only => :new
 
+  content_security_policy(:only => [:new, :create]) do |policy|
+    if Settings.turnstile_site_key
+      policy.frame_src(*policy.frame_src, "challenges.cloudflare.com")
+      policy.script_src(*policy.script_src, "challenges.cloudflare.com")
+    end
+  end
+
   def show
     @user = User.find_by(:display_name => params[:display_name])
 
     if @user && (@user.visible? || current_user&.administrator?)
       @title = @user.display_name
-
-      @heatmap_data = Rails.cache.fetch("heatmap_data_with_ids_user_#{@user.id}", :expires_in => 1.day) do
-        one_year_ago = 1.year.ago.beginning_of_day
-        today = Time.zone.now.end_of_day
-
-        Changeset
-          .where(:user_id => @user.id)
-          .where(:created_at => one_year_ago..today)
-          .where(:num_changes => 1..)
-          .group("date_trunc('day', created_at)")
-          .select("date_trunc('day', created_at) AS date, SUM(num_changes) AS total_changes, MAX(id) AS max_id")
-          .order("date")
-          .map do |changeset|
-            {
-              :date => changeset.date.to_date.to_s,
-              :total_changes => changeset.total_changes.to_i,
-              :max_id => changeset.max_id
-            }
-          end
-      end
+      @heatmap_frame = @user.public_heatmap?
     else
       render_unknown_user params[:display_name]
     end
@@ -71,17 +61,17 @@ class UsersController < ApplicationController
       else
         flash.now[:warning] = t ".duplicate_social_email"
       end
-    else
-      check_signup_allowed
-
+    elsif check_signup_allowed?
       self.current_user = User.new
+    else
+      render :action => "blocked"
     end
   end
 
   def create
     self.current_user = User.new(user_params)
 
-    if check_signup_allowed(current_user.email)
+    if check_signup_allowed?(current_user.email)
       if current_user.auth_uid.present?
         # We are creating an account with external authentication and
         # no password was specified so create a random one
@@ -91,6 +81,10 @@ class UsersController < ApplicationController
 
       if current_user.invalid?
         # Something is wrong with a new user, so rerender the form
+        render :action => "new"
+      elsif Settings.turnstile_site_key && !valid_turnstile_response?(params["cf-turnstile-response"])
+        # Invalid turnstile response, so rerender the form
+        flash.now[:error] = t ".not_human"
         render :action => "new"
       else
         # Save the user record
@@ -106,13 +100,19 @@ class UsersController < ApplicationController
             successful_login(current_user, referer)
           else
             session[:pending_user] = current_user.id
-            UserMailer.signup_confirm(current_user, current_user.generate_token_for(:new_user), referer).deliver_later
+            UserMailer.with(
+              :user => current_user,
+              :token => current_user.generate_token_for(:new_user),
+              :referer => referer
+            ).signup_confirm.deliver_later
             redirect_to :controller => :confirmations, :action => :confirm, :display_name => current_user.display_name
           end
         else
           render :action => "new", :referer => params[:referer]
         end
       end
+    else
+      render :action => "blocked"
     end
   end
 
@@ -135,10 +135,7 @@ class UsersController < ApplicationController
     email = auth_info[:info][:email]
 
     email_verified = case provider
-                     when "openid"
-                       uid.match(%r{https://www.google.com/accounts/o8/id?(.*)}) ||
-                       uid.match(%r{https://me.yahoo.com/(.*)})
-                     when "google", "facebook", "microsoft", "github", "wikipedia"
+                     when "google", "apple", "facebook", "microsoft", "github", "wikipedia"
                        true
                      else
                        false
@@ -206,7 +203,11 @@ class UsersController < ApplicationController
     current_user.data_public = true
     current_user.description = "" if current_user.description.nil?
     current_user.creation_address = request.remote_ip
-    current_user.languages = http_accept_language.user_preferred_languages
+    current_user.languages = if request.cookies["_osm_locale"]
+                               Locale.list(request.cookies["_osm_locale"])
+                             else
+                               http_accept_language.user_preferred_languages
+                             end
     current_user.terms_agreed = Time.now.utc
     current_user.tou_agreed = Time.now.utc
     current_user.terms_seen = true
@@ -246,7 +247,7 @@ class UsersController < ApplicationController
 
   ##
   # check signup acls
-  def check_signup_allowed(email = nil)
+  def check_signup_allowed?(email = nil)
     domain = if email.nil?
                nil
              else
@@ -259,20 +260,32 @@ class UsersController < ApplicationController
                    domain_mx_servers(domain)
                  end
 
-    return true if Acl.allow_account_creation(request.remote_ip, :domain => domain, :mx => mx_servers)
+    return true if Acl.allow_account_creation?(request.remote_ip, :domain => domain, :mx => mx_servers)
 
-    blocked = Acl.no_account_creation(request.remote_ip, :domain => domain, :mx => mx_servers)
+    blocked = Acl.no_account_creation?(request.remote_ip, :domain => domain, :mx => mx_servers)
 
     blocked ||= SIGNUP_IP_LIMITER && !SIGNUP_IP_LIMITER.allow?(request.remote_ip)
 
     blocked ||= email && SIGNUP_EMAIL_LIMITER && !SIGNUP_EMAIL_LIMITER.allow?(canonical_email(email))
 
-    if blocked
-      logger.info "Blocked signup from #{request.remote_ip} for #{email}"
-
-      render :action => "blocked"
-    end
+    logger.info "Blocked signup from #{request.remote_ip} for #{email}" if blocked
 
     !blocked
+  end
+
+  ##
+  # check if a turnstile response is valid
+  def valid_turnstile_response?(turnstile_response)
+    response = OSM.http_client.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+                                      :secret => Settings.turnstile_secret_key,
+                                      :response => turnstile_response,
+                                      :remoteip => request.remote_ip
+                                    })
+
+    return false unless response.success?
+
+    parsed_response = JSON.parse(response.body)
+
+    parsed_response["success"]
   end
 end

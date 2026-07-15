@@ -1,28 +1,20 @@
 //= require_self
+//= require numbered_pagination
 //= require leaflet.sidebar
 //= require leaflet.sidebar-pane
-//= require leaflet.locatecontrol/dist/L.Control.Locate.umd
 //= require leaflet.locate
 //= require leaflet.layers
-//= require leaflet.key
+//= require leaflet.legend
 //= require leaflet.note
 //= require leaflet.share
-//= require leaflet.polyline
 //= require leaflet.query
-//= require leaflet.contextmenu
 //= require index/contextmenu
-//= require index/search
+//= require index/initializations
 //= require index/layers/data
-//= require index/export
 //= require index/layers/notes
-//= require index/history
-//= require index/note
-//= require index/new_note
-//= require index/directions
-//= require index/changeset
-//= require index/query
-//= require index/home
 //= require router
+
+OSM.initializations = [];
 
 $(function () {
   const map = new L.OSM.Map("map", {
@@ -32,8 +24,8 @@ $(function () {
     worldCopyJump: true
   });
 
-  OSM.loadSidebarContent = function (path, callback) {
-    let content_path = path;
+  OSM.loadSidebarContent = function (path) {
+    const atomSelector = "link[type=\"application/atom+xml\"]";
 
     map.setSidebarOverlaid(false);
 
@@ -41,39 +33,32 @@ $(function () {
 
     // Prevent caching the XHR response as a full-page URL
     // https://github.com/openstreetmap/openstreetmap-website/issues/5663
-    if (content_path.indexOf("?") >= 0) {
-      content_path += "&xhr=1";
-    } else {
-      content_path += "?xhr=1";
-    }
+    const xhrPath = path + `${path.includes("?") ? "&" : "?"}xhr=1`;
 
     $("#sidebar_content")
       .empty();
 
-    fetch(content_path, { headers: { "accept": "text/html", "x-requested-with": "XMLHttpRequest" } })
+    return fetch(xhrPath, { headers: { "accept": "text/html", "x-requested-with": "XMLHttpRequest" } })
       .then(response => {
         $("#flash").empty();
         $("#sidebar_loader").removeClass("delayed-fade-in").prop("hidden", true);
 
+        return response.text().then(html => ({ response, html }));
+      })
+      .then(({ response, html }) => {
+        const content = $($.parseHTML(html));
+
         const title = response.headers.get("X-Page-Title");
         if (title) document.title = decodeURIComponent(title);
 
-        return response.text();
-      })
-      .then(html => {
-        const content = $(html);
+        $("head").find(atomSelector).remove();
 
-        $("head")
-          .find("link[type=\"application/atom+xml\"]")
-          .remove();
+        $("head").append(content.filter(atomSelector));
 
-        $("head")
-          .append(content.filter("link[type=\"application/atom+xml\"]"));
+        $("#sidebar_content").html(content.not(atomSelector));
 
-        $("#sidebar_content").html(content.not("link[type=\"application/atom+xml\"]"));
-
-        if (callback) {
-          callback();
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status} ${response.statusText}`);
         }
       });
   };
@@ -121,7 +106,7 @@ $(function () {
       sidebar,
       layers: map.baseLayers
     }),
-    L.OSM.key({ position, sidebar }),
+    L.OSM.legend({ position, sidebar }),
     L.OSM.share({
       position,
       sidebar,
@@ -140,7 +125,7 @@ $(function () {
   L.control.scale()
     .addTo(map);
 
-  OSM.initializeContextMenu(map);
+  OSM.initializations.forEach(func => func(map));
 
   if (OSM.STATUS !== "api_offline" && OSM.STATUS !== "database_offline") {
     OSM.initializeNotesLayer(map);
@@ -160,42 +145,45 @@ $(function () {
 
   $(".leaflet-control .control-button").tooltip({ placement: "left", container: "body" });
 
-  const expiry = new Date();
-  expiry.setYear(expiry.getFullYear() + 10);
+  const expires = new Date();
+  const thisYear = expires.getFullYear();
+  expires.setFullYear(thisYear + 10);
 
-  map.on("moveend baselayerchange overlayadd overlayremove", function () {
+  const updateCookieAndLinks = function () {
     updateLinks(
       map.getCenter().wrap(),
       map.getZoom(),
       map.getLayersCode(),
       map._object);
 
-    Cookies.set("_osm_location", OSM.locationCookie(map), { secure: true, expires: expiry, path: "/", samesite: "lax" });
-  });
+    OSM.cookies.set("_osm_location", OSM.locationCookie(map), { expires });
+  };
+  for (const e of ["moveend", "baselayerchange", "overlayadd", "overlayremove"]) {
+    map.on(e, updateCookieAndLinks);
+  }
 
-  if (Cookies.get("_osm_welcome") !== "hide") {
-    $(".welcome").removeAttr("hidden");
+  if (OSM.cookies.get("_osm_welcome") !== "hide") {
+    $(".welcome").addClass("d-md-block");
   }
 
   $(".welcome .btn-close").on("click", function () {
-    $(".welcome").hide();
-    Cookies.set("_osm_welcome", "hide", { secure: true, expires: expiry, path: "/", samesite: "lax" });
+    $(".welcome").removeClass("d-md-block");
+    OSM.cookies.set("_osm_welcome", "hide", { expires });
   });
 
-  const bannerExpiry = new Date();
-  bannerExpiry.setYear(bannerExpiry.getFullYear() + 1);
+  expires.setFullYear(thisYear + 1);
 
   $("#banner .btn-close").on("click", function (e) {
     const cookieId = e.target.id;
-    $("#banner").hide();
+    $("#banner").removeClass("d-md-block");
     e.preventDefault();
     if (cookieId) {
-      Cookies.set(cookieId, "hide", { secure: true, expires: bannerExpiry, path: "/", samesite: "lax" });
+      OSM.cookies.set(cookieId, "hide", { expires });
     }
   });
 
   if (OSM.MATOMO) {
-    map.on("baselayerchange overlayadd", function (e) {
+    const matomoLayerHandler = function (e) {
       if (e.layer.options) {
         const goal = OSM.MATOMO.goals[e.layer.options.layerId];
 
@@ -203,7 +191,9 @@ $(function () {
           $("body").trigger("matomogoal", goal);
         }
       }
-    });
+    };
+    map.on("baselayerchange", matomoLayerHandler);
+    map.on("overlayadd", matomoLayerHandler);
   }
 
   if (params.bounds) {
@@ -212,8 +202,10 @@ $(function () {
     map.setView([params.lat, params.lon], params.zoom);
   }
 
-  if (params.marker) {
-    L.marker([params.mlat, params.mlon]).addTo(map);
+  if (params.marker && params.mrad) {
+    L.circle([params.mlat, params.mlon], { radius: params.mrad }).addTo(map);
+  } else if (params.marker) {
+    L.marker([params.mlat, params.mlon], { icon: OSM.getMarker({ color: "var(--marker-blue)" }) }).addTo(map);
   }
 
   function remoteEditHandler(bbox, object) {
@@ -235,8 +227,8 @@ $(function () {
         }
       })
       .catch(() => {
-        // eslint-disable-next-line no-alert
-        alert(OSM.i18n.t("site.index.remote_failed"));
+        OSM.showAlert(OSM.i18n.t("javascripts.remote_edit.failed.title"),
+                      OSM.i18n.t("javascripts.remote_edit.failed.body"));
       });
 
     function sendRemoteEditCommand(url) {
@@ -266,92 +258,26 @@ $(function () {
     });
   }
 
-  OSM.Index = function (map) {
-    const page = {};
-
-    page.pushstate = page.popstate = function () {
-      map.setSidebarOverlaid(true);
-      document.title = OSM.i18n.t("layouts.project_name.title");
-    };
-
-    page.load = function () {
-      const params = new URLSearchParams(location.search);
-      if (params.has("query")) {
-        $("#sidebar .search_form input[name=query]").value(params.get("query"));
-      }
-      if (!("autofocus" in document.createElement("input"))) {
-        $("#sidebar .search_form input[name=query]").focus();
-      }
-      return map.getState();
-    };
-
-    return page;
-  };
-
-  OSM.Browse = function (map, type) {
-    const page = {};
-
-    page.pushstate = page.popstate = function (path, id, version) {
-      OSM.loadSidebarContent(path, function () {
-        addObject(type, id, version);
-      });
-    };
-
-    page.load = function (path, id, version) {
-      addObject(type, id, version, true);
-    };
-
-    function addObject(type, id, version, center) {
-      const hashParams = OSM.parseHash();
-      map.addObject({ type: type, id: parseInt(id, 10), version: version && parseInt(version, 10) }, function (bounds) {
-        if (!hashParams.center && bounds.isValid() &&
-            (center || !map.getBounds().contains(bounds))) {
-          OSM.router.withoutMoveListener(function () {
-            map.fitBounds(bounds);
-          });
-        }
-      });
-    }
-
-    page.unload = function () {
-      map.removeObject();
-    };
-
-    return page;
-  };
-
-  OSM.OldBrowse = function () {
-    const page = {};
-
-    page.pushstate = page.popstate = function (path) {
-      OSM.loadSidebarContent(path);
-    };
-
-    return page;
-  };
-
-  const history = OSM.History(map);
-
   OSM.router = OSM.Router(map, {
-    "/": OSM.Index(map),
-    "/search": OSM.Search(map),
-    "/directions": OSM.Directions(map),
-    "/export": OSM.Export(map),
-    "/note/new": OSM.NewNote(map),
-    "/history/friends": history,
-    "/history/nearby": history,
-    "/history": history,
-    "/user/:display_name/history": history,
-    "/note/:id": OSM.Note(map),
-    "/node/:id(/history)": OSM.Browse(map, "node"),
-    "/node/:id/history/:version": OSM.Browse(map, "node"),
-    "/way/:id(/history)": OSM.Browse(map, "way"),
-    "/way/:id/history/:version": OSM.OldBrowse(),
-    "/relation/:id(/history)": OSM.Browse(map, "relation"),
-    "/relation/:id/history/:version": OSM.OldBrowse(),
-    "/changeset/:id": OSM.Changeset(map),
-    "/query": OSM.Query(map),
-    "/account/home": OSM.Home(map)
+    "/": "index",
+    "/search": "search",
+    "/directions": "directions",
+    "/export": "export",
+    "/note/new": "new_note",
+    "/history/friends": "history",
+    "/history/nearby": "history",
+    "/history": "history",
+    "/user/:display_name/history": "history",
+    "/note/:id": "note",
+    "/node/:id(/history)": { module: "index_element", part: m => m.mappedElement("node") },
+    "/node/:id/history/:version": { module: "index_element", part: m => m.mappedElement("node") },
+    "/way/:id(/history)": { module: "index_element", part: m => m.mappedElement("way") },
+    "/way/:id/history/:version": { module: "index_element", part: m => m.element("way") },
+    "/relation/:id(/history)": { module: "index_element", part: m => m.mappedElement("relation") },
+    "/relation/:id/history/:version": { module: "index_element", part: m => m.element("relation") },
+    "/changeset/:id": "changeset",
+    "/query": "query",
+    "/account/home": "home"
   });
 
   if (OSM.preferred_editor === "remote" && location.pathname === "/edit") {
@@ -377,19 +303,21 @@ $(function () {
     }
 
     // Ignore cross-protocol and cross-origin links.
-    if (location.protocol !== this.protocol || location.host !== this.host) {
+    const url = new URL($(this).attr("href"), location);
+    if (location.protocol !== url.protocol || location.host !== url.host) {
       return;
     }
 
-    if (OSM.router.route(this.pathname + this.search + this.hash)) {
+    if (OSM.router.route(url.pathname + url.search + url.hash)) {
       e.preventDefault();
-      if (this.pathname !== "/directions") {
+      if (url.pathname !== "/directions") {
         $("header").addClass("closed");
       }
     }
   });
 
   $(document).on("click", "#sidebar .sidebar-close-controls button", function () {
+    $(".search_form input[name=query]").val("");
     OSM.router.route("/" + OSM.formatHash(map));
   });
 });

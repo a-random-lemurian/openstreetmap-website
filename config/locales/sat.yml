@@ -57,10 +57,6 @@ sat:
       way_node: ᱦᱚᱨ ᱜᱟᱸᱴᱷ
       way_tag: ᱦᱚᱨ ᱴᱮᱜ
     attributes:
-      client_application:
-        name: ᱧᱩᱛᱩᱢ (ᱞᱟᱹᱠᱛᱤ-ᱟ)
-        allow_write_api: ᱱᱚᱠᱥᱟ ᱵᱚᱫᱚᱞ ᱢᱮ
-        allow_write_notes: ᱠᱷᱟᱴᱚ ᱚᱞ ᱠᱚ ᱵᱚᱫᱚᱞ ᱢᱮ
       diary_comment:
         body: ᱦᱚᱲᱢᱚ
       diary_entry:
@@ -129,10 +125,6 @@ sat:
     show:
       title: ᱠᱷᱟᱛᱟ ᱥᱟᱯᱲᱟᱣ ᱢᱮ
       current email address: 'ᱱᱮᱛᱚᱜ-ᱟᱜ ᱤᱢᱮᱞ ᱴᱷᱤᱠᱟᱹᱬᱟ:'
-      openid:
-        link text: ᱱᱤᱭᱟᱹ ᱫᱚ ᱪᱮᱫ?
-      contributor terms:
-        link text: ᱱᱤᱭᱟᱹ ᱫᱚ ᱪᱮᱫ?
       save changes button: ᱵᱚᱫᱚᱞᱠᱚ ᱪᱟᱺᱪᱟᱣ ᱢᱮ
     terms:
       show:
@@ -141,8 +133,6 @@ sat:
     anonymous: ᱵᱟᱝ ᱵᱟᱰᱟᱭ
     no_comment: (ᱚᱠᱛᱚ ᱵᱟᱝ)
     download_xml: XML ᱰᱟᱩᱱᱞᱚᱰ ᱢᱮ
-    view_history: ᱱᱟᱜᱟᱢ ᱧᱮᱞᱢᱮ
-    view_details: ᱵᱤᱵᱨᱚᱱ ᱧᱮᱞ ᱢᱮ
     location: 'ᱡᱟᱭᱜᱟ:'
     node:
       title_html: ᱜᱟᱸᱴᱷ:%{name}
@@ -215,8 +205,6 @@ sat:
       use_map_link: ᱱᱚᱠᱥᱟ ᱵᱮᱵᱷᱟᱨ ᱢᱮ
     index:
       title: ᱵᱮᱵᱷᱟᱨᱤᱡ ᱠᱚᱣᱟ ᱰᱟᱭᱨᱤᱠᱚ
-      new: ᱱᱟᱶᱟ ᱰᱟᱭᱨᱤ ᱟᱫᱮᱨ
-      my_diary: ᱤᱧᱭᱟᱜ ᱰᱟᱭᱨᱤ
       no_entries: ᱰᱟᱭᱨᱤ ᱟᱫᱮᱨᱠᱚ ᱵᱟᱹᱱᱩᱜ-ᱟ
     edit:
       title: ᱰᱟᱭᱨᱤ ᱟᱫᱮᱨ ᱥᱟᱯᱲᱟᱣ ᱢᱮ
@@ -237,6 +225,9 @@ sat:
       report: ᱱᱚᱶᱟ ᱚᱠᱛᱟ ᱨᱤᱯᱚᱴ ᱢᱮ
     location:
       location: 'ᱡᱟᱭᱜᱟ:'
+    navigation:
+      my_diary: ᱤᱧᱭᱟᱜ ᱰᱟᱭᱨᱤ
+      new: ᱱᱟᱶᱟ ᱰᱟᱭᱨᱤ ᱟᱫᱮᱨ
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -417,8 +408,9 @@ sat:
         level6: ᱫᱤᱥᱚᱢ ᱜᱷᱮᱨᱟ
         level8: ᱥᱚᱦᱚᱨ ᱜᱷᱮᱨᱟ
   directions:
-    search:
+    show:
       title: ᱫᱤᱥᱟᱠᱚ
+      time: ᱚᱠᱛᱚ
   issues:
     index:
       search: ᱥᱮᱸᱫᱽᱨᱟ
@@ -442,22 +434,23 @@ sat:
         note:
           other_label: ᱮᱴᱟᱜ
   layouts:
-    home: ᱚᱲᱟᱜ ᱡᱟᱭᱜᱟ ᱨᱮ ᱪᱟᱞᱟᱜ ᱢᱮ
-    logout: ᱚᱰᱚᱠᱚᱜ ᱢᱮ
-    log_in: ᱵᱚᱞᱚᱜ ᱢᱮ
-    sign_up: ᱧᱩᱛᱩᱢ ᱚᱞ
     start_mapping: ᱱᱚᱠᱥᱟ ᱛᱮᱭᱟᱨ ᱮᱦᱚᱵ ᱢᱮ
-    edit: ᱥᱟᱯᱲᱟᱣ
-    history: ᱱᱟᱜᱟᱢ
-    export: ᱵᱷᱮᱡᱟ
-    user_diaries: ᱵᱮᱵᱷᱟᱨᱤᱡ ᱠᱚᱣᱟ ᱰᱟᱭᱨᱤᱠᱚ
-    edit_with: '%{editor} ᱛᱮ ᱥᱟᱯᱲᱟᱣ ᱢᱮ'
     intro_header: OpenStreetMap ᱨᱮ ᱥᱟᱹᱜᱩᱱ ᱫᱟᱨᱟᱢ!
-    help: ᱜᱚᱸᱲᱚᱸ
-    about: ᱵᱟᱵᱚᱛ
-    copyright: ᱪᱷᱟᱯᱟᱦᱚᱠ
     learn_more: ᱟᱨᱦᱚᱸ ᱪᱤᱫᱢᱮ
-    more: ᱵᱟᱹᱲᱛᱤ
+    header:
+      about: ᱵᱟᱵᱚᱛ
+      copyright: ᱪᱷᱟᱯᱟᱦᱚᱠ
+      edit: ᱥᱟᱯᱲᱟᱣ
+      edit_with: '%{editor} ᱛᱮ ᱥᱟᱯᱲᱟᱣ ᱢᱮ'
+      export: ᱵᱷᱮᱡᱟ
+      help: ᱜᱚᱸᱲᱚᱸ
+      history: ᱱᱟᱜᱟᱢ
+      home: ᱚᱲᱟᱜ ᱡᱟᱭᱜᱟ ᱨᱮ ᱪᱟᱞᱟᱜ ᱢᱮ
+      log_out: ᱚᱰᱚᱠᱚᱜ ᱢᱮ
+      log_in: ᱵᱚᱞᱚᱜ ᱢᱮ
+      more: ᱵᱟᱹᱲᱛᱤ
+      sign_up: ᱧᱩᱛᱩᱢ ᱚᱞ
+      user_diaries: ᱵᱮᱵᱷᱟᱨᱤᱡ ᱠᱚᱣᱟ ᱰᱟᱭᱨᱤᱠᱚ
   confirmations:
     confirm:
       heading: ᱟᱢᱟᱜ ᱤᱢᱮᱞ ᱡᱟᱸᱪ ᱛᱟᱢ!
@@ -486,10 +479,12 @@ sat:
     update:
       flash changed: ᱟᱢᱟᱜ ᱫᱟᱱᱟᱝ ᱥᱟᱵᱟᱫᱽ ᱫᱚ ᱵᱚᱫᱚᱞᱮᱱᱟ ᱾
   profiles:
-    edit:
-      image: ᱪᱤᱛᱟᱹᱨᱺ
-      new image: ᱢᱤᱫᱴᱮᱱ ᱪᱤᱛᱟᱹᱨ ᱥᱮᱞᱮᱫ ᱢᱮ
-      home location: 'ᱚᱲᱟᱜ ᱡᱟᱭᱜᱟ:'
+    profile_sections:
+      navigation:
+        image: ᱪᱤᱛᱟᱹᱨᱺ
+    images:
+      show:
+        new image: ᱢᱤᱫᱴᱮᱱ ᱪᱤᱛᱟᱹᱨ ᱥᱮᱞᱮᱫ ᱢᱮ
   sessions:
     new:
       tab_title: ᱵᱚᱞᱚᱜ ᱢᱮ
@@ -543,7 +538,7 @@ sat:
       rules:
         title: ᱱᱤᱭᱚᱢᱠᱚ!
       start_mapping: ᱱᱚᱠᱥᱟ ᱛᱮᱭᱟᱨ ᱮᱦᱚᱵ ᱢᱮ
-  map_keys:
+  legend_panes:
     show:
       entries:
         footway: ᱛᱟᱲᱟᱢᱦᱚᱨ
@@ -554,6 +549,11 @@ sat:
         bicycle_shop: ᱥᱟᱭᱠᱤᱞ ᱫᱩᱠᱟᱹᱱ
         bicycle_parking: ᱥᱟᱭᱠᱤᱞ ᱯᱟᱨᱠᱤᱝ
         toilets: ᱴᱚᱭᱞᱮᱴᱠᱚ
+  share_panes:
+    show:
+      long_link: ᱡᱚᱱᱚᱲ
+      image: ᱪᱤᱛᱟᱹᱨ
+      download: ᱯᱷᱮᱰ
   traces:
     new:
       visibility_help: ᱱᱚᱶᱟ ᱨᱮᱭᱟᱜ ᱢᱟᱱᱮ ᱫᱚ ᱪᱮᱫ?
@@ -631,20 +631,16 @@ sat:
     close: ᱵᱚᱸᱫᱚ
     share:
       title: ᱦᱟᱹᱴᱤᱝ
-      cancel: ᱵᱟᱫᱽ
-      image: ᱪᱤᱛᱟᱹᱨ
-      long_link: ᱡᱚᱱᱚᱲ
-      download: ᱯᱷᱮᱰ
       view_larger_map: ᱢᱟᱨᱟᱝ ᱱᱚᱠᱥᱟ ᱧᱮᱞ ᱢᱮ
-    key:
+    legend:
       title: ᱱᱚᱠᱥᱟ ᱪᱟᱹᱵᱷᱤ
       tooltip: ᱱᱚᱠᱥᱟ ᱪᱟᱹᱵᱷᱤ
     map:
-      zoom:
-        in: ᱞᱟᱹᱴᱩᱭ ᱢᱮ
-        out: ᱠᱟᱹᱴᱤᱡᱽ ᱢᱮ
-      locate:
-        title: ᱤᱧᱭᱟᱜ ᱡᱟᱭᱜᱟ ᱩᱫᱩᱜ ᱛᱤᱝ ᱢᱮ
+      navigation_control:
+        zoom_in: ᱞᱟᱹᱴᱩᱭ ᱢᱮ
+        zoom_out: ᱠᱟᱹᱴᱤᱡᱽ ᱢᱮ
+      geolocate_control:
+        find_my_location: ᱤᱧᱭᱟᱜ ᱡᱟᱭᱜᱟ ᱩᱫᱩᱜ ᱛᱤᱝ ᱢᱮ
       base:
         cycle_map: ᱥᱟᱭᱠᱤᱞ ᱱᱚᱠᱥᱟ
       layers:
@@ -669,7 +665,6 @@ sat:
           eighth: ᱘
           ninth: ᱙
           tenth: ᱑᱐
-      time: ᱚᱠᱛᱚ
     query:
       node: ᱜᱟᱸᱴᱷ
       way: ᱦᱚᱨ

@@ -3,6 +3,8 @@
 # Export driver: phpyaml
 # Author: Dr Lotus Black
 # Author: Ninjastrikers
+# Author: Phosai
+# Author: Sithu015
 # Author: Zyh333222
 # Author: ခွန်ပညာႏ(တောင်ႏကီꩻ)
 # Author: သူထွန်း
@@ -18,7 +20,7 @@ my:
       prompt: ဖိုင်ရွေးပါ
     submit:
       diary_comment:
-        create: သိမ်းရန်
+        create: မှတ်ချက်
       diary_entry:
         create: လွှင့်တင်ရန်
         update: မွမ်းမံ
@@ -29,11 +31,29 @@ my:
       oauth2_application:
         create: မှတ်ပုံတင်ရန်
         update: မွမ်းမံ
+      redaction:
+        create: ပြင်ဆင်တည်းဖြတ်မှု ဖန်တီးရန်
+        update: ပြင်ဆင်တည်းဖြတ်မှု သိမ်းဆည်းရန်
       trace:
         create: တင်ရန်
         update: ပြောင်းလဲမှုများကို သိမ်းရန်
+      user_block:
+        create: ပိတ်ဆို့တားဆီးမှု ဖန်တီးရန်
+        update: ပိတ်ဆို့တားဆီးမှု အပ်ဒိတ်လုပ်ရန်
   activerecord:
+    errors:
+      messages:
+        display_name_is_user_n: n သည် သင့်အသုံးပြုသူ အိုင်ဒီ မဟုတ်လျှင် အသုံးပြုသူ_n
+          သည် မဖြစ်နိုင်
+      models:
+        user_mute:
+          is_already_muted: အသံတိတ်ဖုံးကွယ်ထားနှင့်ပြီးဖြစ်သည်
+        social_link:
+          attributes:
+            url:
+              http_parse_error: Url သည် http:// သို့မဟုတ် https:// ဖြင့်သာ အစပြုသင့်သည်။
     models:
+      acl: ထိန်းချုပ်မှုစာရင်း ဝင်ရောက်ကြည့်ရှုရန်
       country: နိုင်ငံ
       friend: သူငယ်ချင်း
       language: ဘာသာစကား
@@ -150,8 +170,6 @@ my:
     version: ဗားရှင်း
     anonymous: အမည်မသိ
     no_comment: (မှတ်ချက် မရှိ)
-    view_history: ရာဇဝင်ကြည့်ရန်
-    view_details: အသေးစိပ် ကြည့်ရန်
     location: 'တည်နေရာ:'
     relation:
       members: အဖွဲ့ဝင်များ
@@ -457,9 +475,19 @@ my:
           dam: တမံ
           river: မြစ်
           waterfall: ရေတံခွန်
-    results:
-      no_results: မည်သည့်ရလဒ်မျှ မရပါ
-      more_results: ရလဒ်များ ပို၍
+  searches:
+    queries:
+      create:
+        no_results: မည်သည့်ရလဒ်မျှ မရပါ
+        more_results: ရလဒ်များ ပို၍
+  directions:
+    show:
+      distance: အကွာအဝေး
+      time: အချိန်
+      kilometers: ကီလိုမီတာ
+      miles_feet: မိုင်၊ ပေ
+      miles_yards: မိုင်၊ ကိုက်
+      distance_units_settings: အကွာအဝေး ယူနစ်များ ဆက်တင်များ
   issues:
     index:
       search: ရှာဖွေရန်
@@ -496,24 +524,25 @@ my:
         note:
           other_label: အခြား
   layouts:
-    home: အိမ်တည်နေရာသို့ သွားရန်
-    logout: ထွက်ရန်
-    log_in: အကောင့်ဝင်ရန်
-    sign_up: မှတ်ပုံတင်ရန်
     start_mapping: မြေပုံ စတင်ရေးဆွဲရန်
-    edit: ပြင်ဆင်
-    history: ရာဇဝင်
-    export: တင်ပို့ရန်
-    gps_traces: ဂျီပီအက်စ်ခြေရာများ
-    user_diaries: အသုံးပြုသူများ၏ နေ့စဉ်မှတ်တမ်းများ
-    edit_with: '%{editor} ဖြင့် ပြင်ဆင်ရန်'
     intro_header: OpenStreetMap မှ ကြိုဆိုပါ၏
     tou: အသုံးပြုခြင်းဆိုင်ရာ သတ်မှတ်ချက်များ
-    help: အ​ကူ​အ​ညီ​
-    about: အကြောင်း
-    copyright: မူပိုင်ခွင့်
     learn_more: ပိုမို လေ့လာရန်
-    more: ပို၍
+    header:
+      about: အကြောင်း
+      copyright: မူပိုင်ခွင့်
+      edit: ပြင်ဆင်
+      edit_with: '%{editor} ဖြင့် ပြင်ဆင်ရန်'
+      export: တင်ပို့ရန်
+      gps_traces: ဂျီပီအက်စ်ခြေရာများ
+      help: အ​ကူ​အ​ညီ​
+      history: ရာဇဝင်
+      home: အိမ်တည်နေရာသို့ သွားရန်
+      log_out: ထွက်ရန်
+      log_in: အကောင့်ဝင်ရန်
+      more: ပို၍
+      sign_up: မှတ်ပုံတင်ရန်
+      user_diaries: အသုံးပြုသူများ၏ နေ့စဉ်မှတ်တမ်းများ
   user_mailer:
     diary_comment_notification:
       hi: ဟိုင်း %{to_user}၊
@@ -580,6 +609,47 @@ my:
       reset: စကားဝှက်ကို ပြန်ချိန်ရန်
     update:
       flash changed: သင့်စကားဝှက်ကို ပြောင်းလဲပြီးပါပြီ
+  profiles:
+    profile_sections:
+      navigation:
+        description: ဖော်ပြချက်
+        links: လင့်ခ်များ
+        location: တည်နေရာ
+    descriptions:
+      update:
+        success: ပရိုဖိုင်ဖော်ပြချက်ကို အပ်ဒိတ်လုပ်ပြီး။
+        failure: ပရိုဖိုင် ဖော်ပြချက်ကို အပ်ဒိတ်လုပ်၍မရပါ။
+    links:
+      show:
+        save: ပရိုဖိုင် ပြင်ဆင်ရန်
+        cancel: ပယ်ဖျက်ရန်
+      update:
+        success: ပရိုဖိုင်လင့်ခ်များကို အပ်ဒိတ်လုပ်ပြီး။
+        failure: ပရိုဖိုင်လင့်ခ်များကို အပ်ဒိတ်လုပ်၍မရပါ။
+    images:
+      show:
+        title: ပရိုဖိုင် ပြင်ဆင်ရန်
+        save: ပရိုဖိုင် ပြင်ဆင်ရန်
+        cancel: ပယ်ဖျက်ရန်
+      update:
+        success: ပရိုဖိုင်ပုံအား အပ်ဒိတ်လုပ်ပြီး။
+        failure: ပရိုဖိုင်ပုံကို အပ်ဒိတ်လုပ်၍မရပါ။
+    companies:
+      show:
+        title: ပရိုဖိုင် ပြင်ဆင်ရန်
+        save: ပရိုဖိုင် ပြင်ဆင်ရန်
+        cancel: ပယ်ဖျက်ရန်
+      update:
+        success: ကုမ္ပဏီပရိုဖိုင်ကို ပြင်ဆင်ပြီးပါပြီ။
+        failure: ပရိုဖိုင်တည်နေရာကို အပ်ဒိတ်လုပ်၍မရပါ။
+    locations:
+      show:
+        title: ပရိုဖိုင် ပြင်ဆင်ရန်
+        save: ပရိုဖိုင် ပြင်ဆင်ရန်
+        cancel: ပယ်ဖျက်ရန်
+      update:
+        success: ပရိုဖိုင် တည်နေရာ ပြင်ဆင်ပြီး။
+        failure: ပရိုဖိုင်တည်နေရာကို အပ်ဒိတ်လုပ်၍မရပါ။
   sessions:
     new:
       tab_title: အကောင့်ထဲဝင်ရန်
@@ -603,7 +673,7 @@ my:
         older: ပိုဟောင်းသော မှတ်ချက်များ
         newer: ပိုသစ်သော မှတ်ချက်များ
   site:
-    about:
+    about_section:
       local_knowledge_title: ဒေသန္တရ ဗဟုသုတ
       legal_title: တရားဝင်
       partners_title: လုပ်ဖော်ကိုင်ဖက်များ
@@ -650,7 +720,7 @@ my:
     communities:
       other_groups:
         title: အခြားအုပ်စုများ
-  map_keys:
+  legend_panes:
     show:
       entries:
         primary: ပင်မလမ်း
@@ -667,6 +737,11 @@ my:
         station: ရထားဘူတာ
         construction: ဖောက်နေဆဲ လမ်းများ
         toilets: အိမ်သာများ
+  share_panes:
+    show:
+      long_link: လင့်
+      image: ရုပ်ပုံ
+      download: ဒေါင်းလုဒ်
   traces:
     new:
       visibility_help: ဒါက ဘာကိုဆိုလိုတာပါလိမ့်
@@ -703,11 +778,19 @@ my:
       notes: မြေပုံ မှတ်စုများ
       email address: 'အီးမေးလ် လိပ်စာ:'
       status: 'အခြေအနေ:'
-      role:
-        administrator: ဤအသုံးပြုသူသည် အက်ဒမိန်တစ်ဦးဖြစ်သည်
       comments: မှတ်ချက်များ
       create_block: ဤအသုံးပြုသူကို ပိတ်ပင်ရန်
       confirm: အတည်ပြု
+      edit_profile_details: ပရိုဖိုင် အသေးစိတ်ကို ပြင်ဆင်ရန်
+      edit_description: ဖော်ပြချက်ကို ပြင်ဆင်ရန်
+      edit_links: လင့်ခ်များကို ပြင်ဆင်ရန်
+      change_image: ရုပ်ပုံ ပြောင်းလဲရန်
+      edit_company: ကုမ္ပဏီ ကို ပြင်ဆင်ရန်
+      edit_location: တည်နေရာ ပြင်ဆင်ရန်
+      title:
+        administrator: ဤအသုံးပြုသူသည် အက်ဒမိန်တစ်ဦးဖြစ်သည်
+    sidebar_section:
+      company: ကုမ္ပဏီ
     lists:
       show:
         title: အသုံးပြုသူများ
@@ -756,13 +839,6 @@ my:
     close: ပိတ်ရန်
     share:
       title: မျှဝေ
-      cancel: မလုပ်တော့ပါ
-      image: ရုပ်ပုံ
-      long_link: လင့်
-      download: ဒေါင်းလုဒ်
-    directions:
-      distance: အကွာအဝေး
-      time: အချိန်
   redactions:
     show:
       description: 'ဖော်ပြချက်:'

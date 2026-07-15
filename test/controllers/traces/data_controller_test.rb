@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 module Traces
@@ -106,6 +108,16 @@ module Traces
         get trace_data_path(public_trace_file)
         assert_response :success
         assert_template :offline
+      end
+    end
+
+    # Check that trace data can't be downloaded when the traces feature is disabled
+    def test_show_disabled
+      public_trace_file = create(:trace, :visibility => "public", :fixture => "a")
+
+      with_settings(:traces_disabled => true) do
+        get trace_data_path(public_trace_file)
+        assert_response :not_found
       end
     end
 

@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class OldElementsController < ApplicationController
+  include PaginationMethods
+
   layout :map_layout
 
   before_action :authorize_web

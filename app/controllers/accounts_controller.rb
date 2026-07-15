@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class AccountsController < ApplicationController
   include SessionMethods
   include UserMethods
 
-  layout "site"
+  layout :site_layout
 
   before_action :authorize_web
   before_action :set_locale
@@ -28,8 +30,7 @@ class AccountsController < ApplicationController
     user_params = params.expect(:user => [:display_name, :new_email, :pass_crypt, :pass_crypt_confirmation, :auth_provider])
 
     if params[:user][:auth_provider].blank? ||
-       (params[:user][:auth_provider] == current_user.auth_provider &&
-        params[:user][:auth_uid] == current_user.auth_uid)
+       params[:user][:auth_provider] == current_user.auth_provider
       update_user(current_user, user_params)
       if current_user.errors.empty?
         redirect_to account_path
@@ -38,7 +39,7 @@ class AccountsController < ApplicationController
       end
     else
       session[:new_user_settings] = user_params.to_h
-      redirect_to auth_url(params[:user][:auth_provider], params[:user][:auth_uid]), :status => :temporary_redirect
+      redirect_to auth_url(params[:user][:auth_provider]), :status => :temporary_redirect
     end
   end
 

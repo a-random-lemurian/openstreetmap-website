@@ -55,9 +55,6 @@ arz:
       way_node: عقده طريق
       way_tag: سمه طريق
     attributes:
-      client_application:
-        callback_url: رابط الرد
-        support_url: رابط الدعم
       diary_comment:
         body: نص الرسالة
       diary_entry:
@@ -160,8 +157,6 @@ arz:
       title: يوميات المستخدمين
       user_title: يوميه %{user}
       in_language_title: مدخلات اليوميه باللغه %{language}
-      new: مدخله يوميه جديدة
-      new_title: اكتب مدخله يوميه جديده فى يوميتك
       no_entries: لا يوجد مدخلات يومية
     page:
       recent_entries: 'المدخلات اليوميه الحديثة:'
@@ -208,6 +203,9 @@ arz:
       all:
         title: مدخلات اليوميه فى خريطه الشارع المفتوحة
         description: المدخلات الحديثه فى يوميه مستخدمى خريطه الشارع المفتوحة
+    navigation:
+      new: مدخله يوميه جديدة
+      new_title: اكتب مدخله يوميه جديده فى يوميتك
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -537,20 +535,23 @@ arz:
           stream: جدول
           wadi: وادي
           waterfall: شلال
-    results:
-      no_results: لم يتم العثور على نتائج
+  searches:
+    queries:
+      create:
+        no_results: لم يتم العثور على نتائج
   layouts:
     logo:
       alt_text: شعار خريطه الشارع المفتوحة
-    home: روح للصفحه الرئيسيه
-    logout: خروج
-    log_in: تسجيل الدخول
-    sign_up: اعمل حساب
-    edit: عدّل هذه الخريطة
-    history: تاريخ
-    export: صدِّر
-    gps_traces: آثار جى بى أس
-    user_diaries: يوميات المستخدمين
+    header:
+      edit: عدّل هذه الخريطة
+      export: صدِّر
+      gps_traces: آثار جى بى أس
+      history: تاريخ
+      home: روح للصفحه الرئيسيه
+      log_out: خروج
+      log_in: تسجيل الدخول
+      sign_up: اعمل حساب
+      user_diaries: يوميات المستخدمين
   user_mailer:
     diary_comment_notification:
       subject: '[خريطه الشارع المفتوحة] %{user} أضاف تعليقًا على مدخلتك فى اليومية'
@@ -657,10 +658,10 @@ arz:
     update:
       flash changed: كلمه المرور الخاصه بك قد تغيرت.
   profiles:
-    edit:
-      home location: 'موقع المنزل:'
-      no home location: لم تدخل موقع منزلك.
-      update home location on click: حدّث موقع المنزل عندما أنقر على الخريطة؟
+    locations:
+      show:
+        no home location: لم تدخل موقع منزلك.
+        update home location on click: حدّث موقع المنزل عندما أنقر على الخريطة؟
   sessions:
     new:
       tab_title: دخول
@@ -695,7 +696,7 @@ arz:
       where_am_i: أين أنا؟
       where_am_i_title: صِف الموقع الحالى باستخدام محرك البحث
       submit_text: اذهب
-  map_keys:
+  legend_panes:
     show:
       entries:
         motorway: طريق سريع
@@ -829,23 +830,22 @@ arz:
       mapper since: 'مُخطط منذ:'
       email address: 'عنوان البريد الإلكتروني:'
       created from: 'أُنشىء من:'
-      role:
-        administrator: هذا المستخدم إداري
-        moderator: هذا المستخدم وسيط
-        grant:
-          administrator: منح وصول إداري
-          moderator: منح وصول وسيط
-        revoke:
-          administrator: ابطل وصول إداري
-          moderator: ابطل وصول وسيط
       block_history: اعرض العرقلات الواصلة
       moderator_history: اعرض العرقلات المعطات
       create_block: منع هذا المستخدم
       activate_user: نشّط هذا المستخدم
-      hide_user: اخفِ هذا المستخدم
-      unhide_user: أظهر هذا المستخدم
-      delete_user: احذف هذا المستخدم
       confirm: أكّد
+      title:
+        administrator: هذا المستخدم إداري
+        moderator: هذا المستخدم وسيط
+      grant:
+        administrator: منح وصول إداري
+        moderator: منح وصول وسيط
+        are_you_sure: هل أنت متأكد من أنك تريد منح الدور `%{role}' إلى المستخدم `%{name}'؟
+      revoke:
+        administrator: ابطل وصول إداري
+        moderator: ابطل وصول وسيط
+        are_you_sure: أكنت متأكد انك بتريد إلغاء الدور '%{role}' من المستخدم '%{name}'?
     go_public:
       flash success: جميع تعديلاتك الآن عامه، ومسموح لك بالتعديل الآن.
     issued_blocks:
@@ -863,10 +863,6 @@ arz:
       not_a_role: السطر '%{role}' مش دور صالح.
       already_has_role: لدى المستخدم الدور  %{role} سابقًا
       doesnt_have_role: ليس للمستخدم الدور %{role}.
-    grant:
-      are_you_sure: هل أنت متأكد من أنك تريد منح الدور `%{role}' إلى المستخدم `%{name}'؟
-    revoke:
-      are_you_sure: أكنت متأكد انك بتريد إلغاء الدور '%{role}' من المستخدم '%{name}'?
   user_blocks:
     model:
       non_moderator_update: يجب أن تكون وسيط لإنشاء أو تحديث عرقله.

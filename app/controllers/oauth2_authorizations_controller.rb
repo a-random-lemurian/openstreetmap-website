@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Oauth2AuthorizationsController < Doorkeeper::AuthorizationsController
-  layout "site"
+  layout :site_layout
 
   prepend_before_action :authorize_web
   before_action :set_locale

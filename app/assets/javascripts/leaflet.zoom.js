@@ -10,9 +10,9 @@ L.OSM.Zoom = L.Control.extend({
     this._map = map;
 
     this._zoomInButton = this._createButton(
-      "", OSM.i18n.t("javascripts.map.zoom.in"), zoomName + "in", container, this._zoomIn, this);
+      "", OSM.i18n.t("javascripts.map.navigation_control.zoom_in"), "plus-lg", container, this._zoomIn, this);
     this._zoomOutButton = this._createButton(
-      "", OSM.i18n.t("javascripts.map.zoom.out"), zoomName + "out", container, this._zoomOut, this);
+      "", OSM.i18n.t("javascripts.map.navigation_control.zoom_out"), "dash-lg", container, this._zoomOut, this);
 
     map.on("zoomend zoomlevelschange", this._updateDisabled, this);
 
@@ -37,7 +37,7 @@ L.OSM.Zoom = L.Control.extend({
     link.href = "#";
     link.title = title;
 
-    L.DomUtil.create("span", "icon " + className, link);
+    L.DomUtil.create("i", "fs-5 bi bi-" + className, link);
 
     const stop = L.DomEvent.stopPropagation;
 

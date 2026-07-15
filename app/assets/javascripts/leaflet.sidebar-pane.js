@@ -8,13 +8,16 @@ L.OSM.sidebarPane = function (options, uiClass, buttonTitle, paneTitle) {
     const button = $("<a>")
       .attr("class", "control-button")
       .attr("href", "#")
-      .html("<span class=\"icon " + uiClass + "\"></span>")
+      .attr("title", OSM.i18n.t(buttonTitle))
       .on("click", toggle);
 
-    if (buttonTitle) {
-      button.attr("title", OSM.i18n.t(buttonTitle));
-    }
-
+    const iconMap = {
+      layers: "stack",
+      legend: "info-lg",
+      share: "share-fill"
+    };
+    const iconName = iconMap[uiClass] || uiClass;
+    $("<i>").addClass("fs-5 bi bi-" + iconName).appendTo(button);
     button.appendTo($container);
 
     const $ui = $("<div>")
@@ -25,6 +28,12 @@ L.OSM.sidebarPane = function (options, uiClass, buttonTitle, paneTitle) {
       .appendTo($ui);
 
     options.sidebar.addPane($ui);
+
+    this.loadContent = () =>
+      fetch("/panes/" + uiClass)
+        .then(r => r.text())
+        .then(html => { $(html).appendTo($ui); })
+        .then(this.onContentLoaded);
 
     this.onAddPane(map, button, $ui, toggle);
 

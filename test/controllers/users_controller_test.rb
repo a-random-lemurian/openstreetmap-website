@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
@@ -183,8 +185,46 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       assert_difference "ActionMailer::Base.deliveries.size", 1 do
         post users_path, :params => { :user => user.attributes, :referer => "/edit?editor=id#map=1/2/3" }
         assert_enqueued_with :job => ActionMailer::MailDeliveryJob,
-                             :args => proc { |args| args[3][:args][2] == welcome_path(:editor => "id", :zoom => 1, :lat => 2, :lon => 3) }
+                             :args => proc { |args| args[3][:params][:referer] == welcome_path(:editor => "id", :zoom => 1, :lat => 2, :lon => 3) }
         perform_enqueued_jobs
+      end
+    end
+  end
+
+  def test_create_turnstile_success
+    user = build(:user, :pending)
+
+    stub_request(:post, "https://challenges.cloudflare.com/turnstile/v0/siteverify")
+      .with(:body => { "remoteip" => "127.0.0.1", "response" => "turnstile_response", "secret" => "turnstile_secret" })
+      .to_return(:body => JSON.generate(:success => true))
+
+    with_settings(:turnstile_site_key => "turnstile_site",
+                  :turnstile_secret_key => "turnstile_secret") do
+      assert_difference "User.count", 1 do
+        assert_difference "ActionMailer::Base.deliveries.size", 1 do
+          perform_enqueued_jobs do
+            post users_path, :params => { :user => user.attributes, "cf-turnstile-response" => "turnstile_response" }
+          end
+        end
+      end
+    end
+  end
+
+  def test_create_turnstile_failure
+    user = build(:user, :pending)
+
+    stub_request(:post, "https://challenges.cloudflare.com/turnstile/v0/siteverify")
+      .with(:body => { "remoteip" => "127.0.0.1", "response" => "turnstile_response", "secret" => "turnstile_secret" })
+      .to_return(:body => JSON.generate(:success => false))
+
+    with_settings(:turnstile_site_key => "turnstile_site",
+                  :turnstile_secret_key => "turnstile_secret") do
+      assert_no_difference "User.count" do
+        assert_no_difference "ActionMailer::Base.deliveries.size" do
+          perform_enqueued_jobs do
+            post users_path, :params => { :user => user.attributes, "cf-turnstile-response" => "turnstile_response" }
+          end
+        end
       end
     end
   end
@@ -330,97 +370,114 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  def test_show_heatmap_data
+  def test_show_profile_diaries
     user = create(:user)
-    # Create two changesets
-    create(:changeset, :user => user, :created_at => 6.months.ago, :num_changes => 10)
-    create(:changeset, :user => user, :created_at => 3.months.ago, :num_changes => 20)
+    create(:diary_entry, :user => user, :title => "First Entry", :body => "First body")
+    create(:diary_entry, :user => user, :title => "Second Entry", :body => "Second body")
+    create(:diary_entry, :user => user, :title => "Third Entry", :body => "Third body")
+    create(:diary_entry, :user => user, :title => "Fourth Entry", :body => "Fourth body")
+    create(:diary_entry, :user => user, :title => "Fifth Entry", :body => "Fifth body")
 
-    get user_path(user.display_name)
+    get user_path(user)
     assert_response :success
-    # The data should not be empty
-    assert_not_nil assigns(:heatmap_data)
 
-    heatmap_data = assigns(:heatmap_data)
-    # The data should be in the right format
-    assert(heatmap_data.all? { |entry| entry[:date] && entry[:total_changes] }, "Heatmap data should have :date and :total_changes keys")
+    # Should only show the 4 most recent entries
+    assert_select ".profile-diary-card", 4
+    assert_select ".card-title a", "Fifth Entry"
+    assert_select ".card-title a", "Fourth Entry"
+    assert_select ".card-title a", "Third Entry"
+    assert_select ".card-title a", "Second Entry"
+    assert_select ".card-title a", { :text => "First Entry", :count => 0 }
   end
 
-  def test_show_heatmap_data_caching
-    # Enable caching to be able to test
-    Rails.cache.clear
-    @original_cache_store = Rails.cache
-    Rails.cache = ActiveSupport::Cache::MemoryStore.new
-
+  def test_show_profile_diaries_with_comments
     user = create(:user)
+    entry = create(:diary_entry, :user => user, :title => "Entry with Comments")
+    create(:diary_comment, :diary_entry => entry)
+    create(:diary_comment, :diary_entry => entry)
 
-    # Create an initial changeset
-    create(:changeset, :user => user, :created_at => 6.months.ago, :num_changes => 15)
-
-    # First request to populate the cache
-    get user_path(user.display_name)
-    first_response_data = assigns(:heatmap_data)
-    assert_not_nil first_response_data, "Expected heatmap data to be assigned on the first request"
-    assert_equal 1, first_response_data.size, "Expected one entry in the heatmap data"
-
-    # Inspect cache after the first request
-    cached_data = Rails.cache.read("heatmap_data_with_ids_user_#{user.id}")
-    assert_equal first_response_data, cached_data, "Expected the cache to contain the first response data"
-
-    # Add a new changeset to the database
-    create(:changeset, :user => user, :created_at => 3.months.ago, :num_changes => 20)
-
-    # Second request
-    get user_path(user.display_name)
-    second_response_data = assigns(:heatmap_data)
-
-    # Confirm that the cache is still being used
-    assert_equal first_response_data, second_response_data, "Expected cached data to be returned on the second request"
-
-    # Clear the cache and make a third request to confirm new data is retrieved
-    Rails.cache.clear
-    get user_path(user.display_name)
-    third_response_data = assigns(:heatmap_data)
-
-    # Ensure the new entry is now included
-    assert_equal 2, third_response_data.size, "Expected two entries in the heatmap data after clearing the cache"
-
-    # Reset caching config to defaults
-    Rails.cache.clear
-    Rails.cache = @original_cache_store
-  end
-
-  def test_show_heatmap_data_no_changesets
-    user = create(:user)
-
-    get user_path(user.display_name)
+    get user_path(user)
     assert_response :success
-    # There should be no entries in heatmap data
-    assert_empty assigns(:heatmap_data)
-  end
 
-  def test_heatmap_rendering
-    # Test user with no changesets
-    user_without_changesets = create(:user)
-    get user_path(user_without_changesets)
-    assert_response :success
-    assert_select "div#cal-heatmap", 0
-
-    # Test user with changesets
-    user_with_changesets = create(:user)
-    changeset39 = create(:changeset, :user => user_with_changesets, :created_at => 4.months.ago.beginning_of_day, :num_changes => 39)
-    _changeset5 = create(:changeset, :user => user_with_changesets, :created_at => 3.months.ago.beginning_of_day, :num_changes => 5)
-    changeset11 = create(:changeset, :user => user_with_changesets, :created_at => 3.months.ago.beginning_of_day, :num_changes => 11)
-    get user_path(user_with_changesets)
-    assert_response :success
-    assert_select "div#cal-heatmap[data-heatmap]" do |elements|
-      # Check the data-heatmap attribute is present and contains expected JSON
-      heatmap_data = JSON.parse(elements.first["data-heatmap"])
-      expected_data = [
-        { "date" => 4.months.ago.to_date.to_s, "total_changes" => 39, "max_id" => changeset39.id },
-        { "date" => 3.months.ago.to_date.to_s, "total_changes" => 16, "max_id" => changeset11.id }
-      ]
-      assert_equal expected_data, heatmap_data
+    assert_select ".profile-diary-card" do
+      assert_select ".card-title a", "Entry with Comments"
+      assert_select "small.text-body-secondary", /2 comments/
     end
+  end
+
+  def test_show_profile_diaries_empty
+    user = create(:user)
+    get user_path(user)
+    assert_response :success
+    assert_select ".profile-diary-card", 0
+  end
+
+  def test_heatmap_visibility
+    edit_heatmap_button_selector = ".edit_heatmap_button"
+    heatmap_selector = ".heatmap_frame"
+    protagonist = create(:user)
+
+    # Testing unauthenticated user first
+
+    protagonist.update(:public_heatmap => true)
+    get user_path(protagonist)
+    assert_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    protagonist.update(:public_heatmap => false)
+    get user_path(protagonist)
+    refute_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    session_for(protagonist)
+
+    protagonist.update(:public_heatmap => true)
+    get user_path(protagonist)
+    assert_select heatmap_selector
+    assert_select edit_heatmap_button_selector
+
+    protagonist.update(:public_heatmap => false)
+    get user_path(protagonist)
+    refute_select heatmap_selector
+    assert_select edit_heatmap_button_selector
+
+    antagonist = create(:user)
+    session_for(antagonist)
+
+    protagonist.update(:public_heatmap => true)
+    get user_path(protagonist)
+    assert_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    protagonist.update(:public_heatmap => false)
+    get user_path(protagonist)
+    refute_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    moderator = create(:moderator_user)
+    session_for(moderator)
+
+    protagonist.update(:public_heatmap => true)
+    get user_path(protagonist)
+    assert_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    protagonist.update(:public_heatmap => false)
+    get user_path(protagonist)
+    refute_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    admin = create(:administrator_user)
+    session_for(admin)
+
+    protagonist.update(:public_heatmap => true)
+    get user_path(protagonist)
+    assert_select heatmap_selector
+    refute_select edit_heatmap_button_selector
+
+    protagonist.update(:public_heatmap => false)
+    get user_path(protagonist)
+    refute_select heatmap_selector
+    refute_select edit_heatmap_button_selector
   end
 end

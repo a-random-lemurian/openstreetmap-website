@@ -18,6 +18,7 @@
 # Author: Gizemb
 # Author: Grkn gll
 # Author: Hedda
+# Author: Heyturkiye
 # Author: Imabadplayer
 # Author: Incelemeelemani
 # Author: Joseph
@@ -60,9 +61,12 @@
 # Author: 아라
 ---
 tr:
+  date:
+    formats:
+      contribution_calendar: '%-d %B'
   time:
     formats:
-      friendly: '%e %B %Y saat %H.%M'
+      friendly: '%e %B %Y %H.%M'
   helpers:
     file:
       prompt: Dosya seç
@@ -95,6 +99,10 @@ tr:
       models:
         user_mute:
           is_already_muted: zaten sessize alındı
+        social_link:
+          attributes:
+            url:
+              http_parse_error: URL http:// veya https:// ile başlamalıdır.
     models:
       acl: Erişim Kontrol Listesi
       changeset: Değişiklik Kaydı
@@ -132,19 +140,6 @@ tr:
       way_node: Yol Noktası
       way_tag: Yol Etiketi
     attributes:
-      client_application:
-        name: Ad (Gerekli)
-        url: Ana Uygulama URL'si (Gerekli)
-        callback_url: Geri Arama Bağlantısı
-        support_url: Destek Bağlantısı
-        allow_read_prefs: kullanıcı tercihlerini okuyun
-        allow_write_prefs: kullanıcı tercihlerini değiştir
-        allow_write_diary: günlük girdi ve yorum yaz
-        allow_write_api: haritayı değiştir
-        allow_write_changeset_comments: değişiklik kaydı için yorum
-        allow_read_gpx: özel GPS izlerini oku
-        allow_write_gpx: GPS izlerini yükle
-        allow_write_notes: notları değiştir
       diary_comment:
         body: Mesaj
       diary_entry:
@@ -193,8 +188,10 @@ tr:
         active: Etkin
         display_name: Görünen Ad
         description: Profil Açıklaması
+        company: Şirket
         home_lat: Enlem
         home_lon: Boylam
+        home_location_name: Kendi Konumuzun Adı
         languages: Tercih Edilen Diller
         preferred_editor: Tercih Edilen Düzenleyici
         pass_crypt: Parola
@@ -260,12 +257,13 @@ tr:
       name: iD
       description: iD (tarayıcı düzenleyici)
     remote:
-      name: Uzaktan Denetim
-      description: Uzaktan Kontrolü (JOSM, Potlatch, Merkaartor)
+      name: Uzaktan Kontrol
+      description: Uzaktan Kontrol (JOSM, Potlatch, Merkaartor)
   auth:
     providers:
       none: Hiçbiri
       google: Google
+      apple: Apple
       facebook: Facebook
       microsoft: Microsoft
       github: GitHub
@@ -300,20 +298,22 @@ tr:
       my_account: Hesabım
       current email address: Geçerli E-posta Adresi
       external auth: Harici Kimlik Doğrulama
-      openid:
-        link: https://wiki.openstreetmap.org/wiki/Tr:OpenID
-        link text: bu nedir?
-      contributor terms:
+      contributor_terms:
         heading: Katılımcı Şartları
-        agreed: Yeni katılımcı şartlarını kabul ettin.
-        not yet agreed: Yeni Katılımcı Şartlarını henüz kabul etmediniz.
-        review link text: Yeni Katkıda Bulunma Şartlarını incelemek ve kabul etmek
-          için lütfen bu bağlantıyı kolaylık sağlamak için izleyin.
+        agreed: '%{date} tarihinde Katılımcı Şartları''nı onayladınız.'
+        not_agreed: Katılımcı Şartları'nı henüz onaylamadınız.
         agreed_with_pd: Ayrıca, düzenlemelerinizin Kamu Malı olduğunu düşündüğünüzü
           de beyan ettiniz.
-        link text: bu nedir?
         not_agreed_with_pd: Yaptığınız düzenlemelerin Kamu Malı olduğunu beyan etmediniz.
-        pd_link_text: beyan et
+        review: Şartları İnceleyin
+        review_and_accept: Katılımcı Şartları'nı inceleyip onaylayın
+        consider_pd: Kamu Malı Beyanı
+      terms_of_use:
+        heading: Kullanım Şartları
+        agreed: '%{date} tarihinde Kullanım Koşulları''nı onayladınız.'
+        not_agreed: Kullanım Koşulları'nı henüz onaylamadınız.
+        review: Koşulları İnceleyin
+        review_and_accept: Kullanım Koşulları'nı inceleyip onaylayın
       save changes button: Değişiklikleri Kaydet
       delete_account: Hesabı Sil...
     go_public:
@@ -325,6 +325,7 @@ tr:
       only_public_can_edit: 0.6 API geçişinden bu yana yalnızca genel kullanıcılar
         harita verilerini düzenleyebilir.
       find_out_why: neden olduğunu bul
+      find_out_why_url: https://wiki.openstreetmap.org/wiki/Tr:Anonymous_edits
       email_not_revealed: E-posta adresiniz herkese açık hale getirilerek gösterilmeyecektir.
       not_reversible: Bu işlem geri alınamaz ve tüm yeni kullanıcılar artık varsayılan
         olarak herkese açıktır.
@@ -365,15 +366,17 @@ tr:
         title: Koşullar
         heading: Koşullar
         heading_ct: Katılımcı Şartları
-        read and accept with tou: Lütfen katılımcı sözleşmesini ve kullanım koşullarını
-          okuyun, bittiğinde her iki onay kutusunu işaretleyin ve ardından devam düğmesine
-          basın.
+        read and accept with tou: Lütfen Katılımcı Koşulları ve Kullanım Koşulları'nı
+          okuyun, okuduktan sonra her iki onay kutusunu da işaretleyin ve ardından
+          "Devam Et" düğmesine basın.
         contributor_terms_explain: Bu anlaşma, mevcut ve gelecekteki katkılarınız
           için şartları düzenlemektedir.
         read_ct: Yukarıdaki katılımcı şartlarını okudum ve kabul ediyorum
-        tou_explain_html: Bu %{tou_link}, OSMF tarafından sağlanan web sitesinin ve
-          diğer altyapıların kullanımını yönetmektedir. Lütfen bağlantıya tıklayın,
-          metni okuyun ve kabul edin.
+        tou_explain:
+          html: Bu %{tou_link}, OSMF tarafından sağlanan web sitesinin ve diğer altyapıların
+            kullanımını yönetmektedir. Lütfen bağlantıya tıklayın, metni okuyun ve
+            kabul edin.
+          tou: Kullanım Şartları
         read_tou: Kullanım Şartlarını okudum ve kabul ediyorum
         guidance_info_html: 'Bu terimleri anlamanıza yardımcı olacak bilgiler: %{readable_summary_link}
           ve bazı %{informal_translations_link}'
@@ -423,9 +426,7 @@ tr:
       one: '%{count} yol'
       other: '%{count} yol'
     download_xml: XML İndir
-    view_history: Geçmişi Görüntüle
     view_unredacted_history: Düzenlenmemiş Geçmişi Görüntüle
-    view_details: Ayrıntıları Görüntüle
     location: 'Konum:'
     node:
       title_html: 'Nokta: %{name}'
@@ -484,11 +485,21 @@ tr:
         key: '%{key} parametresi için Viki açıklaması'
         tag: '%{key}=%{value} parametresi için Viki açıklaması'
       wikidata_link: Vikiveri'deki %{page} ögesi
+      wikidata_preview:
+        one: Vikiveri öge ön izlemesi
+        other: Vikiveri öge ön izlemesi
       wikipedia_link: Vikipedi'deki %{page} maddesi
       wikimedia_commons_link: Wikimedia Commons'daki %{page} ögesi
       telephone_link: 'Ara: %{phone_number}'
-      colour_preview: '%{colour_value} renginin önizlemesi'
+      colour_preview: '%{colour_value} renginin ön izlemesi'
       email_link: E-posta %{email}
+    versions_navigation:
+      node: Nokta
+      way: Yol
+      relation: İlişki
+      history: Geçmiş
+      version: 'Sürüm #%{version}'
+      versions_label: 'Sürümler:'
   feature_queries:
     show:
       title: Sorgu Özellikleri
@@ -503,6 +514,8 @@ tr:
         title_html: 'Yol geçmişi: %{name}'
       relation:
         title_html: 'İlişki Geçmişi: %{name}'
+      older_versions: Daha Eski Sürümler
+      newer_versions: Daha Yeni Sürümler
     actions:
       view_redacted_data: Düzenlenmiş Veriyi Görüntüle
       view_redaction_message: Düzenlenmiş Mesajı Görüntüle
@@ -531,11 +544,21 @@ tr:
       sorry: 'Üzgünüz, #%{id} ilişkisi bulunamadı.'
     timeout:
       sorry: Üzgünüz, %{id} kimlikli ilişkiye ait verilerin alınması çok uzun sürdü.
+  relation_members:
+    not_found_message:
+      sorry: 'Üzgünüz, #%{id} ilişkisi bulunamadı.'
+    timeout:
+      sorry: Üzgünüz, %{id} kimlikli ilişkiye ait verilerin alınması çok uzun sürdü.
   old_relations:
     not_found_message:
       sorry: 'Üzgünüz, #%{id} ilişkisinin %{version} sürümü bulunamadı.'
     timeout:
       sorry: Üzgünüz, %{id} kimlikli ilişkinin geçmişine ulaşmak çok uzun sürdü.
+  old_relation_members:
+    not_found_message:
+      sorry: 'Üzgünüz, #%{id} ilişkisinin %{version} sürümü bulunamadı.'
+    timeout:
+      sorry: Üzgünüz, %{id} kimlikli ilişkinin üyelerinin alınması çok uzun sürdü.
   changeset_comments:
     feeds:
       comment:
@@ -549,13 +572,22 @@ tr:
         sorry: Üzgünüz, talep ettiğiniz değişiklik kaydı yorumlarının alınması çok
           uzun sürdü.
   changesets:
-    changeset:
+    changeset_line:
       comments:
         one: '%{count} yorum'
         other: '%{count} yorum'
       changes:
         one: '%{count} değişiklik'
         other: '%{count} değişiklik'
+      n_elements_created:
+        one: '%{count} öge oluşturuldu'
+        other: '%{count} öge oluşturuldu'
+      n_elements_modified:
+        one: '%{count} öge değiştirildi'
+        other: '%{count} öge değiştirildi'
+      n_elements_deleted:
+        one: '%{count} öge silindi'
+        other: '%{count} öge silindi'
     index:
       title: Değişiklik Kayıtları
       title_user: '%{user} kullanıcısının değişiklik kayıtları'
@@ -568,6 +600,8 @@ tr:
       no_more: Daha fazla değişiklik kaydı yok.
       no_more_area: Bu alanda daha fazla değişiklik kaydı bulunmuyor.
       no_more_user: Bu kullanıcı tarafından daha fazla değişiklik kaydı yok.
+      older_changesets: Eski Değişiklik kaydı
+      newer_changesets: Yeni Değişiklik seti
       feed:
         title: Değişiklik kaydı %{id}
         title_comment: Değişiklik takımı %{id} - %{comment}
@@ -596,9 +630,13 @@ tr:
       changesetxml: ' XML değişiklik kaydı'
       osmchangexml: osmChange XML
     paging_nav:
+      nodes_title: Nokta
       nodes_paginated: Nokta (%{x}-%{y} - toplam %{count})
+      ways_title: Yollar
       ways_paginated: Yol (%{x}-%{y} - toplam %{count})
+      relations_title: İlişkiler
       relations_paginated: İlişkiler (%{x}-%{y} - toplam %{count})
+      range: 'Sayı (%{x}-%{y} - toplam: %{count})'
     not_found_message:
       sorry: 'Üzgünüz, #%{id} değişiklik kümesi bulunamadı.'
     timeout:
@@ -629,17 +667,17 @@ tr:
     popup:
       your location: Konumum
       nearby mapper: Yakındaki haritacı
-      following: Takip
+      following: Takip ettikleriniz
     show:
-      title: Gösterge Panelim
+      title: Kontrol Panelim
       no_home_location_html: '%{edit_profile_link} ve yakındaki kullanıcıları görmek
         için bulunduğunuz konumu ayarlayın.'
       edit_your_profile: Profilinizi düzenleyin
-      followings: Takip
+      followings: Takip ettiğiniz kullanıcılar
       no followings: Henüz hiçbir kullanıcıyı takip etmediniz.
       nearby users: Yakın çevrede bulunan kullanıcılar
       no nearby users: Yakın çevrede herhangi başka kullanıcı henüz yok.
-      followed_changesets: değişiklik kaydı
+      followed_changesets: Takip ettiklerinizin değişiklik kayıtları
       followed_diaries: günlük girdileri
       nearby_changesets: yakınlarındaki kullanıcıların bütün değişiklik kayıtları
       nearby_diaries: yakınlarındaki kullanıcıların günlük girdileri
@@ -654,10 +692,7 @@ tr:
       title_followed: Takipçi Günlükleri
       title_nearby: Yakındaki kullanıcıların günlükleri
       user_title: '%{user} Kullanıcısının Günlüğü'
-      in_language_title: '%{language} dillindeki günlük girdiler'
-      new: Yeni Günlük Girdisi
-      new_title: Kullanıcı günlüğümde yeni bir girdi oluştur
-      my_diary: Günlüğüm
+      in_language_title: '%{language} günlük girdiler'
       no_entries: Günlük girdisi yok
     page:
       recent_entries: Son günlük girdileri
@@ -679,9 +714,10 @@ tr:
       body: Üzgünüz, %{id} numaralı bir günlük girdisi ya da yorumu yok. Lütfen harfleri
         kontrol edin ya da tıkladığınız bağlantı hatalı olabilir.
     diary_entry:
-      posted_by_html: '%{link_user} tarafından %{created} tarihinde %{language_link}
-        olarak gönderildi.'
+      posted_by_html: Bu girdi, %{link_user} tarafından %{language_link} olarak %{created}
+        tarihinde yayımlandı.
       updated_at_html: En son %{updated} tarihinde güncellendi.
+      full_entry: Girdinin tamamını oku
       comment_link: Bu girdiyi yorumla
       reply_link: Yazara mesaj gönder
       comment_count:
@@ -719,6 +755,17 @@ tr:
     unsubscribe:
       heading: Aşağıdaki günlük girdisi tartışmasının aboneliği iptal edilsin mi?
       button: Tartışma aboneliğinden çık
+    navigation:
+      in_language: '%{language} günlük girdiler'
+      my_diary: Günlüğüm
+      new: Yeni Günlük Girdisi
+      new_title: Kullanıcı günlüğümde yeni bir girdi oluştur
+    profile_diaries:
+      latest_diaries: Son Günlükler
+      comments:
+        one: '%{count} yorum'
+        other: '%{count} yorum'
+      title_label: Günlük Girdisi
   diary_comments:
     new:
       heading: Aşağıdaki günlük girdisinin tartışmasına bir yorum ekle?
@@ -777,6 +824,9 @@ tr:
       title: Dosya bulunamadı
       description: OpenStreetMap sunucusunda (HTTP 404) bu ada sahip bir dosya/dizin/API
         işlemi bulunamadı
+  export:
+    show:
+      title: OpenStreetMap Gömülü
   follows:
     show:
       follow:
@@ -795,11 +845,6 @@ tr:
       success: '%{name} kullanıcısını başarıyla takipten çıktınız.'
       not_followed: '%{name} kullanıcısını takip etmiyorsunuz.'
   geocoder:
-    search:
-      title:
-        latlon: Dahili
-        osm_nominatim: OpenStreetMap Adaylığı
-        osm_nominatim_reverse: OpenStreetMap Adaylığı
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -940,9 +985,13 @@ tr:
           aboriginal_lands: Aborijin Toprakları
           administrative: İdari Sınır
           census: Nüfus Sayımı Sınırı
+          low_emission_zone: Düşük Emisyonlu Bölgesi
           national_park: Milli Park
           political: Seçim Sınırı
+          postal_code: Posta Kodu
           protected_area: Korumalı Alan
+          public_transport: Toplu Taşıma Bölgesi
+          timezone: Saat Dilimi
           "yes": Sınır
         bridge:
           aqueduct: Su Kemeri
@@ -1118,6 +1167,7 @@ tr:
           milestone: Tarihi Dönüm Noktası
           mine: Maden Ocağı
           mine_shaft: Maden Kuyusu
+          monastery: Tarihî Manastır
           monument: Anıt
           railway: Tarihi Demiryolu
           roman_road: Roma Yolu
@@ -1208,7 +1258,7 @@ tr:
           sports_centre: Spor Merkezi
           stadium: Stadyum
           swimming_pool: Yüzme Havuzu
-          track: Koşuş yolu
+          track: Yarış pisti (Motor sporları dışı)
           water_park: Su Parkı
           "yes": Serbest Zaman
         lock:
@@ -1244,6 +1294,7 @@ tr:
           mineshaft: Maden Kuyusu
           monitoring_station: İzleme İstasyonu
           petroleum_well: Petrol Kuyusu
+          planter: Saksı
           pier: İskele
           pipeline: Boru Hattı
           pumping_station: Pompa İstasyonu
@@ -1281,7 +1332,7 @@ tr:
           bay: Koy / körfez
           beach: Plaj
           cape: Burun
-          cave_entrance: Mağara girişi
+          cave_entrance: Mağara Girişi
           cliff: Uçurum
           coastline: Sahil şeridi
           crater: Krater
@@ -1384,6 +1435,7 @@ tr:
           abandoned: Terkedilmiş Demiryolu
           buffer_stop: Hörtuvar
           construction: Yapım aşamasındaki demiryolları
+          crossing: Demiryolu-Yol Kavşağı
           disused: Kullanılmayan Demiryolu
           funicular: Füniküler hattı
           halt: Tren Durağı
@@ -1597,20 +1649,63 @@ tr:
       border_types:
         arrondissement: Arrondisement Sınırı
         borough: İlçe Sınırı
+        cercle: Çember İdari sınırı
         city: Şehir Sınırı
         comarca: Comarca Sınırı
-    results:
-      no_results: Sonuç bulunamadı
-      more_results: Daha fazla sonuç
+        county: Ülke sınırı
+        departement: Bölüm Sınırı
+        department: Bölüm Sınırı
+        district: İlçe Sınırı
+        distrito: İlçe Sınırı
+        freguesia: Freguesia Sınırı
+        local_authority: Yerel Yönetim Sınırı
+        municipality: Belediye Sınırı
+        municipi: Belediye Sınırı
+        município: Belediye Sınırı
+        nation: Uluslararası Sınır
+        national: Uluslararası Sınır
+        neighbourhood: Mahalle Sınırı
+        parish: Mahalle Sınırı
+        province: İl Sınırı
+        região: Bölge Sınırı
+        region: Bölge Sınırı
+        state: Eyalet Sınırı
+        town: Şehir Sınırı
+        township: Şehir Sınırı
+        village: Köy Sınırı
+  searches:
+    show:
+      title:
+        latlon: Dahili
+        nominatim: Nominatim
+        nominatim_reverse: Nominatim
+    queries:
+      create:
+        no_results: Sonuç bulunamadı
+        more_results: Daha fazla sonuç
   directions:
-    search:
+    show:
       title: İstikametler
+      distance: Uzaklık
+      time: Zaman
+      ascend: Yükselt
+      descend: İniş
+      kilometers: kilometre
+      miles_feet: mil, fit
+      miles_yards: mil, yarda
+      distance_units_settings: Mesafe Birimleri Ayarları
+      download: Rotayı GeoJSON olarak indir
+      filename: rota
+      directions_courtesy_html: Yolculuğun izniyle %{link}x
+      check_demo_html: Daha fazla ayrıntı için %{link} adresine bakın.
   issues:
     index:
       title: Sorunlar
       select_status: Durum Seç
       select_type: Tür Seç
+      select_last_managed_by: Son Güncelleme
       reported_user: Bildirilen Kullanıcı
+      not_managed: Yönetilmiyor
       search: Ara
       search_guidance: 'Arama Sorunları:'
       states:
@@ -1624,6 +1719,7 @@ tr:
       status: Durum
       reports: Raporlar
       last_updated: Son Güncelleme
+      last_managed: Son Yönetilen
       reporting_users: Kullanıcı Bildirme
       reports_count:
         one: '%{count} Rapor'
@@ -1655,16 +1751,15 @@ tr:
       other_issues_against_this_user: Bu kullanıcıya karşı diğer sorunlar
       no_other_issues: Bu kullanıcıya karşı başka sorun yok.
       comments_on_this_issue: Bu sorunla ilgili yorumlar
+      comment_from_html: '%{comment_created_at} tarihinde %{user_link} üzerinden yorum'
+      reassign_to_moderators: Konuyu Moderatörlere Yeniden Ata
+      reassign_to_administrators: Sorunu Yöneticilere Yeniden Ata
     resolve:
       resolved: Sorun durumu "Çözüldü" olarak ayarlandı
     ignore:
       ignored: Sorun durumu 'Yoksayıldı' olarak ayarlandı
     reopen:
       reopened: Sorun durumu 'Aç' olarak ayarlandı
-    comments:
-      comment_from_html: '%{comment_created_at} tarihinde %{user_link} üzerinden yorum'
-      reassign_to_moderators: Konuyu Moderatörlere Yeniden Ata
-      reassign_to_administrators: Sorunu Yöneticilere Yeniden Ata
     reports:
       reported_by_html: '%{updated_at} tarihinde %{user} tarafından %{category} olarak
         bildirildi'
@@ -1672,7 +1767,17 @@ tr:
       reportable_title:
         diary_comment: '%{entry_title}, yorum #%{comment_id}'
         note: 'Not #%{note_id}'
+      reportable_heading:
+        diary_comment_html: Günlük Yorumu %{title} %{datetime_created} tarihinde oluşturuldu,
+          %{datetime_updated} tarihinde güncellendi
+        diary_entry_html: Günlük Yorumu %{title} %{datetime_created} tarihinde oluşturuldu,
+          %{datetime_updated} tarihinde güncellendi
+        note_html: Günlük Yorumu %{title} %{datetime_created} tarihinde oluşturuldu,
+          %{datetime_updated} tarihinde güncellendi
+        user_html: Kullanıcı %{title} %{datetime_created} tarihinde oluşturuldu
     reporters:
+      index:
+        title: 'Sorun #%{issue_id} Muhabirler'
       reporters:
         more_reporters: ve %{count} daha fazla
   issue_comments:
@@ -1682,7 +1787,6 @@ tr:
   reports:
     new:
       title_html: 'Bildir: %{link}'
-      missing_params: Yeni rapor oluşturulamadı
       disclaimer:
         intro: 'Lütfen, raporunuzu site moderatörlerine göndermeden önce şunlardan
           emin olun:'
@@ -1714,36 +1818,164 @@ tr:
     create:
       successful_report: Raporunuz başarıyla kaydedildi
       provide_details: Lütfen gerekli bilgileri sağlayın
+  languages_panes:
+    select_language_list:
+      search_language: Ara...
+      languages:
+        af: Afrikaans
+        gsw: Alemannik
+        frp: Arpitan
+        ast: Asturyasça
+        az: Azerice
+        id: Endonezce
+        ms: Malayca
+        bcl: Merkezî Bikol
+        bs: Boşnakça
+        br: Bretonca
+        ca: Katalanca
+        cs: Çekçe
+        cy: Galce
+        da: Danca
+        de: Almanca
+        dsb: Aşağı Sorbca
+        et: Estonyaca
+        en: İngilizce
+        en-GB: İngilizce (BK)
+        es: İspanyolca
+        eo: Esperanto
+        eu: Baskça
+        fr: Fransızca
+        fy: Batı Frizcesi
+        fur: Furlan dili
+        ga: İrlandaca
+        gd: İskoç Galcesi
+        gl: Galiçyaca
+        aln: Gheg Arnavutçası
+        hsb: Yukarı Sorbca
+        hr: Hırvatça
+        ia: Ortak dil
+        is: İzlandaca
+        it: İtalyanca
+        kw: Kernevekçe
+        gcf: Guadelupe Kreolü
+        ku-Latn: Kürtçe (Latince)
+        lv: Letonca
+        lb: Lüksemburgca
+        lkt: Lakotaca
+        lt: Litvanca
+        hu: Macarca
+        fit: Tornedalen Fincesi
+        nl: Flemenkçe
+        nb: Norveççe (Bokmål)
+        nn: Norveççe (Nynorsk)
+        oc: Oksitanca
+        nds: Aşağı Almanca
+        pl: Lehçe
+        pt-PT: Portekizce
+        pt: Portekizce (Brezilya)
+        ksh: Kölnce
+        ro: Rumence
+        sc: Sardinyaca
+        sco: İskoçça
+        sq: Arnavutça
+        scn: Sicilyaca
+        sk: Slovakça
+        sl: Slovence
+        sr-Latn: Sırpça (Latince)
+        sh: Sırp-Hırvatça (Latince)
+        fi: Fince
+        sv: İsveççe
+        tl: Tagalogca
+        kab: Berberice
+        vi: Vietnamca
+        tr: Türkçe
+        yo: Yoruba dili
+        diq: Dimli
+        el: Yunanca
+        ba: Başkurtça
+        be: Belarusça
+        be-Tarask: Belarusça (Tarašk.)
+        bg: Bulgarca
+        mk: Makedonca
+        mo: Moldovaca
+        ce: Çeçence
+        ru: Rusça
+        sr: Sırpça (Kiril)
+        tt: Tatarca (Kiril)
+        uk: Ukraynaca
+        kk-cyrl: Kazakça (Kiril)
+        yi: Yidiş
+        he: İbranice
+        ar: Arapça
+        skr-arab: Saraiki
+        fa: Farsça
+        arz: Mısır Arapçası
+        pnb: Batı Pencapça
+        ps: Peştuca
+        nqo: N’Ko
+        ne: Nepalce
+        mr: Marathi
+        hi: Hintçe
+        bn: Bengalce
+        pa: Pencapça
+        gu: Guceratça
+        ta: Tamilce
+        te: Teluguca
+        kn: Kannada dili
+        th: Tayca
+        my: Birmanca
+        shn: Şanca
+        xmf: Megrelce
+        ka: Gürcüce
+        km: Khmer dili
+        sat: Santali dili
+        zh-CN: Çince (Basitleştirilmiş)
+        zh-TW: Çince (Geleneksel)
+        zh-HK: Çince (Hong Kong)
+        ja: Japonca
+        ko: Korece
   layouts:
     logo:
       alt_text: OpenStreetMap logosu
-    home: Kendi Konumuna Git
-    logout: Oturumu Kapat
-    log_in: Oturum Aç
-    sign_up: Kaydol
+    main_navigation: Ana
+    layer_info: Katman Bilgisi
     start_mapping: Haritacılığa Başla
-    edit: Düzenle
-    history: Geçmiş
-    export: Dışa Aktar
-    issues: Sorunlar
-    gps_traces: GPS İzleri
-    user_diaries: Kullanıcı Günlükleri
-    edit_with: '%{editor} kullanarak düzenle'
     intro_header: OpenStreetMap'e hoş geldiniz!
-    intro_text: OpenStreetMap, sizler tarafından oluşturulan ve açık lisans altında
-      ücretsiz olarak kullanılabilen bir dünya haritasıdır.
-    hosting_partners_2024_html: Barındırma hizmeti; %{fastly}, %{corpmembers} ve diğer
-      %{partners} tarafından sağlanmaktadır.
+    intro_text: OpenStreetMap, gönüllülerin katkılarıyla hazırlanmış küresel bir dünya
+      haritasıdır. Açık lisans kapsamında özgürce erişilebilir ve kullanılabilir.
+    hosting_partners_2024_html: Barındırma hizmetini %{fastly}, %{corpmembers} ve
+      diğer %{partners} sağlamaktadır.
     partners_corpmembers: OSMF kurumsal üyeleri
     partners_partners: iş birlikçiler
+    welcome_tou_notice_html: OpenStreetMap Vakfı tarafından sağlanan bu web sitesini
+      veya diğer altyapıları kullanarak %{terms_link} koşullarını kabul etmiş olursunuz.
+    terms_of_use: Kullanım Şartları
     tou: Kullanım Şartları
     nothing_to_preview: Önizlenecek bir şey yok.
-    help: Yardım
-    about: Hakkında
-    copyright: Telif Hakkı
-    communities: Topluluklar
     learn_more: Daha Fazla Bilgi
-    more: Daha fazla
+    header:
+      about: Hakkında
+      communities: Topluluklar
+      copyright: Telif Hakkı
+      donate: Bağış Yap
+      edit: Düzenle
+      edit_with: '%{editor} kullanarak düzenle'
+      export: Dışa Aktar
+      gps_traces: GPS İzleri
+      help: Yardım
+      history: Geçmiş
+      home: Kendi Konumuna Git
+      issues: Sorunlar
+      log_out: Oturumu Kapat
+      log_in: Oturum Aç
+      more: Daha fazla
+      select_language: Dil seçin
+      sign_up: Kaydol
+      user_diaries: Kullanıcı Günlükleri
+    meta:
+      openstreetmap_search: OpenStreetMap Arama
+    select_language_button:
+      title: Dil Seçimi
     offline_flash:
       osm_offline: OpenStreetMap veritabanı şu anda temel bakım çalışmaları yürütüldüğü
         için çevrimdışıdır.
@@ -1941,6 +2173,9 @@ tr:
       whitelist: Onay istekleri gönderen bir istenmeyen posta önleme sistemi kullanıyorsan
         herhangi bir onay isteğine yanıt veremediğimiz için lütfen %{sender} beyaz
         listeye eklediğinden emin ol.
+    gravatar:
+      disabled: Gravatar devre dışı bırakıldı.
+      enabled: Gravatarınızın gösterimi etkinleştirildi.
   messages:
     new:
       title: Mesaj gönder
@@ -2045,54 +2280,139 @@ tr:
       flash changed: Parolanız değiştirildi.
       flash token bad: Bu simgeyi bulamadıysanız belki de bağlantıyı kontrol etmelisiniz?
   preferences:
-    show:
-      title: Tercihlerim
-      preferred_site_color_scheme: Tercih Edilen Web Sitesi Renk Düzeni
-      site_color_schemes:
-        auto: Otomatik
-        light: Açık
-        dark: Koyu
-      preferred_map_color_scheme: Tercih Edilen Web Sitesi Renk Düzeni
-      map_color_schemes:
-        auto: Otomatik
-        light: Açık
-        dark: Koyu
-      save: Tercihleri Güncelle
-    update:
-      failure: Tercihler güncellenemedi.
-    update_success_flash:
-      message: Tercihler güncellendi.
+    preferences:
+      update:
+        failure: Tercihler güncellenemedi.
+      update_success_flash:
+        message: Tercihler güncellendi.
+      navigation:
+        preferences: Arayüz
+        notification_preferences: Bildirimler
+        advanced_preferences: Gelişmiş
+    basic_preferences:
+      show:
+        title: Tercihlerim
+        preferred_language: Tercih Edilen Dil
+        preferred_site_color_scheme: Tercih Edilen Web Sitesi Renk Düzeni
+        site_color_schemes:
+          auto: Otomatik
+          light: Açık
+          dark: Koyu
+        preferred_map_color_scheme: Tercih Edilen Web Sitesi Renk Düzeni
+        map_color_schemes:
+          auto: Web sitesiyle aynı
+          light: Açık
+          dark: Koyu
+        preferred_editor_color_scheme: Tercih Edilen Editör Renk Şeması
+        editor_color_schemes:
+          auto: Web sitesiyle aynı
+          light: Açık
+          dark: Koyu
+        save: Tercihleri Güncelle
+    notification_preferences:
+      show:
+        title: Bildirim Tercihleri
+        changeset_comment: Değişiklik kümesi yorumları
+        diary_comment: Günlük yorumları
+        direct_message: Direkt mesajlar
+        gpx_import_failure: 'GPS izi içe aktarma: başarısız'
+        gpx_import_success: 'GPX izi içe aktarma: başarılı'
+        new_follower: Yeni takipçiler
+        note_comment: Not yorumları
+        save: Tercihleri Güncelle
+        delivery_mechanisms:
+          email: E-posta
+    advanced_preferences:
+      show:
+        title: Gelişmiş Tercihlerim
+        save: Tercihleri Güncelle
   profiles:
-    edit:
-      title: Profili Düzenle
-      save: Profili Güncelle
-      cancel: İptal
-      image: Resim
-      gravatar:
-        gravatar: Gravatar kullan
-        link: https://wiki.openstreetmap.org/wiki/Tr:Gravatar
-        what_is_gravatar: Gravatar nedir?
-        disabled: Gravatar devre dışı bırakıldı.
-        enabled: Gravatarınızın gösterimi etkinleştirildi.
-      new image: Resim ekle
-      keep image: Geçerli resim dursun
-      delete image: Geçerli resmi kaldır
-      replace image: Geçerli resmi değiştir
-      image size hint: (100x100 olan kare resimler daha iyi görünür)
-      home location: Bulunduğunuz Konum
-      no home location: Konum girilmedi.
-      update home location on click: Haritaya tıklandığında konum güncellensin mi?
-      show: Göster
-      delete: Sil
-      undelete: Silme işlemini geri al
-    update:
-      success: Profil güncellendi.
-      failure: Profil güncellenemedi.
+    profile_sections:
+      navigation:
+        description: Açıklama
+        links: Bağlantılar
+        image: Resim
+        company: Şirket
+        location: Konum
+        contribution_calendar: Katkı Takvimi
+    descriptions:
+      show:
+        title: Profili Düzenle
+        save: Profili Güncelle
+        cancel: İptal
+      update:
+        success: Profil açıklaması güncellendi.
+        failure: Profil açıklaması güncellenemedi.
+    links:
+      show:
+        title: Profili Düzenle
+        save: Profili Güncelle
+        cancel: İptal
+        social_links:
+          title: Sosyal medya bağlantıları
+          remove: kaldır
+          add: Sosyal bağlantı ekle
+      update:
+        success: Profil bağlantıları güncellendi.
+        failure: Profil bağlantıları güncellenemedi.
+    images:
+      show:
+        title: Profili Düzenle
+        save: Profili Güncelle
+        cancel: İptal
+        gravatar:
+          gravatar: Gravatar kullan
+          link: https://wiki.openstreetmap.org/wiki/Tr:Gravatar
+          what_is_gravatar: Gravatar nedir?
+        new image: Resim ekle
+        keep image: Geçerli resim dursun
+        delete image: Geçerli resmi kaldır
+        replace image: Geçerli resmi değiştir
+        image size hint: (100x100 olan kare resimler daha iyi görünür)
+      update:
+        success: Profil resmi güncellendi.
+        failure: Profil resmi güncellenemedi.
+    companies:
+      show:
+        title: Profili Düzenle
+        save: Profili Güncelle
+        cancel: İptal
+      update:
+        success: Profil şirketi güncellendi.
+        failure: Profil şirketi güncellenemedi.
+    locations:
+      show:
+        title: Profili Düzenle
+        save: Profili Güncelle
+        cancel: İptal
+        no home location: Konum girilmedi.
+        update home location on click: Haritaya tıklandığında konum güncellensin mi?
+        show: Göster
+        delete: Sil
+        undelete: Silme işlemini geri al
+      update:
+        success: Profil konumu güncellendi.
+        failure: Profil konumu güncellenemedi.
+    heatmaps:
+      show:
+        title: Katkı Takvimini Yapılandır
+        show_contribution_calendar_in_public: Katkı takvimini profil sayfasında göster
+        save: Katkı Takvimi Yapılandırmasını Güncelle
+        cancel: İptal
+      update:
+        success: Katkı takvimi güncelleştirildi.
+        failure: Katkı takvimi güncellenemedi.
   sessions:
     new:
       tab_title: Oturum Aç
       login_to_authorize_html: '%{client_app_name} uygulamasına erişmek için OpenStreetMap''te
         oturum açın.'
+      already_logged_in_html: Zaten %{user} olarak giriş yaptınız. Tekrar giriş yapmanız
+        mevcut hesabınızı değiştirecektir.
+      access_another_page: 'Başka bir sayfaya erişmeye çalışırken buraya geldiniz.
+        Mevcut hesabınızı kullanarak o sayfaya erişmek istiyorsanız, aşağıdaki düğmeye
+        tıklayın:'
+      visit_referring_page: Referans sayfasını ziyaret edin
       email or username: E-posta Adresi veya Kullanıcı Adı
       password: Parola
       remember: Beni hatırla
@@ -2100,6 +2420,8 @@ tr:
       login_button: Oturum Aç
       with external: veya üçüncü bir parti uygulaması kullanarak kaydolun
       or: veya
+      reset_to_login: Üzgünüz, şifrenizin süresi doldu. Giriş yapmak için lütfen şifrenizi
+        sıfırlayın.
       auth failure: Üzgünüz, bu giriş ile oturum açılamadı.
     destroy:
       title: Oturumu kapat
@@ -2112,7 +2434,7 @@ tr:
       support: destek
   shared:
     markdown_help:
-      heading_html: '%{kramdown_link} ile ayrıştırılmaktadır'
+      heading_html: '%{kramdown_link} ile yazınızı biçimlendirebilirsiniz'
       headings: Başlıklar
       heading: Başlık
       subheading: Alt başlık
@@ -2128,38 +2450,53 @@ tr:
       codeblock: Kod bloğu
     richtext_field:
       edit: Düzenle
-      preview: Önizleme
+      preview: Ön İzleme
       help: Yardım
     pagination:
       changeset_comments:
         older: Daha Eski Yorumlar
         newer: Daha Yeni Yorumlar
+        oldest: En Eski Yorumlar
+        newest: En Yeni Yorumlar
       diary_comments:
         older: Daha Eski Yorumlar
         newer: Daha Yeni Yorumlar
+        oldest: En Eski Yorumlar
+        newest: En Yeni Yorumlar
       diary_entries:
         older: Daha Eski Girdiler
         newer: Daha Yeni Girdiler
+        oldest: En Eski Girdiler
+        newest: En Yeni Girdiler
       issues:
         older: Eski Sorunlar
         newer: Daha Yeni Sorunlar
+        oldest: En Eski Sorunlar
+        newest: En Yeni Sorunlar
       traces:
         older: Daha Eski İzler
         newer: En Yeni İzler
+        oldest: En Eski İzler
+        newest: En Yeni İzler
       user_blocks:
         older: Daha Eski Engellemeler
         newer: Daha Yeni Engellemeler
+        oldest: En Eski Engellemeler
+        newest: En Yeni Engellemeler
       users:
         older: Daha Eski Kullanıcılar
         newer: Daha Yeni Kullanıcılar
+        oldest: En Eski Kullanıcılar
+        newest: En Yeni Kullanıcılar
   site:
     about:
       heading_html: '%{copyright}OpenStreetMap''e %{br} katkıda bulunanlar'
       used_by_html: '%{name}; binlerce web sitesi, mobil uygulama ve donanım cihazı
         için harita verisi sağlar.'
-      lede_text: OpenStreetMap; tüm dünyada yollar, patikalar, kafeler, tren istasyonları
-        ve çok daha fazlası hakkında veri sağlayan ve bunları koruyan bir haritacılar
-        topluluğu tarafından oluşturulmuştur.
+      lede_text: OpenStreetMap, dünyanın dört bir yanındaki yollar, patikalar, kafeler,
+        tren istasyonları ve daha fazlası hakkında veri toplayan ve bunları koruyan
+        bir haritacılar topluluğu tarafından oluşturulmuştur.
+    about_section:
       local_knowledge_title: Yerel Bilgi
       local_knowledge_html: |-
         OpenStreetMap, piyasa bilgisi üzerinde durmaktadır. Katkıda bulunanlar,
@@ -2192,8 +2529,22 @@ tr:
       legal_1_1_terms_of_use: Kullanım Şartları
       legal_1_1_aup: Kabul Edilebilir Kullanım Politikaları
       legal_1_1_privacy_policy: Gizlilik Politikası
-      legal_2_1_html: Lisanslama, telif hakkı veya diğer yasal sorularınız varsa lütfen
-        %{contact_the_osmf_link}
+      legal_1_2_html: OpenStreetMap haritalarını veya verilerini kullanmak istiyorsanız
+        lütfen OpenStreetMap'e atıfta bulunduğunuzdan emin olun. Daha fazla bilgi
+        için %{attribution_guidelines_link} adresine bakın.
+      legal_attribution_guidelines_title: Atıf Yönergeleri
+      legal_attribution_guidelines_url: https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+      legal_1_3_html: Özellikle OpenStreetMap'ten aldığınız bir ekran görüntüsünü
+        doğrudan kitabınızda, yayınınızda, filminizde veya TV programınızda kullanmak
+        için izin almanıza gerek yoktur. OpenStreetMap'teki veriler herkesin kullanımına
+        açıktır. %{attribution_guidelines_link} sayfasına bakın ve %{attribution_example_film}
+        ile %{attribution_example_tv} sayfalarındaki mevcut örnekleri inceleyin.
+      legal_attribution_example_film_title: Film
+      legal_attribution_example_film_url: https://wiki.openstreetmap.org/wiki/Films
+      legal_attribution_example_tv_title: TV
+      legal_attribution_example_tv_url: https://wiki.openstreetmap.org/wiki/TV_series
+      legal_2_1_html: Diğer lisanslama, telif hakkı veya diğer yasal sorularınız için
+        lütfen %{contact_the_osmf_link}
       legal_2_1_contact_the_osmf: OSMF ile iletişime geçin
       legal_2_2_html: OpenStreetMap, büyüteç logosu ve Harita Durumu %{registered_trademarks_link}
         sayılmaktadır.
@@ -2215,56 +2566,93 @@ tr:
         native_link: Türkçe sürümü
         mapping_link: haritacılığa başla
       legal_babble:
-        introduction_1_html: OpenStreetMap%{registered_trademark_link} %{odc_odbl_link}
-          (ODbL) altında %{osm_foundation_link} (OSMF) tarafından lisanslanan %{open_data}dir.
-        introduction_1_open_data: açık veri
-        introduction_1_odc_odbl: Open Data Commons Açık Veritabanı Lisansı
-        introduction_1_osm_foundation: OpenStreetMap Vakfı
-        introduction_2_html: OpenStreetMap'e ve katkıda bulunanlara atıfta bulunduğunuz
-          sürece verilerimizi kopyalamakta, dağıtmakta, yaymakta ve uyarlamakta özgürsünüz.
-          Verilerimizi değiştirir veya verilerimizi geliştirirseniz sonucu yalnızca
-          aynı lisans altında paylaşabilirsiniz. Tam %{legal_code_link}, haklarınızı
-          ve sorumluluklarınızı açıklar.
-        introduction_2_legal_code: hukuk kuralları
-        introduction_3_html: Belgelerimiz %{creative_commons_link} lisansı (CC BY-SA
-          2.0) altında lisanslanmıştır.
-        introduction_3_creative_commons: Creative Commons Attribution-ShareAlike 2.0
+        lead_1_html: |-
+          OpenStreetMap, binlerce web sitesi, mobil uygulama ve donanım aygıtı için açık harita verileri sağlar.
+          OpenStreetMap, sizin gibi dünyanın dört bir yanındaki yollar, patikalar, kafeler, tren istasyonları ve daha fazlası hakkında haritalama verilerine katkıda bulunan ve bunları koruyan bir topluluk tarafından oluşturulmuştur.
+        lead_2_html: |-
+          %{learn_more_about_osm_link} ve %{get_started_mapping_link}!
+          Daha fazlasını %{osm_blog_link} adresinde okuyabilir ve %{weeklyosm_link}'e abone olabilirsiniz.
+          Yerel %{osm_community_link} topluluğunuzdaki diğer haritacıları bulun.
+          %{osm_foundation_link} ve %{making_donation_link}'e katılarak projeyi destekleyin.
+        lead_2_learn_more_about_osm: OpenStreetMap hakkında daha fazla bilgi edinin
+        lead_2_learn_more_about_osm_url: https://wiki.openstreetmap.org/wiki/Tr:About_OpenStreetMap
+        lead_2_get_started_mapping: haritalamaya başla
+        lead_2_osm_blog: OpenStreetMap Blogu
+        lead_2_osm_community: OSM topluluğu
+        lead_2_osm_foundation: OSM Vakfı
+        lead_2_making_donation: Bir bağışta bulunun
+        licensing_title: OpenStreetMap lisanslama
+        licensing_1_html: 'OpenStreetMap, %{osm_foundation_link} (OSMF) tarafından
+          %{odc_odbl_link} (ODbL) kapsamında lisanslanan %{open} veridir. Özetle:'
+        licensing_1_open: açık
+        licensing_1_odc_odbl: Open Data Commons Açık Veritabanı Lisansı
+        licensing_1_osm_foundation: OpenStreetMap Vakfı
+        licensing_2_html: Verilerimizi, OpenStreetMap ve katkıda bulunanları kaynak
+          gösterdiğiniz sürece kopyalayabilir, dağıtabilir, iletebilir ve uyarlayabilirsiniz.
+          Verilerimizi değiştirir veya üzerine ekleme yaparsanız ortaya çıkan çalışmayı
+          yalnızca aynı lisans altında dağıtabilirsiniz. Haklarınızı ve sorumluluklarınızı
+          ayrıntılı olarak %{legal_code_link}'taki tam yasal metin açıklar.
+        licensing_2_legal_code: Open Data Commons’taki tam yasal metin
+        licensing_3_html: Belgelerimiz, %{creative_commons_license_link} (CC BY-SA
+          2.0) lisansı kapsamında lisanslanmıştır.
+        licensing_3_creative_commons_license: Creative Commons Attribution-ShareAlike
+          2.0 lisansı
+        licensing_3_creative_commons_license_url: https://creativecommons.org/licenses/by-sa/2.0/
+        licensing_4_html: Verilerimizi kullanma hakkında daha fazla bilgiyi  %{osmf_license_page_link}
+          bölümünde okuyabilirsiniz.
+        licensing_4_osmf_license_page: OSMF Lisans sayfası
         credit_title_html: OpenStreetMap'e nasıl atıfta bulunulur
         credit_1_html: 'OpenStreetMap verilerini kullandığınız yerde aşağıdaki iki
           şeyi yapmanız gerekiyor:'
-        credit_2_1: Telif hakkı bildirimimizi görüntüleyerek OpenStreetMap'e atıfta
+        credit_2_attribution: Atıf bildirimimizi görüntüleyerek OpenStreetMap'e atıfta
           bulunun.
-        credit_2_2: Verilerin Açık Veritabanı Lisansı kapsamında mevcut olduğunu açıkça
-          belirtin.
-        credit_3_html: Telif hakkı bildirimi açısından, verilerimizi nasıl kullandığınıza
-          bağlı olarak bunun nasıl görüntülenmesi gerektiği konusunda farklı gereksinimlerimiz
-          vardır. Örneğin, göz atılabilir bir harita, basılı bir harita veya statik
-          bir resim oluşturmanıza bağlı olarak telif hakkı bildiriminin nasıl gösterileceği
-          konusunda farklı kurallar geçerlidir. Gereksinimlere ilişkin tüm ayrıntıları  %{attribution_guidelines_link}
-          kısmında bulabilirsiniz.
-        credit_3_attribution_guidelines: İlişkilendirme Kuralları
-        credit_4_1_html: Verilerin Açık Veritabanı Lisansı kapsamında mevcut olduğunu
-          açıkça belirtmek için %{this_copyright_page_link}na bağlantı verebilirsiniz.
-          Alternatif olarak ve OSM'yi bir veri formunda dağıtıyorsanız bir gereklilik
-          olarak lisansları doğrudan adlandırabilir ve bunlara bağlantı verebilirsiniz.
-          Bağlantıların mümkün olmadığı ortamlarda (örneğin basılı eserlerde), okuyucularınızı
-          openstreetmap.org'a (belki 'OpenStreetMap'i bu tam adrese genişleterek)
-          ve opendatacommons.org'a yönlendirmenizi öneririz. Bu örnekte atıf haritanın
-          köşesinde görünür.
-        credit_4_1_this_copyright_page: bu telif hakkı sayfası
+        credit_2_license: Verilerin Açık Veritabanı Lisansı kapsamında mevcut olduğunu
+          açıkça belirtin.
+        credit_3_v2025_html: |-
+          Atıf bildirimi için, verilerimizi nasıl kullandığınıza bağlı olarak farklı %{requirements_on_how_displayed_link} gereksinimlerimiz vardır.
+          Örneğin, taranabilir bir harita, basılı bir harita veya statik bir görüntü oluşturup oluşturmadığınıza bağlı olarak atıf bildiriminin nasıl gösterileceği konusunda farklı kurallar geçerlidir.
+          Daha fazla ayrıntı %{licensing_requirements_link}'in %{attribution_guidelines_link} bölümünde bulunabilir.
+        credit_3_v2025_requirements_on_how_displayed: bunun nasıl görüntülenmesi gerektiğine
+          dair gereklilikler
+        credit_3_v2025_attribution_guidelines: atıf yönergeleri
+        credit_3_v2025_licensing_requirements: lisanslama gereklilikleri
+        credit_4_v2025_html: |-
+          Genel olarak,
+          verilerin Açık
+          Veritabanı Lisansı altında mevcut olduğunu açıklığa kavuşturmak için, %{this_copyright_page_link}'e bağlantı verebilirsiniz.
+          OSM'yi
+          veri biçiminde dağıtıyorsanız, lütfen doğrudan lisans(lar)a isim verin ve bağlantı verin.
+          Bağlantıların mümkün olmadığı ortamlarda (örneğin basılı eserler),
+          lütfen sayfadaki tam URL'yi ekleyin, örneğin %{copyright_page_url}.
+        credit_4_v2025_this_copyright_page: bu telif hakkı sayfası
+        credit_5_v2025_html: 'Aşağıdaki örnekte atıf, haritanın köşesinde görünür:'
         attribution_example:
           alt: Web sayfasıında OpenStreetMap atıf etmek için bir örnek
           title: Atıf örneği
-        more_title_html: Daha fazlasını öğrenin
-        more_1_1_html: Verilerimizin kullanımı ve bize nasıl atıfta bulunacağınız
-          hakkında daha fazla bilgiyi  %{osmf_licence_page_link}nda bulabilirsiniz.
-        more_1_1_osmf_licence_page: OSMF Lisans sayfası
-        more_2_1_html: OpenStreetMap açık veri olmasına rağmen üçüncü taraflara ücretsiz
-          bir harita API'si sağlayamıyoruz. %{api_usage_policy_link}, %{tile_usage_policy_link}
-          ve %{nominatim_usage_policy_link} sayfalarına bakınız.
-        more_2_1_api_usage_policy: API Kullanım Politikası
-        more_2_1_tile_usage_policy: Karo Kullanım Politikası
-        more_2_1_nominatim_usage_policy: İsmen Kullanım Politikası
+        infringement_title_html: Telif hakkı ihlali
+        infringement_1_html: |-
+          OSM'ye katkıda bulunanların telif hakkı sahiplerinin
+          açık izni olmadan telif hakkıyla korunan kaynaklardan
+          (ör. Google Haritalar veya basılı haritalar) hiçbir zaman
+          veri eklememeleri hatırlatılır.
+        infringement_2_1_html: Telif hakkıyla korunan materyalin OpenStreetMap veritabanına
+          veya bu siteye uygunsuz bir şekilde eklendiğine inanıyorsanız lütfen %{takedown_procedure_link}
+          sayfasına bakın veya doğrudan %{online_filing_page_link} sayfamızda dosyalayın.
+        infringement_2_1_takedown_procedure: kaldırma prosedürü
+        infringement_2_1_online_filing_page: çevrimiçi dosyalama sayfası
+        trademarks_title: Ticari markalar
+        trademarks_1_1_html: OpenStreetMap, büyüteç logosu ile State of the Map; OpenStreetMap
+          Vakfı'nın tescilli ticari markalarıdır. Markaların kullanımıyla ilgili sorularınız
+          varsa lütfen %{trademark_policy_link} sayfasına bakın.
+        trademarks_1_1_trademark_policy: Ticari Marka Politikası
+        services_title_html: Ek hizmetler
+        services_1_html: OpenStreetMap açık veri olmasına rağmen, üçüncü taraflar
+          için ücretsiz bir harita API’si veya harita karoları sağlayamayız.  %{api_usage_policy_link},
+          %{tile_usage_policy_link} ile %{nominatim_usage_policy_link} sayfalarımıza
+          bakın.
+        services_1_api_usage_policy: API Kullanım Politikası
+        services_1_tile_usage_policy: Karo Kullanım Politikası
+        services_1_nominatim_usage_policy: İsmen Kullanım Politikası
         contributors_title_html: Katkıda Bulunanlar
         contributors_intro_html: |-
           Binlerce kişi projemize katkıda bulunmaktadır. Ulusal
@@ -2311,8 +2699,8 @@ tr:
         contributors_hr_croatia: Hırvatistan
         contributors_hr_dgu: Hırvatistan Devlet Jeodezi İdaresi
         contributors_hr_open_data_portal: Ulusal Açık Veri Portalı
-        contributors_nl_credit_html: '%{netherlands}: &copy; AND verilerini içerir,
-          2007 (%{and_link})'
+        contributors_nl_credit_new_html: '%{netherlands}: &copy ve veri içeriyor,
+          2007'
         contributors_nl_netherlands: Hollanda
         contributors_nz_credit_html: '%{new_zealand}: %{linz_data_service_link}''nden
           alınan ve %{cc_by_link} kapsamında yeniden kullanım için lisanslanan verileri
@@ -2353,30 +2741,12 @@ tr:
           veri sağlayıcının OpenStreetMap'i onayladığını,
           herhangi bir garanti verdiğini ya da
           herhangi bir yükümlülüğü kabul ettiğini ima etmez.
-        infringement_title_html: Telif hakkı ihlali
-        infringement_1_html: |-
-          OSM'ye katkıda bulunanların telif hakkı sahiplerinin
-          açık izni olmadan telif hakkıyla korunan kaynaklardan
-          (ör. Google Haritalar veya basılı haritalar) hiçbir zaman
-          veri eklememeleri hatırlatılır.
-        infringement_2_1_html: Telif hakkıyla korunan materyalin OpenStreetMap veritabanına
-          veya bu siteye uygunsuz bir şekilde eklendiğine inanıyorsanız lütfen %{takedown_procedure_link}
-          sayfasına bakın veya doğrudan %{online_filing_page_link} sayfamızda dosyalayın.
-        infringement_2_1_takedown_procedure: kaldırma prosedürü
-        infringement_2_1_online_filing_page: çevrimiçi dosyalama sayfası
-        trademarks_title: Ticari markalar
-        trademarks_1_1_html: OpenStreetMap, büyüteç logosu ve State of the Map; OpenStreetMap
-          Vakfı'nın tescilli ticari markalarıdır. Markaların kullanımıyla ilgili sorularınız
-          varsa lütfen %{trademark_policy_link} sayfasına bakın.
-        trademarks_1_1_trademark_policy: Ticari Marka Politikası
     index:
       js_1: JavaScript desteklemeyen bir tarayıcı kullanıyorsunuz ya da JavaScript
         devre dışı bırakılmış.
       js_2: OpenStreetMap harita gösterim için JavaScript kullanıyor.
       license:
         copyright: Telif Hakkı OpenStreetMap ve katılımcılar, açık lisans altında
-      remote_failed: Düzenleme başarısız - JOSM veya Merkaartor'un yüklendiğinden
-        ve uzaktan kontrol seçeneğinin etkinleştirildiğinden emin olun.
     not_public_flash:
       not_public: Düzenlemelerinizi herkese açık olacak şekilde ayarlamadınız.
       not_public_description_html: Siz bunu yapmadıkça haritayı artık düzenleyemezsiniz.
@@ -2385,8 +2755,6 @@ tr:
       anon_edits_html: (%{link})
       anon_edits_link: https://wiki.openstreetmap.org/wiki/Tr:Anonymous_edits
       anon_edits_link_text: Durumun neden böyle olduğunu öğrenin.
-    edit:
-      id_not_configured: iD yapılandırılmamış
     export:
       title: Dışa Aktar
       manually_select: Fare kullanarak farklı bir alan seç
@@ -2414,6 +2782,13 @@ tr:
           title: Diğer Kaynaklar
           description: OpenStreetMap vikisinde listelenen ek kaynaklar
       export_button: Dışa Aktar
+      export_download: Yükleniyor...
+      confirmation:
+        header: XML Verilerini İndir
+        body: Bu alanın harita verilerini XML formatında indirmek ister misiniz? Geniş
+          alanların indirilmesinin biraz zaman alabileceğini unutmayın.
+        cancel: İptal
+        download: İndir
     fixthemap:
       title: Sorun bildir / Haritayı onar
       how_to_help:
@@ -2423,10 +2798,6 @@ tr:
           explanation_html: |-
             Harita verilerinde bir sorun fark ettiyseniz, örneğin bir yol veya adresinizin eksik olması gibi,
             devam etmenin en iyi yolu OpenStreetMap topluluğuna katılmak ve verileri kendiniz eklemeniz veya düzeltmenizdir.
-        add_a_note:
-          instructions_1_html: |-
-            Harita ekranında %{note_icon} veya aynı simgeye tıklamanız yeterlidir.
-            Bu, haritaya sürükleyerek taşıyabileceğiniz bir işaretçi ekleyecektir. Mesajınızı ekleyin, ardından kaydet'i tıklayın; diğer haritacılar araştıracaktır.
       other_concerns:
         title: Diğer sorunlar
         concerns_html: Verilerimizin nasıl kullanıldığına veya içeriğine ilişkin endişeleriniz
@@ -2503,6 +2874,8 @@ tr:
         bicycle: Bisikletle
         car: Arabayla
         foot: Yürüyerek
+      providers:
+        description: Yönlendirme hizmetleri
     welcome:
       title: Hoş geldiniz!
       introduction: Dünyanın düzenlenebilir ve ücretsiz haritası OpenStreetMap'e hoş
@@ -2538,30 +2911,29 @@ tr:
         title: Kuralları!
         para_1_html: OpenStreetMap'in birkaç resmî kuralı olmasına rağmen tüm katılımcıların
           toplulukla iş birliği yapmasını ve iletişim kurmasını bekliyoruz. Elle düzenleme
-          dışında herhangi bir işlem yapmayı düşünüyorsanız lütfen%{imports_link}
+          dışında herhangi bir işlem yapmayı düşünüyorsanız, lütfen %{imports_link}
           ve %{automated_edits_link} kılavuzlarını okuyup uygulayın.
         imports: Aktarımlar
         automated_edits: Otomatik Düzenlemeler
       start_mapping: Haritacılığa Başla
       continue_authorization: Yetkilendirmeye Devam Et
-      add_a_note:
-        title: Düzenlemek için vaktin yok mu? O zaman bir not ekle!
-        para_1: |-
-          Küçük bir değişikliğin sabit kalmasını istiyor fakat üye olacak ve
-          nasıl düzenleneceğini öğrenecek zamanınız yoksa
-          not eklemeniz yeterlidir.
-        para_2_html: |-
-          %{map_link} kısmına gidip not simgesine tıklamanız yeterli: %{note_icon}.
-          Bu, haritaya sürükleyerek taşıyabileceğiniz bir işaretçi ekleyecektir.
-          Mesajınızı ekleyin, ardından kaydet'i tıklayın; diğer haritacılar araştıracaktır.
-        the_map: harita
+    add_a_note:
+      title: Düzenlemek için vaktin yok mu? O zaman bir not ekle!
+      para_1: |-
+        Küçük bir değişikliğin sabit kalmasını istiyor fakat üye olacak ve
+        nasıl düzenleneceğini öğrenecek zamanınız yoksa
+        not eklemeniz yeterlidir.
+      para_2_html: Sadece %{note_icon} simgesine veya %{map_link}daki aynı simgeye
+        tıklayın. Bu, haritaya sürükleyerek taşıyabileceğiniz bir işaretçi ekleyecektir.
+        Mesajınızı ekleyin, ardından kaydete tıklayın; diğer haritacılar inceleyecektir.
+      the_map: harita
     communities:
       title: Topluluklar
-      lede_text: "Dünyanın her yerinden insanlar OpenStreetMap'e katkıda bulunur veya
-        OpenStreetMap'i kullanır. Birçoğu bireysel olarak katılırken bazıları topluluk
-        hâlinde katkıda bulunur.\nBu gruplar, çeşitli büyüklükte olup küçük kasabalardan
-        çok ülkeli büyük bölgelere kadar çeşitli coğrafyaları temsil eder. \nAyrıca
-        resmî veya gayri resmî olabilirler."
+      lede_text: "Dünyanın dört bir yanından insanlar, OpenStreetMap'e katkıda bulunuyor
+        ya da OpenStreetMap'i kullanıyor. Bir kısım kullanıcı bireysel olarak katılırken
+        kimiyse topluluk hâlinde katkıda sunmakta.\nBu gruplar, çeşitli büyüklükte
+        olup küçük kasabalardan tutun çok ülkeli büyük bölgelere kadar çeşitli coğrafyaları
+        temsil etmekte. \nAyrıca bu katkılar, resmî veya gayri resmî olabilmekte."
       local_chapters:
         title: Yerel Bölümler
         about_text: |-
@@ -2579,7 +2951,14 @@ tr:
           oluşturabilir veya bunlara katılabilir. %{communities_wiki_link} kısmında
           daha fazlasını okuyun.
         communities_wiki: Topluluklar için viki sayfası
-  map_keys:
+  social_links:
+    show:
+      website: web sitesi
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: Harita notları görmek için yakınlaştır
+      map_data_zoom_in_tooltip: Harita verileri görmek için yakınlaştır
+  legend_panes:
     show:
       entries:
         motorway: Otoyol
@@ -2592,10 +2971,11 @@ tr:
         track: Toprak yolu
         bridleway: Binici yolu
         cycleway: Bisiklet yolu
-        cycleway_national: Ulusal Bisiklet Yolu
-        cycleway_regional: Bölgesel Bisiklet Yolu
-        cycleway_local: Yerel Bisiklet Yolu
-        cycleway_mtb: Dağ bisikleti rotası
+        international_bike_route: Ulusal Bisiklet Yolu
+        national_bike_route: Ulusal Bisiklet Yolu
+        regional_bike_route: Bölgesel Bisiklet Yolu
+        local_bike_route: Yerel Bisiklet Yolu
+        mountain_bike_route: Dağ bisikleti rotası
         footway: Yaya yolu
         rail: Demiryolu
         train: Tren
@@ -2659,7 +3039,7 @@ tr:
         peak: Zirve
         tunnel: çizgili kenar = tünel
         bridge: Siyah kenar = köprü
-        private: Özel giriş
+        private: Özel erişim
         destination: Hedef noktası
         construction: yapım aşamasındaki yollar
         bus_stop: Otobüs durağı
@@ -2668,6 +3048,36 @@ tr:
         bicycle_parking: Bisiklet parkı
         bicycle_parking_small: Küçük bisiklet parkı
         toilets: Tuvaletler
+      see_external_legend: Harici harita açıklamasına bakın
+  share_panes:
+    show:
+      link: Bağlantı veya HTML
+      include_marker: İmleç ekle
+      long_link: Bağlantı
+      short_link: Kısa Bağlantı
+      embed: HTML
+      embed_html_disabled: Bu harita katmanı için HTML yerleştirme kullanılamıyor
+      paste_html: Web sitesine yerleştirmek için HTML'yi yapıştırın
+      geo_uri: Coğrafi URI
+      image: Resim
+      only_layers_exported_as_image: 'Yalnızca aşağıdaki katmanlar görüntü olarak
+        dışa aktarılabilir:'
+      format: 'Biçim:'
+      scale: 'Ölçek:'
+      custom_dimensions: Özel boyutlar belirt
+      image_dimensions_html: Resim %{layer} katmanını %{width} x %{height} olarak
+        gösterecektir
+      download: İndir
+      downloading: Yükleniyor...
+  webgl_error_panes:
+    show:
+      compact_message: Bu harita için WebGL gerekiyor.
+      description_html: Üzgünüz ancak web üzerinde 3 boyutlu grafikler oluşturmak
+        için %{your_browser_does_not_support_webgl}.
+      your_browser_does_not_support_webgl: tarayıcınız WebGL'yi desteklemiyor.
+      webgl_is_required_for_this_map: Bu haritayı görüntülemek için WebGL gereklidir.
+      read_more_about_webgl: Devamını oku
+      read_more_about_webgl_url: https://wiki.openstreetmap.org/wiki/This_map_requires_WebGL
   traces:
     visibility:
       private: Kişiye özel (sadece anonim ve sıralanmamış noktalar olarak paylaşılır)
@@ -2711,13 +3121,13 @@ tr:
       points: 'Nokta sayısı:'
       start_coordinates: 'Başlangıç koordinatı:'
       coordinates_html: '%{latitude}; %{longitude}'
-      map: harita
-      edit: düzenle
+      map: konumu haritada görüntüle
+      edit: düzenleyicide aç
       owner: 'Sahibi:'
       description: 'Açıklama:'
       tags: 'Etiketler:'
       none: Hiçbiri
-      edit_trace: Bu izi düzenle
+      edit_trace: izleme ayrıntılarını düzenle
       delete_trace: Bu izi sil
       trace_not_found: İz bulunmadı!
       visibility: 'Görünürlük:'
@@ -2729,13 +3139,13 @@ tr:
         other: '%{count} nokta'
       more: daha fazla
       trace_details: İz Ayrıntılarını Görüntüle
-      view_map: Haritayı Görüntüle
-      edit_map: Haritayı Düzenle
+      view_map: Konumu haritada görüntüle
+      edit_map: Düzenleyicide aç
       public: KAMU
       identifiable: TANIMLANABİLİR
       private: ÖZEL
       trackable: İZLENEBİLİR
-      details_with_tags_html: '%{user} tarafından %{time_ago} %{tags} etiketleriyle'
+      details_with_tags_html: '%{user} tarafından %{time_ago} %{tags} etiket(ler)iyle'
       details_without_tags_html: '%{user} tarafından %{time_ago}'
     index:
       public_traces: Herkese Açık GPS İzleri
@@ -2776,25 +3186,23 @@ tr:
     setup_user_auth:
       blocked_zero_hour: OpenStreetMap web sitesinde önemli bir mesajınız var. Düzenlemelerinizi
         kaydetmeden önce mesajı okumanız gerekiyor.
-      blocked: API'a erişiminiz engellendi. Daha fazla bilgi edinmek için lütfen web
-        arayüzüne giriş yapın.
-      need_to_see_terms: API'a erişiminiz geçici olarak askıya alındı. Katılımcı Şartları'nı
-        görüntülemek için lütfen web arayüzüne giriş yapın. Kabul etmeniz gerekmiyor
-        ancak bunları görmeniz gerekiyor.
+      blocked: API'ye erişiminiz engellendi. Daha fazla bilgi edinmek için lütfen
+        web arayüzüne giriş yapın.
+      need_to_see_terms: API’ye erişiminiz geçici olarak askıya alındı. Katılımcı
+        Şartları'nı görüntülemek için lütfen web arayüzüne giriş yapın. Kabul etmeniz
+        gerekmese de görüntülemeniz zorunludur.
     settings_menu:
       account_settings: Hesap Ayarları
       oauth2_applications: OAuth 2 Uygulamaları
       oauth2_authorizations: OAuth 2 Yetkilendirmeleri
       muted_users: Sessize Alınan Kullanıcılar
     auth_providers:
-      openid_url: OpenID URL'si
-      openid_login_button: Devam et
-      openid:
-        title: OpenID ile giriş
-        alt: OpenID logosu
       google:
         title: Google ile giriş
         alt: Google logosu
+      apple:
+        title: Apple ile giriş
+        alt: Apple logosu
       facebook:
         title: Facebook ile giriş
         alt: Facebook logosu
@@ -2808,6 +3216,9 @@ tr:
         title: Vikipedi ile giriş
         alt: Vikipedi logosu
     share:
+      share:
+        title: Paylaş
+        alt: Paylaşım Simgesi
       email:
         title: E-posta aracılığıyla paylaş
         alt: E-posta simgesi
@@ -2908,14 +3319,14 @@ tr:
         kaydolun.'
       no_auto_account_create: Maalesef, şu anda sizin için otomatik olarak bir hesap
         oluşturamıyoruz.
-      please_contact_support_html: Oluşturulacak bir hesap ayarlamak için lütfen %{support_link}
-        ile iletişime geçin - isteğinizi en kısa sürede çözmeye çalışacağız.
+      please_contact_support_html: Lütfen yardım için %{support_link} ile iletişime
+        geçin - talebinizi mümkün olan en kısa sürede işleme koymaya çalışacağız.
       support: destek
       about:
         header: Ücretsiz ve düzenlenebilir.
-        paragraph_1: Diğer haritaların aksine tamamen sizler tarafından oluşturulan
-          OpenStreetMap'i herkesin düzeltmesi, güncellemesi, indirmesi ve kullanması
-          ücretsizdir.
+        paragraph_1: OpenStreetMap, diğer haritalardan farklı olarak tamamen gönüllülerin
+          emeğiyle ortaya çıkmıştır. Haritayı herkes dilediği gibi düzeltebilir, güncelleyebilir,
+          indirebilir ve özgürce kullanabilir.
         paragraph_2: Katkıda bulunmaya başlamak için kaydolun.
         welcome: OpenStreetMap'e hoş geldiniz
       duplicate_social_email: Zaten bir OpenStreetMap hesabınız varsa ve 3. parti
@@ -2926,6 +3337,7 @@ tr:
       by_signing_up:
         html: Kaydolarak %{tou_link}, %{privacy_policy_link} ve %{contributor_terms_link}
           şartlarımızı kabul etmiş sayılırsınız.
+        tou: Kullanım Şartları
         privacy_policy: gizlilik politikası
         privacy_policy_title: E-posta adresleriyle ilgili bölümü içeren OSMF gizlilik
           politikası
@@ -2939,11 +3351,15 @@ tr:
           %{privacy_policy_link} sayfasına bakın.
       or: veya
       use external auth: veya üçüncü bir parti uygulamasıyla kaydolun
+      verify_human: İnsan olduğunuzu doğrulayın.
+    create:
+      not_human: Ne yazık ki gerçek bir kişi olduğunuzu doğrulayamadık. Yeni hesap
+        oluşturabilmek için bu doğrulama gereklidir.
     no_such_user:
       title: Böyle bir kullanıcı yok
       heading: '%{user} adlı bir kullanıcı yok'
-      body: Üzgünüz, %{user} adlı bir kullanıcı yok. Lütfen, doğru yazdığınızdan emin
-        olun ya da tıkladığınız bağlantı belki de hatalıdır.
+      body: Üzgünüz, %{user} isminde biri mevcut değil. Lütfen, doğru yazdığınızdan
+        emin olun, belki de tıkladığınız bağlantı  hatalıdır.
       deleted: silindi
     show:
       my diary: Günlüğüm
@@ -2955,12 +3371,11 @@ tr:
       my_account: Hesabım
       my comments: Yorumlarım
       my_preferences: Tercihlerim
-      my_dashboard: Gösterge Panelim
+      my_dashboard: Kontrol Panelim
       blocks on me: Engellendiklerim
       blocks by me: Engellediklerim
       create_mute: Bu Kullanıcıyı Sessize Al
       destroy_mute: Bu Kullanıcının Sesini Aç
-      edit_profile: Profili Düzenle
       send message: Mesaj Gönder
       diary: Günlük
       edits: Düzenlemeler
@@ -2979,18 +3394,6 @@ tr:
       created from: 'Kullanıldı yazılım:'
       status: 'Durum:'
       spam score: 'Spam puanı:'
-      role:
-        administrator: Bu kullanıcı, bir yöneticidir.
-        moderator: Bu kullanıcı, bir moderatördür.
-        importer: Bu kullanıcı bir içe aktarıcıdır
-        grant:
-          administrator: Yönetici erişim hakkı
-          moderator: Moderatör erişim izni
-          importer: İçe aktarım erişim izni ver
-        revoke:
-          administrator: Yönetici erişimini iptal etme
-          moderator: Moderatör erişimini iptal etme
-          importer: İçe aktarıcı erişimini iptal et
       block_history: Etkin Engellemeler
       moderator_history: Verilen Engellemeler
       revoke_all_blocks: Tüm engellemeleri iptal et
@@ -2999,12 +3402,41 @@ tr:
       activate_user: Bu Kullanıcıyı Etkinleştir
       confirm_user: Bu Kullanıcıyı Onayla
       unconfirm_user: Bu Kullanıcıyı Onaylamayın
+      suspend_user: Bu kullanıcıyı geçici olarak kullanım dışı bırak
       unsuspend_user: Bu Kullanıcının Engelini Kaldır
-      hide_user: Bu Kullanıcıyı Gizle
-      unhide_user: Bu Kullanıcıyı Göster
-      delete_user: Bu Kullanıcıyı Sil
+      undelete_user: Silinen kullanıcıyı geri getir
       confirm: Onayla
       report: Bu Kullanıcıyı Bildir
+      edit_profile_details: Profil Ayrıntılarını Düzenle
+      edit_description: Açıklamayı Düzenle
+      edit_links: Bağlantıları Düzenle
+      change_image: Görüntüyü Değiştir
+      edit_company: Şirketi Düzenle
+      edit_location: Konumu Düzenle
+      edit_contribution_calendar: Katkı Takvimini Yapılandır
+      contributions:
+        one: 'Son yıldaki katkı sayısı: %{count}'
+        other: 'Son yıldaki katkı sayısı: %{count}'
+      title:
+        administrator: Bu kullanıcı, bir yöneticidir.
+        moderator: Bu kullanıcı, bir moderatördür.
+        importer: Bu kullanıcı bir içe aktarıcıdır
+      grant:
+        administrator: Yönetici erişim hakkı
+        moderator: Moderatör erişim izni
+        importer: İçe aktarım erişim izni ver
+        are_you_sure: '''%{name}'' kullanıcısına ''%{role}'' rolünü vermek istediğinizden
+          emin misiniz?'
+      revoke:
+        administrator: Yönetici erişimini iptal etme
+        moderator: Moderatör erişimini iptal etme
+        importer: İçe aktarıcı erişimini iptal et
+        are_you_sure: '''%{name}'' kullanıcısından ''%{role}'' rolünü iptal etmek
+          istediğinizden emin misiniz?'
+    sidebar_section:
+      home_location: Bulunulan Konum
+      company: Şirket
+      company_tooltip: Şirket bağlantısı kendi beyanına dayanmaktadır ve doğrulanmamıştır
     go_public:
       flash success: Tüm düzenlemeleriniz şimdi herkese açık ve siz de düzenleme yetkisine
         sahipsiniz.
@@ -3043,13 +3475,15 @@ tr:
         name_or_email: İsim veya E-posta
         ip_address: IP Adresi
         edits: Düzenlemeler?
+        has_edits: Düzenleme Yapmış
+        no_edits: Düzenleme Yapmamış
         search: Ara
       page:
         found_users:
           one: '%{count} kullanıcı bulundu'
           other: '%{count} kullanıcı bulundu'
         confirm: Seçili Kullanıcıları Doğrulayın
-        hide: Seçilen Kullanıcıları Gizle
+        suspend: Seçili kullanıcıların hesaplarını geçici olarak kapat
         empty: Eşleşen kullanıcı bulunamadı
       user:
         summary_html: '%{name}, %{date} tarihinde %{ip_address} tarafından oluşturuldu.'
@@ -3103,12 +3537,6 @@ tr:
       doesnt_have_role: Kullanıcının görevi %{role} değil.
       not_revoke_admin_current_user: Geçerli kullanıcıdan yönetici görevini iptal
         edemezsiniz.
-    grant:
-      are_you_sure: '''%{name}'' kullanıcısına ''%{role}'' rolünü vermek istediğinizden
-        emin misiniz?'
-    revoke:
-      are_you_sure: '''%{name}'' kullanıcısından ''%{role}'' rolünü iptal etmek istediğinizden
-        emin misiniz?'
   user_blocks:
     model:
       non_moderator_update: Engelleme yapmak ya da engellemeyi güncellemek için bir
@@ -3238,8 +3666,9 @@ tr:
       last_changed: Son değişiklik
       apply: Uygula
       all: Hepsi
-      open: Açık
-      closed: Kapalı
+      open: Çözülmedi
+      closed: Çözüldü
+      hidden: Gizli
       status: Durum
     show:
       title: 'Not: %{id}'
@@ -3303,6 +3732,7 @@ tr:
         bu nedenle kişisel bilgilerinizi veya telif hakkıyla korunan haritalar veya
         dizin listelerinden bilgi girmeyin.
       add: Not Ekle
+      error: Not oluşturulurken bir hata oluştu.
     new_readonly:
       title: Yeni Not
       warning: OpenStreetMap API'si şu anda salt okunur modunda olduğundan yeni notlar
@@ -3317,49 +3747,44 @@ tr:
     close: Kapat
     share:
       title: Paylaş
-      cancel: İptal
-      image: Resim
-      link: Bağlantı veya HTML
-      long_link: Bağlantı
-      short_link: Kısa Bağlantı
-      geo_uri: Coğrafi URI
-      embed: HTML
-      custom_dimensions: Özel boyutlar belirt
-      format: 'Biçim:'
-      scale: 'Ölçek:'
-      image_dimensions: Resim %{layer} katmanını %{width} x %{height} olarak gösterecektir
-      download: İndir
-      short_url: Kısa bağlantı
-      include_marker: İşaret ekle
-      center_marker: İşaretleyicide merkez harita
-      paste_html: Web sitesine yerleştirmek için HTML'yi yapıştırın
       view_larger_map: Daha Büyük Haritayı Göster
-      only_layers_exported_as_image: 'Yalnızca aşağıdaki katmanlar görüntü olarak
-        dışa aktarılabilir:'
+      export_failed_title: Haritanın dışa aktarımı başarısız oldu
+      filename: harita
     embed:
       report_problem: Bir sorunu şikayet et
-    key:
+    legend:
       title: Lejant
       tooltip: Lejant
-      tooltip_disabled: Harita Anahtarı bu katman için kullanılamıyor
+      tooltip_disabled: Bu katman için lejant kullanılamıyor
     map:
-      zoom:
-        in: Yakınlaştır
-        out: Uzaklaştır
-      locate:
-        title: Konumumu göster
+      map:
+        title: Harita
+        marker:
+          title: Harita imleci
+      popup:
+        close: Kapat
+      navigation_control:
+        zoom_in: Yakınlaştır
+        zoom_out: Uzaklaştır
+      geolocate_control:
+        find_my_location: Konumumu göster
+        location_not_available: Konum bilgisi mevcut değil
         metersPopup:
           one: Bu noktanın %{count} metresindesiniz
           other: Bu noktanın %{count} metresindesiniz
         feetPopup:
           one: Bu noktanın %{count} adım içindesiniz
           other: Bu noktanın %{count} adım içindesiniz
+      attribution_control:
+        toggle_attribution: Atıf Anahtarı
       base:
         standard: Standart
         cycle_map: Bisiklet Haritası
         transport_map: Ulaşım Haritası
         tracestracktop_topo: Tracestrack Topo
         hot: İnsancıl
+        shortbread: Shortbread
+        openmaptiles_osm: MapTiler OMT
       layers:
         header: Harita Katmanları
         notes: Harita Notları
@@ -3379,27 +3804,32 @@ tr:
       hotosm_credit: '%{osm_france_link} tarafından barındırılan %{hotosm_link} döşeme
         tarzı'
       hotosm_name: İnsani OpenStreetMap Ekibi
+      openmaptiles_credit: '%{maptiler_link} tarafından barındırılan %{openmaptiles_link}
+        vektör karoları'
     site:
       edit_tooltip: Haritayı düzenle
       edit_disabled_tooltip: Haritayı düzenlemek için yakınlaştırın
       createnote_tooltip: Haritaya bir not ekle
       createnote_disabled_tooltip: Not eklemek için haritayı yakınlaştır
-      map_notes_zoom_in_tooltip: Harita notları görmek için yakınlaştır
-      map_data_zoom_in_tooltip: Harita verileri görmek için yakınlaştır
       queryfeature_tooltip: Özellikleri göster
       queryfeature_disabled_tooltip: Özellikler görmek için yakınlaştır
-      embed_html_disabled: Bu harita katmanı için HTML yerleştirme kullanılamıyor
+    profile:
+      social_link_n: '%{n}. Sosyal Medya Bağlantısı'
+      remove_social_link_n: '%{n}. Sosyal Medya Bağlantısını Kaldır'
     edit_help: Haritayı sürükleyip ve düzenleme yapmak istediğiniz konuma yakınlaştırdıktan
       sonra buraya tıklayın.
     directions:
-      ascend: Yükselt
-      descend: İniş
-      distance: Uzaklık
-      distance_m: '%{distance}m'
-      distance_km: '%{distance}km'
+      distance_in_units:
+        m: '%{distance}m'
+        km: '%{distance}km'
+        ft: '%{distance}ft'
+        yd: '%{distance}yd'
+        mi: '%{distance}mi'
       errors:
         no_route: Bu iki yer arasında bir rota bulunamadı.
-        no_place: Maalesef, '%{place}' adlı yeri bulamadık!
+        no_place:
+          title: Arama başarısız oldu
+          body: '''%{place}'' bulunamadı.'
       instructions:
         continue_without_exit: '%{name} üzerinde devam edin.'
         slight_right_without_exit: '%{name} üstünden hafif sağa'
@@ -3462,8 +3892,8 @@ tr:
         roundabout_with_exit_ordinal: Dönel kavşakta %{exit} çıkışı kullanarak %{name}
           üzerine
         exit_roundabout: '%{name} giden kavşaktan çıkın'
+        ferry_without_exit: '%{name} feribotuna binin'
         unnamed: adsız yol
-        courtesy: Yolculuğun izniyle %{link}x
         exit_counts:
           first: birinci
           second: ikinci
@@ -3475,9 +3905,6 @@ tr:
           eighth: sekizinci
           ninth: dokuzuncu
           tenth: onuncu
-      time: Zaman
-      download: Rotayı GeoJSON olarak indir
-      filename: rota
     query:
       node: Nokta
       way: Yol
@@ -3485,6 +3912,8 @@ tr:
       nothing_found: Özellik bulunamadı
       error: '%{server}: %{error} ile bağlantı kurulurken hata oluştu'
       timeout: '%{server} ile bağlantı kurulurken hata oluştu'
+    element:
+      wikipedia: Vikipedi
     context:
       directions_from: Buradan yönlendir
       directions_to: Buraya yönlendir
@@ -3492,9 +3921,25 @@ tr:
       show_address: Adresi göster
       query_features: Özellikleri göster
       centre_map: Haritayı buraya ortala
+      scroll_to_changeset: Değişiklik setine git
     home:
       marker_title: Bulunduğum konum
       not_set: Hesabınız için bulunduğunuz konum ayarlanmamış
+    contribution_calendar:
+      tooltip:
+        no_contributions: '%{date} tarihinde hiç katkı yapmadı'
+        contributions:
+          one: '%{date} tarihinde %{count} katkı yaptı'
+          other: '%{date} tarihinde %{count} katkı yaptı'
+    remote_edit:
+      failed:
+        title: Değişiklik başarısız oldu
+        body: JOSM veya Merkaartor’un yüklü olduğundan ve uzaktan kontrol seçeneğinin
+          etkinleştirildiğinden emin olun
+    edit:
+      id_not_configured:
+        title: iD yapılandırılmamış
+        body: Daha fazla bilgi için lütfen CONFIGURE.md dosyasına bakın.
   redactions:
     edit:
       heading: Redaksiyonu düzenle

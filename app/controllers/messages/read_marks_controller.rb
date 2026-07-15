@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Messages
   class ReadMarksController < ApplicationController
-    layout "site"
+    layout :site_layout
 
     before_action :authorize_web
     before_action :set_locale
@@ -21,7 +23,7 @@ module Messages
     private
 
     def mark(message_read)
-      @message = current_user.messages.unscope(:where => :muted).find(params[:message_id])
+      @message = current_user.messages.unscope(:where => :muted).find(params.expect(:message_id))
       @message.message_read = message_read
       if @message.save
         flash[:notice] = t ".notice"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 module Api
@@ -16,6 +18,10 @@ module Api
       assert_routing(
         { :path => "/api/0.6/gpx/1", :method => :get },
         { :controller => "api/traces", :action => "show", :id => "1" }
+      )
+      assert_routing(
+        { :path => "/api/0.6/gpx/1.json", :method => :get },
+        { :controller => "api/traces", :action => "show", :id => "1", :format => "json" }
       )
       assert_routing(
         { :path => "/api/0.6/gpx/1", :method => :put },
@@ -44,11 +50,21 @@ module Api
       get api_trace_path(public_trace_file), :headers => auth_header
       assert_response :success
 
-      # And finally we should be able to do it with the owner of the trace
+      # We should be able to do it with the owner of the trace
       auth_header = bearer_authorization_header public_trace_file.user
       get api_trace_path(public_trace_file), :headers => auth_header
       assert_response :success
       assert_select "gpx_file[id='#{public_trace_file.id}'][uid='#{public_trace_file.user.id}']", 1
+
+      # We should be able to do it with the owner of the trace with json format
+      auth_header = bearer_authorization_header public_trace_file.user
+      get api_trace_path(public_trace_file, :format => "json"), :headers => auth_header
+      assert_response :success
+      assert_equal "application/json", response.media_type
+      js = ActiveSupport::JSON.decode(@response.body)
+      assert_not_nil js
+      assert_equal public_trace_file.id, js["trace"]["id"]
+      assert_equal public_trace_file.user.id, js["trace"]["uid"]
     end
 
     # Check an anonymous trace can't be specifically fetched by another user
@@ -89,6 +105,17 @@ module Api
       assert_response :not_found
     end
 
+    # Check that getting a trace through the api is not possible when the traces feature is disabled
+    def test_show_disabled
+      public_trace_file = create(:trace, :visibility => "public")
+      auth_header = bearer_authorization_header public_trace_file.user
+
+      with_settings(:traces_disabled => true) do
+        get api_trace_path(public_trace_file), :headers => auth_header
+        assert_response :not_found
+      end
+    end
+
     # Test creating a trace through the api
     def test_create
       # Get file to use
@@ -126,7 +153,7 @@ module Api
 
       # Validate tracepoints
       assert_equal 1, trace.points.size
-      tp = trace.points.first
+      tp = trace.points.order(:timestamp).first
       assert_equal 10000000, tp.latitude
       assert_equal 10000000, tp.longitude
       assert_equal 3221331576, tp.tile

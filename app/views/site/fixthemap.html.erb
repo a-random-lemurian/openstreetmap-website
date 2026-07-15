@@ -1,7 +1,3 @@
-<% content_for :head do %>
- <%= javascript_include_tag "fixthemap" %>
-<% end %>
-
 <% content_for :heading do %>
   <h1><%= t ".title" %></h1>
 <% end %>
@@ -11,19 +7,17 @@
 
 <h2><%= t ".how_to_help.title" %></h2>
 
-<div class='row'>
-  <div class='col-sm'>
-    <h3 class='fs-5'><%= t ".how_to_help.join_the_community.title" %></h3>
+<div class="row">
+  <div class="col-sm">
+    <h3 class="fs-5"><%= t ".how_to_help.join_the_community.title" %></h3>
     <p><%= t ".how_to_help.join_the_community.explanation_html" %></p>
-    <p class='text-center'>
+    <p class="text-center">
       <a class="btn btn-primary" href="<%= new_user_path %>"><%= t("layouts.start_mapping") %></a>
     </p>
   </div>
-  <div class='col-sm'>
-    <h3 class='fs-5'><%= t "site.welcome.add_a_note.title" %></h3>
-    <p><%= t "site.welcome.add_a_note.para_1" %></p>
-    <p><%= t ".how_to_help.add_a_note.instructions_1_html", :note_icon => tag.a(:class => "icon note bg-dark rounded-1",
-                                                                                :title => t("javascripts.site.createnote_tooltip")) %></p>
+  <div class="col-sm">
+    <h3 class="fs-5"><%= t "site.add_a_note.title" %></h3>
+    <%= render "add_a_note" %>
   </div>
 </div>
 

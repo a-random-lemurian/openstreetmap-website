@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: current_ways
@@ -18,8 +20,6 @@
 #
 
 class Way < ApplicationRecord
-  require "xml/libxml"
-
   include ConsistencyValidations
   include NotRedactable
 
@@ -32,7 +32,7 @@ class Way < ApplicationRecord
   has_many :way_nodes, -> { order(:sequence_id) }, :inverse_of => :way
   has_many :nodes, :through => :way_nodes
 
-  has_many :way_tags
+  has_many :element_tags, :class_name => "WayTag"
 
   has_many :containing_relation_members, :class_name => "RelationMember", :as => :member
   has_many :containing_relations, :class_name => "Relation", :through => :containing_relation_members, :source => :relation
@@ -110,7 +110,7 @@ class Way < ApplicationRecord
   end
 
   def tags
-    @tags ||= way_tags.to_h { |t| [t.k, t.v] }
+    @tags ||= element_tags.to_h { |t| [t.k, t.v] }
   end
 
   attr_writer :nds, :tags
@@ -150,6 +150,7 @@ class Way < ApplicationRecord
       self.tags = new_way.tags
       self.nds = new_way.nds
       self.visible = true
+      changeset.num_modified_ways += 1
       save_with_history!
     end
   end
@@ -160,6 +161,7 @@ class Way < ApplicationRecord
 
     self.version = 0
     self.visible = true
+    changeset.num_created_ways += 1
     save_with_history!
   end
 
@@ -203,6 +205,7 @@ class Way < ApplicationRecord
       self.tags = []
       self.nds = []
       self.visible = false
+      changeset.num_deleted_ways += 1
       save_with_history!
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -33,6 +35,9 @@
 #  diary_comments_count :integer          default(0)
 #  note_comments_count  :integer          default(0)
 #  creation_address     :inet
+#  home_location_name   :string
+#  company              :string
+#  public_heatmap       :boolean          default(TRUE), not null
 #
 # Indexes
 #
@@ -46,7 +51,6 @@
 #
 
 class User < ApplicationRecord
-  require "digest"
   include AASM
 
   has_many :traces, -> { where(:visible => true) }
@@ -87,6 +91,9 @@ class User < ApplicationRecord
 
   has_many :reports
 
+  has_many :social_links
+  accepts_nested_attributes_for :social_links, :allow_destroy => true
+
   scope :visible, -> { where(:status => %w[pending active confirmed]) }
   scope :active, -> { where(:status => %w[active confirmed]) }
   scope :identifiable, -> { where(:data_public => true) }
@@ -116,6 +123,7 @@ class User < ApplicationRecord
                        :uniqueness => { :scope => :auth_provider }
   validates :avatar, :if => proc { |u| u.attachment_changes["avatar"] },
                      :image => true
+  validates :description, :length => 0..65536
 
   validates_email_format_of :email, :if => proc { |u| u.email_changed? }
   validates_email_format_of :new_email, :allow_blank => true, :if => proc { |u| u.new_email_changed? }
@@ -148,34 +156,33 @@ class User < ApplicationRecord
     display_name
   end
 
-  def self.authenticate(options)
-    if options[:username] && options[:password]
-      user = find_by("email = ? OR display_name = ?", options[:username].strip, options[:username])
+  def self.lookup(username)
+    user = find_by("email = ? OR display_name = ?", username.strip, username)
 
-      if user.nil?
-        users = where("LOWER(email) = LOWER(?) OR LOWER(NORMALIZE(display_name, NFKC)) = LOWER(NORMALIZE(?, NFKC))", options[:username].strip, options[:username])
+    if user.nil?
+      users = where("LOWER(email) = LOWER(?) OR LOWER(NORMALIZE(display_name, NFKC)) = LOWER(NORMALIZE(?, NFKC))", username.strip, username)
 
-        user = users.first if users.count == 1
-      end
-
-      if user && PasswordHash.check(user.pass_crypt, user.pass_salt, options[:password])
-        if PasswordHash.upgrade?(user.pass_crypt, user.pass_salt)
-          user.pass_crypt, user.pass_salt = PasswordHash.create(options[:password])
-          user.save
-        end
-      else
-        user = nil
-      end
+      user = users.first if users.one?
     end
 
-    if user &&
-       (user.status == "deleted" ||
-         (user.status == "pending" && !options[:pending]) ||
-         (user.status == "suspended" && !options[:suspended]))
-      user = nil
-    end
+    user if user && user.status != "deleted"
+  end
 
-    user
+  def password_expired?
+    !PasswordHash.valid?(pass_crypt, pass_salt)
+  end
+
+  def password_matches?(password)
+    if PasswordHash.check(pass_crypt, pass_salt, password)
+      if PasswordHash.upgrade?(pass_crypt, pass_salt)
+        self.pass_crypt, self.pass_salt = PasswordHash.create(password)
+        save
+      end
+
+      true
+    else
+      false
+    end
   end
 
   aasm :column => :status, :no_direct_assignment => true do
@@ -209,7 +216,11 @@ class User < ApplicationRecord
 
     # Accounts can be automatically suspended by spam_check
     event :suspend do
-      transitions :from => [:pending, :active], :to => :suspended
+      before do
+        close_open_issues
+      end
+
+      transitions :from => [:pending, :active, :confirmed], :to => :suspended
     end
 
     # Unsuspending an account moves it back to active without overriding the spam scoring
@@ -218,17 +229,24 @@ class User < ApplicationRecord
     end
 
     # Mark the account as deleted but keep all data intact
-    event :hide do
+    # Only to be used in tests. There's currently no production
+    # use for this transition.
+    event :mark_deleted do
+      before do
+        close_open_issues
+      end
+
       transitions :from => [:pending, :active, :confirmed, :suspended], :to => :deleted
     end
 
-    event :unhide do
+    event :undelete do
       transitions :from => [:deleted], :to => :active
     end
 
     # Mark the account as deleted and remove personal data
     event :soft_destroy do
       before do
+        close_open_issues
         revoke_authentication_tokens
         remove_personal_data
       end
@@ -249,12 +267,35 @@ class User < ApplicationRecord
     self[:languages] = languages.join(",")
   end
 
-  def preferred_language
-    languages.find { |l| Language.exists?(:code => l) }
-  end
-
   def preferred_languages
     @preferred_languages ||= Locale.list(languages)
+  end
+
+  def preferred_color_scheme(*priority_list)
+    color_preferences = preferences.color_schemes.where.not(:v => "auto").pluck(:k, :v).to_h
+    priority_list.each do |target|
+      scheme = color_preferences["#{target}.color_scheme"]
+      return scheme unless scheme.nil?
+    end
+    nil
+  end
+
+  def default_diary_language
+    diary_language_preference = preferences.find_by(:k => "diary.default_language")
+    if diary_language_preference
+      diary_language_preference.v
+    else
+      languages.find { |l| Language.exists?(:code => l) }
+    end
+  end
+
+  def default_diary_language=(language)
+    preference = preferences.find_or_create_by(:k => "diary.default_language")
+    preference.update!(:v => language)
+  end
+
+  def notification_preferences
+    @notification_preferences ||= UserNotificationPreferences.new(self)
   end
 
   def home_location?
@@ -330,6 +371,12 @@ class User < ApplicationRecord
   end
 
   ##
+  # close any open issues
+  def close_open_issues
+    issues.with_status(:open).each(&:resolve!)
+  end
+
+  ##
   # revoke any authentication tokens
   def revoke_authentication_tokens
     access_tokens.not_expired.each(&:revoke)
@@ -355,27 +402,19 @@ class User < ApplicationRecord
   ##
   # return a spam score for a user
   def spam_score
-    changeset_score = changesets.size * 50
-    trace_score = traces.size * 50
-    diary_entry_score = diary_entries.visible.inject(0) { |acc, elem| acc + elem.body.spam_score }
-    diary_comment_score = diary_comments.visible.inject(0) { |acc, elem| acc + elem.body.spam_score }
-    report_score = Report.where(:category => "spam", :issue => issues.with_status("open")).distinct.count(:user_id) * 20
-
-    score = description.spam_score / 4.0
-    score += diary_entries.visible.where("created_at > ?", 1.day.ago).count * 10
-    score += diary_entry_score / diary_entries.visible.length unless diary_entries.visible.empty?
-    score += diary_comment_score / diary_comments.visible.length unless diary_comments.visible.empty?
-    score += report_score
-    score -= changeset_score
-    score -= trace_score
-
-    score.to_i
+    SpamScorer.new_from_user(self).score
   end
 
   ##
   # perform a spam check on a user
   def spam_check
-    suspend! if may_suspend? && spam_score > Settings.spam_threshold
+    suspend! if !confirmed? && may_suspend? && spam_score > Settings.spam_threshold
+  end
+
+  ##
+  # suspend the user only if allowed by aasm rules
+  def suspend_if_possible!
+    suspend! if may_suspend?
   end
 
   ##
@@ -408,7 +447,7 @@ class User < ApplicationRecord
   def max_messages_per_hour
     account_age_in_seconds = Time.now.utc - created_at
     account_age_in_hours = account_age_in_seconds / 3600
-    recent_messages = messages.where(:sent_on => Time.now.utc - 3600..).count
+    recent_messages = messages.where(:sent_on => (Time.now.utc - 3600)..).count
     max_messages = account_age_in_hours.ceil + recent_messages - (active_reports * 10)
     max_messages.clamp(0, Settings.max_messages_per_hour)
   end
@@ -416,7 +455,7 @@ class User < ApplicationRecord
   def max_follows_per_hour
     account_age_in_seconds = Time.now.utc - created_at
     account_age_in_hours = account_age_in_seconds / 3600
-    recent_follows = Follow.where(:following => self).where(:created_at => Time.now.utc - 3600..).count
+    recent_follows = Follow.where(:following => self).where(:created_at => (Time.now.utc - 3600)..).count
     max_follows = account_age_in_hours.ceil + recent_follows - (active_reports * 10)
     max_follows.clamp(0, Settings.max_follows_per_hour)
   end
@@ -443,6 +482,26 @@ class User < ApplicationRecord
 
   def deletion_allowed?
     deletion_allowed_at <= Time.now.utc
+  end
+
+  ##
+  # check if this user has a gravatar and set the user pref is true
+  def gravatar_enable!
+    # code from example https://en.gravatar.com/site/implement/images/ruby/
+    return false if avatar.attached?
+
+    begin
+      hash = Digest::MD5.hexdigest(email.downcase)
+      url = "https://www.gravatar.com/avatar/#{hash}?d=404" # without d=404 we will always get an image back
+      response = OSM.http_client.get(URI.parse(url))
+      available = response.success?
+    rescue StandardError
+      available = false
+    end
+
+    oldsetting = image_use_gravatar
+    self.image_use_gravatar = available
+    oldsetting != image_use_gravatar
   end
 
   private

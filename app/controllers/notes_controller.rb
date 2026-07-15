@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotesController < ApplicationController
   include UserMethods
 
@@ -5,13 +7,15 @@ class NotesController < ApplicationController
 
   before_action :check_api_readable
   before_action :authorize_web
+  before_action :set_locale
   before_action :require_oauth
 
   authorize_resource
 
   before_action :lookup_user, :only => [:index]
-  before_action :set_locale
   around_action :web_timeout
+
+  PAGE_SIZE = 10
 
   ##
   # Display a list of notes by a specified user
@@ -21,11 +25,15 @@ class NotesController < ApplicationController
     @params = params.permit(:display_name, :status)
     @title = t ".title", :user => @user.display_name
     @page = (params[:page] || 1).to_i
-    @page_size = 10
     @notes = @user.notes
     @notes = @notes.visible unless current_user&.moderator?
     @notes = @notes.where(:status => params[:status]) unless params[:status] == "all" || params[:status].blank?
-    @notes = @notes.order("updated_at DESC, id").distinct.offset((@page - 1) * @page_size).limit(@page_size).preload(:comments => :author)
+    @notes = @notes.order(:updated_at => :desc, :id => :asc).distinct.offset((@page - 1) * PAGE_SIZE).limit(PAGE_SIZE + 1).preload(:comments => :author)
+    @notes = @notes.to_a
+    if @notes.size > PAGE_SIZE
+      @notes.pop
+      @next_page = true
+    end
 
     render :layout => "site"
   end
@@ -34,10 +42,10 @@ class NotesController < ApplicationController
     @type = "note"
 
     if current_user&.moderator?
-      @note = Note.find(params[:id])
+      @note = Note.find(params.expect(:id))
       @note_comments = @note.comments.unscope(:where => :visible)
     else
-      @note = Note.visible.find(params[:id])
+      @note = Note.visible.find(params.expect(:id))
       @note_comments = @note.comments
     end
 
@@ -49,7 +57,7 @@ class NotesController < ApplicationController
   end
 
   def new
-    @anonymous_notes_count = request.cookies["_osm_anonymous_notes_count"].to_i || 0
+    @anonymous_notes_count = request.cookies["_osm_anonymous_notes_count"].to_i
     render :action => :new_readonly if api_status != "online"
   end
 end

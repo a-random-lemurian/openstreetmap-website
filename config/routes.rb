@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 OpenStreetMap::Application.routes.draw do
   use_doorkeeper :scope => "oauth2" do
     controllers :authorizations => "oauth2_authorizations",
@@ -9,22 +11,21 @@ OpenStreetMap::Application.routes.draw do
 
   # API
   namespace :api do
-    get "capabilities" => "capabilities#show" # Deprecated, remove when 0.6 support is removed
-    get "versions" => "versions#show"
-  end
-
-  scope "api/0.6", :module => :api do
-    get "capabilities" => "capabilities#show"
-    get "permissions" => "permissions#show"
-
-    post "changeset/:id/upload" => "changesets#upload", :as => :changeset_upload, :id => /\d+/
-    put "changeset/:id/close" => "changesets#close", :as => :changeset_close, :id => /\d+/
+    get "capabilities" => "capabilities#show", :as => nil # Deprecated, remove when 0.6 support is removed
+    resource :versions, :only => :show
   end
 
   namespace :api, :path => "api/0.6" do
+    resource :capabilities, :only => :show
+    resource :permissions, :only => :show
+
     resources :changesets, :only => [:index, :create]
     resources :changesets, :path => "changeset", :id => /\d+/, :only => [:show, :update] do
-      resource :download, :module => :changesets, :only => :show
+      scope :module => :changesets do
+        resource :upload, :only => :create
+        resource :download, :only => :show
+        resource :close, :only => :update
+      end
       resource :subscription, :controller => :changeset_subscriptions, :only => [:create, :destroy]
       resources :changeset_comments, :path => "comment", :only => :create
     end
@@ -86,11 +87,8 @@ OpenStreetMap::Application.routes.draw do
 
     resource :map, :only => :show
 
-    resources :tracepoints, :path => "trackpoints", :only => :index
-
     resources :users, :only => :index
     resources :users, :path => "user", :id => /\d+/, :only => :show
-    resources :user_traces, :path => "user/gpx_files", :module => :users, :controller => :traces, :only => :index
     get "user/details" => "users#details"
 
     resources :user_preferences, :except => [:new, :create, :edit], :param => :preference_key, :path => "user/preferences" do
@@ -106,13 +104,18 @@ OpenStreetMap::Application.routes.draw do
     end
     post "/user/messages/:id" => "messages#update", :as => nil
 
-    resources :traces, :path => "gpx", :only => [:create, :show, :update, :destroy], :id => /\d+/ do
-      scope :module => :traces do
-        resource :data, :only => :show
+    # Lambda constraint, rather than a static if, so tests can toggle the setting per-request with with_settings
+    constraints(->(_req) { !Settings.traces_disabled }) do
+      resources :tracepoints, :path => "trackpoints", :only => :index
+      resources :user_traces, :path => "user/gpx_files", :module => :users, :controller => :traces, :only => :index
+      resources :traces, :path => "gpx", :only => [:create, :show, :update, :destroy], :id => /\d+/ do
+        scope :module => :traces do
+          resource :data, :only => :show
+        end
       end
+      post "gpx/create" => "traces#create", :id => /\d+/, :as => :trace_create
+      get "gpx/:id/details" => "traces#show", :id => /\d+/, :as => :trace_details
     end
-    post "gpx/create" => "traces#create", :id => /\d+/, :as => :trace_create
-    get "gpx/:id/details" => "traces#show", :id => /\d+/, :as => :trace_details
 
     # Map notes API
     resources :notes, :except => [:new, :edit, :update], :id => /\d+/, :controller => "notes" do
@@ -143,9 +146,13 @@ OpenStreetMap::Application.routes.draw do
   get "/node/:id" => "nodes#show", :id => /\d+/, :as => :node
   get "/node/:id/history" => "old_nodes#index", :id => /\d+/, :as => :node_history
   resources :old_nodes, :path => "/node/:id/history", :id => /\d+/, :version => /\d+/, :param => :version, :only => :show
+
   get "/relation/:id" => "relations#show", :id => /\d+/, :as => :relation
+  get "/relation/:id/members" => "relation_members#show", :id => /\d+/, :as => :relation_members
+
   get "/relation/:id/history" => "old_relations#index", :id => /\d+/, :as => :relation_history
   resources :old_relations, :path => "/relation/:id/history", :id => /\d+/, :version => /\d+/, :param => :version, :only => :show
+  get "/relation/:id/history/:version/members" => "old_relation_members#show", :id => /\d+/, :version => /\d+/, :as => :old_relation_members
 
   resources :changesets, :path => "changeset", :id => /\d+/, :only => :show do
     resource :subscription, :controller => :changeset_subscriptions, :only => [:show, :create, :destroy]
@@ -158,7 +165,7 @@ OpenStreetMap::Application.routes.draw do
 
   resources :notes, :path => "note", :id => /\d+/, :only => [:show, :new]
 
-  get "/user/:display_name/history" => "changesets#index"
+  get "/user/:display_name/history" => "changesets#index", :as => :user_history
   get "/user/:display_name/history/feed" => "changesets#feed", :defaults => { :format => :atom }
   get "/user/:display_name/notes" => "notes#index", :as => :user_notes
   get "/history/friends" => "changesets#index", :friends => true, :as => "friend_changesets", :defaults => { :format => :html }
@@ -203,7 +210,11 @@ OpenStreetMap::Application.routes.draw do
   post "/login" => "sessions#create"
   match "/logout" => "sessions#destroy", :via => [:get, :post]
   get "/offline" => "site#offline"
-  resource :map_key, :path => "key", :only => :show
+  resource :languages_pane, :path => "/panes/languages", :only => :show
+  resource :layers_pane, :path => "/panes/layers", :only => :show
+  resource :legend_pane, :path => "/panes/legend", :only => :show
+  resource :share_pane, :path => "/panes/share", :only => :show
+  resource :webgl_error_pane, :path => "/panes/webgl_error", :only => :show
   get "/id" => "site#id"
   resource :feature_query, :path => "query", :only => :show
   post "/user/:display_name/confirm/resend" => "confirmations#confirm_resend", :as => :user_confirm_resend
@@ -235,32 +246,34 @@ OpenStreetMap::Application.routes.draw do
   post "/preview/:type" => "site#preview", :as => :preview
 
   # traces
-  resources :traces, :id => /\d+/, :except => [:show] do
-    resource :data, :module => :traces, :only => :show
-  end
-  get "/user/:display_name/traces/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/user/%{display_name}/traces/tag/%{tag}")
-  get "/user/:display_name/traces/tag/:tag" => "traces#index"
-  get "/user/:display_name/traces/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/user/%{display_name}/traces")
-  get "/user/:display_name/traces" => "traces#index"
-  get "/user/:display_name/traces/:id" => "traces#show", :id => /\d+/, :as => "show_trace"
-  scope "/user/:display_name/traces/:trace_id", :module => :traces, :trace_id => /\d+/ do
-    get "picture" => "pictures#show", :as => "trace_picture"
-    get "icon" => "icons#show", :as => "trace_icon"
-  end
-  get "/traces/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/tag/%{tag}")
-  get "/traces/tag/:tag" => "traces#index"
-  get "/traces/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces")
-  get "/traces/mine/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/mine/tag/%{tag}")
-  get "/traces/mine/tag/:tag" => "traces#mine"
-  get "/traces/mine/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/mine")
-  get "/traces/mine" => "traces#mine"
-  get "/trace/create", :to => redirect(:path => "/traces/new")
-  get "/trace/:id/data", :format => false, :id => /\d+/, :to => redirect(:path => "/traces/%{id}/data")
-  get "/trace/:id/data.:format", :id => /\d+/, :to => redirect(:path => "/traces/%{id}/data.%{format}")
-  get "/trace/:id/edit", :id => /\d+/, :to => redirect(:path => "/traces/%{id}/edit")
+  constraints(->(_req) { !Settings.traces_disabled }) do
+    resources :traces, :id => /\d+/, :except => [:show] do
+      resource :data, :module => :traces, :only => :show
+    end
+    get "/user/:display_name/traces/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/user/%{display_name}/traces/tag/%{tag}")
+    get "/user/:display_name/traces/tag/:tag" => "traces#index"
+    get "/user/:display_name/traces/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/user/%{display_name}/traces")
+    get "/user/:display_name/traces" => "traces#index"
+    get "/user/:display_name/traces/:id" => "traces#show", :id => /\d+/, :as => "show_trace"
+    scope "/user/:display_name/traces/:trace_id", :module => :traces, :trace_id => /\d+/ do
+      get "picture" => "pictures#show", :as => "trace_picture"
+      get "icon" => "icons#show", :as => "trace_icon"
+    end
+    get "/traces/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/tag/%{tag}")
+    get "/traces/tag/:tag" => "traces#index"
+    get "/traces/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces")
+    get "/traces/mine/tag/:tag/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/mine/tag/%{tag}")
+    get "/traces/mine/tag/:tag" => "traces#mine"
+    get "/traces/mine/page/:page", :page => /[1-9][0-9]*/, :to => redirect(:path => "/traces/mine")
+    get "/traces/mine" => "traces#mine"
+    get "/trace/create", :to => redirect(:path => "/traces/new")
+    get "/trace/:id/data", :format => false, :id => /\d+/, :to => redirect(:path => "/traces/%{id}/data")
+    get "/trace/:id/data.:format", :id => /\d+/, :to => redirect(:path => "/traces/%{id}/data.%{format}")
+    get "/trace/:id/edit", :id => /\d+/, :to => redirect(:path => "/traces/%{id}/edit")
 
-  namespace :traces, :path => "" do
-    resource :feed, :path => "(/user/:display_name)/traces(/tag/:tag)/rss", :only => :show, :defaults => { :format => :rss }
+    namespace :traces, :path => "" do
+      resource :feed, :path => "(/user/:display_name)/traces(/tag/:tag)/rss", :only => :show, :defaults => { :format => :rss }
+    end
   end
 
   # diary pages
@@ -273,7 +286,7 @@ OpenStreetMap::Application.routes.draw do
   get "/user/:display_name/diary/rss" => "diary_entries#rss", :defaults => { :format => :rss }
   get "/diary/:language/rss" => "diary_entries#rss", :defaults => { :format => :rss }
   get "/diary/rss" => "diary_entries#rss", :defaults => { :format => :rss }
-  get "/user/:display_name/diary" => "diary_entries#index"
+  get "/user/:display_name/diary" => "diary_entries#index", :as => :user_diary_entries
   get "/diary/:language" => "diary_entries#index"
   scope "/user/:display_name" do
     resources :diary_entries, :path => "diary", :only => [:edit, :update, :show], :id => /\d+/ do
@@ -294,6 +307,7 @@ OpenStreetMap::Application.routes.draw do
   resources :users, :path => "user", :param => :display_name, :only => [:new, :create, :show] do
     resource :role, :controller => "user_roles", :path => "roles/:role", :only => [:create, :destroy]
     scope :module => :users do
+      resource :heatmap, :only => :show
       resources :diary_comments, :only => :index
       resources :changeset_comments, :only => :index
       resource :issued_blocks, :path => "blocks_by", :only => :show
@@ -315,9 +329,25 @@ OpenStreetMap::Application.routes.draw do
   get "/account/edit", :to => redirect(:path => "/account"), :as => nil
 
   resource :dashboard, :only => [:show]
-  resource :preferences, :only => [:show, :update]
-  get "/preferences/edit", :to => redirect(:path => "/preferences")
-  resource :profile, :only => [:edit, :update]
+
+  namespace :profile, :module => :profiles do
+    resource :description, :only => [:show, :update]
+    resource :links, :only => [:show, :update]
+    resource :heatmap, :only => [:show, :update]
+    resource :image, :only => [:show, :update]
+    resource :company, :only => [:show, :update]
+    resource :location, :only => [:show, :update]
+  end
+  get "/profile", :to => redirect(:path => "/profile/description"), :as => nil
+  get "/profile/edit", :to => redirect(:path => "/profile/description"), :as => nil
+
+  scope :preferences, :module => :preferences do
+    resource :basic_preferences, :path => "basic", :only => [:show, :update]
+    resource :notification_preferences, :path => "notifications", :only => [:show, :update]
+    resource :advanced_preferences, :path => "advanced", :only => [:show, :update]
+  end
+  get "/preferences", :to => redirect(:path => "/preferences/basic"), :as => nil
+  get "/preferences/edit", :to => redirect(:path => "/preferences/basic"), :as => nil
 
   # friendships
   scope "/user/:display_name" do
@@ -333,17 +363,20 @@ OpenStreetMap::Application.routes.draw do
   end
 
   # geocoder
-  get "/search" => "geocoder#search"
-  post "/geocoder/search_latlon" => "geocoder#search_latlon"
-  post "/geocoder/search_osm_nominatim" => "geocoder#search_osm_nominatim"
-  post "/geocoder/search_osm_nominatim_reverse" => "geocoder#search_osm_nominatim_reverse"
+  resource :search, :only => :show do
+    scope :module => :searches do
+      resource :latlon_query, :only => :create
+      resource :nominatim_query, :only => :create
+      resource :nominatim_reverse_query, :only => :create
+    end
+  end
 
   # directions
-  get "/directions" => "directions#search"
+  resource :directions, :only => :show
 
   # export
-  post "/export/finish" => "export#finish"
-  get "/export/embed" => "export#embed"
+  post "/export/finish" => "export#create"
+  get "/export/embed" => "export#show"
 
   # messages
   resources :messages, :path_names => { :new => "new/:display_name" }, :id => /\d+/, :only => [:new, :create, :show, :destroy] do

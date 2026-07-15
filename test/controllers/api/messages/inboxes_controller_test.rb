@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 module Api
@@ -105,15 +107,15 @@ module Api
           jsm = js["messages"]
           assert_operator jsm.count, :<=, 20
 
-          break if jsm.nil? || jsm.count.zero?
+          break if jsm.nil? || jsm.none?
 
           assert_operator(jsm[0]["id"], :>=, params[:from_id]) unless params[:from_id].nil?
           # ensure ascending order
-          (0..jsm.count - 1).each do |i|
+          (0..(jsm.count - 1)).each do |i|
             assert_operator(jsm[i]["id"], :<, jsm[i + 1]["id"]) unless i == jsm.count - 1
             msgs_read[jsm[i]["id"]] = jsm[i]
           end
-          params[:from_id] = jsm[jsm.count - 1]["id"]
+          params[:from_id] = jsm[-1]["id"]
         end
         assert_equal 100, msgs_read.count
       end
@@ -139,7 +141,7 @@ module Api
           jsm = js["messages"]
           assert_operator jsm.count, :<=, 20
 
-          break if jsm.nil? || jsm.count.zero?
+          break if jsm.nil? || jsm.none?
 
           if params[:from_id].nil?
             real_max_id = jsm[0]["id"]
@@ -147,11 +149,11 @@ module Api
             assert_operator jsm[0]["id"], :<=, params[:from_id]
           end
           # ensure descending order
-          (0..jsm.count - 1).each do |i|
+          (0..(jsm.count - 1)).each do |i|
             assert_operator(jsm[i]["id"], :>, jsm[i + 1]["id"]) unless i == jsm.count - 1
             msgs_read[jsm[i]["id"]] = jsm[i]
           end
-          params[:from_id] = jsm[jsm.count - 1]["id"]
+          params[:from_id] = jsm[-1]["id"]
         end
         assert_equal 100, msgs_read.count
         assert_not_equal(-1, real_max_id)

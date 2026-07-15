@@ -1,16 +1,27 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: changesets
 #
-#  id          :bigint           not null, primary key
-#  user_id     :bigint           not null
-#  created_at  :datetime         not null
-#  min_lat     :integer
-#  max_lat     :integer
-#  min_lon     :integer
-#  max_lon     :integer
-#  closed_at   :datetime         not null
-#  num_changes :integer          default(0), not null
+#  id                     :bigint           not null, primary key
+#  user_id                :bigint           not null
+#  created_at             :datetime         not null
+#  min_lat                :integer
+#  max_lat                :integer
+#  min_lon                :integer
+#  max_lon                :integer
+#  closed_at              :datetime         not null
+#  num_changes            :integer          default(0), not null
+#  num_created_nodes      :integer          default(0), not null
+#  num_modified_nodes     :integer          default(0), not null
+#  num_deleted_nodes      :integer          default(0), not null
+#  num_created_ways       :integer          default(0), not null
+#  num_modified_ways      :integer          default(0), not null
+#  num_deleted_ways       :integer          default(0), not null
+#  num_created_relations  :integer          default(0), not null
+#  num_modified_relations :integer          default(0), not null
+#  num_deleted_relations  :integer          default(0), not null
 #
 # Indexes
 #
@@ -27,8 +38,6 @@
 #
 
 class Changeset < ApplicationRecord
-  require "xml/libxml"
-
   belongs_to :user, :counter_cache => true
 
   has_many :changeset_tags
@@ -46,9 +55,14 @@ class Changeset < ApplicationRecord
 
   validates :id, :uniqueness => true, :presence => { :on => :update },
                  :numericality => { :on => :update, :only_integer => true }
-  validates :num_changes, :presence => true,
-                          :numericality => { :only_integer => true,
-                                             :greater_than_or_equal_to => 0 }
+  [:num_changes,
+   :num_created_nodes, :num_modified_nodes, :num_deleted_nodes,
+   :num_created_ways, :num_modified_ways, :num_deleted_ways,
+   :num_created_relations, :num_modified_relations, :num_deleted_relations].each do |counter_attribute|
+    validates counter_attribute, :presence => true,
+                                 :numericality => { :only_integer => true,
+                                                    :greater_than_or_equal_to => 0 }
+  end
   validates :created_at, :closed_at, :presence => true
   validates :min_lat, :max_lat, :min_lon, :max_lat, :allow_nil => true,
                                                     :numericality => { :only_integer => true }
@@ -113,6 +127,10 @@ class Changeset < ApplicationRecord
     end
 
     cs
+  end
+
+  def visible_subscribers
+    subscribers.visible
   end
 
   ##
@@ -186,6 +204,9 @@ class Changeset < ApplicationRecord
     end
   end
 
+  def comment = tags["comment"].presence
+  def comment_html = comment ? RichText.new("text", comment).to_html : nil
+
   ##
   # set the auto-close time to be one hour in the future unless
   # that would make it more than 24h long, in which case clip to
@@ -222,4 +243,20 @@ class Changeset < ApplicationRecord
       "SELECT api_size_limit($1)", "api_size_limit", [user_id]
     )
   end
+
+  def num_created_elements = num_created_nodes + num_created_ways + num_created_relations
+  def num_modified_elements = num_modified_nodes + num_modified_ways + num_modified_relations
+  def num_deleted_elements = num_deleted_nodes + num_deleted_ways + num_deleted_relations
+
+  def num_changed_nodes = num_created_nodes + num_modified_nodes + num_deleted_nodes
+  def num_changed_ways = num_created_ways + num_modified_ways + num_deleted_ways
+  def num_changed_relations = num_created_relations + num_modified_relations + num_deleted_relations
+
+  def num_type_changes_in_sync?
+    num_changes == num_created_elements + num_modified_elements + num_deleted_elements
+  end
+
+  def actual_num_changed_nodes = num_type_changes_in_sync? ? num_changed_nodes : old_nodes.count
+  def actual_num_changed_ways = num_type_changes_in_sync? ? num_changed_ways : old_ways.count
+  def actual_num_changed_relations = num_type_changes_in_sync? ? num_changed_relations : old_relations.count
 end

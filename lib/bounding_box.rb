@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BoundingBox
   attr_reader :min_lon, :min_lat, :max_lon, :max_lat
 
@@ -140,17 +142,17 @@ class BoundingBox
   end
 
   def to_scaled
-    BoundingBox.new((min_lon * GeoRecord::SCALE),
-                    (min_lat * GeoRecord::SCALE),
-                    (max_lon * GeoRecord::SCALE),
-                    (max_lat * GeoRecord::SCALE))
+    BoundingBox.new(min_lon * GeoRecord::SCALE,
+                    min_lat * GeoRecord::SCALE,
+                    max_lon * GeoRecord::SCALE,
+                    max_lat * GeoRecord::SCALE)
   end
 
   def to_unscaled
-    BoundingBox.new((min_lon / GeoRecord::SCALE),
-                    (min_lat / GeoRecord::SCALE),
-                    (max_lon / GeoRecord::SCALE),
-                    (max_lat / GeoRecord::SCALE))
+    BoundingBox.new(min_lon / GeoRecord::SCALE,
+                    min_lat / GeoRecord::SCALE,
+                    max_lon / GeoRecord::SCALE,
+                    max_lat / GeoRecord::SCALE)
   end
 
   def to_a

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class BrowseTagsHelperTest < ActionView::TestCase
@@ -37,35 +39,62 @@ class BrowseTagsHelperTest < ActionView::TestCase
     html = format_value("phone", "+1 (234) 567-890 ;  +22334455")
     assert_dom_equal "<a href=\"tel:+1(234)567-890\" title=\"Call +1 (234) 567-890\">+1 (234) 567-890</a>; <a href=\"tel:+22334455\" title=\"Call +22334455\">+22334455</a>", html
 
-    html = format_value("wikipedia", "Test")
-    assert_dom_equal "<a title=\"The Test article on Wikipedia\" href=\"https://en.wikipedia.org/wiki/Test?uselang=en\">Test</a>", html
+    html = format_value("wikipedia", "en:Test")
+    assert_dom_equal "<a title=\"The en:Test article on Wikipedia\" href=\"https://en.wikipedia.org/wiki/Test?uselang=en\">en:Test</a>", html
+
+    html = format_value("wikipedia", "de:Berlin;en:London")
+    assert_dom_equal "<a title=\"The de:Berlin article on Wikipedia\" href=\"https://de.wikipedia.org/wiki/Berlin?uselang=en\">de:Berlin</a>;<a title=\"The en:London article on Wikipedia\" href=\"https://en.wikipedia.org/wiki/London?uselang=en\">en:London</a>",
+                     html
 
     html = format_value("wikidata", "Q42")
-    assert_dom_equal "<a title=\"The Q42 item on Wikidata\" href=\"//www.wikidata.org/entity/Q42?uselang=en\">Q42</a>", html
+    dom = parse_html html
+    assert_select dom, "a[title='The Q42 item on Wikidata'][href$='www.wikidata.org/entity/Q42?uselang=en']", :text => "Q42"
+    assert_select dom, "button.wdt-preview>svg>path[fill]", 1
 
     html = format_value("operator:wikidata", "Q12;Q98")
-    assert_dom_equal "<a title=\"The Q12 item on Wikidata\" href=\"//www.wikidata.org/entity/Q12?uselang=en\">Q12</a>;" \
-                     "<a title=\"The Q98 item on Wikidata\" href=\"//www.wikidata.org/entity/Q98?uselang=en\">Q98</a>", html
+    dom = parse_html html
+    assert_select dom, "a[title='The Q12 item on Wikidata'][href$='www.wikidata.org/entity/Q12?uselang=en']", :text => "Q12"
+    assert_select dom, "a[title='The Q98 item on Wikidata'][href$='www.wikidata.org/entity/Q98?uselang=en']", :text => "Q98"
+    assert_select dom, "button.wdt-preview>svg>path[fill]", 1
 
     html = format_value("name:etymology:wikidata", "Q123")
-    assert_dom_equal "<a title=\"The Q123 item on Wikidata\" href=\"//www.wikidata.org/entity/Q123?uselang=en\">Q123</a>", html
+    dom = parse_html html
+    assert_select dom, "a[title='The Q123 item on Wikidata'][href$='www.wikidata.org/entity/Q123?uselang=en']", :text => "Q123"
+    assert_select dom, "button.wdt-preview>svg>path[fill]", 1
 
     html = format_value("wikimedia_commons", "File:Test.jpg")
     assert_dom_equal "<a title=\"The File:Test.jpg item on Wikimedia Commons\" href=\"//commons.wikimedia.org/wiki/File:Test.jpg?uselang=en\">File:Test.jpg</a>", html
 
+    html = format_value("mapillary", "123;https://example.com")
+    assert_dom_equal "<a rel=\"nofollow\" href=\"https://www.mapillary.com/app/?pKey=123\">123</a>;<a href=\"https://example.com\" rel=\"nofollow\" dir=\"auto\">https://example.com</a>",
+                     html
+
     html = format_value("colour", "#f00")
-    dom = Rails::Dom::Testing.html_document_fragment.parse html
+    dom = parse_html html
     assert_select dom, "svg>rect>@fill", "#f00"
     assert_match(/#f00$/, html)
 
     html = format_value("email", "foo@example.com")
     assert_dom_equal "<a title=\"Email foo@example.com\" href=\"mailto:foo@example.com\">foo@example.com</a>", html
 
-    html = format_value("source", "https://example.com")
-    assert_dom_equal "<a href=\"https://example.com\" rel=\"nofollow\">https://example.com</a>", html
+    html = format_value("opening_hours", "Mo-Fr 09:00-12:00;Sa 09:00-17:00")
+    dom = parse_html html
+    assert_select dom, "a", 1
+    assert_select dom, "a[rel='nofollow']",
+                  :text => "Mo-Fr 09:00-12:00;Sa 09:00-17:00"
 
-    html = format_value("source", "https://example.com;hello;https://example.net")
-    assert_dom_equal "<a href=\"https://example.com\" rel=\"nofollow\">https://example.com</a>;hello;<a href=\"https://example.net\" rel=\"nofollow\">https://example.net</a>", html
+    html = format_value("website", "https://example.com")
+    assert_dom_equal "<a href=\"https://example.com\" rel=\"nofollow\" dir=\"auto\">https://example.com</a>", html
+
+    html = format_value("website", "https://example.com;hello;https://example.net")
+    assert_dom_equal "<a href=\"https://example.com\" rel=\"nofollow\" dir=\"auto\">https://example.com</a>;hello;<a href=\"https://example.net\" rel=\"nofollow\" dir=\"auto\">https://example.net</a>", html
+
+    html = format_value("website", "https://routing.openstreetmap.de/routed-car/route/v1/driving/-3.68,57.63;-3.68,57.61")
+    dom = parse_html html
+    assert_select dom, "a", 1
+
+    html = format_value("website", "example.com/page")
+    assert_dom_equal "example.com/page", html
   end
 
   def test_wiki_link
@@ -87,8 +116,8 @@ class BrowseTagsHelperTest < ActionView::TestCase
       link = wiki_link("key", "highway")
       assert_equal "https://wiki.openstreetmap.org/wiki/Tr:Key:highway?uselang=tr", link
 
-      link = wiki_link("tag", "highway=primary")
-      assert_equal "https://wiki.openstreetmap.org/wiki/Tag:highway=primary?uselang=tr", link
+      link = wiki_link("tag", "highway=path")
+      assert_equal "https://wiki.openstreetmap.org/wiki/Tag:highway=path?uselang=tr", link
     end
   end
 
@@ -131,16 +160,11 @@ class BrowseTagsHelperTest < ActionView::TestCase
 
     ### Prefixed wikidata-tags
 
-    # Not anything is accepted as prefix (only limited set)
-    links = wikidata_links("anything:wikidata", "Q13")
-    assert_nil links
-
-    # This for example is an allowed key
+    # examples for secondary wikidata keys
     links = wikidata_links("operator:wikidata", "Q24")
     assert_equal "//www.wikidata.org/entity/Q24?uselang=en", links[0][:url]
     assert_equal "Q24", links[0][:title]
 
-    # This verified buried is working
     links = wikidata_links("buried:wikidata", "Q24")
     assert_equal "//www.wikidata.org/entity/Q24?uselang=en", links[0][:url]
     assert_equal "Q24", links[0][:title]
@@ -149,7 +173,11 @@ class BrowseTagsHelperTest < ActionView::TestCase
     assert_equal "//www.wikidata.org/entity/Q26899?uselang=en", links[0][:url]
     assert_equal "Q26899", links[0][:title]
 
-    # Another allowed key, this time with multiple values and I18n
+    links = wikidata_links("name:etymology:wikidata", "Q121745508")
+    assert_equal "//www.wikidata.org/entity/Q121745508?uselang=en", links[0][:url]
+    assert_equal "Q121745508", links[0][:title]
+
+    # Another one with multiple values and I18n
     I18n.with_locale "dsb" do
       links = wikidata_links("brand:wikidata", "Q936;Q2013;Q1568346")
       assert_equal 3, links.length
@@ -172,59 +200,101 @@ class BrowseTagsHelperTest < ActionView::TestCase
     assert_equal "\rQ364\t\n\r ", links[2][:title]
     assert_equal "//www.wikidata.org/entity/Q4006?uselang=en", links[3][:url]
     assert_equal "\nQ4006", links[3][:title]
+
+    links = wikidata_links("source:species:wikidata", "PlantNet.org AI")
+    assert_nil links
   end
 
-  def test_wikipedia_link
-    link = wikipedia_link("wikipedia", "http://en.wikipedia.org/wiki/Full%20URL")
-    assert_nil link
+  def test_wikipedia_links
+    links = wikipedia_links("wikipedia", "http://en.wikipedia.org/wiki/Full%20URL")
+    assert_nil links
 
-    link = wikipedia_link("wikipedia", "https://en.wikipedia.org/wiki/Full%20URL")
-    assert_nil link
+    links = wikipedia_links("wikipedia", "https://en.wikipedia.org/wiki/Full%20URL")
+    assert_nil links
 
-    link = wikipedia_link("wikipedia", "Test")
-    assert_equal "https://en.wikipedia.org/wiki/Test?uselang=en", link[:url]
-    assert_equal "Test", link[:title]
+    links = wikipedia_links("wikipedia", "Test")
+    assert_nil links
 
-    link = wikipedia_link("wikipedia", "de:Test")
-    assert_equal "https://de.wikipedia.org/wiki/Test?uselang=en", link[:url]
-    assert_equal "de:Test", link[:title]
+    links = wikipedia_links("wikipedia", "de:Test")
+    assert_equal 1, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Test?uselang=en", links[0][:url]
+    assert_equal "de:Test", links[0][:title]
 
-    link = wikipedia_link("wikipedia:fr", "Portsea")
-    assert_equal "https://fr.wikipedia.org/wiki/Portsea?uselang=en", link[:url]
-    assert_equal "Portsea", link[:title]
+    links = wikipedia_links("wikipedia:fr", "Portsea")
+    assert_equal 1, links.length
+    assert_equal "https://fr.wikipedia.org/wiki/Portsea?uselang=en", links[0][:url]
+    assert_equal "Portsea", links[0][:title]
 
-    link = wikipedia_link("wikipedia:fr", "de:Test")
-    assert_equal "https://de.wikipedia.org/wiki/Test?uselang=en", link[:url]
-    assert_equal "de:Test", link[:title]
+    links = wikipedia_links("wikipedia:fr", "de:Test")
+    assert_equal 1, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Test?uselang=en", links[0][:url]
+    assert_equal "de:Test", links[0][:title]
 
-    link = wikipedia_link("wikipedia", "de:Englischer Garten (München)#Japanisches Teehaus")
-    assert_equal "https://de.wikipedia.org/wiki/Englischer_Garten_%28M%C3%BCnchen%29?uselang=en#Japanisches_Teehaus", link[:url]
-    assert_equal "de:Englischer Garten (München)#Japanisches Teehaus", link[:title]
+    links = wikipedia_links("wikipedia", "de:Englischer Garten (München)#Japanisches Teehaus")
+    assert_equal 1, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Englischer_Garten_%28M%C3%BCnchen%29?uselang=en#Japanisches_Teehaus", links[0][:url]
+    assert_equal "de:Englischer Garten (München)#Japanisches Teehaus", links[0][:title]
 
-    link = wikipedia_link("wikipedia", "de:Alte Brücke (Heidelberg)#Brückenaffe")
-    assert_equal "https://de.wikipedia.org/wiki/Alte_Br%C3%BCcke_%28Heidelberg%29?uselang=en#Br%C3%BCckenaffe", link[:url]
-    assert_equal "de:Alte Brücke (Heidelberg)#Brückenaffe", link[:title]
+    links = wikipedia_links("wikipedia", "de:Alte Brücke (Heidelberg)#Brückenaffe")
+    assert_equal 1, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Alte_Br%C3%BCcke_%28Heidelberg%29?uselang=en#Br%C3%BCckenaffe", links[0][:url]
+    assert_equal "de:Alte Brücke (Heidelberg)#Brückenaffe", links[0][:title]
 
-    link = wikipedia_link("wikipedia", "de:Liste der Baudenkmäler in Eichstätt#Brückenstraße 1, Ehemaliges Bauernhaus")
-    assert_equal "https://de.wikipedia.org/wiki/Liste_der_Baudenkm%C3%A4ler_in_Eichst%C3%A4tt?uselang=en#Br%C3%BCckenstra%C3%9Fe_1%2C_Ehemaliges_Bauernhaus", link[:url]
-    assert_equal "de:Liste der Baudenkmäler in Eichstätt#Brückenstraße 1, Ehemaliges Bauernhaus", link[:title]
+    links = wikipedia_links("wikipedia", "de:Liste der Baudenkmäler in Eichstätt#Brückenstraße 1, Ehemaliges Bauernhaus")
+    assert_equal 1, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Liste_der_Baudenkm%C3%A4ler_in_Eichst%C3%A4tt?uselang=en#Br%C3%BCckenstra%C3%9Fe_1%2C_Ehemaliges_Bauernhaus", links[0][:url]
+    assert_equal "de:Liste der Baudenkmäler in Eichstätt#Brückenstraße 1, Ehemaliges Bauernhaus", links[0][:title]
 
-    link = wikipedia_link("wikipedia", "en:Are Years What? (for Marianne Moore)")
-    assert_equal "https://en.wikipedia.org/wiki/Are_Years_What%3F_%28for_Marianne_Moore%29?uselang=en", link[:url]
-    assert_equal "en:Are Years What? (for Marianne Moore)", link[:title]
+    links = wikipedia_links("wikipedia", "en:Are Years What? (for Marianne Moore)")
+    assert_equal 1, links.length
+    assert_equal "https://en.wikipedia.org/wiki/Are_Years_What%3F_%28for_Marianne_Moore%29?uselang=en", links[0][:url]
+    assert_equal "en:Are Years What? (for Marianne Moore)", links[0][:title]
 
     I18n.with_locale "pt-BR" do
-      link = wikipedia_link("wikipedia", "zh-classical:Test#Section")
-      assert_equal "https://zh-classical.wikipedia.org/wiki/Test?uselang=pt-BR#Section", link[:url]
-      assert_equal "zh-classical:Test#Section", link[:title]
+      links = wikipedia_links("wikipedia", "zh-classical:Test#Section")
+      assert_equal 1, links.length
+      assert_equal "https://zh-classical.wikipedia.org/wiki/Test?uselang=pt-BR#Section", links[0][:url]
+      assert_equal "zh-classical:Test#Section", links[0][:title]
     end
 
-    link = wikipedia_link("subject:wikipedia", "en:Catherine McAuley")
-    assert_equal "https://en.wikipedia.org/wiki/Catherine_McAuley?uselang=en", link[:url]
-    assert_equal "en:Catherine McAuley", link[:title]
+    links = wikipedia_links("subject:wikipedia", "en:Catherine McAuley")
+    assert_equal 1, links.length
+    assert_equal "https://en.wikipedia.org/wiki/Catherine_McAuley?uselang=en", links[0][:url]
+    assert_equal "en:Catherine McAuley", links[0][:title]
 
-    link = wikipedia_link("foo", "Test")
-    assert_nil link
+    links = wikipedia_links("artist:wikipedia", "en:Pablo Picasso")
+    assert_equal 1, links.length
+    assert_equal "https://en.wikipedia.org/wiki/Pablo_Picasso?uselang=en", links[0][:url]
+    assert_equal "en:Pablo Picasso", links[0][:title]
+
+    links = wikipedia_links("architect:wikipedia", "en:Frank Lloyd Wright")
+    assert_equal 1, links.length
+    assert_equal "https://en.wikipedia.org/wiki/Frank_Lloyd_Wright?uselang=en", links[0][:url]
+    assert_equal "en:Frank Lloyd Wright", links[0][:title]
+
+    links = wikipedia_links("buried:wikipedia", "en:Stephen Hawking")
+    assert_equal 1, links.length
+    assert_equal "https://en.wikipedia.org/wiki/Stephen_Hawking?uselang=en", links[0][:url]
+    assert_equal "en:Stephen Hawking", links[0][:title]
+
+    links = wikipedia_links("foo", "Test")
+    assert_nil links
+
+    # Multiple values separated by ;
+    links = wikipedia_links("wikipedia", "Test;Hello")
+    assert_nil links
+
+    links = wikipedia_links("wikipedia", "de:Berlin;en:London;fr:Paris")
+    assert_equal 3, links.length
+    assert_equal "https://de.wikipedia.org/wiki/Berlin?uselang=en", links[0][:url]
+    assert_equal "de:Berlin", links[0][:title]
+    assert_equal "https://en.wikipedia.org/wiki/London?uselang=en", links[1][:url]
+    assert_equal "en:London", links[1][:title]
+    assert_equal "https://fr.wikipedia.org/wiki/Paris?uselang=en", links[2][:url]
+    assert_equal "fr:Paris", links[2][:title]
+
+    links = wikipedia_links("fixme:wikipedia", "The wikipedia tag links to a list article, not an article about this specific feature.")
+    assert_nil links
   end
 
   def test_wikimedia_commons_link
@@ -252,6 +322,15 @@ class BrowseTagsHelperTest < ActionView::TestCase
     link = wikimedia_commons_link("wikimedia_commons", "File:Corsica-vizzavona-abri-southwell.jpg#mediaviewer/File:Corsica-vizzavona-abri-southwell.jpg")
     assert_equal "//commons.wikimedia.org/wiki/File:Corsica-vizzavona-abri-southwell.jpg?uselang=en", link[:url]
     assert_equal "File:Corsica-vizzavona-abri-southwell.jpg#mediaviewer/File:Corsica-vizzavona-abri-southwell.jpg", link[:title]
+
+    # Reject namespaces other than File and Category
+    link = wikimedia_commons_link("wikimedia_commons", "Commons:Featured pictures")
+    assert_nil link
+
+    # Secondary Wikimedia Commons links
+    link = wikimedia_commons_link("artist:wikimedia_commons", "File:Unknown Artist Portrait.jpg")
+    assert_equal "//commons.wikimedia.org/wiki/File:Unknown%20Artist%20Portrait.jpg?uselang=en", link[:url]
+    assert_equal "File:Unknown Artist Portrait.jpg", link[:title]
 
     I18n.with_locale "pt-BR" do
       link = wikimedia_commons_link("wikimedia_commons", "File:Test.jpg")

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class UserBlocksController < ApplicationController
   include UserMethods
   include PaginationMethods
 
-  layout "site"
+  layout :site_layout
 
   before_action :authorize_web
   before_action :set_locale
@@ -20,12 +22,10 @@ class UserBlocksController < ApplicationController
 
     user_blocks = UserBlock.all
 
-    @user_blocks, @newer_user_blocks_id, @older_user_blocks_id = get_page_items(user_blocks, :includes => [:user, :creator, :revoker])
+    @user_blocks = get_page_items(user_blocks, :includes => [:user, :creator, :revoker])
 
     @show_user_name = true
     @show_creator_name = true
-
-    render :partial => "page" if turbo_frame_request_id == "pagination"
   end
 
   def show
@@ -110,7 +110,7 @@ class UserBlocksController < ApplicationController
   ##
   # ensure that there is a "user_block" instance variable
   def lookup_user_block
-    @user_block = UserBlock.find(params[:id])
+    @user_block = UserBlock.find(params.expect(:id))
   rescue ActiveRecord::RecordNotFound
     render :action => "not_found", :status => :not_found
   end
@@ -121,7 +121,7 @@ class UserBlocksController < ApplicationController
   # called before two different actions, each of which should redirect
   # to a different place.
   def require_valid_params
-    @block_period = params[:user_block_period].to_i
+    @block_period = params.expect(:user_block_period).to_i
     @valid_params = false
 
     if UserBlock::PERIODS.exclude?(@block_period)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserTermsSeenTest < ActionDispatch::IntegrationTest
@@ -23,7 +25,7 @@ class UserTermsSeenTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_template "sessions/new"
-    post "/login", :params => { :username => user.email, :password => "test", :referer => "/diary/new" }
+    post "/login", :params => { :username => user.email, :password => "s3cr3t", :referer => "/diary/new" }
     # but now we need to look at the terms
     assert_redirected_to account_terms_path(:referer => "/diary/new")
     follow_redirect!
@@ -47,7 +49,7 @@ class UserTermsSeenTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_template "sessions/new"
-    post "/login", :params => { :username => user.email, :password => "test", :referer => "/diary/new" }
+    post "/login", :params => { :username => user.email, :password => "s3cr3t", :referer => "/diary/new" }
     # but now we need to look at the terms
     assert_redirected_to account_terms_path(:referer => "/diary/new")
 

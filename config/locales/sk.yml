@@ -2,16 +2,19 @@
 # Exported from translatewiki.net
 # Export driver: phpyaml
 # Author: Aceman444
+# Author: Cevioch
 # Author: Chiak
 # Author: Dušan Kreheľ
 # Author: Filip009
 # Author: Gravitystorm
 # Author: Helix84
 # Author: Jose1711
+# Author: KormiSK
 # Author: KuboF
 # Author: Kusavica
 # Author: Lesny skriatok
 # Author: Lexected
+# Author: LiJu09
 # Author: Macofe
 # Author: MartinSNV
 # Author: Marwin H.H.
@@ -19,6 +22,7 @@
 # Author: Mikulas1
 # Author: Mimarik
 # Author: Nemo bis
+# Author: Oivo35
 # Author: Oujon
 # Author: Rudko
 # Author: Ruila
@@ -26,14 +30,23 @@
 # Author: Teslaton
 # Author: Tj
 # Author: TomášPolonec
+# Author: Username1233219128
 # Author: Vladolc
 # Author: Wizzard
 # Author: Yardom78
 ---
 sk:
+  html:
+    dir: ltr
+  date:
+    formats:
+      contribution_calendar: '%-d. %B'
   time:
     formats:
       friendly: '%e. %B %Y o %H:%M'
+      blog: '%e. %B %Y'
+  count:
+    at_least_pattern: '%{count}+'
   helpers:
     file:
       prompt: Vybrať súbor
@@ -66,6 +79,10 @@ sk:
       models:
         user_mute:
           is_already_muted: je už stlmený/á.
+        social_link:
+          attributes:
+            url:
+              http_parse_error: URL adresa by mala začínať na http:// alebo https://
     models:
       acl: Zoznam prístupových práv
       changeset: Sada zmien
@@ -99,23 +116,10 @@ sk:
       user: Používateľ
       user_preference: Osobné nastavenia
       user_token: Používateľský token
-      way: Cesta
-      way_node: Bod cesty
+      way: Línia
+      way_node: Uzol cesty
       way_tag: Značka cesty
     attributes:
-      client_application:
-        name: Meno (povinné)
-        url: URL adresa hlavnej aplikácie (vyžaduje sa)
-        callback_url: URL pre spätné volanie (callback)
-        support_url: URL s podporou
-        allow_read_prefs: čítať ich používateľské nastavenia
-        allow_write_prefs: upraviť ich používateľské nastavenia
-        allow_write_diary: vytvoriť položky denníka a komentáre
-        allow_write_api: upravovať mapu
-        allow_write_changeset_comments: komentovať sady zmien
-        allow_read_gpx: čítať ich súkromné GPS stopy
-        allow_write_gpx: nahrávať GPS stopy
-        allow_write_notes: meniť poznámky
       diary_comment:
         body: Text
       diary_entry:
@@ -164,8 +168,10 @@ sk:
         active: Aktívny
         display_name: Zobrazované meno
         description: Popis
+        company: Spoločnosť
         home_lat: Zemepisná šírka
         home_lon: Zemepisná dĺžka
+        home_location_name: Názov domovskej polohy
         languages: Preferované jazyky
         preferred_editor: Preferovaný editor
         pass_crypt: Heslo
@@ -249,6 +255,9 @@ sk:
         few: pred %{count} rokmi
         many: pred %{count} rokmi
         other: pred %{count} rokmi
+  printable_name:
+    with_name_html: '%{name} (%{id})'
+    current_and_old_links_html: '%{current_link}, %{old_link}'
   editor:
     default: Predvolený (v súčasnosti %{name})
     id:
@@ -260,8 +269,11 @@ sk:
   auth:
     providers:
       none: Žiadna
+      openid: OpenID
       google: Google
+      apple: Apple
       facebook: Facebook
+      microsoft: Microsoft
       github: GitHub
       wikipedia: Wikipédia
   api:
@@ -294,22 +306,23 @@ sk:
       my_account: Môj účet
       current email address: Aktuálna e-mailová adresa
       external auth: Externá autentifikácia
-      openid:
-        link: https://wiki.openstreetmap.org/wiki/CS:OpenID
-        link text: čo to znamená?
-      contributor terms:
+      contributor_terms:
         heading: Podmienky prispievania
-        agreed: Súhlasili ste s novými Podmienkami prispievania.
-        not yet agreed: Zatiaľ ste neodsúhlasili nové Podmienky prispievania.
-        review link text: Keď budete mať čas, pomocou tohoto odkazu si prosím prečítajte
-          a odsúhlaste nové Podmienky prispievania.
+        agreed: Súhlasili ste s novými Podmienkami prispievania dňa %{date}.
+        not_agreed: Zatiaľ ste nesúhlasili s Podmienkami prispievania.
         agreed_with_pd: Deklarovali ste tiež, že svoje úpravy považujete za slobodné
           dielo.
-        link: https://wiki.openstreetmap.org/wiki/Cs:Open_Database_License/Contributor_Terms?uselang=cs
-        link text: čo to znamená?
         not_agreed_with_pd: Nevyhlásili ste, že svoje úpravy považujete za voľné dielo
           (Public Domain).
-        pd_link_text: vyhlásiť
+        review: Prečítajte si zmluvné podmienky
+        review_and_accept: Prečítajte si a prijmite zmluvné podmienky
+        consider_pd: Považovať za voľné dielo (Public domain)
+      terms_of_use:
+        heading: Podmienky používania
+        agreed: Súhlasili ste s Podmienkami použitia dňa %{date}.
+        not_agreed: Zatiaľ ste nesúhlasili s Podmienkami použitia.
+        review: Prečítajte si zmluvné podmienky
+        review_and_accept: Prečítajte si a prijmite zmluvné podmienky
       save changes button: Uložiť zmeny
       delete_account: Odstrániť účet...
     go_public:
@@ -320,7 +333,9 @@ sk:
         na tlačidlo nižšie.
       only_public_can_edit: Od prechodu na API 0.6 môžu mapové údaje upravovať iba
         verejní používatelia.
+      find_out_why_html: (%{link}).
       find_out_why: zistite prečo
+      find_out_why_url: https://wiki.openstreetmap.org/wiki/Anonymous_edits
       email_not_revealed: Vaša e-mailová adresa nebude zverejnená.
       not_reversible: Túto akciu nie je možné vrátiť späť a všetci noví používatelia
         sú teraz v predvolenom nastavení verejní.
@@ -338,7 +353,7 @@ sk:
         delete_account: Odstrániť účet
         delete_introduction: 'Svoj účet v OpenStreetMap môžete zrušiť pomocou tlačidla
           nižšie. Prosím uvedomte si nasledovné podrobnosti:'
-        delete_profile: Vaše profilové informácie, váš avatar, popis a domovské miesto
+        delete_profile: Vaše profilové informácie, váš avatar, popis a domovská poloha
           budú odstránené.
         delete_display_name: Vaše zobrazované meno bude odstránené a môže byť znovu
           použité inými účtami (používateľmi).
@@ -362,14 +377,16 @@ sk:
         heading_ct: Podmienky prispievania
         read and accept with tou: Prečítajte si zmluvu s prispievateľom a podmienky
           používania, po dokončení začiarknite obe políčka a potom stlačte tlačidlo
-          pokračovať.
+          "Pokračovať".
         contributor_terms_explain: Táto zmluva upravuje podmienky vašich existujúcich
           a budúcich príspevkov.
         read_ct: Prečítal som si vyššie uvedené podmienky prispievateľa a súhlasím
           s nimi
-        tou_explain_html: Tieto %{tou_link} upravujú používanie webovej stránky a
-          ďalšej infraštruktúry poskytovanej OSMF. Kliknite na odkaz, prečítajte si
-          text a súhlaste s ním.
+        tou_explain:
+          html: Tieto %{tou_link} upravujú používanie webovej stránky a ďalšej infraštruktúry
+            poskytovanej OSMF. Kliknite na odkaz, prečítajte si text a súhlaste s
+            ním.
+          tou: Podmienky používania
         read_tou: Prečítal som si Podmienky používania a súhlasím s nimi
         guidance_info_html: 'Informácie, ktoré vám pomôžu pochopiť tieto podmienky:
           %{readable_summary_link} a niektoré %{informal_translations_link}'
@@ -397,6 +414,7 @@ sk:
         consider_pd: Svoje príspevky považujem za voľné dielo (Public Domain)
         consider_pd_why: Prečo by som mal chcieť, aby boli moje príspevky voľným dielom
           (Public Domain)?
+        consider_pd_why_url: https://osmfoundation.org/wiki/Licence_and_Legal_FAQ/Why_would_I_want_my_contributions_to_be_public_domain
         confirm: Potvrdiť
       create:
         successfully_declared: Úspešne ste vyhlásili, že vaše úpravy považujete za
@@ -423,14 +441,14 @@ sk:
       many: '%{count} ciest'
       other: '%{count} ciest'
     download_xml: Stiahnuť XML
-    view_history: Zobraziť históriu
     view_unredacted_history: Zobraziť neredigovanú históriu
-    view_details: Zobraziť detaily
     location: 'Poloha:'
+    common_details:
+      coordinates_html: '%{latitude}, %{longitude}'
     node:
       title_html: 'Uzol: %{name}'
     way:
-      title_html: 'Cesta: %{name}'
+      title_html: 'Línia: %{name}'
       nodes: Uzly
       nodes_count:
         one: 1 uzol
@@ -438,8 +456,10 @@ sk:
         many: '%{count} uzlov'
         other: '%{count} uzlov'
       also_part_of_html:
-        one: súčasťou cesty %{related_ways}
-        other: súčasťou ciest %{related_ways}
+        one: súčasťou línie %{related_ways}
+        few: súčasťou línií %{related_ways}
+        many: súčasťou línií %{related_ways}
+        other: súčasťou línií %{related_ways}
     relation:
       title_html: 'Relácia: %{name}'
       members: Prvky
@@ -449,10 +469,11 @@ sk:
         many: '%{count} prvkov'
         other: '%{count} prvkov'
     relation_member:
+      entry_html: '%{type} %{name}'
       entry_role_html: '%{type} %{name} ako %{role}'
       type:
         node: Uzol
-        way: Cesta
+        way: Línia
         relation: Relácia
     containing_relation:
       entry_role_html: '%{relation_name} (ako %{relation_role})'
@@ -463,7 +484,7 @@ sk:
       sorry: Ľutujeme, ale načítanie dát typu %{type} číslo %{id} trvalo príliš dlho.
       type:
         node: uzol
-        way: cesta
+        way: línia
         relation: relácia
         changeset: sada zmien
         note: poznámka
@@ -473,7 +494,7 @@ sk:
         pretože bola skrytá. Viac informácií nájdete na %{redaction_link}.
       type:
         node: uzol
-        way: cesta
+        way: línia
         relation: vzťah
     start_rjs:
       feature_warning: Načítava sa %{num_features} objektov, čo môže váš prehliadač
@@ -487,11 +508,23 @@ sk:
         key: Stránka s popisom značky %{key} na wiki
         tag: Stránka s popisom značky %{key}=%{value} na wiki
       wikidata_link: Položka %{page} na Wikidata
+      wikidata_preview:
+        one: Náhľad položky Wikidát
+        few: Náhľad položiek Wikidát
+        many: Náhľad položiek Wikidát
+        other: Náhľad položiek Wikidát
       wikipedia_link: Článok %{page} na Wikipédii
       wikimedia_commons_link: Položka %{page} na Wikimedia Commons
       telephone_link: Vytočiť %{phone_number}
       colour_preview: Náhľad farby %{colour_value}
       email_link: E-mail %{email}
+    versions_navigation:
+      node: Uzol
+      way: Línia
+      relation: Relácia
+      history: História
+      version: 'Verzia #%{version}'
+      versions_label: 'Verzie:'
   feature_queries:
     show:
       title: Prieskum prvkov
@@ -506,6 +539,8 @@ sk:
         title_html: 'História cesty: %{name}'
       relation:
         title_html: 'História relácie: %{name}'
+      older_versions: Staršie verzie
+      newer_versions: Novšie verzie
     actions:
       view_redacted_data: Zobraziť upravené údaje
       view_redaction_message: Zobraziť správu o úprave
@@ -534,11 +569,21 @@ sk:
       sorry: Ľutujeme, reláciu č. %{id} sa nepodarilo nájsť.
     timeout:
       sorry: Ľutujeme, načítanie údajov pre reláciu s ID %{id} trvalo príliš dlho.
+  relation_members:
+    not_found_message:
+      sorry: Ľutujeme, reláciu č. %{id} sa nepodarilo nájsť.
+    timeout:
+      sorry: Ľutujeme, načítanie údajov pre reláciu s ID %{id} trvalo príliš dlho.
   old_relations:
     not_found_message:
       sorry: Ľutujeme, reláciu č. %{id} verzie %{version} sa nepodarilo nájsť.
     timeout:
       sorry: Prepáčte, načítanie histórie relácie s ID %{id} trvalo príliš dlho.
+  old_relation_members:
+    not_found_message:
+      sorry: Ľutujeme, reláciu č. %{id} verzie %{version} sa nepodarilo nájsť.
+    timeout:
+      sorry: Ľutujeme, načítanie členov relácie s ID %{id} trvalo príliš dlho.
   changeset_comments:
     feeds:
       comment:
@@ -551,7 +596,7 @@ sk:
         sorry: Ľutujeme, ale vami požadovaný zoznam komentárov k sade zmien sa načítaval
           príliš dlho.
   changesets:
-    changeset:
+    changeset_line:
       comments:
         one: '%{count} komentár'
         few: '%{count} komentáre'
@@ -562,11 +607,26 @@ sk:
         few: '%{count} zmeny'
         many: '%{count} zmien'
         other: '%{count} zmien'
+      n_elements_created:
+        one: '%{count} prvok vytvorený'
+        few: '%{count} prvky vytvorené'
+        many: '%{count} prvkov vytvorených'
+        other: '%{count} prvkov vytvorených'
+      n_elements_modified:
+        one: '%{count} prvok upravený'
+        few: '%{count} prvky upravené'
+        many: '%{count} prvkov upravených'
+        other: '%{count} prvkov upravených'
+      n_elements_deleted:
+        one: '%{count} prvok odstránený'
+        few: '%{count} prvky odstránené'
+        many: '%{count} prvkov odstránených'
+        other: '%{count} prvkov odstránených'
     index:
       title: Sady zmien
       title_user: Sady zmien používateľa %{user}
       title_user_link_html: Sady zmien od %{user_link}
-      title_followed: Sady zmien používateľov, ktorí vás sledujú
+      title_followed: Sady zmien používateľov, ktorých sledujete
       title_nearby: Sady zmien používateľov v okolí
       empty: Neboli nájdené žiadne sady zmien.
       empty_area: V tejto oblasti neexistujú žiadne sady zmien.
@@ -574,6 +634,8 @@ sk:
       no_more: Nie sú ďalšie sady zmien.
       no_more_area: Nie sú ďalšie sady zmien v tejto oblasti.
       no_more_user: Nie sú ďalšie sady zmien tohoto používateľa.
+      older_changesets: Staršie sady zmien
+      newer_changesets: Novšie sady zmien
       feed:
         title: Sada zmien %{id}
         title_comment: Sada zmien %{id} - %{comment}
@@ -602,10 +664,10 @@ sk:
       changesetxml: XML sady zmien
       osmchangexml: osmChange XML
     paging_nav:
-      nodes_title: Body
+      nodes_title: Uzly
       nodes_paginated: Uzly (%{x}–%{y} z %{count})
       ways_title: Línie
-      ways_paginated: Cesty (%{x}–%{y} z %{count})
+      ways_paginated: Línie (%{x}–%{y} z %{count})
       relations_title: Relácie
       relations_paginated: Relácie (%{x}–%{y} z %{count})
       range: '%{x}-%{y} z %{count}'
@@ -644,7 +706,7 @@ sk:
       no_home_location_html: '%{edit_profile_link} a nastavte svoju domovskú polohu,
         aby ste mohli vidieť používateľov vo vašom okolí.'
       edit_your_profile: Upraviť váš profil
-      followings: Sledovatelia
+      followings: Používatelia, ktorých sledujete
       no followings: Zatiaľ ste nesledovali žiadneho používateľa.
       nearby users: Ďalší používatelia v okolí
       no nearby users: Nie je tu iný používateľ, ktorý priznáva mapovanie v okolí.
@@ -660,13 +722,10 @@ sk:
       use_map_link: Použiť mapu
     index:
       title: Denníky používateľov
-      title_followed: Denníky sledujúcich
+      title_followed: Denníky sledovaných používateľov
       title_nearby: Denníky používateľov v okolí
       user_title: Denník používateľa %{user}
       in_language_title: Záznamy denníka v jazyku %{language}
-      new: Nový záznam denníka
-      new_title: Napísať nový záznam do používateľského denníka
-      my_diary: Môj denník
       no_entries: Žiadny záznam denníka
     page:
       recent_entries: Nedávne záznamy denníka
@@ -681,7 +740,7 @@ sk:
       unsubscribe: Zrušiť odber
       leave_a_comment: Zanechať komentár
       login_to_leave_a_comment_html: '%{login_link} pre zanechanie komentára'
-      login: Prihlásiť sa
+      login: Prihláste sa
     no_such_entry:
       title: Takýto záznam denníka neexistuje
       heading: Záznam s ID %{id} neexistuje
@@ -690,6 +749,7 @@ sk:
     diary_entry:
       posted_by_html: Napísal %{link_user} %{created} v jazyku %{language_link}.
       updated_at_html: Naposled upravené %{updated}.
+      full_entry: Pozrieť celý záznam
       comment_link: Komentár k záznamu
       reply_link: Poslať správu autorovi
       comment_count:
@@ -711,6 +771,7 @@ sk:
       report: Nahlásiť tento komentár
     location:
       location: 'Poloha:'
+      coordinates: '%{latitude}; %{longitude}'
     feed:
       user:
         title: Záznamy OpenStreetMap denníka používateľa %{user}
@@ -728,6 +789,19 @@ sk:
     unsubscribe:
       heading: Odhlásiť sa diskusie v denníku sledujúceho?
       button: Zrušiť odber diskusie
+    navigation:
+      in_language: Záznamy denníka v jazyku %{language}
+      my_diary: Môj denník
+      new: Nový záznam denníka
+      new_title: Napísať nový záznam do používateľského denníka
+    profile_diaries:
+      latest_diaries: Najnovšie denníky
+      comments:
+        one: 1 komentár
+        few: '%{count} komentáre'
+        many: '%{count} komentárov}'
+        other: '%{count} komentárov'
+      title_label: Záznam denníka
   diary_comments:
     new:
       heading: Pridať komentár k diskusii v denníku sledujúceho?
@@ -764,6 +838,7 @@ sk:
       profile: Zobraziť vaše profilové údaje
   errors:
     contact:
+      contact_url: https://wiki.openstreetmap.org/wiki/Contact
       contact_url_title: Vysvetlenie rôznych kontaktných kanálov
       contact: kontaktovať
       contact_the_community_html: Neváhajte %{contact_link} komunitu OpenStreetMap,
@@ -784,6 +859,9 @@ sk:
       title: Súbor nenájdený
       description: Nepodarilo sa nájsť súbor/adresár/operáciu API s týmto názvom na
         serveri OpenStreetMap (HTTP 404)
+  export:
+    show:
+      title: Včlenený OpenStreetMap
   follows:
     show:
       follow:
@@ -802,12 +880,8 @@ sk:
       success: Úspešne ste prestali sledovať %{name}.
       not_followed: Nesledujete používateľa %{name}.
   geocoder:
-    search:
-      title:
-        latlon: Interné
-        osm_nominatim: OpenStreetMap Nominatim
-        osm_nominatim_reverse: OpenStreetMap Nominatim
     search_osm_nominatim:
+      prefix_format: '%{name}'
       prefix:
         aerialway:
           cable_car: Lanovka
@@ -817,11 +891,11 @@ sk:
           magic_carpet: Lyžiarsky povrchový výťah
           platter: Tanierový vlek
           pylon: Stĺp
-          station: Lanovková stanica
+          station: Stanica lanovky
           t-bar: Kotva
           "yes": Lanovka
         aeroway:
-          aerodrome: Aerodróm
+          aerodrome: Letisko
           airstrip: Vzletová a pristávacia dráha
           apron: Letisková parkovacia plocha
           gate: Letisková brána pre pasažierov
@@ -836,9 +910,9 @@ sk:
           terminal: Letiskový terminál
           windsock: Veterný rukáv
         amenity:
-          animal_boarding: Nakladanie zvierat
+          animal_boarding: Hotel pre zvieratá
           animal_shelter: Útulok pre zvieratá
-          arts_centre: Kultúrne stredisko
+          arts_centre: Umelecké centrum
           atm: Bankomat
           bank: Banka
           bar: Bar
@@ -864,7 +938,7 @@ sk:
           clinic: Poliklinika
           clock: Hodiny
           college: Vysoká škola
-          community_centre: Kultúrne stredisko
+          community_centre: Komunitné centrum
           conference_centre: Konferenčné centrum
           courthouse: Súd
           crematorium: Krematórium
@@ -914,7 +988,7 @@ sk:
           public_bath: Verejné kúpele
           public_bookcase: Verejná knihovnička
           public_building: Verejná budova
-          ranger_station: Stanica pre poštový kuriér
+          ranger_station: Stanica strážcov prírody
           recycling: Recyklačné miesto
           restaurant: Reštaurácia
           sanitary_dump_station: Sanitárna skládka
@@ -947,9 +1021,13 @@ sk:
           aboriginal_lands: Pôda domorodcov
           administrative: Administratívna hranica
           census: Hranica pre potreby sčítania
+          low_emission_zone: Nízkoemisná zóna
           national_park: Národný park
           political: Hranica volebného okrsku
+          postal_code: PSČ
           protected_area: Chránená oblasť
+          public_transport: Obvod hromadnej dopravy
+          timezone: Časové pásmo
           "yes": Hranica
         bridge:
           aqueduct: Akvadukt
@@ -1003,7 +1081,7 @@ sk:
           sty: Krmník
           temple: Budova chrámu
           terrace: Radová zástavba
-          train_station: Železničná stanica
+          train_station: Budova železničnej stanice
           university: Univerzitné budovy
           warehouse: Sklad
           "yes": Budova
@@ -1061,7 +1139,7 @@ sk:
           crossing: Priechod
           cycleway: Cyklistický chodník
           elevator: Výťah
-          emergency_access_point: Stanica prvej pomoci
+          emergency_access_point: Bod záchrany
           emergency_bay: Núdzová odstavná plocha
           footway: Chodník
           ford: Brod
@@ -1079,12 +1157,12 @@ sk:
           primary_link: Cesta I. triedy
           proposed: Navrhovaná cesta
           raceway: Pretekárska dráha
-          residential: Ulica v obytnej štvrti
+          residential: Obytná ulica
           rest_area: Odpočívadlo
           road: Cesta
           secondary: Cesta II. triedy
           secondary_link: Cesta II. triedy
-          service: Prístupová komunikácia
+          service: Účelová cesta
           services: Diaľničné odpočívadlo
           speed_camera: Radar
           steps: Schody
@@ -1125,6 +1203,7 @@ sk:
           milestone: Historický míľnik
           mine: Baňa
           mine_shaft: Banská šachta
+          monastery: Historický kláštor
           monument: Pamätník
           railway: Historická železnica
           roman_road: Rímska cesta
@@ -1158,7 +1237,7 @@ sk:
           conservation: Chránené územie
           construction: Stavenisko
           farmland: Poľnohospodárska pôda
-          farmyard: Dvor
+          farmyard: Farma
           forest: Les (udržiavaný)
           garages: Garáže
           grass: Tráva
@@ -1178,7 +1257,7 @@ sk:
           reservoir_watershed: Povodie nádrže
           residential: Obytná oblasť
           retail: Maloobchodná zóna
-          village_green: Verejná zeleň
+          village_green: Centrálna zeleň osídlenia
           vineyard: Vinica
           "yes": Využitie krajiny
         leisure:
@@ -1191,11 +1270,11 @@ sk:
           bowling_alley: Bowlingová dráha
           common: Verejné priestranstvo
           dance: Tančiareň
-          dog_park: Psí park
+          dog_park: Psí park/výbeh
           firepit: Ohnisko
           fishing: Rybolov (športový)
           fitness_centre: Fitnescentrum
-          fitness_station: Fitnes zastávka
+          fitness_station: Vonkajšia telocvičňa
           garden: Záhrada
           golf_course: Golfové ihrisko
           horse_riding: Jazdecké centrum
@@ -1215,7 +1294,7 @@ sk:
           sports_centre: Športové stredisko
           stadium: Štadión
           swimming_pool: Plaváreň
-          track: Bežecká dráha
+          track: Pretekárska dráha (nie motorové športy)
           water_park: Aquapark
           "yes": Voľný čas
         lock:
@@ -1251,6 +1330,7 @@ sk:
           mineshaft: Šachta bane
           monitoring_station: Monitorovacia stanica
           petroleum_well: Ropný vrt
+          planter: Kvetináč
           pier: Mólo
           pipeline: Vodovod
           pumping_station: Prečerpávacia stanica
@@ -1269,7 +1349,7 @@ sk:
           water_tap: Vodovodný kohútik
           water_tower: Vodojem
           water_well: Studňa
-          water_works: Vodáreň
+          water_works: Úpravňa vody
           windmill: Veterný mlyn
           works: Továreň
           "yes": Vytvorené človekom
@@ -1361,20 +1441,20 @@ sk:
         place:
           allotments: Záhradkárska osada
           archipelago: Súostrovie
-          city: Mesto nad 100 tis.
+          city: Veľkomesto
           city_block: Mestský blok
-          country: Štát
+          country: Krajina
           county: Okres
           farm: Farma
-          hamlet: Osada do 200
+          hamlet: Osada
           house: Budova
           houses: Budovy
           island: Ostrov
           islet: Ostrovček
           isolated_dwelling: Samota
           locality: Oblasť
-          municipality: Obecný úrad
-          neighbourhood: Štvrť
+          municipality: Obec
+          neighbourhood: Miestna časť
           plot: Pozemok
           postcode: PSČ
           quarter: Štvrť
@@ -1383,14 +1463,15 @@ sk:
           square: Námestie
           state: Štát
           subdivision: Pododdelenie
-          suburb: Mestský obvod
-          town: Mesto 10 tis.-100 tis.
-          village: Obec 200-10 tis.
+          suburb: Mestská časť
+          town: Mesto
+          village: Dedina
           "yes": Miesto
         railway:
           abandoned: Zrušená železničná trať
           buffer_stop: Zarážadlo
           construction: Železnica vo výstavbe
+          crossing: Priechod cez železnicu
           disused: Nepoužívaná železnica
           funicular: Lanová dráha
           halt: Zastávka vlaku
@@ -1406,12 +1487,12 @@ sk:
           rail: Železnica
           spur: Železničná vlečka
           station: Železničná stanica
-          stop: Železničná zastávka
+          stop: Miesto zastavenia vlaku
           subway: Metro
           subway_entrance: Vchod do metra
           switch: Železničná výhybka
-          tram: Električka
-          tram_stop: Zastávka električky
+          tram: Električková trať
+          tram_stop: Miesto zastavenia električky
           turntable: Točňa
           yard: Železničné depo
         shop:
@@ -1510,7 +1591,7 @@ sk:
           pet: Chovprodukt
           pet_grooming: Starostlivosť o domáce zvieratá
           photo: Fotokino
-          seafood: Morské plody
+          seafood: Obchod s rybami alebo morskými plodmi
           second_hand: Bazár
           sewing: Obchod so šijacími potrebami
           shoes: Obuv
@@ -1602,22 +1683,57 @@ sk:
         level10: Administratívna hranica (úroveň 10)
         level11: Administratívna hranica (úroveň 11)
       border_types:
-        city: Hranica mesta
+        arrondissement: Hranica arrondissementu
+        borough: Hranica mestskej časti
+        cercle: Hranica kruhu
+        city: Hranica veľkomesta
+        comarca: Hranica komarky
         county: Hranica okresu
+        departement: Hranica oddelenia
+        department: Hranica oddelenia
+        district: Hranica okresu
+        distrito: Hranica okresu
+        freguesia: Hranica Freguesie
+        local_authority: Hranice miestnej samosprávy
+        municipality: Hranice obce
+        municipi: Hranice obce
+        município: Hranice obce
         nation: Štátna hranica
         national: Štátna hranica
+        neighbourhood: Hranica miestnej časti
         parish: Hranica farnosti
+        province: Hranica provincie
         região: Hranica regiónu
         region: Hranica regiónu
-        state: Hranica kraja (state)
+        state: Hranica štátu
         town: Hranica mesta
-        village: Hranica obce
-    results:
-      no_results: Neboli nájdené žiadne výsledky
-      more_results: Viac výsledkov
+        township: Hranica mesta
+        village: Hranica dediny
+  searches:
+    show:
+      title:
+        latlon: Interné
+        nominatim: Nominatim
+        nominatim_reverse: Nominatim
+    queries:
+      create:
+        no_results: Neboli nájdené žiadne výsledky
+        more_results: Viac výsledkov
   directions:
-    search:
+    show:
       title: Trasa
+      distance: Vzdialenosť
+      time: Čas
+      ascend: Stúpanie
+      descend: Klesanie
+      kilometers: kilometre
+      miles_feet: míle, stopy
+      miles_yards: míle, yardy
+      distance_units_settings: Nastavenia jednotiek vzdialenosti
+      download: Stiahnuť trasu ako GeoJSON
+      filename: trasa
+      directions_courtesy_html: Trasa získaná vďaka %{link}
+      check_demo_html: Viac informácií z %{link}
   issues:
     index:
       title: Problémy
@@ -1674,16 +1790,15 @@ sk:
       other_issues_against_this_user: Iné problémy proti tomuto používateľovi
       no_other_issues: Žiadne ďalšie problémy proti tomuto používateľovi.
       comments_on_this_issue: Komentáre k problému
+      comment_from_html: Komentár od používateľa %{user_link} z %{comment_created_at}
+      reassign_to_moderators: Prideliť problém moderátorom
+      reassign_to_administrators: Prideliť problém administrátorom
     resolve:
       resolved: Stav problému bol nastavený na „Vyriešené“
     ignore:
       ignored: Stav problému bol nastavený na „Ignorované“
     reopen:
       reopened: Stav problému bol nastavený na „Otvorené“
-    comments:
-      comment_from_html: Komentár od používateľa %{user_link} z %{comment_created_at}
-      reassign_to_moderators: Prideliť problém moderátorom
-      reassign_to_administrators: Prideliť problém administrátorom
     reports:
       reported_by_html: Nahlásené ako %{category} používateľom %{user} o %{updated_at}
     helper:
@@ -1710,7 +1825,6 @@ sk:
   reports:
     new:
       title_html: Nahlásiť %{link}
-      missing_params: Nepodarilo sa vytvoriť nové hlásenie
       disclaimer:
         intro: Pred nahlásením používateľa moderátorom sa prosím uistite, že
         not_just_mistake: Ste si istý, že sa nejedná iba o omyl
@@ -1743,36 +1857,167 @@ sk:
     create:
       successful_report: Vaše hlásenie bolo prijaté
       provide_details: Uveďte, prosím, potrebné detaily
+  languages_panes:
+    select_language_list:
+      search_language: Hľadať...
+      languages:
+        af: afrikánčina
+        gsw: Alemančina
+        frp: arpitánčina
+        ast: astúrčina
+        az: azerbajdžančina
+        id: indonézština
+        ms: malajčina
+        bcl: stredná bikolčina
+        bs: bosniačtina
+        br: bretónčina
+        ca: Katalánčina
+        cs: čeština
+        cy: Waleština
+        da: dánčina
+        de: nemčina
+        dsb: Dolnosrbčina
+        et: estónčina
+        en: angličtina
+        en-GB: angličtina (Spojené Kráľovstvo)
+        es: španielčina
+        eo: esperanto
+        eu: Baskičtina
+        fr: francúzština
+        fy: západná frízština
+        fur: Friulčina
+        ga: írčina
+        gd: Škótska gaelčina
+        gl: Galícijčina
+        aln: gegská albánčina
+        hsb: hornolužická srbčina
+        hr: chorvátčina
+        ia: Interlingua
+        is: islandčina
+        it: taliančina
+        kw: kornčina
+        gcf: guadeloupská kreolčina
+        ku-Latn: kurdčina (latinka)
+        lv: lotyština
+        lb: luxemburčina
+        lkt: lakotčina
+        lt: litovčina
+        hu: maďarčina
+        fit: tornedalská fínčina
+        nl: holandčina
+        nb: nórčina (bokmål)
+        nn: nórčina (nynorsk)
+        oc: okcitánčina
+        nds: dolná nemčina
+        pl: poľština
+        pt-PT: portugalčina
+        pt: portugalčina (Brazília)
+        ksh: kolínčina
+        ro: rumunčina
+        sc: sardínčina
+        sco: škótčina (Scots)
+        sq: albánčina
+        scn: sicílčina
+        sk: slovenčina
+        sl: slovinčina
+        sr-Latn: srbčina (latinka)
+        sh: srbochorvátčina (latinka)
+        fi: fínčina
+        sv: švédčina
+        tl: tagalčina
+        kab: kabylčina
+        vi: vietnamčina
+        tr: turečtina
+        yo: jorubčina
+        diq: dimlijčina
+        el: gréčtina
+        ba: baškirčina
+        be: bieloruština
+        be-Tarask: Bieloruština (tarašk.)
+        bg: bulharčina
+        mk: macedónčina
+        mo: moldavčina
+        ce: čečenčina
+        ru: ruština
+        sr: srbčina (cyrilika)
+        tt: tatárčina (cyrilika)
+        uk: ukrajinčina
+        kk-cyrl: kazaština (cyrilika)
+        yi: jidiš
+        he: hebrejčina
+        ar: arabčina
+        skr-arab: saraikčina
+        fa: perzština
+        arz: egyptská arabčina
+        pnb: západná pandžábčina
+        ps: paštčina
+        nqo: N’Ko
+        ne: nepálčina
+        mr: maráthčina
+        hi: hindčina
+        bn: bengálčina
+        pa: pandžábčina
+        gu: gudžarátčina
+        ta: tamilčina
+        te: telugčina
+        kn: kannadčina
+        th: thajčina
+        my: barmčina
+        shn: šančina
+        xmf: mingrelčina
+        ka: gruzínčina
+        km: khmérčina
+        sat: santalčina
+        zh-CN: čínština (zjednodušená)
+        zh-TW: čínština (tradičná)
+        zh-HK: čínština (Hongkong)
+        ja: japončina
+        ko: kórejčina
   layouts:
+    project_name:
+      title: OpenStreetMap
     logo:
       alt_text: Logo OpenStreetMap
-    home: Domov
-    logout: Odhlásiť sa
-    log_in: Prihlásiť sa
-    sign_up: Zaregistrujte sa
+    main_navigation: Hlavný
+    layer_info: Informácie o vrstve
     start_mapping: Začať mapovať
-    edit: Upraviť
-    history: História
-    export: Export
-    issues: Problémy
-    gps_traces: GPS stopy
-    user_diaries: Denníky používateľov
-    edit_with: Upraviť pomocou %{editor}
     intro_header: Vitajte v OpenStreetMap!
-    intro_text: OpenStreetMap je mapa sveta, vytvorené ľuďmi ako vy, voľne využiteľná
+    intro_text: OpenStreetMap je mapa sveta, vytvorená ľuďmi ako vy, voľne využiteľná
       pod slobodnou licenciou.
     hosting_partners_2024_html: Prevádzku serverov podporujú %{fastly}, %{corpmembers},
       a ďalší %{partners}.
+    partners_fastly: Fastly
     partners_corpmembers: firemní členovia OSMF
     partners_partners: partneri
+    welcome_tou_notice_html: Používaním tejto webovej stránky alebo inej infraštruktúry
+      poskytovanej nadáciou OpenStreetMap Foundation súhlasíte s %{terms_link}.
+    terms_of_use: Podmienkami používania
     tou: Podmienky používania
     nothing_to_preview: Nič k náhľadu.
-    help: Pomocník
-    about: O projekte
-    copyright: Autorské práva
-    communities: Komunity
     learn_more: Viac info
-    more: Ďalšie
+    header:
+      about: O projekte
+      communities: Komunity
+      copyright: Autorské práva
+      donate: Prispejte
+      edit: Upraviť
+      edit_with: Upraviť pomocou %{editor}
+      export: Export
+      gps_traces: GPS stopy
+      help: Pomocník
+      history: História
+      home: Prejsť na domovskú polohu
+      issues: Problémy
+      log_out: Odhlásiť sa
+      log_in: Prihláste sa
+      more: Ďalšie
+      select_language: Zvoľte jazyk
+      sign_up: Zaregistrujte sa
+      user_diaries: Denníky používateľov
+    meta:
+      openstreetmap_search: Vyhľadávanie v OpenStreetMap
+    select_language_button:
+      title: Zvoľte jazyk
     offline_flash:
       osm_offline: Databáza OpenStreetMap je momentálne offline, zatiaľ čo sa vykonávajú
         dôležité údržbárske práce.
@@ -1831,6 +2076,7 @@ sk:
         nájdete na %{url}
       more_info_html: Viac informácií o zlyhaniach importu GPX a o tom, ako sa im
         vyhnúť, nájdete na %{url}.
+      import_failures_url: https://wiki.openstreetmap.org/wiki/GPX_Import_Failures
       subject: '[OpenStreetMap] Neúspešný import GPX'
     gpx_success:
       hi: Ahoj %{to_user},
@@ -1955,6 +2201,9 @@ sk:
       whitelist: Ak používate systém proti nevyžiadanej pošte (antispam), pridajte
         odosielateľa %{sender} do výnimiek, pretože my nemôžeme odpovedať na emailové
         požiadavky na potvrdenie.
+    gravatar:
+      disabled: Gravatar bol vypnutý.
+      enabled: Zobrazenie vášho Gravatara bolo zapnuté.
   messages:
     new:
       title: Odoslať správu
@@ -2064,59 +2313,149 @@ sk:
       flash token bad: Nenašiel sa príslušný kód (token), skontrolujte napr. adresu
         URL?
   preferences:
-    show:
-      title: Moje predvoľby
-      preferred_site_color_scheme: Preferovaná farebná schéma webovej stránky
-      site_color_schemes:
-        auto: Automatická
-        light: Svetlá
-        dark: Tmavá
-      preferred_map_color_scheme: Preferovaná farebná schéma mapy
-      map_color_schemes:
-        auto: Automatická
-        light: Svetlá
-        dark: Tmavá
-      save: Aktualizovať preferencie
-    update:
-      failure: Nepodarilo sa aktualizovať predvoľby.
-    update_success_flash:
-      message: Predvoľby aktualizované.
+    preferences:
+      update:
+        failure: Nepodarilo sa aktualizovať predvoľby.
+      update_success_flash:
+        message: Predvoľby aktualizované.
+      navigation:
+        preferences: Rozhranie
+        notification_preferences: Oznámenia
+        advanced_preferences: Rozšírené
+    basic_preferences:
+      show:
+        title: Moje predvoľby
+        preferred_language: Preferovaný jazyk
+        preferred_site_color_scheme: Preferovaná farebná schéma webovej stránky
+        site_color_schemes:
+          auto: Automatická
+          light: Svetlá
+          dark: Tmavá
+        preferred_map_color_scheme: Preferovaná farebná schéma mapy
+        map_color_schemes:
+          auto: Rovnaká ako webová stránka
+          light: Svetlá
+          dark: Tmavá
+        preferred_editor_color_scheme: Preferovaná farebná schéma editora
+        editor_color_schemes:
+          auto: Rovnaká ako webová stránka
+          light: Svetlá
+          dark: Tmavá
+        save: Aktualizovať predvoľby
+    notification_preferences:
+      show:
+        title: Nastavenia oznámení
+        changeset_comment: Komentáre k sadám zmien
+        diary_comment: Komentáre v denníku
+        direct_message: Priame správy
+        gpx_import_failure: 'Import GPS stopy: zlyhanie'
+        gpx_import_success: 'Import GPS stopy: úspech'
+        new_follower: Noví sledujúci
+        note_comment: Komentáre k poznámkam
+        save: Aktualizovať predvoľby
+        delivery_mechanisms:
+          email: Emailová adresa
+    advanced_preferences:
+      show:
+        title: Moje rozšírené predvoľby
+        save: Aktualizovať predvoľby
   profiles:
-    edit:
-      title: Upraviť profil
-      save: Aktualizovať profil
-      cancel: Zrušiť
-      image: Obrázok
-      gravatar:
-        gravatar: Používať Gravatar
-        what_is_gravatar: Čo je Gravatar?
-        disabled: Gravatar bol vypnutý.
-        enabled: Zobrazenie vášho Gravatara bolo zapnuté.
-      new image: 'Pridať obrázok:'
-      keep image: Ponechať aktuálny obrázok
-      delete image: Odstrániť aktuálny obrázok
-      replace image: Nahradiť aktuálny obrázok
-      image size hint: (najvhodnejšie sú štvorcové obrázky s veľkosťou najmenej 100×100)
-      home location: Domovské miesto
-      no home location: Nezadali ste svoje domovské miesto.
-      update home location on click: Aktualizovať domovské miesto kliknutím na mapu?
-      show: Zobraziť
-      delete: Zmazať
-      undelete: Vrátiť späť odstránenie
-    update:
-      success: Profil aktualizovaný.
-      failure: Nepodarilo sa upraviť profil.
+    profile_sections:
+      navigation:
+        description: Popis
+        links: Odkazy
+        image: Obrázok
+        company: Spoločnosť
+        location: Poloha
+        contribution_calendar: Kalendár príspevkov
+    descriptions:
+      show:
+        title: Upraviť profil
+        save: Aktualizovať profil
+        cancel: Zrušiť
+      update:
+        success: Popis profilu bol aktualizovaný.
+        failure: Popis profilu sa nepodarilo aktualizovať.
+    links:
+      show:
+        title: Upraviť profil
+        save: Aktualizovať profil
+        cancel: Zrušiť
+        social_links:
+          title: Odkazy na sociálne profily
+          remove: Odstrániť
+          add: Pridať odkaz na sociálnu sieť
+      update:
+        success: Odkazy na profil boli aktualizované.
+        failure: Nepodarilo sa aktualizovať odkazy na profil.
+    images:
+      show:
+        title: Upraviť profil
+        save: Aktualizovať profil
+        cancel: Zrušiť
+        gravatar:
+          gravatar: Používať Gravatar
+          link: https://wiki.openstreetmap.org/wiki/Gravatar
+          what_is_gravatar: Čo je Gravatar?
+        new image: 'Pridať obrázok:'
+        keep image: Ponechať aktuálny obrázok
+        delete image: Odstrániť aktuálny obrázok
+        replace image: Nahradiť aktuálny obrázok
+        image size hint: (najvhodnejšie sú štvorcové obrázky s veľkosťou najmenej
+          100×100)
+      update:
+        success: Profilový obrázok bol aktualizovaný.
+        failure: Profilový obrázok sa nepodarilo aktualizovať.
+    companies:
+      show:
+        title: Upraviť profil
+        save: Aktualizovať profil
+        cancel: Zrušiť
+      update:
+        success: Spoločnosť v profile bola aktualizovaná.
+        failure: Spoločnosť v profile sa nepodarilo aktualizovať.
+    locations:
+      show:
+        title: Upraviť profil
+        save: Aktualizovať profil
+        cancel: Zrušiť
+        no home location: Nezadali ste svoju domovskú polohu.
+        update home location on click: Aktualizovať domovskú polohu kliknutím na mapu?
+        show: Zobraziť
+        delete: Zmazať
+        undelete: Vrátiť späť odstránenie
+      update:
+        success: Poloha v profile bola aktualizovaná.
+        failure: Nepodarilo sa aktualizovať polohu v profile.
+    heatmaps:
+      show:
+        title: Konfigurácia kalendára príspevkov
+        show_contribution_calendar_in_public: Zobraziť kalendár príspevkov na vašom
+          profile
+        save: Aktualizovať konfiguráciu kalendára príspevkov
+        cancel: Zrušiť
+      update:
+        success: Kalendár príspevkov bol aktualizovaný.
+        failure: Nepodarilo sa aktualizovať kalendár príspevkov.
   sessions:
     new:
       tab_title: Prihlásenie
       login_to_authorize_html: Prihláste sa do OpenStreetMap pre prístup k %{client_app_name}.
+      already_logged_in_html: Už ste prihlásený ako %{user}. Opätovným prihlásením
+        sa zmení váš aktuálny účet.
+      access_another_page: 'Prišli ste sem pri pokuse o prístup na inú stránku. Ak
+        chcete na túto stránku pristupovať pomocou svojho aktuálneho účtu, kliknite
+        na tlačidlo nižšie:'
+      visit_referring_page: Navštíviť odkazujúcu stránku
       email or username: E-mailová adresa alebo prihlasovacie meno
       password: Heslo
       remember: Zapamätať
       lost password link: Stratili ste heslo?
       login_button: Prihlásiť
-      with external: ale použite na prihlásenie služby tretích strán
+      with external: alebo použite na prihlásenie služby tretích strán
       or: alebo
+      reset_to_login: Ospravedlňujeme sa, vášmu heslu skončila platnosť. Prosím vykonajte
+        reset hesla pre prihlásenie.
       auth failure: Ľutujeme, s uvedenými údajmi sa nie je možné prihlásiť.
     destroy:
       title: Odhlásenie
@@ -2129,6 +2468,8 @@ sk:
   shared:
     markdown_help:
       heading_html: Formátovanie pomocou %{kramdown_link}
+      kramdown_url: https://kramdown.gettalong.org/quickref.html
+      kramdown: kramdown
       headings: Nadpisy
       heading: Nadpis
       subheading: Podnadpis
@@ -2150,24 +2491,38 @@ sk:
       changeset_comments:
         older: Staršie komentáre
         newer: Novšie komentáre
+        oldest: Najstaršie komentáre
+        newest: Najnovšie komentáre
       diary_comments:
         older: Staršie komentáre
         newer: Novšie komentáre
+        oldest: Najstaršie komentáre
+        newest: Najnovšie komentáre
       diary_entries:
         older: Staršie záznamy
         newer: Novšie záznamy
+        oldest: Najstaršie záznamy
+        newest: Najnovšie záznamy
       issues:
         older: Staršie problémy
         newer: Novšie problémy
+        oldest: Najstaršie hlásenia
+        newest: Najnovšiehlásenia
       traces:
         older: Staršie stopy
         newer: Novšie stopy
+        oldest: Najstaršie stopy
+        newest: Najnovšie stopy
       user_blocks:
         older: Staršie blokácie
         newer: Novšie blokácie
+        oldest: Najstaršie blokovania
+        newest: Najnovšie blokovania
       users:
         older: Starší používatelia
         newer: Novší používatelia
+        oldest: Najstarší používatelia
+        newest: Najnovší používatelia
   site:
     about:
       heading_html: '%{copyright}prispievatelia %{br} OpenStreetMap'
@@ -2176,6 +2531,7 @@ sk:
       lede_text: OpenStreetMap tvorí komunita používateľov, ktorí pridávajú a udržiavajú
         údaje o cestách, turistických trasách, kaviarňach, železničných staniciach
         a mnohých ďalších miestach na celom svete.
+    about_section:
       local_knowledge_title: Miestna znalosť
       local_knowledge_html: OpenStreetMap kladie dôraz na miestnu znalosť. Prispievatelia
         využívajú letecké snímky, GPS prístroje a klasické mapy, aby overili, že OSM
@@ -2188,9 +2544,12 @@ sk:
         sa chcete o komunite dozvedieť viac, prelistujte si %{osm_blog_link}, %{user_diaries_link},
         %{community_blogs_link} a webovú stránku %{osm_foundation_link}."
       community_driven_osm_blog: OpenStreetMap Blog
+      community_driven_osm_blog_url: https://blog.openstreetmap.org/?lang=cs
       community_driven_user_diaries: denníky používateľov
       community_driven_community_blogs: komunitné blogy
+      community_driven_community_blogs_url: https://blogs.openstreetmap.org/
       community_driven_osm_foundation: Nadácia OSM
+      community_driven_osm_foundation_url: https://www.osmfoundation.org/
       open_data_title: Otvorené dáta
       open_data_1_html: 'OpenStreetMap znamenajú %{open_data}: môžete ich používať
         na ľubovoľný účel, pokiaľ uvediete ako autora OpenStreetMap a jeho prispievateľov.
@@ -2204,15 +2563,34 @@ sk:
         prevádzkovaných OSMF podlieha našim %{terms_of_use_link}, %{aup_link} a našim
         %{privacy_policy_link}.
       legal_1_1_openstreetmap_foundation: Nadácia OpenStreetMap
+      legal_1_1_openstreetmap_foundation_url: https://osmfoundation.org/
       legal_1_1_terms_of_use: Podmienkam použitia
+      legal_1_1_terms_of_use_url: https://osmfoundation.org/wiki/Terms_of_Use
       legal_1_1_aup: Pravidlám prijateľného používania
+      legal_1_1_aup_url: https://wiki.openstreetmap.org/wiki/Acceptable_Use_Policy
       legal_1_1_privacy_policy: Pravidlám ochrany osobných údajov
+      legal_1_1_privacy_policy_url: https://osmfoundation.org/wiki/Privacy_Policy
+      legal_1_2_html: Ak chcete použiť mapy alebo dáta OpenStreetMap, nezabudnite
+        uviesť zdroj OpenStreetMap – ďalšie informácie nájdete na stránke %{attribution_guidelines_link}.
+      legal_attribution_guidelines_title: pokyny na uvádzanie pôvodu
+      legal_attribution_guidelines_url: https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+      legal_1_3_html: Konkrétne na použitie snímky obrazovky z OpenStreetMap priamo
+        vo vašej knihe, publikácii, filme alebo televíznom programe nemusíte žiadať
+        o povolenie, pretože údaje v OpenStreetMap sú otvorené pre všetkých. Pozrite
+        si %{attribution_guidelines_link} a existujúce príklady pre %{attribution_example_film}
+        a %{attribution_example_tv}.
+      legal_attribution_example_film_title: Film
+      legal_attribution_example_film_url: https://wiki.openstreetmap.org/wiki/Films
+      legal_attribution_example_tv_title: TV
+      legal_attribution_example_tv_url: https://wiki.openstreetmap.org/wiki/TV_series
       legal_2_1_html: |-
         Prosím, %{contact_the_osmf_link}
         ak máte otázky týkajúce sa licencií, autorských práv alebo iné právne otázky.
       legal_2_1_contact_the_osmf: kontaktujte OSMF
+      legal_2_1_contact_the_osmf_url: https://osmfoundation.org/Contact
       legal_2_2_html: OpenStreetMap, logo s lupou a "State of the Map" sú %{registered_trademarks_link}.
       legal_2_2_registered_trademarks: registrované ochranné známky OSMF
+      legal_2_2_registered_trademarks_url: https://osmfoundation.org/wiki/Trademark_Policy
       partners_title: Partneri
     copyright:
       title: Autorské práva a licencia
@@ -2229,56 +2607,106 @@ sk:
         native_link: slovenskú verziu
         mapping_link: začať mapovať
       legal_babble:
-        introduction_1_html: "OpenStreetMap%{registered_trademark_link} sú %{open_data},
-          ktoré licencované za podmienok \n%{odc_odbl_link} (ODbL) poskytuje %{osm_foundation_link}
-          (OSMF)."
-        introduction_1_open_data: otvorené dáta
-        introduction_1_odc_odbl: Open Data Commons Open Database License
-        introduction_1_osm_foundation: Nadácia OpenStreetMap
-        introduction_2_html: "Môžete voľne kopírovať, distribuovať, prenášať a upravovať
-          naše údaje pokiaľ uvediete ako zdroj OpenStreetMap a jej prispievateľov.
+        lead_1_html: OpenStreetMap poskytuje otvorené mapové dáta pre tisíce webových
+          stránok, mobilných aplikácií a hardvérových zariadení. OpenStreetMap je
+          vytvorený komunitou ľudí ako vy, ktorí prispievajú a spravujú mapové dáta
+          o cestách, chodníkoch, kaviarňach, železničných staniciach a mnohých ďalších
+          veciach po celom svete.
+        lead_2_html: |-
+          %{learn_more_about_osm_link} a %{get_started_mapping_link}!
+          Viac si môžete prečítať na %{osm_blog_link} a prihlásiť sa na odber %{weeklyosm_link}.
+          Nájdite ďalších mapovačov vo vašej miestnej %{osm_community_link}.
+          Podporte projekt pripojením sa k %{osm_foundation_link} a %{making_donation_link}.
+        lead_2_learn_more_about_osm: Získajte viac informácií o OpenStreetMap
+        lead_2_learn_more_about_osm_url: https://wiki.openstreetmap.org/wiki/Cs:Co_je_OpenStreetMap
+        lead_2_get_started_mapping: začnite mapovať
+        lead_2_osm_blog: blogu OpenStreetMap
+        lead_2_osm_blog_url: https://blog.openstreetmap.org/
+        lead_2_weeklyosm: weeklyOSM (týždenné novinky OSM)
+        lead_2_weeklyosm_url: https://weeklyosm.eu/cz/
+        lead_2_osm_community: komunite OSM
+        lead_2_osm_foundation: Nadácii OSM (OSM Foundation)
+        lead_2_osm_foundation_url: https://osmfoundation.org/
+        lead_2_making_donation: poskytnutím príspevku
+        licensing_title: Licencovanie OpenStreetMap
+        licensing_1_html: "OpenStreetMap sú %{open} dáta, licencované pod \n%{odc_odbl_link}
+          (ODbL) od %{osm_foundation_link} (OSMF). V súhrne:"
+        licensing_1_open: otvorené
+        licensing_1_odc_odbl: Open Data Commons Open Database License
+        licensing_1_odc_odbl_url: https://opendatacommons.org/licenses/odbl/
+        licensing_1_osm_foundation: Nadácia OpenStreetMap
+        licensing_1_osm_foundation_url: https://osmfoundation.org/
+        licensing_2_html: "Môžete voľne kopírovať, distribuovať, prenášať a upravovať
+          naše údaje, pokiaľ uvediete ako zdroj OpenStreetMap a jej prispievateľov.
           Ak pozmeníte naše údaje alebo na nich budete stavať, môžete výsledok distribuovať
           iba na základe rovnakej licencie. Stránka \n%{legal_code_link} vysvetľuje
           vaše práva a povinnosti."
-        introduction_2_legal_code: právne náležitosti
-        introduction_3_html: Naša dokumentácia je licencovaná na základe licencie
-          %{creative_commons_link} (CC BY-SA 2.0).
-        introduction_3_creative_commons: Creative Commons Attribution-ShareAlike 2.0
+        licensing_2_legal_code: o kompletných právnych ustanoveniach na Open Data
+          Commons
+        licensing_2_legal_code_url: https://opendatacommons.org/licenses/odbl/1-0/
+        licensing_3_html: Naša dokumentácia je licencovaná pod licenciou %{creative_commons_license_link}
+          (CC BY-SA 2.0).
+        licensing_3_creative_commons_license: Creative Commons Attribution-ShareAlike
+          2.0
+        licensing_3_creative_commons_license_url: https://creativecommons.org/licenses/by-sa/2.0/
+        licensing_4_html: Viac informácií o používaní našich údajov nájdete na %{osmf_license_page_link}.
+        licensing_4_osmf_license_page: Licenčnej stránke OSMF
+        licensing_4_osmf_license_page_url: https://osmfoundation.org/Licence
         credit_title_html: Ako uvádzať OpenStreetMap
         credit_1_html: 'Kde používate údaje OpenStreetMap, musíte urobiť nasledujúce
           dve veci:'
-        credit_2_1: Vyjadrite uznanie autorstva OpenStreetMap zobrazením nášho oznámenia
-          o autorských právach.
-        credit_2_2: Jasne uveďte, že údaje sú dostupné pod licenciou Open Database
+        credit_2_attribution: Vyjadrite uznanie autorstva OpenStreetMap zobrazením
+          nášho oznámenia o autorstve.
+        credit_2_license: Jasne uveďte, že údaje sú dostupné pod licenciou Open Database
           License.
-        credit_3_html: Pre upozornenie o autorských právach máme rôzne požiadavky
-          na to, ako by sa to malo zobrazovať, v závislosti od toho, ako používate
-          naše údaje. Napríklad na to, ako zobraziť upozornenie o autorských právach,
-          platia iné pravidlá v závislosti od toho, či ste vytvorili mapu na prehliadanie,
-          tlačenú mapu alebo statický obrázok. Úplné podrobnosti o požiadavkách nájdete
-          na stránke %{attribution_guidelines_link}.
-        credit_3_attribution_guidelines: Pokyny na uvádzanie pôvodu
-        credit_4_1_html: Aby bolo jasné, že údaje sú dostupné pod licenciou Open Database
-          License, môžete odkazovať na %{this_copyright_page_link}. Alternatívne a
-          ako požiadavku, ak distribuujete OSM vo forme údajov, môžete menovať a odkazovať
-          priamo na licenciu(e). V médiách, kde nie sú možné odkazy (napr. tlačené
-          diela), odporúčame nasmerovať svojich čitateľov na openstreetmap.org (možno
-          rozšírením 'OpenStreetMap' na túto úplnú adresu) a na opendatacommons.org.
-          V nasledujúcom príklade sa uznanie autorstva zobrazuje v rohu mapy.
-        credit_4_1_this_copyright_page: túto stránku o autorských právach
+        credit_3_v2025_html: |-
+          Pre oznámenie o zdroji máme rôzne %{requirements_on_how_displayed_link} v závislosti od toho, ako používate naše údaje.
+          Napríklad platia rôzne pravidlá pre zobrazenie oznámenia o zdroji v závislosti od toho, či ste
+          vytvorili prehliadateľnú mapu, tlačenú mapu alebo statický obrázok.
+          Viac podrobností nájdete v časti %{attribution_guidelines_link} %{licensing_requirements_link}.
+        credit_3_v2025_requirements_on_how_displayed: požiadavky na to, ako by sa
+          to malo zobrazovať
+        credit_3_v2025_requirements_on_how_displayed_url: https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+        credit_3_v2025_attribution_guidelines: pokynov na uvádzanie pôvodu
+        credit_3_v2025_attribution_guidelines_url: https://osmfoundation.org/wiki/Licence/Attribution_Guidelines
+        credit_3_v2025_licensing_requirements: licenčných požiadaviek
+        credit_3_v2025_licensing_requirements_url: https://osmfoundation.org/wiki/Licence
+        credit_4_v2025_html: |-
+          Vo všeobecnosti, aby bolo jasné, že dáta sú dostupné pod licenciou Open
+          Database, môžete odkazovať na %{this_copyright_page_link}. Ak distribuujete OSM v dátovej forme, uveďte názov a priamy odkaz na licenciu (licencie). V médiách, kde odkazy nie sú možné (napr. tlačené diela), uveďte úplnú URL adresu stránky, napr. %{copyright_page_url}.
+        credit_4_v2025_this_copyright_page: túto stránku o autorských právach
+        credit_5_v2025_html: 'V tomto príklade sa uznanie autorstva zobrazí v rohu
+          mapy:'
         attribution_example:
           alt: Príklad, ako uvádzať autorstvo OpenStreetMap na webovej stránke
           title: Príklad uvedenia autorstva
-        more_title_html: Ďalšie informácie
-        more_1_1_html: Prečítajte si viac o používaní našich údajov a o tom, ako nám
-          pripísať autorstvo, na %{osmf_licence_page_link}.
-        more_1_1_osmf_licence_page: Licenčnej stránke OSMF
-        more_2_1_html: |-
+        infringement_title_html: Porušenie autorských práv
+        infringement_1_html: Prispievateľom OSM pripomíname, že by nikdy nemali pridávať
+          dáta zo zdrojov chránených autorským právom (napr. Google Maps či tlačené
+          mapy) bez výslovného súhlasu držiteľov práv.
+        infringement_2_1_html: Ak si myslíte, že materiál chránený autorskými právami
+          bol nevhodne pridaný do databázy OpenStreetMap alebo na túto stránku, pozrite
+          si náš %{takedown_procedure_link} alebo nahláste priamo na našej %{online_filing_page_link}.
+        infringement_2_1_takedown_procedure: postup na odstránenie
+        infringement_2_1_takedown_procedure_url: https://osmfoundation.org/wiki/Takedown_procedure
+        infringement_2_1_online_filing_page: on-line nahlasovacej stránke
+        infringement_2_1_online_filing_page_url: https://dmca.openstreetmap.org/
+        trademarks_title: Ochranné známky
+        trademarks_1_1_html: OpenStreetMap, logo s lupou a "State of the Map" sú registrované
+          ochranné známky nadácie OpenStreetMap. Ak máte otázky týkajúce sa používania
+          známok, prosím pozrite naše %{trademark_policy_link}.
+        trademarks_1_1_trademark_policy: Zásady používania ochranných známok
+        trademarks_1_1_trademark_policy_url: https://osmfoundation.org/wiki/Trademark_Policy
+        services_title_html: Doplnkové služby
+        services_1_html: |-
           Hoci OpenStreetMap sú otvorené údaje, nemôžeme tretím stranám poskytnúť
-          bezplatné mapové API. Pozrite si naše stránky %{api_usage_policy_link}, %{tile_usage_policy_link} a %{nominatim_usage_policy_link}.
-        more_2_1_api_usage_policy: Zásady používania API (aplikačného rozhrania)
-        more_2_1_tile_usage_policy: Zásady používania dlaždíc
-        more_2_1_nominatim_usage_policy: Pravidlá použitia Nominatim
+          bezplatné mapové API (aplikačné rozhranie) ani hotové mapové dlaždice. Pozrite si naše stránky %{api_usage_policy_link}, %{tile_usage_policy_link} a %{nominatim_usage_policy_link}.
+        services_1_api_usage_policy: Zásady používania API (aplikačného rozhrania)
+        services_1_api_usage_policy_url: https://operations.osmfoundation.org/policies/api/
+        services_1_tile_usage_policy: Zásady používania dlaždíc
+        services_1_tile_usage_policy_url: https://operations.osmfoundation.org/policies/tiles/
+        services_1_nominatim_usage_policy: Pravidlá použitia Nominatim
+        services_1_nominatim_usage_policy_url: https://operations.osmfoundation.org/policies/nominatim/
         contributors_title_html: Naši prispievatelia
         contributors_intro_html: 'Naši prispievatelia sú tisícky jednotlivcov. Máme
           aj dáta so slobodnou licenciou od národných geografických inštitúcií či
@@ -2288,16 +2716,22 @@ sk:
           and Tirolsko (pod licenciou %{cc_by_at_with_amendments_link}).
         contributors_at_austria: Rakúsko
         contributors_at_stadt_wien: Mesto Viedeň
+        contributors_at_stadt_wien_url: https://data.wien.gv.at/
         contributors_at_cc_by: CC BY
+        contributors_at_cc_by_url: https://creativecommons.org/licenses/by/3.0/at/deed.de
         contributors_at_land_vorarlberg: Vorarlbersko
+        contributors_at_land_vorarlberg_url: https://www.vorarlberg.at/vorarlberg/bauen_wohnen/bauen/vermessung_geoinformation/weitereinformationen/services/wmsdienste.htm
         contributors_at_cc_by_at_with_amendments: CC BY AT s dodatkami
+        contributors_at_cc_by_at_with_amendments_url: https://www.tirol.gv.at/data/nutzungsbedingungen/
         contributors_au_credit_html: |-
           %{australia}: Zahŕňa alebo využíva Administrative Boundaries &copy; %{geoscape_australia_link}
           licencované Austrálskym spoločenstvom pod licenciou %{cc_licence_link}.
         contributors_au_australia: Austrália
         contributors_au_geoscape_australia: Geoscape Australia
+        contributors_au_geoscape_australia_url: https://geoscape.com.au/legal/data-copyright-and-disclaimer/
         contributors_au_cc_licence: Medzinárodná licencia Creative Commons Attribution
           4.0 (CC BY 4.0)
+        contributors_au_cc_licence_url: https://creativecommons.org/licenses/by/4.0/
         contributors_ca_credit_html: |-
           %{canada}: Obsahuje údaje z
           GeoBase&reg;, GeoGratis (&copy; Department of Natural
@@ -2310,12 +2744,14 @@ sk:
         contributors_cz_czechia: Česko
         contributors_cz_cc_licence: Medzinárodná licencia Creative Commons Attribution
           4.0 (CC BY 4.0)
+        contributors_cz_cc_licence_url: https://creativecommons.org/licenses/by/4.0/
         contributors_fi_credit_html: |-
           %{finland}: Obsahuje údaje z topografickej databázy
           National Land Survey of Finland
           a ďalších súborov údajov pod %{nlsfi_license_link}.
         contributors_fi_finland: Fínsko
         contributors_fi_nlsfi_license: licenciou NLSFI
+        contributors_fi_nlsfi_license_url: https://www.maanmittauslaitos.fi/en/opendata-licence-version1
         contributors_fr_credit_html: |-
           %{france}: Obsahuje údaje pochádzajúce z
           Direction Générale des Impôts.
@@ -2325,39 +2761,53 @@ sk:
            (verejné informácie Chorvátska).
         contributors_hr_croatia: Chorvátsko
         contributors_hr_dgu: Štátnej geodetickej správy Chorvátska
+        contributors_hr_dgu_url: https://dgu.gov.hr/
         contributors_hr_open_data_portal: Národného portálu otvorených údajov
-        contributors_nl_credit_html: '%{netherlands}: Obsahuje údaje &copy; AND, 2007
-          (%{and_link})'
+        contributors_hr_open_data_portal_url: https://data.gov.hr/
+        contributors_nl_credit_new_html: '%{netherlands}: Obsahuje údaje &copy; AND,
+          2007'
         contributors_nl_netherlands: Holandsko
         contributors_nz_credit_html: |-
           %{new_zealand}: Obsahuje dáta pochádzajúce z %{linz_data_service_link}
            a licencované na opätovné použitie pod licenciou %{cc_by_link}.
         contributors_nz_new_zealand: Nový Zéland
         contributors_nz_linz_data_service: dátovej služby LINZ
+        contributors_nz_linz_data_service_url: https://data.linz.govt.nz/
         contributors_nz_cc_by: CC BY 4.0
+        contributors_nz_cc_by_url: https://creativecommons.org/licenses/by/4.0/
         contributors_rs_credit_html: |-
           %{serbia}: Obsahuje údaje zo %{rgz_link} a %{open_data_portal}
            (verejné informácie Srbska), 2018.
         contributors_rs_serbia: Srbsko
         contributors_rs_rgz: Srbského geodetického úradu
+        contributors_rs_rgz_url: https://geosrbija.rs/
         contributors_rs_open_data_portal: Národného portálu otvorených údajov
+        contributors_rs_open_data_portal_url: https://data.gov.rs/sr/
         contributors_si_credit_html: |-
           %{slovenia}: Obsahuje údaje z %{gu_link} a %{mkgp_link}
            (verejné informácie Slovinska).
         contributors_si_slovenia: Slovinsko
         contributors_si_gu: Úradu pre zememeranie a mapovanie
+        contributors_si_gu_url: https://www.gov.si/en/state-authorities/bodies-within-ministries/surveying-and-mapping-authority/
         contributors_si_mkgp: Ministerstva poľnohospodárstva, lesníctva a výživy
+        contributors_si_mkgp_url: https://www.gov.si/en/state-authorities/ministries/ministry-of-agriculture-forestry-and-food/
         contributors_es_credit_html: |-
           %{spain}: Obsahuje údaje pochádzajúce zo
           Španielskeho národného geografického inštitútu (%{ign_link}) a
           Národného kartografického systému (%{scne_link})
           licencované na opätovné použitie pod licenciou %{cc_by_link}.
         contributors_es_spain: Španielsko
+        contributors_es_ign: IGN
+        contributors_es_ign_url: https://www.ign.es/
+        contributors_es_scne: SCNE
+        contributors_es_scne_url: https://www.scne.es/
         contributors_es_cc_by: CC BY 4.0
+        contributors_es_cc_by_url: https://creativecommons.org/licenses/by/4.0/
         contributors_za_credit_html: '%{south_africa}: Obsahuje údaje pochádzajúce
           z %{ngi_link}, štátne autorské práva vyhradené.'
         contributors_za_south_africa: Južná Afrika
         contributors_za_ngi: 'Chief Directorate: National Geo-Spatial Information'
+        contributors_za_ngi_url: https://ngi.dalrrd.gov.za/
         contributors_gb_credit_html: |-
           %{united_kingdom}: Obsahuje údaje Ordnance
           Survey &copy; Crown Copyright a právo na databázu 2010-2023.
@@ -2366,46 +2816,31 @@ sk:
           použité na pomoc pri zlepšovaní OpenStreetMap, nájdete na %{contributors_page_link}
           na OpenStreetMap Wiki.
         contributors_2_contributors_page: Stránke prispievateľov
+        contributors_2_contributors_page_url: https://wiki.openstreetmap.org/wiki/Contributors
         contributors_footer_2_html: '  Zahrnutie dát do OpenStreetMap neznamená, že
           pôvodný poskytovateľ dát podporuje OpenStreetMap, ponúka akúkoľvek záruku,
           alebo prijíma akúkoľvek zodpovednosť.'
-        infringement_title_html: Porušenie autorských práv
-        infringement_1_html: Prispievateľom OSM pripomíname, že by nikdy nemali pridávať
-          dáta zo zdrojov chránených autorským právom (napr. Google Maps či tlačené
-          mapy) bez výslovného súhlasu držiteľov práv.
-        infringement_2_1_html: Ak si myslíte, že materiál chránený autorskými právami
-          bol nevhodne pridaný do databázy OpenStreetMap alebo na túto stránku, pozrite
-          si náš %{takedown_procedure_link} alebo nahláste priamo na našej %{online_filing_page_link}.
-        infringement_2_1_takedown_procedure: postup na odstránenie
-        infringement_2_1_online_filing_page: on-line nahlasovacej stránke
-        trademarks_title: Ochranné známky
-        trademarks_1_1_html: OpenStreetMap, logo s lupou a "State of the Map" sú registrované
-          ochranné známky nadácie OpenStreetMap. Ak máte otázky týkajúce sa používania
-          známok, prosím pozrite naše %{trademark_policy_link}.
-        trademarks_1_1_trademark_policy: Zásady používania ochranných známok
     index:
       js_1: Používate prehliadač bez podpory JavaScriptu, alebo máte JavaScript vypnutý.
       js_2: OpenStreetMap používa pre interaktívnu mapu JavaScript.
       license:
         copyright: Chránené autorskými právami OpenStreetMap a prispievateľov pod
           slobodnou licenciou
-      remote_failed: Editácia sa nepodarila – skontrolujte, či je JOSM alebo Merkaartor
-        spustený a je v ňom zapnutá funkcia Diaľkové ovládanie (Remote control)
     not_public_flash:
       not_public: Nemáte nastavené úpravy na verejné.
       not_public_description_html: Kým tak neurobíte, nemôžete ďalej editovať mapu.
         Svoje úpravy môžete nastaviť ako verejné na vašej %{user_page}.
       user_page_link: stránke používateľa
       anon_edits_html: (%{link})
+      anon_edits_link: https://wiki.openstreetmap.org/wiki/Anonymous_edits
       anon_edits_link_text: Prečo to tak je?
-    edit:
-      id_not_configured: iD zatiaľ nie je nakonfigurovaný
     export:
       title: Export
       manually_select: Manuálne vybrať inú oblasť
       licence: Licencia
       licence_details_html: Údaje OpenStreetMap sú licencované pod %{odbl_link} (ODbL).
       odbl: Open Data Commons Open Database License
+      odbl_url: https://opendatacommons.org/licenses/odbl/1.0/
       too_large:
         advice: 'Ak tento export zlyhá, zvážte použitie niektorého z nasledovných
           zdrojov:'
@@ -2425,6 +2860,13 @@ sk:
           title: Iné zdroje
           description: Ďalšie zdroje sú uvedené na OpenStreetMap wiki
       export_button: Export
+      export_download: Sťahovanie...
+      confirmation:
+        header: Stiahnuť XML dáta
+        body: Chcete si stiahnuť mapové údaje pre túto oblasť vo formáte XML? Upozorňujeme,
+          že sťahovanie veľkých oblastí môže trvať určitý čas.
+        cancel: Zrušiť
+        download: Stiahnuť
     fixthemap:
       title: Nahlásiť problém / Opraviť mapu
       how_to_help:
@@ -2434,11 +2876,6 @@ sk:
           explanation_html: Ak ste si všimli problém s našimi mapovými údajmi, napríklad
             chýba cesta alebo vaša adresa, najlepší spôsob, ako postupovať, je pripojiť
             sa ku komunite OpenStreetMap a pridať alebo opraviť údaje sami.
-        add_a_note:
-          instructions_1_html: |-
-            Stačí kliknúť na %{note_icon} alebo na rovnakú ikonu v zobrazení mapy.
-            Týmto sa pridá značka na mapu, ktorú môžete presúvať
-            ťahaním. Pridajte svoju správu, kliknite na tlačidlo Uložiť a ostatní tvorcovia máp to preskúmajú.
       other_concerns:
         title: Ostatné obavy
         concerns_html: "Ak máte obavy týkajúce sa spôsobu používania našich údajov
@@ -2446,6 +2883,7 @@ sk:
           informácie, alebo vám pomôže príslušná %{working_group_link}, ak ju kontaktujete."
         copyright: stránka o autorských právach
         working_group: pracovná skupina OSMF
+        working_group_url: https://osmfoundation.org/wiki/Working_Groups
     help:
       title: Získanie pomoci
       introduction: OpenStreetMap ponúka niekoľko zdrojov, kde je možné získať informácie
@@ -2460,6 +2898,7 @@ sk:
         title: Sprievodca pre začiatočníkov
         description: Komunitou spravovaná príručka pre začiatočníkov.
       community:
+        url: https://community.openstreetmap.org/
         title: Pomoc & Komunitné fórum
         description: Zdieľané miesto pre hľadanie pomoci a konverzácie o OpenStreetMap.
       mailing_lists:
@@ -2474,10 +2913,12 @@ sk:
         description: Pomoc pre firmy a organizácie prechádzajúce na mapy alebo iné
           služby založené na OpenStreetMap.
       welcomemat:
+        url: https://welcome.openstreetmap.org/
         title: Pre organizácie
         description: Ste v organizácii, ktorá má planý s OpenStreetMap? Nájdite čo
           potrebujete v uvítacom sprievodcovi.
       wiki:
+        url: https://wiki.openstreetmap.org/
         title: OpenStreetMap Wiki
         description: Podrobnú dokumentáciu OpenStreetMap nájdete na wiki.
     potlatch:
@@ -2486,6 +2927,7 @@ sk:
         vo webovom prehliadači.
       desktop_application_html: Naďalej môžete Potlatch používať %{download_link}.
       download: stiahnutím aplikácie do počítača pre Mac a Windows.
+      download_url: https://www.systemed.net/potlatch/
       id_editor_html: Na druhej strane, môžete nastaviť svoj predvolený editor na
         iD, ktorý beží vo webovom prehliadači podobne ako kedysi Potlatch . %{change_preferences_link}.
       change_preferences: Zmeňte svoje predvoľby tu
@@ -2496,6 +2938,7 @@ sk:
         %{help_link}. Ste v organizácii s plánmi pre OpenStreetMap? %{welcome_mat_link}.
       get_help_here: Získajte pomoc tu
       welcome_mat: Pozrite sa na Welcome Mat
+      welcome_mat_url: https://welcome.openstreetmap.org/
     sidebar:
       search_results: Výsledky vyhľadávania
     search:
@@ -2511,6 +2954,11 @@ sk:
         bicycle: Bicykel
         car: Automobil
         foot: Pešo
+      providers:
+        description: Navigačné služby
+        fossgis_osrm: OSRM
+        graphhopper: GraphHopper
+        fossgis_valhalla: Valhalla
     welcome:
       title: Vitajte!
       introduction: Vitajte na OpenStreetMap, slobodnej a upravovateľnej mape sveta.
@@ -2538,8 +2986,8 @@ sk:
         a_tag_html: '%{tag} je časť údajov o uzle alebo ceste, napríklad názov reštaurácie
           alebo rýchlostný limit cesty.'
         editor: Editor
-        node: Uzol
-        way: Cesta
+        node: uzol
+        way: línia
         tag: Značka
       rules:
         title: Pravidlá!
@@ -2548,18 +2996,20 @@ sk:
           Ak zvažujete akékoľvek iné aktivity ako ručné úpravy, prečítajte si a dodržiavajte
           pokyny na %{imports_link} a %{automated_edits_link}.
         imports: Importy (hromadné zadávanie)
+        imports_url: https://wiki.openstreetmap.org/wiki/Import/Guidelines
         automated_edits: Automatické úpravy
+        automated_edits_url: https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct
       start_mapping: Začať mapovať
       continue_authorization: Pokračovať v autorizácii
-      add_a_note:
-        title: Nie je čas upravovať? Pridajte poznámku!
-        para_1: Pokiaľ chcete len opraviť nejakú drobnosť a nemáte čas sa registrovať
-          a učiť sa upravovať, môžete jednoducho pridať poznámku.
-        para_2_html: |-
-          Stačí prejsť na %{map_link} a kliknúť na ikonu poznámky: %{note_icon}.
-          Týmto pridáte na mapu značku, ktorú môžete presúvať ťahaním.
-          Pridajte svoju správu, potom kliknite na tlačidlo Uložiť a ostatní tvorcovia mapy to preskúmajú.
-        the_map: mapu
+    add_a_note:
+      title: Nie je čas upravovať? Pridajte poznámku!
+      para_1: Pokiaľ chcete len opraviť nejakú drobnosť a nemáte čas sa registrovať
+        a učiť sa upravovať, môžete jednoducho pridať poznámku.
+      para_2_html: |-
+        Stačí kliknúť na %{note_icon} alebo na rovnakú ikonu %{map_link}.
+        Týmto sa pridá značka na mapu, ktorú môžete presúvať
+        ťahaním. Pridajte svoju správu, kliknite na tlačidlo Uložiť a ostatní tvorcovia máp to preskúmajú.
+      the_map: mapu
     communities:
       title: Komunity
       lede_text: |-
@@ -2582,7 +3032,15 @@ sk:
           ako neformálne zoskupenie ľudí alebo ako komunitná skupina. Ktokoľvek ich
           môže zostaviť alebo sa k nim pripojiť. Prečítajte si viac na %{communities_wiki_link}.
         communities_wiki: Wiki stránke o komunitách
-  map_keys:
+        communities_wiki_url: https://wiki.openstreetmap.org/wiki/User_group
+  social_links:
+    show:
+      website: webová stránka
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: Priblížte mapu, aby ste videli poznámky
+      map_data_zoom_in_tooltip: Priblížením zobrazíte údaje mapy
+  legend_panes:
     show:
       entries:
         motorway: Diaľnica
@@ -2595,10 +3053,11 @@ sk:
         track: Lesná/poľná cesta
         bridleway: Chodník pre kone
         cycleway: Cyklotrasa
-        cycleway_national: Národná cyklotrasa
-        cycleway_regional: Regionálna cyklotrasa
-        cycleway_local: Miestna cyklotrasa
-        cycleway_mtb: Trasa pre horské bicykle
+        international_bike_route: Medzinárodná cyklotrasa
+        national_bike_route: Národná cyklotrasa
+        regional_bike_route: Regionálna cyklotrasa
+        local_bike_route: Miestna cyklotrasa
+        mountain_bike_route: Trasa pre horské bicykle
         footway: Chodník pre peších
         rail: Železnica
         train: Vlak
@@ -2615,7 +3074,7 @@ sk:
         apron: Letisková odbavovacia plocha
         admin: Administratívne hranice
         capital: Hlavné mesto
-        city: Mesto
+        city: Veľkomesto
         orchard: Sad
         vineyard: Vinica
         forest: Les (udržiavaný)
@@ -2671,6 +3130,36 @@ sk:
         bicycle_parking: Parkovanie pre bicykle
         bicycle_parking_small: Malé parkovisko pre bicykle
         toilets: WC
+      see_external_legend: Zobraziť externú legendu mapy
+  share_panes:
+    show:
+      link: Odkaz alebo HTML
+      include_marker: Vrátane značky
+      long_link: Odkaz
+      short_link: Krátky odkaz
+      embed: HTML
+      embed_html_disabled: Vkladanie HTML nie je pre túto vrstvu mapy k dispozícii
+      paste_html: HTML pre vloženie na webovú stránku
+      geo_uri: Geo URI
+      image: Obrázok
+      only_layers_exported_as_image: 'Ako obrázok je možné exportovať iba nasledujúce
+        vrstvy:'
+      format: 'Formát:'
+      scale: 'Mierka:'
+      custom_dimensions: Nastaviť vlastné rozmery
+      image_dimensions_html: Obrázok bude zobrazovať %{layer} vrstvu s rozmermi %{width}
+        x %{height}
+      download: Stiahnuť
+      downloading: Sťahovanie...
+  webgl_error_panes:
+    show:
+      compact_message: Pre túto mapu je potrebný WebGL.
+      description_html: Je nám ľúto, ale zdá sa, že %{your_browser_does_not_support_webgl},
+        technológiu na vykresľovanie 3D grafiky na webe.
+      your_browser_does_not_support_webgl: Váš prehliadač nepodporuje WebGL
+      webgl_is_required_for_this_map: Pre zobrazenie tejto mapy je potrebný WebGL.
+      read_more_about_webgl: Čítať viac
+      read_more_about_webgl_url: https://wiki.openstreetmap.org/wiki/Cs:This_map_requires_WebGL
   traces:
     visibility:
       private: Súkromné (iba zdieľané ako anonymné, neusporiadané body)
@@ -2683,6 +3172,7 @@ sk:
     new:
       upload_trace: Nahrať GPS stopu
       visibility_help: čo toto znamená?
+      visibility_help_url: https://wiki.openstreetmap.org/wiki/Visibility_of_GPS_traces
       help: Pomocník
       help_url: https://wiki.openstreetmap.org/wiki/Upload
     create:
@@ -2706,6 +3196,7 @@ sk:
       title: Úprava stopy %{name}
       heading: Úprava stopy %{name}
       visibility_help: čo má toto znamenať?
+      visibility_help_url: https://wiki.openstreetmap.org/wiki/Visibility_of_GPS_traces
     update:
       updated: Trasa bola aktualizovaná
     show:
@@ -2718,13 +3209,13 @@ sk:
       points: 'Bodov:'
       start_coordinates: 'Začiatočná súradnica:'
       coordinates_html: '%{latitude}; %{longitude}'
-      map: mapa
-      edit: upraviť
+      map: zobraziť miesto na mape
+      edit: otvoriť v editore
       owner: 'Vlastník:'
       description: 'Popis:'
       tags: 'Tagy:'
       none: Žiadne
-      edit_trace: Upraviť túto stopu
+      edit_trace: Upraviť detaily stopy
       delete_trace: Vymazať túto stopu
       trace_not_found: Stopa nenájdená!
       visibility: 'Viditeľnosť:'
@@ -2738,8 +3229,8 @@ sk:
         other: '%{count} bodov'
       more: viac
       trace_details: Zobraziť detaily stopy
-      view_map: Zobraziť mapu
-      edit_map: Upraviť mapu
+      view_map: Zobraziť miesto na mape
+      edit_map: Otvoriť v editore
       public: VEREJNÁ
       identifiable: IDENTIFIKOVATEĽNÁ
       private: SÚKROMNÁ
@@ -2757,6 +3248,7 @@ sk:
         na %{wiki_link}.'
       upload_new: Nahrajte novú stopu
       wiki_page: wiki stránke
+      wiki_page_url: https://wiki.openstreetmap.org/wiki/Beginners_Guide_1.2
       upload_trace: Nahrať stopu
       all_traces: Všetky stopy
       my_traces: Moje stopy
@@ -2798,14 +3290,12 @@ sk:
       oauth2_authorizations: Autorizácie OAuth 2
       muted_users: Stlmení používatelia
     auth_providers:
-      openid_url: OpenID URL
-      openid_login_button: Pokračovať
-      openid:
-        title: Prihlásenie sa pomocou OpenID
-        alt: Prihlásenie sa pomocou OpenID URL
       google:
         title: Prihlásenie sa pomocou Google
         alt: Prihlásenie sa pomocou Google OpenID
+      apple:
+        title: Prihlásenie cez Apple
+        alt: Logo Apple
       facebook:
         title: Prihlásenie sa pomocou Facebooku
         alt: Prihlásenie sa pomocou účtu na Facebooku
@@ -2819,6 +3309,9 @@ sk:
         title: Prihlásiť sa pomocou Wikipédie
         alt: Prihláste sa pomocou účtu Wikipedia
     share:
+      share:
+        title: Zdieľať
+        alt: Zdieľať ikonu
       email:
         title: Zdieľať prostredníctvom e-mailu
         alt: Ikona e-mailu
@@ -2867,6 +3360,7 @@ sk:
       no_applications_html: Máte nejakú aplikáciu, využívajúcu štandard %{oauth2},
         ktorá by s nami mala spolupracovať? Aplikáciu je potrebné najprv zaregistrovať,
         až potom bude môcť posielať OAuth požiadavky k tejto službe.
+      oauth_2: OAuth 2
       new: Zaregistrovať novú aplikáciu
       name: Názov
       permissions: Povolenia
@@ -2907,6 +3401,7 @@ sk:
       permissions: Oprávnenia
       last_authorized: Posledná autorizácia
       no_applications_html: Zatiaľ ste nepovolili žiadne %{oauth2} aplikácie.
+      oauth_2: OAuth 2
     application:
       revoke: Odobrať prístup
       confirm_revoke: Chcete odvolať prístup pre túto aplikáciu?
@@ -2918,8 +3413,8 @@ sk:
         do %{client_app_name}.
       no_auto_account_create: Bohužiaľ teraz nie sme schopný vytvoriť pre vás účet
         automaticky.
-      please_contact_support_html: Kontaktujte prosím %{support_link} a dohodnite
-        si vytvorenie účtu – pokúsime sa čo najrýchlejšie spracovať žiadosť.
+      please_contact_support_html: Kontaktujte prosím %{support_link} pre asistenciu
+        – pokúsime sa vašu žiadosť vybaviť čo najrýchlejšie.
       support: podporu
       about:
         header: Slobodné a upravovateľné.
@@ -2936,19 +3431,27 @@ sk:
       by_signing_up:
         html: Registráciou súhlasíte s našimi %{tou_link}, %{privacy_policy_link}
           a %{contributor_terms_link}.
-        privacy_policy: Zásady ochrany súkromia
+        tou: Podmienkami používania
+        privacy_policy: zásadami ochrany osobných údajov
+        privacy_policy_url: https://osmfoundation.org/wiki/Privacy_Policy
         privacy_policy_title: Pravidlá ochrany osobných údajov OSMF vrátane sekcie
           o e-mailových adresách
-        contributor_terms: Podmienky prispievania
+        contributor_terms_url: https://osmfoundation.org/wiki/Licence/Contributor_Terms
+        contributor_terms: podmienkami prispievania
       continue: Zaregistrujte sa
       email_help:
         privacy_policy: zásadám ochrany osobných údajov
+        privacy_policy_url: https://osmfoundation.org/wiki/Privacy_Policy
         privacy_policy_title: Pravidlá ochrany osobných údajov OSMF vrátane sekcie
           o e-mailových adresách
         html: Vaša adresa sa nezobrazuje verejne, pre ďalšie informácie venujte pozornosť
           našim %{privacy_policy_link}.
       or: alebo
       use external auth: prípadne využite na registráciu služby tretích strán
+      verify_human: Overte, že ste človek
+    create:
+      not_human: Žiaľ, nemôžeme potvrdiť, že ste človek. Toto je potrebné na vytvorenie
+        nových účtov.
     no_such_user:
       title: Taký používateľ neexistuje
       heading: Používateľ %{user} neexistuje
@@ -2970,7 +3473,6 @@ sk:
       blocks by me: Mnou udelené blokácie
       create_mute: Stlmiť tohto používateľa
       destroy_mute: Zrušiť stlmenie tohto používateľa
-      edit_profile: Upraviť profil
       send message: Poslať správu
       diary: Denník
       edits: Úpravy
@@ -2989,18 +3491,6 @@ sk:
       created from: 'Vytvorené od:'
       status: 'Stav:'
       spam score: 'Spam skóre:'
-      role:
-        administrator: Tento používateľ je administrátor
-        moderator: Tento používateľ je moderátor
-        importer: Tento používateľ je importér
-        grant:
-          administrator: Povoliť prístup administrátora
-          moderator: Povoliť prístup moderátora
-          importer: Udeliť prístup importéra
-        revoke:
-          administrator: Zrušiť prístup administrátora
-          moderator: Zrušiť prístup moderátora
-          importer: Odobrať prístup importéra
       block_history: Aktívne blokácie
       moderator_history: Udelené blokácie
       revoke_all_blocks: Odvolať všetky blokácie
@@ -3009,12 +3499,42 @@ sk:
       activate_user: Aktivovať tohoto používateľa
       confirm_user: Potvrdiť tohoto používateľa
       unconfirm_user: Zrušiť potvrdenie tohto používateľa
+      suspend_user: Pozastaviť tohto používateľa
       unsuspend_user: Zrušiť pozastavenie tohto používateľa
-      hide_user: Skryť tohto používateľa
-      unhide_user: Zobraziť tohoto používateľa
-      delete_user: Odstrániť tohoto používateľa
+      undelete_user: Obnoviť tohto používateľa
       confirm: Potvrdiť
       report: Nahlásiť tohto používateľa
+      edit_profile_details: Upraviť podrobnosti profilu
+      edit_description: Upraviť popis
+      edit_links: Upraviť odkazy
+      change_image: Zmeniť obrázok
+      edit_company: Upraviť spoločnosť
+      edit_location: Upraviť polohu
+      edit_contribution_calendar: Konfigurácia kalendára príspevkov
+      contributions:
+        one: '%{count} príspevok za posledný rok'
+        few: '%{count} príspevky za posledný rok'
+        many: '%{count} príspevkov za posledný rok'
+        other: '%{count} príspevkov za posledný rok'
+      title:
+        administrator: Tento používateľ je administrátor
+        moderator: Tento používateľ je moderátor
+        importer: Tento používateľ je importér
+      grant:
+        administrator: Povoliť prístup administrátora
+        moderator: Povoliť prístup moderátora
+        importer: Udeliť prístup importéra
+        are_you_sure: Naozaj chcete prideliť rolu „%{role}“ používateľovi „%{name}“?
+      revoke:
+        administrator: Zrušiť prístup administrátora
+        moderator: Zrušiť prístup moderátora
+        importer: Odobrať prístup importéra
+        are_you_sure: Naozaj chcete odobrať rolu „%{role}“ používateľovi „%{name}“?
+    sidebar_section:
+      home_location: Domovská poloha
+      company: Spoločnosť
+      company_tooltip: Príslušnosť k spoločnosti je nahlásená samostatne a nie je
+        overená
     go_public:
       flash success: Všetky vaše úpravy sú teraz verejné, a teraz máte povolenie na
         úpravu.
@@ -3065,7 +3585,7 @@ sk:
           many: '%{count} nájdených používateľov'
           other: '%{count} nájdených používateľov'
         confirm: Potvrdiť zvolených používateľov
-        hide: Skryť vybraných používateľov
+        suspend: Pozastaviť vybraných používateľov
         empty: Žiadni používatelia vyhovujúci podmienkam neboli nájdení
       user:
         summary_html: '%{name} založené %{date} z %{ip_address}'
@@ -3121,10 +3641,6 @@ sk:
       doesnt_have_role: Požívateľ nemá úlohu %{role}.
       not_revoke_admin_current_user: Rolu administrátora nie je možné odobrať aktuálne
         prihlásenému používateľovi.
-    grant:
-      are_you_sure: Naozaj chcete prideliť rolu „%{role}“ používateľovi „%{name}“?
-    revoke:
-      are_you_sure: Naozaj chcete odobrať rolu „%{role}“ používateľovi „%{name}“?
   user_blocks:
     model:
       non_moderator_update: Musíte byť moderátorom na vytvorenie alebo aktualizáciu
@@ -3269,8 +3785,9 @@ sk:
       last_changed: Posledná zmena
       apply: Použiť
       all: Všetky
-      open: Otvorené
+      open: Nevyriešené
       closed: Uzavreté
+      hidden: Skryté
       status: Stav
     show:
       title: 'Poznámka: %{id}'
@@ -3290,6 +3807,7 @@ sk:
       event_reopened_by_anonymous_html: Znovu aktivované anonymným používateľom %{time_ago}
       event_hidden_by_html: Skryté používateľom %{user} %{time_ago}
       report: nahlásiť túto poznámku
+      coordinates_html: '%{latitude}, %{longitude}'
       anonymous_warning: Táto poznámka zahŕňa komentáre anonymných používateľov, ktoré
         by sa mali nezávisle preveriť.
       discussion: Diskusia
@@ -3330,10 +3848,12 @@ sk:
         url: https://wiki.openstreetmap.org/wiki/Sk:Beginners%27_guide
       counter_warning_forum_link:
         text: komunita vám môže pomôcť
+        url: https://community.openstreetmap.org/
       advice: Vaša poznámka je verejná a môže slúžiť na úpravu mapy, preto nevkladajte
         žiadne osobné údaje ani informácie z máp alebo databáz chránených autorskými
         právami.
       add: Pridať poznámku
+      error: Pri vytváraní poznámky sa vyskytla chyba
     new_readonly:
       title: Nová poznámka
       warning: Nové poznámky nie je možné vytvoriť, pretože rozhranie OpenStreetMap
@@ -3348,38 +3868,28 @@ sk:
     close: Zavrieť
     share:
       title: Zdieľať
-      cancel: Zrušiť
-      image: Obrázok
-      link: Odkaz alebo HTML
-      long_link: Odkaz
-      short_link: Krátky odkaz
-      geo_uri: Geo URI
-      embed: HTML
-      custom_dimensions: Nastaviť vlastné rozmery
-      format: 'Formát:'
-      scale: 'Mierka:'
-      image_dimensions: Obrázok bude zobrazovať %{layer} vrstvu s rozmermi %{width}
-        x %{height}
-      download: Stiahnuť
-      short_url: Krátke URL
-      include_marker: Vrátane značky
-      center_marker: Centrovať mapu na značku
-      paste_html: HTML pre vloženie na webovú stránku
       view_larger_map: Zobraziť väčšiu mapu
-      only_layers_exported_as_image: 'Ako obrázok je možné exportovať iba nasledujúce
-        vrstvy:'
+      export_failed_title: Export mapy zlyhal
+      filename: mapa
     embed:
       report_problem: Nahlásiť problém
-    key:
+    legend:
       title: Legenda
       tooltip: Legenda
-      tooltip_disabled: Legenda je dostupná nie je dostupná pre túto vrstvu
+      tooltip_disabled: Legenda nie je dostupná pre túto vrstvu
     map:
-      zoom:
-        in: Priblížiť
-        out: Oddialiť
-      locate:
-        title: Zobraziť moju polohu
+      map:
+        title: Mapa
+        marker:
+          title: Značka na mape
+      popup:
+        close: Zatvoriť
+      navigation_control:
+        zoom_in: Priblížiť
+        zoom_out: Oddialiť
+      geolocate_control:
+        find_my_location: Zobraziť moju polohu
+        location_not_available: Poloha nie je k dispozícii
         metersPopup:
           one: Ste menej než %{count} meter od tohto bodu
           few: Ste menej než %{count} metre od tohto bodu
@@ -3390,12 +3900,17 @@ sk:
           few: Ste menej než %{count} stopy od tohto bodu
           many: Ste menej než %{count} stôp od tohto bodu
           other: Ste menej než %{count} stôp od tohto bodu
+      attribution_control:
+        toggle_attribution: Prepnúť uvádzanie pôvodu
       base:
         standard: Štandardná
+        cyclosm: CyclOSM
         cycle_map: Cyklomapa
         transport_map: Dopravná mapa
         tracestracktop_topo: Tracestrack Topo
         hot: Humanitárna
+        shortbread: Shortbread
+        openmaptiles_osm: MapTiler OMT
       layers:
         header: Mapové vrstvy
         notes: Poznámky k mape
@@ -3403,37 +3918,47 @@ sk:
         gps: Verejné GPS stopy
         overlays: Zapnúť vrstvy pre ladenie mapy
         title: Vrstvy
+      copyright_text: © %{copyright_link}
       openstreetmap_contributors: Prispievatelia OpenStreetMap
       make_a_donation: Pošlite príspevok
       website_and_api_terms: Podmienky webstránky a API
       cyclosm_credit: Štýl dlaždíc od %{cyclosm_link} poskytuje %{osm_france_link}
+      cyclosm_name: CyclOSM
       osm_france: OpenStreetMap Francúzsko
       thunderforest_credit: Dlaždice s dovolením od %{thunderforest_link}
       andy_allan: Andyho Allana
       tracestrack_credit: Dlaždice s láskavým dovolením %{tracestrack_link}
+      tracestrack: Tracestrack
       hotosm_credit: Štýl dlaždíc od %{hotosm_link} poskytuje %{osm_france_link}
       hotosm_name: Humanitárneho tímu OpenStreetMap
+      openmaptiles_credit: Vektorové dlaždice z %{openmaptiles_link} hostované na
+        %{maptiler_link}
+      openmaptiles_name: OpenMapTiles
+      maptiler_name: MapTiler
     site:
       edit_tooltip: Upraviť mapu
       edit_disabled_tooltip: Pre editáciu priblížte mapu
       createnote_tooltip: Pridať do mapy poznámku
       createnote_disabled_tooltip: Pre vloženie poznámky priblížte mapu
-      map_notes_zoom_in_tooltip: Priblížte mapu, aby ste videli poznámky
-      map_data_zoom_in_tooltip: Priblížením zobrazíte údaje mapy
       queryfeature_tooltip: Prieskum prvkov
       queryfeature_disabled_tooltip: Pre prieskum prvkov priblížte
-      embed_html_disabled: Vkladanie HTML nie je pre túto vrstvu mapy k dispozícii
+    profile:
+      social_link_n: Odkaz na sociálny profil %{n}
+      remove_social_link_n: Odstrániť odkaz na sociálny profil %{n}
     edit_help: Posuňte mapu a priblížte ju na miesto, ktoré chcete upraviť, potom
       kliknite sem.
     directions:
-      ascend: Stúpanie
-      descend: Klesanie
-      distance: Vzdialenosť
-      distance_m: '%{distance}m'
-      distance_km: '%{distance}km'
+      distance_in_units:
+        m: '%{distance}m'
+        km: '%{distance}km'
+        ft: '%{distance} stôp'
+        yd: '%{distance} yardov'
+        mi: '%{distance} míľ'
       errors:
         no_route: Nepodarilo sa nájsť trasu medzi týmito miestami.
-        no_place: Ospravedlňujeme sa - nepodarilo sa nájsť '%{place}'.
+        no_place:
+          title: Hľadanie zlyhalo
+          body: Nepodarilo sa nájsť '%{place}'.
       instructions:
         continue_without_exit: Pokračujte na %{name}
         slight_right_without_exit: Mierne vpravo na %{name}
@@ -3495,8 +4020,8 @@ sk:
         roundabout_with_exit_ordinal: Na kruhovom objazde použite %{exit} výjazd na
           %{name}
         exit_roundabout: Opustite kruhový objazd na %{name}
+        ferry_without_exit: Nastúpte na trajekt %{name}
         unnamed: nepomenované
-        courtesy: Trasa získaná vďaka %{link}
         exit_counts:
           first: "1."
           second: "2."
@@ -3508,16 +4033,15 @@ sk:
           eighth: "8."
           ninth: "9."
           tenth: "10."
-      time: Čas
-      download: Stiahnuť trasu ako GeoJSON
-      filename: trasa
     query:
       node: Uzol
-      way: Cesta
+      way: Línia
       relation: Relácia
       nothing_found: Neboli nájdené žiadne objekty
       error: 'Chyba pri pripájaní k %{server}: %{error}'
       timeout: Vypršal čas pri pripájaní k %{server}
+    element:
+      wikipedia: Wikipédia
     context:
       directions_from: Navigovať odtiaľto
       directions_to: Navigovať sem
@@ -3525,10 +4049,11 @@ sk:
       show_address: Zobraziť adresu
       query_features: Prieskum prvkov
       centre_map: Tu vycentrovať mapu
+      scroll_to_changeset: Prejsť na sadu zmien
     home:
-      marker_title: Moja domáca poloha
+      marker_title: Moja domovská poloha
       not_set: Vo vašom účte nie je nastavená domovská poloha
-    heatmap:
+    contribution_calendar:
       tooltip:
         no_contributions: Žiadne príspevky dňa %{date}
         contributions:
@@ -3536,6 +4061,15 @@ sk:
           few: '%{count} príspevky dňa %{date}'
           many: '%{count} príspevkov dňa %{date}'
           other: '%{count} príspevkov dňa %{date}'
+    remote_edit:
+      failed:
+        title: Úprava zlyhala
+        body: Uistite sa, že je načítaný JOSM alebo Merkaartor a je povolená možnosť
+          diaľkového ovládania.
+    edit:
+      id_not_configured:
+        title: iD zatiaľ nie je nakonfigurovaný
+        body: Viac informácií nájdete v súbore CONFIGURE.md.
   redactions:
     edit:
       heading: Upraviť revíziu

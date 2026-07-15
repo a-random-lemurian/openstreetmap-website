@@ -67,9 +67,6 @@ aln:
       way_node: Nyja Way
       way_tag: Rruga Tag
     attributes:
-      client_application:
-        callback_url: Callback URL
-        support_url: Asistenca URL
       diary_comment:
         body: Organ
       diary_entry:
@@ -199,8 +196,6 @@ aln:
       title: ditarë Përdorues ,
       user_title: Ditari i %{user}
       in_language_title: Shënimet e Ditarit në %{language}
-      new: Hyrja e re Ditari
-      new_title: Shkruaj një hyrje e re në ditarin tuaj përdorues
       no_entries: Nuk ka shënime në ditar
     page:
       recent_entries: 'shënimet e fundit ditar:'
@@ -245,6 +240,9 @@ aln:
       all:
         title: hyra OpenStreetMap ditar
         description: Shënimet mat fundit të ditarit nga anëtarët e OpenStreetMap
+    navigation:
+      new: Hyrja e re Ditari
+      new_title: Shkruaj një hyrje e re në ditarin tuaj përdorues
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -603,22 +601,25 @@ aln:
           wadi: luginë
           waterfall: Ujëvarë
           weir: Pendë
-    results:
-      no_results: Nuk është gjetur asnjë rezultat
-      more_results: Më shumë rezultate
+  searches:
+    queries:
+      create:
+        no_results: Nuk është gjetur asnjë rezultat
+        more_results: Më shumë rezultate
   layouts:
     logo:
       alt_text: logo e OpenStreetMap
-    home: shtëpi
-    logout: logout
-    log_in: log in
-    sign_up: regjistrohu
-    edit: Ndrysho
-    history: Historia
-    export: Eksport
-    gps_traces: GPS Gjurmët
-    user_diaries: Përdoruesi Diaries
-    copyright: Copyright & License
+    header:
+      copyright: Copyright & License
+      edit: Ndrysho
+      export: Eksport
+      gps_traces: GPS Gjurmët
+      history: Historia
+      home: shtëpi
+      log_out: logout
+      log_in: log in
+      sign_up: regjistrohu
+      user_diaries: Përdoruesi Diaries
   user_mailer:
     diary_comment_notification:
       subject: '[OpenStreetMap] %{user} ka komentu në shënimin tond të ditarit'
@@ -738,16 +739,20 @@ aln:
     update:
       flash changed: Fjalëkalimi juaj u ndryshua.
   profiles:
-    edit:
-      image: 'Imazhi:'
-      new image: Shto ni imazh
-      keep image: Maje imazhin e tanishëm
-      delete image: Heke imazhin e tanishëm
-      replace image: Ndryshoje imazhin e tanishëm
-      image size hint: (imazhet katrore s'paku me madhsi 100x100px doken ma mir)
-      home location: 'Veni juej:'
-      no home location: Ju se keni caktu venin e juj.
-      update home location on click: Ndryshoma venin kur të klikoj në hart?
+    profile_sections:
+      navigation:
+        image: 'Imazhi:'
+    images:
+      show:
+        new image: Shto ni imazh
+        keep image: Maje imazhin e tanishëm
+        delete image: Heke imazhin e tanishëm
+        replace image: Ndryshoje imazhin e tanishëm
+        image size hint: (imazhet katrore s'paku me madhsi 100x100px doken ma mir)
+    locations:
+      show:
+        no home location: Ju se keni caktu venin e juj.
+        update home location on click: Ndryshoma venin kur të klikoj në hart?
   sessions:
     new:
       tab_title: Kycu
@@ -789,7 +794,6 @@ aln:
             kontribuesit, CC BY-SA ". Nëse jeni duke përdorur të dhëna vetëm në hartë,
             ne kerkojme "Organizimi i të dhënave © kontribuesit OpenStreetMap,
             CC BY-SA ".
-        more_title_html: Gjetja më shumë
         contributors_title_html: kontribuesit tona
         contributors_intro_html: |-
           licencë CC BY-SA jonë kërkon që ju të "japin origjinal
@@ -829,7 +833,7 @@ aln:
       where_am_i: Ku jom une?
       where_am_i_title: Përshkruje lokacionin e tanishëm tuj e përdor makinën kërkuese
       submit_text: Shkoj
-  map_keys:
+  legend_panes:
     show:
       entries:
         motorway: Autostradë
@@ -981,24 +985,25 @@ aln:
       created from: 'U krijue prej:'
       status: 'Statuti:'
       spam score: 'Piket e Badihavgjive:'
-      role:
-        administrator: Ky shfrytëzues asht aministrator
-        moderator: Ky shfrytëzues asht moderator
-        grant:
-          administrator: Banu administrator
-          moderator: Banu moderator
-        revoke:
-          administrator: Riqoje aksesin e administratorit
-          moderator: Riqoje aksesin e moderatorit
       block_history: shih blokimet e marrne
       moderator_history: shihe kan e ke blloku
       create_block: blloko ket shfrytzues
       activate_user: aktivizo kët shfrytezues
       confirm_user: konfirmo ket perdorus
-      hide_user: mshife kët shfrytëzues
-      unhide_user: shfaqe kët shfrytzues
-      delete_user: fshije kët shfrytzues
       confirm: Konfirmo
+      title:
+        administrator: Ky shfrytëzues asht aministrator
+        moderator: Ky shfrytëzues asht moderator
+      grant:
+        administrator: Banu administrator
+        moderator: Banu moderator
+        are_you_sure: A jeni i sigurt që po doni mja dhonë rolin `%{role}' te përdoruesi
+          `%{name}'?
+      revoke:
+        administrator: Riqoje aksesin e administratorit
+        moderator: Riqoje aksesin e moderatorit
+        are_you_sure: A jeni i sigurt qe ju doni me zgjue rolin `%{role}' prej perdoruesit
+          `%{name}'?
     go_public:
       flash success: Gjitha ndryshimet tuja janë publike tash, edhe tash t'lejohet
         me ndryshue
@@ -1018,7 +1023,6 @@ aln:
         heading: Perdoruesit
       page:
         confirm: Konfirmo Anëtarët e Selektum
-        hide: Mshefi Perdorust e Zgjedhun
         empty: Asni perputhje e perdoruesve nuk asht gjetun
       user:
         summary_html: '%{name} u kriju prej %{ip_address} në %{date}'
@@ -1034,12 +1038,6 @@ aln:
       not_a_role: Lidhja `%{role}' nuk asht rol valid.
       already_has_role: Shfrytzuesi tashmë ka ni rol %{role}.
       doesnt_have_role: Ky shfrytzeus nuk ka asni rrol %{role}
-    grant:
-      are_you_sure: A jeni i sigurt që po doni mja dhonë rolin `%{role}' te përdoruesi
-        `%{name}'?
-    revoke:
-      are_you_sure: A jeni i sigurt qe ju doni me zgjue rolin `%{role}' prej perdoruesit
-        `%{name}'?
   user_blocks:
     model:
       non_moderator_update: Duhet të jetë një moderator për të krijuar ose rinovuar

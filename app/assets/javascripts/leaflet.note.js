@@ -8,7 +8,8 @@ L.OSM.note = function (options) {
     const link = $("<a>")
       .attr("class", "control-button")
       .attr("href", "#")
-      .html("<span class=\"icon note\"></span>")
+      .attr("title", OSM.i18n.t("javascripts.site.createnote_tooltip"))
+      .append($("<i>").addClass("fs-5 bi bi-chat-square-text-fill"))
       .appendTo($container);
 
     map.on("zoomend", update);

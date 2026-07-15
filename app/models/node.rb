@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: current_nodes
@@ -22,8 +24,6 @@
 #
 
 class Node < ApplicationRecord
-  require "xml/libxml"
-
   include GeoRecord
   include ConsistencyValidations
   include NotRedactable
@@ -37,7 +37,7 @@ class Node < ApplicationRecord
   has_many :way_nodes
   has_many :ways, :through => :way_nodes
 
-  has_many :node_tags
+  has_many :element_tags, :class_name => "NodeTag"
 
   has_many :old_way_nodes
   has_many :ways_via_history, :class_name => "Way", :through => :old_way_nodes, :source => :way
@@ -159,6 +159,8 @@ class Node < ApplicationRecord
       # update the changeset with the deleted position
       changeset.update_bbox!(bbox)
 
+      changeset.num_deleted_nodes += 1
+
       save_with_history!
     end
   end
@@ -184,6 +186,8 @@ class Node < ApplicationRecord
       # update changeset bbox with *new* position
       changeset.update_bbox!(bbox)
 
+      changeset.num_modified_nodes += 1
+
       save_with_history!
     end
   end
@@ -196,11 +200,13 @@ class Node < ApplicationRecord
     # update the changeset to include the new location
     changeset.update_bbox!(bbox)
 
+    changeset.num_created_nodes += 1
+
     save_with_history!
   end
 
   def tags
-    @tags ||= node_tags.to_h { |t| [t.k, t.v] }
+    @tags ||= element_tags.to_h { |t| [t.k, t.v] }
   end
 
   attr_writer :tags

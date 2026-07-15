@@ -86,18 +86,6 @@ diq:
       way_node: Ray Qedyin
       way_tag: Etikete ray
     attributes:
-      client_application:
-        name: Name (ganiyo)
-        url: Gıray Esas Aplikasyoni (ganiyo)
-        callback_url: Gırey Peyd Cıgeyrayışi
-        support_url: Gırey Destegi
-        allow_read_prefs: Tercihanê karberi bıwanê
-        allow_write_prefs: Tercihanê karberanê inan bıvurne
-        allow_write_diary: Embaz bıkerên, mışorê u rocek çiyeki vırazên
-        allow_write_api: Xeritay bıvurne
-        allow_read_gpx: Rêça GPSanê xısusiyan bıwane
-        allow_write_gpx: Şopanê GPSi bar kerê
-        allow_write_notes: Notan bıvurne
       diary_comment:
         body: Metın
       diary_entry:
@@ -187,10 +175,6 @@ diq:
     show:
       title: Hesabi bıvurne
       current email address: 'E-postay şımaya newki:'
-      openid:
-        link text: no çıko?
-      contributor terms:
-        link text: no çıko?
       save changes button: Vurnayışan qeyd ke
     go_public:
       heading: 'Pêron rê akerde vırnayış:'
@@ -216,8 +200,6 @@ diq:
       one: 1 ray
       other: '%{count} rayi'
     download_xml: XML ron
-    view_history: Verêni bıvêne
-    view_details: Teferuatan Bıvêne
     location: 'Lokasyon:'
     node:
       title_html: Noqta:%{name}
@@ -259,6 +241,10 @@ diq:
     tag_details:
       tags: 'Etiketi:'
       telephone_link: Veynd %{phone_number}
+    versions_navigation:
+      way: Raye
+      relation: Elaqe
+      history: Tarix
   feature_queries:
     show:
       title: Xısusiyetan bıasne
@@ -274,7 +260,7 @@ diq:
       relation:
         title_html: 'Verorê eleqey: %{name}'
   changesets:
-    changeset:
+    changeset_line:
       comments:
         zero: vatış
         one: '%{count} mışewre'
@@ -339,8 +325,6 @@ diq:
       title_nearby: Nezdı ra rocekê karberan
       user_title: '%{user} rocek'
       in_language_title: '%{language} dekewtekê roci'
-      new: Roceko newe definayış
-      my_diary: Rocekê mı
     edit:
       marker_text: Lokasyonê rocekê cıkewtışi
     show:
@@ -363,15 +347,15 @@ diq:
       report: Nê mışewreyi rapor ke
     location:
       location: 'Lokasyon:'
+    navigation:
+      my_diary: Rocekê mı
+      new: Roceko newe definayış
   errors:
     contact:
       contact: irtibat
     forbidden:
       title: Qedexe
   geocoder:
-    search:
-      title:
-        latlon: Daxili
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -787,6 +771,13 @@ diq:
           dam: Berac
           lock: İskele
           river: Ro
+  searches:
+    show:
+      title:
+        latlon: Daxili
+  directions:
+    show:
+      time: Zeman
   issues:
     index:
       states:
@@ -796,18 +787,19 @@ diq:
       reports: Rapori
       last_updated: Rocanekerdışo Peyên
   layouts:
-    logout: Bıveciye
-    log_in: Cı kewe
-    sign_up: Qeyd be
-    edit: Bıvurne
-    history: Tarix
-    export: Teberdayış
     tou: Şertê gurenayışi
-    help: Peşti
-    about: Heqa
-    copyright: Heqa telifi
     learn_more: Tayêna bımuse
-    more: Zêde
+    header:
+      about: Heqa
+      copyright: Heqa telifi
+      edit: Bıvurne
+      export: Teberdayış
+      help: Peşti
+      history: Tarix
+      log_out: Bıveciye
+      log_in: Cı kewe
+      more: Zêde
+      sign_up: Qeyd be
   user_mailer:
     diary_comment_notification:
       hi: Merheba %{to_user},
@@ -862,10 +854,26 @@ diq:
       heading: Parolay %{user} reset ke
       reset: Parola reset ke
   profiles:
-    edit:
-      image: 'Resım:'
-      new image: Yew resım cı ke
-      home location: 'Herune:'
+    profile_sections:
+      navigation:
+        description: Şınasnayış
+        links: Gıreyi
+        image: 'Resım:'
+        location: Ca
+    links:
+      show:
+        cancel: Bıtexelne
+    images:
+      show:
+        title: Profili bıvurne
+        cancel: Bıtexelne
+        new image: Yew resım cı ke
+    companies:
+      show:
+        cancel: Bıtexelne
+    locations:
+      show:
+        cancel: Bıtexelne
   sessions:
     new:
       tab_title: Cıkewtış
@@ -915,7 +923,7 @@ diq:
         foot: Lınge
     welcome:
       title: Xeyr amey!
-  map_keys:
+  legend_panes:
     show:
       entries:
         track: Raya Herın
@@ -934,6 +942,13 @@ diq:
         university: Uniwersita
         summit: Sersıq
         peak: Ko
+  share_panes:
+    show:
+      link: Gıre ya zi HTML
+      long_link: Gıre
+      image: Resım
+      format: 'Format:'
+      download: Biya war
   traces:
     new:
       help: Peşti
@@ -969,6 +984,10 @@ diq:
       public_traces: Pêron rê akerde rêçê GPS
       public_traces_from: '%{user} ra pêron rê akerde rêçê GPS'
       tagged_with: '%{tags} ya etiketyayo'
+  application:
+    share:
+      share:
+        title: Vıla ke
   users:
     new:
       continue: Qeyd be
@@ -993,25 +1012,25 @@ diq:
       email address: 'Adresa e-postey:'
       created from: 'Vıraşten ra:'
       status: 'Weziyet:'
-      role:
-        administrator: No karber idarekaro
-        moderator: No karber yew moderatoro
-        grant:
-          administrator: Hesabê adminisrator de gırdi
-          moderator: Hesabê moderator de gırdi
-        revoke:
-          administrator: Hesabê adminisratori terkne
-          moderator: Hesabê moderatori terkne
       block_history: kılitkerdışê gırewtey
       moderator_history: Bloqanê cı bıgi re
       comments: Mışewreyi
       create_block: nê karberi kılit ke
       activate_user: Nê karberi aktiv ke
       confirm_user: nê karberi tesdiq ke
-      hide_user: nê karberi  bınımnê
-      unhide_user: nê karberi menımnê
-      delete_user: nê karberi esternê
       confirm: Tesdiq ke
+      change_image: Resımi bıvurne
+      title:
+        administrator: No karber idarekaro
+        moderator: No karber yew moderatoro
+      grant:
+        administrator: Hesabê adminisrator de gırdi
+        moderator: Hesabê moderator de gırdi
+      revoke:
+        administrator: Hesabê adminisratori terkne
+        moderator: Hesabê moderatori terkne
+    sidebar_section:
+      home_location: Cayê keyeyi
     issued_blocks:
       show:
         title: Blokeyê ke %{name} kerdê
@@ -1028,7 +1047,6 @@ diq:
         no_edits: İştıraki çıniyê
       page:
         confirm: Karberê ke weçineyayê ena tesdiq ke
-        hide: Karbera weçinayışi bınımnê
       user:
         summary_html: '%{name} %{ip_address} ra %{date} dı vıraşt'
         summary_no_ip_html: '%{name} %{date} dı vıraşt'
@@ -1091,24 +1109,16 @@ diq:
     close: Kip ke
     share:
       title: Vıla ke
-      cancel: Bıtexelne
-      image: Resım
-      link: Gıre ya zi HTML
-      long_link: Gıre
-      format: 'Format:'
-      download: Biya war
     map:
-      zoom:
-        in: Nêzdi ke
-        out: Dûri fiye
+      navigation_control:
+        zoom_in: Nêzdi ke
+        zoom_out: Dûri fiye
       base:
         standard: Standard
         cycle_map: Xeritay Topoğrafiki
         transport_map: Xeritay Resnayışi
     site:
       edit_tooltip: Xeriti timar ke
-    directions:
-      time: Zeman
     query:
       way: Raye
       relation: Elaqe

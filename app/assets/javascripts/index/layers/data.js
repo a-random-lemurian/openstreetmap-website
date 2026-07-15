@@ -1,28 +1,15 @@
+//= require download_util
 OSM.initializeDataLayer = function (map) {
   let dataLoader, loadedBounds;
   const dataLayer = map.dataLayer;
-
-  dataLayer.setStyle({
-    way: {
-      weight: 3,
-      color: "#000000",
-      opacity: 0.4
-    },
-    area: {
-      weight: 3,
-      color: "#ff0000"
-    },
-    node: {
-      color: "#00ff00"
-    }
-  });
 
   dataLayer.isWayArea = function () {
     return false;
   };
 
   dataLayer.on("click", function (e) {
-    onSelect(e.layer);
+    const feature = e.layer.feature;
+    OSM.router.click(e.originalEvent, `/${feature.type}/${feature.id}`);
   });
 
   dataLayer.on("add", function () {
@@ -63,29 +50,13 @@ OSM.initializeDataLayer = function (map) {
           .click(add)));
   }
 
-  function displayLoadError(message, close) {
-    $("#browse_status").html(
-      $("<div class='p-3'>").append(
-        $("<div class='d-flex'>").append(
-          $("<h2 class='flex-grow-1 text-break'>")
-            .text(OSM.i18n.t("browse.start_rjs.load_data")),
-          $("<div>").append(
-            $("<button type='button' class='btn-close'>")
-              .attr("aria-label", OSM.i18n.t("javascripts.close"))
-              .click(close))),
-        $("<p class='alert alert-warning'>")
-          .text(OSM.i18n.t("browse.start_rjs.feature_error", { message: message }))));
-  }
-
   function getData() {
-    const bounds = map.getBounds();
-    const url = "/api/" + OSM.API_VERSION + "/map.json?bbox=" + bounds.toBBoxString();
-
     /*
      * Modern browsers are quite happy showing far more than 100 features in
      * the data browser, so increase the limit to 4000.
      */
     const maxFeatures = 4000;
+    const bounds = map.getBounds();
 
     if (dataLoader) dataLoader.abort();
 
@@ -99,19 +70,66 @@ OSM.initializeDataLayer = function (map) {
       .appendTo($("#label-layers-data"));
 
     dataLoader = new AbortController();
-    fetch(url, { signal: dataLoader.signal })
-      .then(response => {
-        if (response.ok) return response.json();
-        const status = response.statusText || response.status;
-        if (response.status !== 400) throw new Error(status);
-        return response.text().then(text => {
-          throw new Error(text || status);
-        });
-      })
-      .then(function (data) {
-        dataLayer.clearLayers();
 
-        const features = dataLayer.buildFeatures(data);
+    function getWrappedBounds(bounds) {
+      const sw = bounds.getSouthWest().wrap();
+      const ne = bounds.getNorthEast().wrap();
+      return {
+        minLat: sw.lat,
+        minLng: sw.lng,
+        maxLat: ne.lat,
+        maxLng: ne.lng
+      };
+    }
+
+    function getRequestBounds(bounds) {
+      const wrapped = getWrappedBounds(bounds);
+      if (wrapped.minLng > wrapped.maxLng) {
+        // BBox is crossing antimeridian: split into two bboxes in order to stay
+        // within OSM API's map endpoint permitted range for longitude [-180..180].
+        return [
+          L.latLngBounds([wrapped.minLat, wrapped.minLng], [wrapped.maxLat, 180]),
+          L.latLngBounds([wrapped.minLat, -180], [wrapped.maxLat, wrapped.maxLng])
+        ];
+      }
+      return [L.latLngBounds([wrapped.minLat, wrapped.minLng], [wrapped.maxLat, wrapped.maxLng])];
+    }
+
+    function fetchDataForBounds(bounds) {
+      return fetch(`/api/${OSM.API_VERSION}/map.json?bbox=${bounds.toBBoxString()}`, {
+        headers: { ...OSM.oauth },
+        signal: dataLoader.signal
+      });
+    }
+
+    const requestBounds = getRequestBounds(bounds);
+    const requests = requestBounds.map(fetchDataForBounds);
+
+    Promise.all(requests)
+      .then(responses =>
+        Promise.all(
+          responses.map(async response => {
+            if (response.ok) {
+              return response.json();
+            }
+
+            const status = `HTTP Error ${response.status} ${response.statusText}`;
+            if (response.status !== 400 && response.status !== 509) {
+              throw new Error(status);
+            }
+
+            const text = await response.text();
+            throw new Error(text || status);
+          })
+        )
+      )
+      .then(dataArray => {
+        dataLayer.clearLayers();
+        const allElements = dataArray.flatMap(item => item.elements);
+        const originalFeatures = dataLayer.buildFeatures({ elements: allElements });
+        // clone features when crossing antimeridian to work around Leaflet restrictions
+        const features = requestBounds.length > 1 ?
+          [...originalFeatures, ...cloneFeatures(originalFeatures)] : originalFeatures;
 
         function addFeatures() {
           $("#browse_status").empty();
@@ -123,7 +141,7 @@ OSM.initializeDataLayer = function (map) {
           $("#browse_status").empty();
         }
 
-        if (features.length < maxFeatures) {
+        if (features.length < maxFeatures * requestBounds.length) {
           addFeatures();
         } else {
           displayFeatureWarning(features.length, addFeatures, cancelAddFeatures);
@@ -136,7 +154,7 @@ OSM.initializeDataLayer = function (map) {
       .catch(function (error) {
         if (error.name === "AbortError") return;
 
-        displayLoadError(error?.message, () => {
+        OSM.displayLoadError(error?.message, () => {
           $("#browse_status").empty();
         });
       })
@@ -146,7 +164,25 @@ OSM.initializeDataLayer = function (map) {
       });
   }
 
-  function onSelect(layer) {
-    OSM.router.route("/" + layer.feature.type + "/" + layer.feature.id);
+  function cloneFeatures(features) {
+    const offset = map.getCenter().lng < 0 ? -360 : 360;
+
+    const cloneNode = ({ latLng, ...rest }) => ({
+      ...rest,
+      latLng: { ...latLng, lng: latLng.lng + offset }
+    });
+
+    return features.flatMap(feature => {
+      if (feature.type === "node") {
+        return [cloneNode(feature)];
+      }
+
+      if (feature.type === "way") {
+        const clonedNodes = feature.nodes.map(cloneNode);
+        return [{ ...feature, nodes: clonedNodes }];
+      }
+
+      return [];
+    });
   }
 };

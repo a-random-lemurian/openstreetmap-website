@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Issues
   class ReportersController < ApplicationController
-    layout "site"
+    layout :site_layout
 
     before_action :authorize_web
     before_action :set_locale
@@ -9,7 +11,7 @@ module Issues
     authorize_resource :issue
 
     def index
-      @issue = Issue.visible_to(current_user).find(params[:issue_id])
+      @issue = Issue.visible_to(current_user).find(params.expect(:issue_id))
 
       user_ids = @issue.reports.reorder(:created_at => :desc).pluck(:user_id).uniq
       @unique_reporters = {

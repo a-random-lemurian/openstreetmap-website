@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class TracepointsController < ApiController
     authorize_resource
@@ -6,7 +8,7 @@ module Api
     # within the specified bounding box, and in the specified page.
     def index
       # retrieve the page number
-      page = params["page"].to_s.to_i
+      page = params.fetch(:page, "0").to_i
 
       unless page >= 0
         report_error("Page number must be greater than or equal to 0")
@@ -30,7 +32,7 @@ module Api
       end
 
       # get all the points
-      ordered_points = Tracepoint.bbox(bbox).joins(:trace).where(:gpx_files => { :visibility => %w[trackable identifiable] }).order("gpx_id DESC, trackid ASC, timestamp ASC")
+      ordered_points = Tracepoint.bbox(bbox).joins(:trace).where(:gpx_files => { :visibility => %w[trackable identifiable] }).order(:gpx_id => :desc, :trackid => :asc, :timestamp => :asc)
       unordered_points = Tracepoint.bbox(bbox).joins(:trace).where(:gpx_files => { :visibility => %w[public private] }).order("gps_points.latitude", "gps_points.longitude", "gps_points.timestamp")
       @points = ordered_points.union_all(unordered_points).offset(offset).limit(Settings.tracepoints_per_page).preload(:trace)
 

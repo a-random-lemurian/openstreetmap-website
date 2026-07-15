@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class PasswordsController < ApplicationController
   include SessionMethods
 
-  layout "site"
+  layout :site_layout
 
   before_action :authorize_web
   before_action :set_locale
@@ -36,12 +38,12 @@ class PasswordsController < ApplicationController
     if user.nil?
       users = User.visible.where("LOWER(email) = LOWER(?)", params[:email])
 
-      user = users.first if users.count == 1
+      user = users.first if users.one?
     end
 
     if user
       token = user.generate_token_for(:password_reset)
-      UserMailer.lost_password(user, token).deliver_later
+      UserMailer.with(:user => user, :token => token).lost_password.deliver_later
     end
 
     flash[:notice] = t ".send_paranoid_instructions"

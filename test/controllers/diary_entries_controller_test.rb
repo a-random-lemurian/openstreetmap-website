@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
@@ -104,37 +106,65 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
 
   def test_new_form
     # Now try again when logged in
-    session_for(create(:user))
+    session_for(create(:user, :languages => ["en"]))
+
     get new_diary_entry_path
+
     assert_response :success
-    assert_select "title", :text => /New Diary Entry/, :count => 1
-    assert_select "div.content-heading", :count => 1 do
-      assert_select "h1", :text => /New Diary Entry/, :count => 1
+    assert_dom "title", :text => /New Diary Entry/, :count => 1
+    assert_dom "div.content-heading", :count => 1 do
+      assert_dom "h1", :text => /New Diary Entry/, :count => 1
     end
-    assert_select "div#content", :count => 1 do
-      assert_select "form[action='/diary'][method=post]", :count => 1 do
-        assert_select "input#diary_entry_title[name='diary_entry[title]']", :count => 1
-        assert_select "textarea#diary_entry_body[name='diary_entry[body]']", :text => "", :count => 1
-        assert_select "select#diary_entry_language_code", :count => 1
-        assert_select "input#latitude[name='diary_entry[latitude]']", :count => 1
-        assert_select "input#longitude[name='diary_entry[longitude]']", :count => 1
-        assert_select "input[name=commit][type=submit][value=Publish]", :count => 1
-        assert_select "button[type=button]", :text => "Edit", :count => 1
-        assert_select "button[type=button]", :text => "Preview", :count => 1
-        assert_select "input", :count => 4
+    assert_dom "div#content", :count => 1 do
+      assert_dom "form[action='/diary'][method=post]", :count => 1 do
+        assert_dom "input#diary_entry_title[name='diary_entry[title]']", :count => 1
+        assert_dom "textarea#diary_entry_body[name='diary_entry[body]']", :text => "", :count => 1
+        assert_dom "select#diary_entry_language_code", :count => 1 do
+          assert_dom "option[selected]", :count => 1 do
+            assert_dom "> @value", "en"
+          end
+        end
+        assert_dom "input#latitude[name='diary_entry[latitude]']", :count => 1
+        assert_dom "input#longitude[name='diary_entry[longitude]']", :count => 1
+        assert_dom "input[name=commit][type=submit][value=Publish]", :count => 1
+        assert_dom "button[type=button]", :text => "Edit", :count => 1
+        assert_dom "button[type=button]", :text => "Preview", :count => 1
+        assert_dom "input", :count => 4
       end
     end
   end
 
   def test_new_get_with_params
+    create(:language, :code => "fr")
     # Now try creating a diary entry using get
-    session_for(create(:user))
+    session_for(create(:user, :languages => ["en"]))
+
     assert_difference "DiaryEntry.count", 0 do
       get new_diary_entry_path(:diary_entry => { :title => "New Title", :body => "This is a new body for the diary entry", :latitude => "1.1",
-                                                 :longitude => "2.2", :language_code => "en" })
+                                                 :longitude => "2.2", :language_code => "fr" })
     end
+
     assert_response :success
     assert_template :new
+    assert_dom "div#content", :count => 1 do
+      assert_dom "form[action='/diary'][method=post]", :count => 1 do
+        assert_dom "input#diary_entry_title[name='diary_entry[title]']", :count => 1 do
+          assert_dom "> @value", "New Title"
+        end
+        assert_dom "textarea#diary_entry_body[name='diary_entry[body]']", :count => 1, :text => "This is a new body for the diary entry"
+        assert_dom "select#diary_entry_language_code", :count => 1 do
+          assert_dom "option[selected]", :count => 1 do
+            assert_dom "> @value", "fr"
+          end
+        end
+        assert_dom "input#latitude[name='diary_entry[latitude]']", :count => 1 do
+          assert_dom "> @value", "1.1"
+        end
+        assert_dom "input#longitude[name='diary_entry[longitude]']", :count => 1 do
+          assert_dom "> @value", "2.2"
+        end
+      end
+    end
   end
 
   def test_create_no_body
@@ -219,8 +249,7 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "en", entry.language_code
     assert_equal "suspended", User.find(user.id).status
 
-    # Follow the redirect
-    get diary_entries_path(:display_name => user.display_name)
+    follow_redirect!
     assert_redirected_to :controller => :users, :action => :suspended
   end
 
@@ -287,7 +316,7 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
     get diary_entry_path(entry.user, entry)
     assert_response :success
     assert_template "show"
-    assert_select "title", :text => /Users' Diaries | /, :count => 1
+    assert_select "head title", :text => /Users' Diaries | /, :count => 1
     assert_select "div.content-heading", :count => 1 do
       assert_select "h1", :text => /#{entry.user.display_name}'s Diary/, :count => 1
     end
@@ -306,7 +335,7 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
     get diary_entry_path(entry.user, entry)
     assert_response :success
     assert_template "show"
-    assert_select "title", :text => /Users' Diaries | /, :count => 1
+    assert_select "head title", :text => /Users' Diaries | /, :count => 1
     assert_select "div.content-heading", :count => 1 do
       assert_select "h1", :text => /#{entry.user.display_name}'s Diary/, :count => 1
     end
@@ -441,48 +470,20 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_index_paged
-    # Create several pages worth of diary entries
     create_list(:diary_entry, 50)
+    check_pagination_of_50_entries diary_entries_path
+  end
 
-    # Try and get the index
-    get diary_entries_path
-    assert_response :success
-    assert_select "article.diary_post", :count => 20
-    assert_select "li.page-item a.page-link", :text => "Older Entries", :count => 1
-    assert_select "li.page-item.disabled span.page-link", :text => "Newer Entries", :count => 1
-
-    # Try and get the second page
-    get css_select("li.page-item .page-link").last["href"]
-    assert_response :success
-    assert_select "article.diary_post", :count => 20
-    assert_select "li.page-item a.page-link", :text => "Older Entries", :count => 1
-    assert_select "li.page-item a.page-link", :text => "Newer Entries", :count => 1
-
-    # Try and get the third page
-    get css_select("li.page-item .page-link").last["href"]
-    assert_response :success
-    assert_select "article.diary_post", :count => 10
-    assert_select "li.page-item.disabled span.page-link", :text => "Older Entries", :count => 1
-    assert_select "li.page-item a.page-link", :text => "Newer Entries", :count => 1
-
-    # Go back to the second page
-    get css_select("li.page-item .page-link").first["href"]
-    assert_response :success
-    assert_select "article.diary_post", :count => 20
-    assert_select "li.page-item a.page-link", :text => "Older Entries", :count => 1
-    assert_select "li.page-item a.page-link", :text => "Newer Entries", :count => 1
-
-    # Go back to the first page
-    get css_select("li.page-item .page-link").first["href"]
-    assert_response :success
-    assert_select "article.diary_post", :count => 20
-    assert_select "li.page-item a.page-link", :text => "Older Entries", :count => 1
-    assert_select "li.page-item.disabled span.page-link", :text => "Newer Entries", :count => 1
+  def test_index_user_paged
+    user = create(:user)
+    create_list(:diary_entry, 50, :user => user)
+    user.confirm!
+    check_pagination_of_50_entries user_diary_entries_path(user)
   end
 
   def test_index_invalid_paged
     # Try some invalid paged accesses
-    %w[-1 0 fred].each do |id|
+    %w[-1 fred].each do |id|
       get diary_entries_path(:before => id)
       assert_redirected_to :controller => :errors, :action => :bad_request
 
@@ -783,24 +784,34 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_hide
-    user = create(:user)
-    diary_entry = create(:diary_entry, :user => user)
+    author = create(:user)
+    diary_entry = create(:diary_entry, :user => author)
 
     # Try without logging in
-    post hide_diary_entry_path(user, diary_entry)
+    post hide_diary_entry_path(author, diary_entry)
     assert_response :forbidden
     assert DiaryEntry.find(diary_entry.id).visible
 
     # Now try as a normal user
-    session_for(user)
-    post hide_diary_entry_path(user, diary_entry)
+    session_for(create(:user))
+    post hide_diary_entry_path(author, diary_entry)
     assert_redirected_to :controller => :errors, :action => :forbidden
     assert DiaryEntry.find(diary_entry.id).visible
 
+    # Now try as the author
+    session_for(author)
+    post hide_diary_entry_path(:display_name => author.display_name, :id => diary_entry)
+    assert_response :redirect
+    assert_redirected_to :action => :index, :display_name => author.display_name
+    assert_not DiaryEntry.find(diary_entry.id).visible
+
+    # Reset
+    diary_entry.reload.update(:visible => true)
+
     # Now try as a moderator
     session_for(create(:moderator_user))
-    post hide_diary_entry_path(user, diary_entry)
-    assert_redirected_to :action => :index, :display_name => user.display_name
+    post hide_diary_entry_path(author, diary_entry)
+    assert_redirected_to :action => :index, :display_name => author.display_name
     assert_not DiaryEntry.find(diary_entry.id).visible
 
     # Reset
@@ -808,30 +819,40 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
 
     # Finally try as an administrator
     session_for(create(:administrator_user))
-    post hide_diary_entry_path(user, diary_entry)
-    assert_redirected_to :action => :index, :display_name => user.display_name
+    post hide_diary_entry_path(author, diary_entry)
+    assert_redirected_to :action => :index, :display_name => author.display_name
     assert_not DiaryEntry.find(diary_entry.id).visible
   end
 
   def test_unhide
-    user = create(:user)
+    author = create(:user)
 
     # Try without logging in
-    diary_entry = create(:diary_entry, :user => user, :visible => false)
-    post unhide_diary_entry_path(user, diary_entry)
+    diary_entry = create(:diary_entry, :user => author, :visible => false)
+    post unhide_diary_entry_path(author, diary_entry)
     assert_response :forbidden
     assert_not DiaryEntry.find(diary_entry.id).visible
 
     # Now try as a normal user
-    session_for(user)
-    post unhide_diary_entry_path(user, diary_entry)
+    session_for(create(:user))
+    post unhide_diary_entry_path(author, diary_entry)
     assert_redirected_to :controller => :errors, :action => :forbidden
     assert_not DiaryEntry.find(diary_entry.id).visible
 
+    # Now try as the author
+    session_for(author)
+    post unhide_diary_entry_path(:display_name => author.display_name, :id => diary_entry)
+    assert_response :redirect
+    assert_redirected_to :action => :index, :display_name => author.display_name
+    assert DiaryEntry.find(diary_entry.id).visible
+
+    # Reset
+    diary_entry.reload.update(:visible => true)
+
     # Now try as a moderator
     session_for(create(:moderator_user))
-    post unhide_diary_entry_path(user, diary_entry)
-    assert_redirected_to :action => :index, :display_name => user.display_name
+    post unhide_diary_entry_path(author, diary_entry)
+    assert_redirected_to :action => :index, :display_name => author.display_name
     assert DiaryEntry.find(diary_entry.id).visible
 
     # Reset
@@ -839,8 +860,8 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
 
     # Finally try as an administrator
     session_for(create(:administrator_user))
-    post unhide_diary_entry_path(user, diary_entry)
-    assert_redirected_to :action => :index, :display_name => user.display_name
+    post unhide_diary_entry_path(author, diary_entry)
+    assert_redirected_to :action => :index, :display_name => author.display_name
     assert DiaryEntry.find(diary_entry.id).visible
   end
 
@@ -965,6 +986,53 @@ class DiaryEntriesControllerTest < ActionDispatch::IntegrationTest
 
     entries.each do |entry|
       assert_select "a[href=?]", "/user/#{ERB::Util.u(entry.user.display_name)}/diary/#{entry.id}"
+    end
+  end
+
+  def check_pagination_of_50_entries(path)
+    # Try and get the index
+    get path
+    assert_response :success
+    assert_select "article.diary_post", :count => 20
+    check_no_page_link "Newer Entries"
+    path = check_page_link "Older Entries"
+
+    # Try and get the second page
+    get path
+    assert_response :success
+    assert_select "article.diary_post", :count => 20
+    check_page_link "Newer Entries"
+    path = check_page_link "Older Entries"
+
+    # Try and get the third page
+    get path
+    assert_response :success
+    assert_select "article.diary_post", :count => 10
+    path = check_page_link "Newer Entries"
+    check_no_page_link "Older Entries"
+
+    # Go back to the second page
+    get path
+    assert_response :success
+    assert_select "article.diary_post", :count => 20
+    path = check_page_link "Newer Entries"
+    check_page_link "Older Entries"
+
+    # Go back to the first page
+    get path
+    assert_response :success
+    assert_select "article.diary_post", :count => 20
+    check_no_page_link "Newer Entries"
+    check_page_link "Older Entries"
+  end
+
+  def check_no_page_link(name)
+    assert_select "a.page-link", { :text => /#{Regexp.quote(name)}/, :count => 0 }, "unexpected #{name} page link"
+  end
+
+  def check_page_link(name)
+    assert_select "a.page-link", { :text => /#{Regexp.quote(name)}/ }, "missing #{name} page link" do |buttons|
+      return buttons.first.attributes["href"].value
     end
   end
 end

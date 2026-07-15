@@ -30,7 +30,9 @@
 # Author: Macofe
 # Author: Marwin H.H.
 # Author: MatviiBohdanFediura
+# Author: McDutchie
 # Author: Mike140
+# Author: MonX94
 # Author: Movses
 # Author: Mykola Swarnyk
 # Author: Nemo bis
@@ -55,6 +57,9 @@
 # Author: Тест
 ---
 uk:
+  date:
+    formats:
+      contribution_calendar: '%-d %B'
   time:
     formats:
       friendly: '%e %B %Y в %H:%M'
@@ -87,10 +92,14 @@ uk:
     errors:
       messages:
         display_name_is_user_n: не може бути user_n, якщо n не є вашим ідентифікатором
-          користувача
+          учасника
       models:
         user_mute:
           is_already_muted: вже стишено
+        social_link:
+          attributes:
+            url:
+              http_parse_error: URL має починатися з http:// або https://
     models:
       acl: Список контролю доступу
       changeset: Набір змін
@@ -128,19 +137,6 @@ uk:
       way_node: Точка лінії
       way_tag: Теґ лінії
     attributes:
-      client_application:
-        name: Назва (Обов’язково)
-        url: Основний URL застосунку (Обов’язково)
-        callback_url: URL зворотного виклику
-        support_url: URL підтримки
-        allow_read_prefs: отримувати налаштування
-        allow_write_prefs: змінювати налаштування
-        allow_write_diary: створювати записи у щоденнику та залишати коментарі
-        allow_write_api: змінювати мапу
-        allow_write_changeset_comments: коментувати набори змін
-        allow_read_gpx: отримувати приватні GPS-треки.
-        allow_write_gpx: надсилати GPS-треки на сервер
-        allow_write_notes: змінювати нотатки
       diary_comment:
         body: Текст
       diary_entry:
@@ -189,8 +185,10 @@ uk:
         active: Активний
         display_name: 'Прізвисько:'
         description: Опис
+        company: Компанія
         home_lat: Широта
         home_lon: Довгота
+        home_location_name: Назва для маркера розташування
         languages: Типові мови
         preferred_editor: Типовий редактор
         pass_crypt: Пароль
@@ -288,6 +286,7 @@ uk:
     providers:
       none: Немає
       google: Google
+      apple: Apple
       facebook: Facebook
       microsoft: Microsoft
       github: GitHub
@@ -323,21 +322,22 @@ uk:
       my_account: Обліковий запис
       current email address: Поточна адреса електронної пошти
       external auth: Стороння автентифікація
-      openid:
-        link: https://wiki.openstreetmap.org/wiki/Uk:OpenID
-        link text: що це?
-      contributor terms:
+      contributor_terms:
         heading: Умови Співпраці
-        agreed: Ви погодилися на нові Умови Співпраці.
-        not yet agreed: Ви ще не погодилися на нові Умови Співпраці.
-        review link text: Перейдіть за цим посиланням у зручний для Вас спосіб, щоб
-          переглянути та прийняти нові Умови Співпраці
+        agreed: Ви погодилися на Умови Співпраці %{date}.
+        not_agreed: Ви ще не погодилися на Умови Співпраці.
         agreed_with_pd: Ви також заявляєте, що ви вважаєте свій внесок Суспільним
           Надбанням.
-        link: https://wiki.openstreetmap.org/wiki/Uk:Open_Database_License/Contributor_Terms
-        link text: що це?
         not_agreed_with_pd: Ви не заявили, що ви вважаєте свій внесок Суспільним Надбанням.
-        pd_link_text: заявляю
+        review: Переглянути Умови
+        review_and_accept: Переглянути та прийняти Умови
+        consider_pd: Вважати Суспільним надбанням
+      terms_of_use:
+        heading: Умови використання
+        agreed: Ви погодилися з Умовами використання %{date}.
+        not_agreed: Ви ще не погодилися з Умовами використання.
+        review: Переглянути Умови
+        review_and_accept: Переглянути та прийняти Умови
       save changes button: Зберегти зміни
       delete_account: Видалити обліковий запис…
     go_public:
@@ -346,11 +346,12 @@ uk:
         вам повідомлення чи бачити ваше місцеперебування. Щоб показати, що ви редагували,
         і дозволити людям звʼязуватися з вами через вебсайт, натисніть кнопку нижче.
       only_public_can_edit: Після переходу на API 0.6 дані мапи можуть редагувати
-        тільки неанонімні користувачі.
+        тільки неанонімні учасники.
       find_out_why: дізнайтеся чому
+      find_out_why_url: https://wiki.openstreetmap.org/wiki/Uk:Анонімне_редагування
       email_not_revealed: Ваша електронна адреса не буде розкрита, коли ви набудете
         публічного (не анонімного) статусу.
-      not_reversible: Цю дію неможливо скасувати, і всі нові користувачі тепер стандартно
+      not_reversible: Цю дію неможливо скасувати, і всі нові учасники тепер стандартно
         реєструються з публічним обліковим записом.
       make_edits_public_button: Зробити всі мої редагування загальнодоступними
     update:
@@ -392,14 +393,17 @@ uk:
         title: Умови
         heading: Умови
         heading_ct: Умови співпраці
-        read and accept with tou: Будь ласка, ознайомтесь з угодою участі та умовами
-          співпраці, поставте обидва прапорці після чого натисніть кнопку Продовжити.
+        read and accept with tou: Будь ласка, прочитайте «Умови для учасників» та
+          «Умови використання», поставте позначки в обох прапорцях після завершення
+          та натисніть «Продовжити».
         contributor_terms_explain: Ця угода містить умови, які розповсюджуються на
           ваш наявний та майбутній внесок в проєкт.
         read_ct: Я уважно ознайомився та згоден з наведеними умовами співпраці
-        tou_explain_html: '%{tou_link} обумовлюють використання цього вебсайту та
-          іншої інфраструктури, що надається за підтримки OSMF. Натисніть на посилання,
-          прочитайте та погодьтесь з текстом.'
+        tou_explain:
+          html: '%{tou_link} обумовлюють використання цього вебсайту та іншої інфраструктури,
+            що надається за підтримки OSMF. Натисніть на посилання, прочитайте та
+            погодьтесь з текстом.'
+          tou: Умови використання
         read_tou: Я уважно ознайомився та згоден з Умовами використання
         guidance_info_html: 'Інформація, що допоможе зрозуміти ці терміни: %{readable_summary_link}
           та %{informal_translations_link}'
@@ -455,9 +459,7 @@ uk:
       many: '%{count} ліній'
       other: ""
     download_xml: Завантажити XML
-    view_history: Перегляд історії
     view_unredacted_history: Перегляд невідредагованої історії
-    view_details: Поточна інформація
     location: 'Координати:'
     node:
       title_html: 'Точка: %{name}'
@@ -522,11 +524,23 @@ uk:
         key: Сторінка вікі, що описує теґ %{key}
         tag: Сторінка вікі, що описує теґ %{key}=%{value}
       wikidata_link: '%{page} елемент на Вікіданих'
+      wikidata_preview:
+        one: Попередній перегляд елемента Вікіданих
+        few: Попередній перегляд елементів Вікіданих
+        many: Попередній перегляд елементів Вікіданих
+        other: Попередній перегляд елементів Вікіданих
       wikipedia_link: Стаття %{page} у Вікіпедії
       wikimedia_commons_link: Сторінка %{page} у Вікісховищі
       telephone_link: Зателефонуйте на %{phone_number}
       colour_preview: Перегляд кольору %{colour_value}
       email_link: Надіслати електронний лист %{email}
+    versions_navigation:
+      node: Точка
+      way: Лінія
+      relation: Зв’язок
+      history: Історія
+      version: 'Версія #%{version}'
+      versions_label: 'Версії:'
   feature_queries:
     show:
       title: Отримати об’єкти
@@ -541,6 +555,8 @@ uk:
         title_html: 'Історія лінії: %{name}'
       relation:
         title_html: 'Історія зв’язку: %{name}'
+      older_versions: Старіші версії
+      newer_versions: Новіші версії
     actions:
       view_redacted_data: Переглянути очищені дані
       view_redaction_message: Переглянути повідомлення про очищення
@@ -574,7 +590,19 @@ uk:
     timeout:
       sorry: На жаль, отримання даних для зв’язку з ідентифікатором %{id} зайняло
         занадто багато часу.
+  relation_members:
+    not_found_message:
+      sorry: 'На жаль, звʼязок #%{id} не знайдено.'
+    timeout:
+      sorry: На жаль, отримання даних для зв’язку з ідентифікатором %{id} зайняло
+        занадто багато часу.
   old_relations:
+    not_found_message:
+      sorry: 'На жаль, звʼязок #%{id} версії %{version} не знайдено.'
+    timeout:
+      sorry: На жаль, отримання історії звʼязку з ідентифікатором %{id} потребує багато
+        часу.
+  old_relation_members:
     not_found_message:
       sorry: 'На жаль, звʼязок #%{id} версії %{version} не знайдено.'
     timeout:
@@ -592,7 +620,7 @@ uk:
         sorry: На жаль, перелік наборів змін, який ви запросили, потребує забагато
           часу для завантаження.
   changesets:
-    changeset:
+    changeset_line:
       comments:
         one: '%{count} коментар'
         few: '%{count} коментарі'
@@ -603,11 +631,26 @@ uk:
         few: '%{count} зміни'
         many: '%{count} змін'
         other: ""
+      n_elements_created:
+        one: Створено %{count} елемент
+        few: Створено %{count} елементи
+        many: Створено %{count} елементів
+        other: Створено %{count} елементів
+      n_elements_modified:
+        one: Змінено %{count} елемент
+        few: Змінено %{count} елементи
+        many: Змінено %{count} елементів
+        other: Змінено %{count} елементів
+      n_elements_deleted:
+        one: Вилучено %{count} елемент
+        few: Вилучено %{count} елементи
+        many: Вилучено %{count} елементів
+        other: Вилучено %{count} елементів
     index:
       title: Набори змін
       title_user: Набори змін від %{user}
       title_user_link_html: Набори змін від %{user_link}
-      title_followed: Набори змін від тих за ким слідкуєш
+      title_followed: Набори змін від тих за ким стежиш
       title_nearby: Набори змін маперів поряд з вами
       empty: Жодного набору змін не знайдено.
       empty_area: На цій ділянці набори змін відсутні.
@@ -615,6 +658,8 @@ uk:
       no_more: Наборів змін більше не знайдено.
       no_more_area: Наборів змін на цій ділянці більше немає.
       no_more_user: Наборів змін від цього мапера більше немає.
+      older_changesets: Старіші набори змін
+      newer_changesets: Новіші набори змін
       feed:
         title: Набір змін %{id}
         title_comment: Набір змін %{id} — %{comment}
@@ -686,7 +731,7 @@ uk:
       no_home_location_html: '%{edit_profile_link} і встановіть своє місце розташування,
         щоб бачити маперів поруч.'
       edit_your_profile: Редагувати свій профіль
-      followings: Відслідковуєш
+      followings: Учасники, за якими ви стежите
       no followings: Ви поки що не слідкуєте за жодним учасником.
       nearby users: Інші мапери поруч
       no nearby users: Поблизу поки немає маперів, які позначили своє розташування.
@@ -702,13 +747,10 @@ uk:
       use_map_link: Вказати на мапі
     index:
       title: Щоденники учасників
-      title_followed: Щоденники тих, за ким слідкуєш
+      title_followed: Щоденники тих, за ким стежиш
       title_nearby: Щоденники учасників поряд з вами
       user_title: Щоденник %{user}
       in_language_title: Записи щоденника мовою %{language}
-      new: Новий допис у щоденнику
-      new_title: Зробити новий запис у моєму щоденнику
-      my_diary: Мій щоденник
       no_entries: У щоденнику немає записів
     page:
       recent_entries: Останні записи в щоденнику
@@ -732,6 +774,7 @@ uk:
     diary_entry:
       posted_by_html: 'Опубліковано учасником %{link_user} %{created}, мова: %{language_link}'
       updated_at_html: В останнє оновлено %{updated}.
+      full_entry: Переглянути весь допис
       comment_link: Коментувати
       reply_link: Надіслати повідомлення автору
       comment_count:
@@ -769,6 +812,19 @@ uk:
     unsubscribe:
       heading: Відписатись від обговорення цього допису щоденника?
       button: Відписатися від обговорення
+    navigation:
+      in_language: Дописи в щоденнику (%{language})
+      my_diary: Мій щоденник
+      new: Новий допис у щоденнику
+      new_title: Створити новий запис у власному щоденнику учасника
+    profile_diaries:
+      latest_diaries: Останні дописи в Щоденнику
+      comments:
+        one: '%{count} коментар'
+        few: '%{count} коментарі '
+        many: '%{count} коментарів'
+        other: ""
+      title_label: Запис щоденника
   diary_comments:
     new:
       heading: Додати коментар до обговорення запису в щоденнику?
@@ -776,10 +832,10 @@ uk:
     errors:
       messages:
         account_selection_required: Сервер авторизації вимагає вибору облікового запису
-          кінцевого користувача
-        consent_required: Сервер авторизації вимагає згоди кінцевого користувача
-        interaction_required: Сервер авторизації вимагає взаємодії з кінцевим користувачем
-        login_required: Сервер авторизації вимагає автентифікації кінцевого користувача
+          кінцевого учасника
+        consent_required: Сервер авторизації вимагає згоди кінцевого учасника
+        interaction_required: Сервер авторизації вимагає взаємодії з кінцевим учасником
+        login_required: Сервер авторизації вимагає автентифікації кінцевого учасника
     flash:
       applications:
         create:
@@ -826,6 +882,9 @@ uk:
       title: Файл не знайдено
       description: Не вдалося знайти файл/теку/дію API з такою назвою на сервері OpenStreetMap
         (HTTP 404)
+  export:
+    show:
+      title: Вбудована OpenStreetMap
   follows:
     show:
       follow:
@@ -844,11 +903,6 @@ uk:
       success: Ви більше не слідкуєте за %{name}.
       not_followed: Ви не слідкуєте за %{name}.
   geocoder:
-    search:
-      title:
-        latlon: Внутрішніх джерел
-        osm_nominatim: OpenStreetMap Nominatim
-        osm_nominatim_reverse: OpenStreetMap Nominatim
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -989,9 +1043,13 @@ uk:
           aboriginal_lands: Землі аборигенів
           administrative: Адміністративна межа
           census: Межа переписної ділянки
+          low_emission_zone: Зона низьких викидів
           national_park: Національний парк
           political: Межа виборчого округу
+          postal_code: Поштовий індекс
           protected_area: Заповідна ділянка
+          public_transport: Район громадського транспорту
+          timezone: Часовий пояс
           "yes": Кордон
         bridge:
           aqueduct: Акведук
@@ -1089,7 +1147,7 @@ uk:
           landing_site: Місце аварійної посадки
           life_ring: Рятувальний круг
           phone: Телефон для екстрених викликів
-          siren: Аварійна сирена
+          siren: Сирена надзвичайної ситуації
           suction_point: Точка аварійного всмоктування
           water_tank: Пожежний резервуар
         highway:
@@ -1108,14 +1166,14 @@ uk:
           footway: Пішохідна доріжка
           ford: Брід
           give_way: Знак Дати путь
-          living_street: Житлова вулиця
+          living_street: Житлова зона
           milestone: Кілометровий стовпчик
           motorway: Автомагістраль
           motorway_junction: В’їзд на автомагістраль
           motorway_link: З’єднання з автомагістраллю
           passing_place: Роз'їзд
           path: Стежка
-          pedestrian: Пішохідна дорога
+          pedestrian: Пішохідна вулиця
           platform: Платформа
           primary: Головна дорога
           primary_link: З’єднання з головною дорогою
@@ -1167,6 +1225,7 @@ uk:
           milestone: Історичний межовий стовп
           mine: Копальня
           mine_shaft: Шахтний ствол
+          monastery: Історичний монастир
           monument: Пам’ятник
           railway: Історична залізниця
           roman_road: Римська дорога
@@ -1183,7 +1242,7 @@ uk:
         information:
           guidepost: Вказівник напрямку
           board: Інформаційна дошка
-          map: Карта
+          map: Мапа
           office: Туристичний офіс
           terminal: Інформаційний термінал
           sign: Інформаційний знак
@@ -1257,7 +1316,7 @@ uk:
           sports_centre: Спортивний центр
           stadium: Стадіон
           swimming_pool: Басейн
-          track: Бігова доріжка
+          track: Гоночна траса (не для автоспорту)
           water_park: Аквапарк
           "yes": Дозвілля
         lock:
@@ -1293,6 +1352,7 @@ uk:
           mineshaft: Шахтний ствол
           monitoring_station: Станція моніторингу
           petroleum_well: Нафтова скважина
+          planter: Planter
           pier: Пірс
           pipeline: Трубопровід
           pumping_station: Насосна станція
@@ -1433,6 +1493,7 @@ uk:
           abandoned: Занедбані колії
           buffer_stop: Буферна зупинка
           construction: Будівництво колії
+          crossing: Залізничний переїзд
           disused: Покинута колія
           funicular: Фунікулер
           halt: Зупинка поїзда
@@ -1479,7 +1540,7 @@ uk:
           car_repair: Автомайстерня
           carpet: Килими
           charity: Соціальний магазин
-          cheese: Сирний магазин
+          cheese: Магазин сиру
           chemist: Побутова хімія
           chocolate: Шоколад
           clothes: Одяг
@@ -1672,12 +1733,31 @@ uk:
         town: Межа міста
         township: Межа селища
         village: Межа села
-    results:
-      no_results: Нічого не знайдено
-      more_results: Більше результатів
+  searches:
+    show:
+      title:
+        latlon: Внутрішніх джерел
+        nominatim: Nominatim
+        nominatim_reverse: Nominatim
+    queries:
+      create:
+        no_results: Нічого не знайдено
+        more_results: Більше результатів
   directions:
-    search:
+    show:
       title: Маршрут
+      distance: Відстань
+      time: Час
+      ascend: Підйом
+      descend: Спуск
+      kilometers: кілометри
+      miles_feet: милі, фути
+      miles_yards: милі, ярди
+      distance_units_settings: Налаштування одиниць відстані
+      download: Завантажити маршрут як GeoJSON
+      filename: маршрут
+      directions_courtesy_html: Маршрут наданий %{link}
+      check_demo_html: Більше деталей за %{link}
   issues:
     index:
       title: Звернення
@@ -1700,7 +1780,7 @@ uk:
       reports: Скарги
       last_updated: Останнє оновлення
       last_managed: В останнє змінювалось
-      reporting_users: Повідомлення про користувачів
+      reporting_users: Повідомлення учасників
       reports_count:
         one: '%{count} Скарга'
         few: '%{count} Скарги'
@@ -1734,16 +1814,15 @@ uk:
       other_issues_against_this_user: Інші звернення щодо цього учасника
       no_other_issues: Немає інших скарг на цього учасника
       comments_on_this_issue: Коментарі до цього звернення
+      comment_from_html: Коментар від %{user_link}, %{comment_created_at}
+      reassign_to_moderators: Перепризначити звернення Модераторам
+      reassign_to_administrators: Перепризначити звернення Адміністраторам
     resolve:
       resolved: Статус звернення був змінений на 'Розв’язано'
     ignore:
       ignored: Статус звернення був змінений на 'Проігноровано'
     reopen:
       reopened: Статус проблеми був змінений на 'Відкрито'
-    comments:
-      comment_from_html: Коментар від %{user_link}, %{comment_created_at}
-      reassign_to_moderators: Перепризначити звернення Модераторам
-      reassign_to_administrators: Перепризначити звернення Адміністраторам
     reports:
       reported_by_html: Повідомлено як %{category}, %{user}, %{updated_at}
     helper:
@@ -1756,7 +1835,7 @@ uk:
         diary_entry_html: Допис щоденника %{title} створений %{datetime_created},
           оновлено%{datetime_updated}
         note_html: '%{title} %{datetime_created}, оновлено %{datetime_updated}'
-        user_html: Користувач %{title} створений %{datetime_created}
+        user_html: Учасник %{title} створений %{datetime_created}
     reporters:
       index:
         title: 'Звернення #%{issue_id}'
@@ -1769,7 +1848,6 @@ uk:
   reports:
     new:
       title_html: Скарга %{link}
-      missing_params: Неможливо створити нову скаргу
       disclaimer:
         intro: 'Перед тим як надіслати вашу скаргу до модераторів сайту, переконайтесь
           що:'
@@ -1803,21 +1881,128 @@ uk:
     create:
       successful_report: Вашу скаргу було отримано
       provide_details: Будь ласка, додайте потрібні деталі
+  languages_panes:
+    select_language_list:
+      search_language: Пошук…
+      languages:
+        af: Африкаанс
+        gsw: Алеманська
+        frp: Арпітан
+        ast: Астурійська
+        az: Азербайджанська
+        id: Індонезійська
+        ms: Малайська
+        bcl: Центральна біколь
+        bs: Боснійська
+        br: Бретонська
+        ca: Каталонська
+        cs: Чеська
+        cy: Валлійська
+        da: Датська
+        de: Німецька
+        dsb: Нижньолужицька
+        et: Естонська
+        en: Англійська
+        en-GB: Англійська (Велика Британія)
+        es: Іспанська
+        eo: Есперанто
+        eu: Баскська
+        fr: Французька
+        fy: Західнофризька
+        fur: Фріульська
+        ga: Ірландська
+        gd: Шотландська гельська
+        gl: Галісійська
+        aln: Гегська албанська
+        hsb: Верхньолужицька
+        hr: Хорватська
+        ia: Інтерлінгва
+        is: Ісландська
+        it: Італійська
+        kw: Корнська
+        gcf: Гваделупська креольська
+        ku-Latn: Курдська (латиниця)
+        lv: Латиська
+        lb: Люксембурзька
+        lkt: Лакота
+        lt: Литовська
+        hu: Угорська
+        fit: Торнедален Фінська
+        nl: Голландська
+        nb: Норвезька (Букмол)
+        nn: Норвезька Нінорськ
+        oc: Окситанська
+        nds: Нижньонімецька
+        pl: Польська
+        pt-PT: Португальська
+        pt: Португальська (Бразилія)
+        ksh: Кельнський діалект
+        ro: Румунська
+        sc: Сардинська
+        sco: Шотландська
+        sq: Албанська
+        scn: Сицилійська
+        sk: Словацька
+        sl: Словенська
+        sr-Latn: Сербська (латиниця)
+        sh: Сербохорватська (латиниця)
+        fi: Фінська
+        sv: Шведська
+        tl: Тагалог
+        kab: Кабіле
+        vi: В’єтнамська
+        tr: Турецька
+        yo: Йоруба
+        diq: Дімлі
+        el: Грецька
+        ba: Башкирська
+        be: Білоруська
+        be-Tarask: Білоруська (тарашк.)
+        bg: Болгарська
+        mk: Македонська
+        mo: Молдавська
+        ce: Чеченська
+        ru: Російська
+        sr: Сербська (кирилиця)
+        tt: Татарська (кирилиця)
+        uk: Українська
+        kk-cyrl: Казахська (кирилиця)
+        yi: Їдиш
+        he: Іврит
+        ar: Арабська
+        skr-arab: Сараїкі
+        fa: Перська
+        arz: Єгипетська арабська
+        pnb: Західний панджабі
+        ps: Пушту
+        nqo: Н'Ко
+        ne: Непальська
+        mr: Маратхі
+        hi: Хінді
+        bn: Бенгальська
+        pa: Панджабі
+        gu: Гуджараті
+        ta: Тамільська
+        te: Телугу
+        kn: Каннада
+        th: Тайська
+        my: Бірманська
+        shn: Шань
+        xmf: Мегрельська
+        ka: Грузинська
+        km: Кхмерська
+        sat: Санталі
+        zh-CN: Китайська (спрощена)
+        zh-TW: Китайська (традиційна)
+        zh-HK: Китайська (Гонконг)
+        ja: Японська
+        ko: Корейська
   layouts:
     logo:
       alt_text: Логотип OpenStreetMap
-    home: Додому
-    logout: Вийти
-    log_in: Увійти
-    sign_up: Реєстрація
+    main_navigation: Головна
+    layer_info: Інфо про шар
     start_mapping: Почати мапити
-    edit: Редагувати
-    history: Історія
-    export: Експорт
-    issues: Звернення
-    gps_traces: GPS-треки
-    user_diaries: Щоденники
-    edit_with: Редагувати – %{editor}
     intro_header: Ласкаво просимо до OpenStreetMap!
     intro_text: OpenStreetMap — мапа світу, створена такими ж людьми, як і ви, для
       вільного використання під відкритою ліцензією.
@@ -1825,14 +2010,35 @@ uk:
       іншими %{partners}.
     partners_corpmembers: Корпоративними членами OSMF
     partners_partners: партнерами
+    welcome_tou_notice_html: Використовуючи цей веб-сайт або іншу інфраструктуру,
+      надану Фондом OpenStreetMap, ви погоджуєтеся з %{terms_link}.
+    terms_of_use: Умовами використання
     tou: Умови використання
     nothing_to_preview: Нічого немає для перегляду.
-    help: Довідка
-    about: Про проєкт
-    copyright: Авторські права
-    communities: Спільноти
     learn_more: Докладніше
-    more: Більше
+    header:
+      about: Про проєкт
+      communities: Спільноти
+      copyright: Авторські права
+      donate: Пожертвувати
+      edit: Редагувати
+      edit_with: Редагувати – %{editor}
+      export: Експорт
+      gps_traces: GPS-треки
+      help: Довідка
+      history: Історія
+      home: Додому
+      issues: Звернення
+      log_out: Вийти
+      log_in: Увійти
+      more: Більше
+      select_language: Обрати мову
+      sign_up: Реєстрація
+      user_diaries: Щоденники
+    meta:
+      openstreetmap_search: Пошук OpenStreetMap
+    select_language_button:
+      title: Обрати мову
     offline_flash:
       osm_offline: База даних OpenStreetMap наразі працює в режимі офлайн, поки проводяться
         роботи з технічного обслуговування.
@@ -2019,6 +2225,9 @@ uk:
       whitelist: У разі використання систем протидії спам-повідомленням, що надсилають
         зворотні запити, переконайтесь що ви додали %{sender} до переліку уповноважених
         дописувачів, бо ми не в змозі відповідати на такі запити.
+    gravatar:
+      disabled: Gravatar вимкнено.
+      enabled: Показ Вашого Gravatar'а увімкнено.
   messages:
     new:
       title: Надіслати повідомлення
@@ -2131,53 +2340,140 @@ uk:
       flash changed: Ваш пароль було змінено.
       flash token bad: Неможливо знайти такий токен, перевірте посилання.
   preferences:
-    show:
-      title: Вподобання
-      preferred_site_color_scheme: Бажана колірна схема вебсайту
-      site_color_schemes:
-        auto: Авто
-        light: Світла
-        dark: Темна
-      preferred_map_color_scheme: Бажана колірна схема мапи
-      map_color_schemes:
-        auto: Авто
-        light: Світла
-        dark: Темна
-      save: Зберегти вподобання
-    update:
-      failure: Неможливо зберегти вподобання.
-    update_success_flash:
-      message: Налаштування збережено.
+    preferences:
+      update:
+        failure: Неможливо зберегти вподобання.
+      update_success_flash:
+        message: Налаштування збережено.
+      navigation:
+        preferences: Інтерфейс
+        notification_preferences: Сповіщення
+        advanced_preferences: Розширені
+    basic_preferences:
+      show:
+        title: Налаштування
+        preferred_language: Бажана мова
+        preferred_site_color_scheme: Бажана колірна схема вебсайту
+        site_color_schemes:
+          auto: Авто
+          light: Світла
+          dark: Темна
+        preferred_map_color_scheme: Бажана колірна схема мапи
+        map_color_schemes:
+          auto: Так само, як і на вебсайті
+          light: Світла
+          dark: Темна
+        preferred_editor_color_scheme: Бажана колірна схема редактора
+        editor_color_schemes:
+          auto: Так само, як і на вебсайті
+          light: Світла
+          dark: Темна
+        save: Зберегти налаштування
+    notification_preferences:
+      show:
+        title: Налаштування сповіщень
+        changeset_comment: Коментарі до набору змін
+        diary_comment: Коментарі щоденнику
+        direct_message: Особисті повідомлення
+        gpx_import_failure: 'Імпорт GPS-треку: помилка'
+        gpx_import_success: 'Імпорт GPX-треку: успішно'
+        new_follower: Нові підписники
+        note_comment: Коментарі до приміток
+        save: Оновлення налаштувань
+        delivery_mechanisms:
+          email: Електронна пошта
+    advanced_preferences:
+      show:
+        title: Розширені налаштування
+        save: Зберегти налаштування
   profiles:
-    edit:
-      title: Редагування профілю
-      save: Зберегти профіль
-      cancel: Скасувати
-      image: Зображення
-      gravatar:
-        gravatar: Використовувати Gravatar
-        what_is_gravatar: Про Gravatar.
-        disabled: Gravatar вимкнено.
-        enabled: Показ Вашого Gravatar'а увімкнено.
-      new image: Додати зображення
-      keep image: Залишити поточне зображення
-      delete image: Вилучити поточне зображення
-      replace image: Замінити поточне зображення
-      image size hint: (найкраще підходять квадратні зображення, принаймні 100х100)
-      home location: Основне місце розташування
-      no home location: Ви не позначили своє основне місце розташування.
-      update home location on click: Оновлювати моє місце розташування, коли я клацаю
-        на мапу?
-      show: Показати
-      delete: Вилучити
-      undelete: Скасувати вилучення
-    update:
-      success: Профіль збережено.
-      failure: Неможливо зберегти оновлення профілю.
+    profile_sections:
+      navigation:
+        description: Опис
+        links: Посилання
+        image: Зображення
+        company: Компанія
+        location: Розташування
+        contribution_calendar: Участь
+    descriptions:
+      show:
+        title: Редагування профілю
+        save: Зберегти профіль
+        cancel: Скасувати
+      update:
+        success: Опис профілю оновлено
+        failure: Не вдалося оновити опис профілю.
+    links:
+      show:
+        title: Редагувати профіль
+        save: Оновити профіль
+        cancel: Скасувати
+        social_links:
+          title: Посилання на профілі в соцмережах
+          remove: Вилучити
+          add: Додати профіль
+      update:
+        success: Посилання профілю оновлено.
+        failure: Не вдалося оновити посилання профілю.
+    images:
+      show:
+        title: Редагувати профіль
+        save: Оновити профіль
+        cancel: Скасувати
+        gravatar:
+          gravatar: Використовувати Gravatar
+          link: https://wiki.openstreetmap.org/wiki/Uk:Gravatar
+          what_is_gravatar: Про Gravatar.
+        new image: Додати зображення
+        keep image: Залишити поточне зображення
+        delete image: Вилучити поточне зображення
+        replace image: Замінити поточне зображення
+        image size hint: (найкраще підходять квадратні зображення, принаймні 100х100)
+      update:
+        success: Зображення профілю оновлено.
+        failure: Не вдалося оновити зображення профілю.
+    companies:
+      show:
+        title: Редагувати профіль
+        save: Оновити профіль
+        cancel: Скасувати
+      update:
+        success: Компанію профілю оновлено.
+        failure: Не вдалося оновити компанію профілю.
+    locations:
+      show:
+        title: Редагувати профіль
+        save: Оновити профіль
+        cancel: Скасувати
+        no home location: Ви не позначили своє основне місце розташування.
+        update home location on click: Оновлювати моє місце розташування, коли я клацаю
+          на мапу?
+        show: Показати
+        delete: Вилучити
+        undelete: Скасувати вилучення
+      update:
+        success: Розташування профілю оновлено
+        failure: Не вдалося оновити розташування профілю.
+    heatmaps:
+      show:
+        title: Налаштувати календар внесків
+        show_contribution_calendar_in_public: Показувати календар участі у вашому
+          профілі
+        save: Оновити конфігурацію календаря внесків
+        cancel: Скасувати
+      update:
+        success: Календар внесків оновлено.
+        failure: Не вдалося оновити календар внесків.
   sessions:
     new:
       tab_title: Вхід
       login_to_authorize_html: Увійдіть до OpenStreetMap, щоб отримати доступ до %{client_app_name}.
+      already_logged_in_html: Ви вже увійшли з обліковим записом %{user}. Повторний
+        вхід змінить ваш поточний обліковий запис.
+      access_another_page: 'Ви потрапили сюди, намагаючись отримати доступ до іншої
+        сторінки. Якщо ви хочете отримати доступ до цієї сторінки, використовуючи
+        свій поточний обліковий запис, натисніть кнопку нижче:'
+      visit_referring_page: Перейди до сторінки посилання
       email or username: Ел. пошта або прізвисько
       password: Пароль
       remember: Запам’ятати мене
@@ -2185,6 +2481,8 @@ uk:
       login_button: Увійти
       with external: Або використовуйте, облікові записи з інших ресурсів
       or: або
+      reset_to_login: На жаль, термін дії вашого пароля минув. Будь ласка, скиньте
+        пароль, щоб увійти.
       auth failure: Вибачте, вхід з цими ім’ям або паролем неможливий.
     destroy:
       title: Вийти
@@ -2219,24 +2517,38 @@ uk:
       changeset_comments:
         older: Старіші коментарі
         newer: Нові коментарі
+        oldest: Найстаріші коментарі
+        newest: Найновіші коментарі
       diary_comments:
         older: Старіші коментарі
         newer: Нові коментарі
+        oldest: Найстаріші коментарі
+        newest: Найновіші коментарі
       diary_entries:
         older: Старіші записи
         newer: Новіші записи
+        oldest: Найстаріші записи
+        newest: Найновіші записи
       issues:
         older: Старіші повідомлення
         newer: Новіші повідомлення
+        oldest: Найстаріші проблеми
+        newest: Найновіші проблеми
       traces:
         older: Старіші треки
         newer: Новіші треки
+        oldest: Найновіші треки
+        newest: Найстаріші треки
       user_blocks:
         older: Старіші блокування
         newer: Новіші блокування
+        oldest: Найстаріші блокування
+        newest: Найновіші блокування
       users:
-        older: Раніше зареєстровані користувачі
-        newer: Нещодавно зареєстровані користувачі
+        older: Раніше зареєстровані учасники
+        newer: Нещодавно зареєстровані учасники
+        oldest: Найстаріші учасники
+        newest: Найновіші учасники
   site:
     about:
       heading_html: '%{copyright}Учасники %{br} OpenStreetMap'
@@ -2245,6 +2557,7 @@ uk:
       lede_text: OpenStreetMap створений спільнотою маперів, які вносять і підтримують
         дані про дороги, стежки, кав’ярні, вокзали і багато чого іншого по всьому
         світу.
+    about_section:
       local_knowledge_title: Знання місцевості
       local_knowledge_html: OpenStreetMap надає виразності місцевим даним. Мапери
         використовують аерофотознімки, GPS пристрої та прості створені на місцевості
@@ -2254,8 +2567,10 @@ uk:
         Спільнота OpenStreetMap — різноманітна, затята і щоденно зростаюча. Серед учасників спільноти є мапери ентузіасти, фахівці ГІС, інженери що підтримують роботу серверів OSM, фахівці, які із гуманістичних причин, допомагають у створені мап для районів, постраждалих від стихійних лих, і багато інших.
         Щоб дізнатися більше про спільноту, подивіться %{osm_blog_link}, %{user_diaries_link}, %{community_blogs_link}, а також сайт %{osm_foundation_link}.
       community_driven_osm_blog: Блог OpenStreetMap
+      community_driven_osm_blog_url: https://blog.openstreetmap.org/?lang=uk
       community_driven_user_diaries: щоденники учасників
       community_driven_community_blogs: блоги спільноти
+      community_driven_community_blogs_url: https://blog.openstreetmap.org/?lang=uk
       community_driven_osm_foundation: Фундації OSM
       open_data_title: Відкриті дані
       open_data_1_html: 'OpenStreetMap — це %{open_data}: Ви можете вільно використовувати
@@ -2270,13 +2585,27 @@ uk:
         \n%{openstreetmap_foundation_link} від імені спільноти. Використання усіх
         сервісів, підконтрольних OSMF, здійснюється на основі %{terms_of_use_link},
         %{aup_link} та нашій %{privacy_policy_link}."
-      legal_1_1_openstreetmap_foundation: Фундацією OpenStreetMap
+      legal_1_1_openstreetmap_foundation: Фондом OpenStreetMap
       legal_1_1_terms_of_use: Умов використання
       legal_1_1_aup: Правил щодо прийнятного використання
       legal_1_1_privacy_policy: Політиці конфіденційності
+      legal_1_2_html: Якщо ви бажаєте використовувати мапи або дані OpenStreetMap,
+        будь ласка, зазначте авторство OpenStreetMap — для отримання додаткової інформації
+        див. %{attribution_guidelines_link}.
+      legal_attribution_guidelines_title: Настанови з авторства
+      legal_attribution_guidelines_url: https://wiki.osmfoundation.org/wiki/Licence/Attribution_Guidelines
+      legal_1_3_html: Якщо ви хочете використати знімок екрана з OpenStreetMap безпосередньо
+        у своїй книзі, публікації, фільмі чи телепрограмі, вам не потрібно просити
+        дозволу, оскільки дані в OpenStreetMap є відкритими для загального користування.
+        Ознайомтеся з %{attribution_guidelines_link} та перегляньте наявні приклади
+        в %{attribution_example_film} та %{attribution_example_tv}.
+      legal_attribution_example_film_title: Фільми
+      legal_attribution_example_film_url: https://wiki.openstreetmap.org/wiki/Films
+      legal_attribution_example_tv_title: ТВ
+      legal_attribution_example_tv_url: https://wiki.openstreetmap.org/wiki/TV_series
       legal_2_1_html: |-
         Будь ласка, %{contact_the_osmf_link}
-        якщо у вас є питання щодо ліцензування, авторського права чи інші юридичні питання.
+        якщо у вас є інші питання щодо ліцензування, авторського права чи інші юридичні питання.
       legal_2_1_contact_the_osmf: звертайтесь до OSMF
       legal_2_2_html: OpenStreetMap, логотип у вигляді лупи та State of the Map є
         %{registered_trademarks_link}.
@@ -2297,55 +2626,91 @@ uk:
         native_link: української версії
         mapping_link: почати мапити
       legal_babble:
-        introduction_1_html: OpenStreetMap%{registered_trademark_link} — це %{open_data},
-          ліцензовані %{osm_foundation_link} (OSMF) на умовах ліцензії %{odc_odbl_link}
-          (ODbL).
-        introduction_1_open_data: відкриті дані
-        introduction_1_odc_odbl: Open Data Commons Open Database License
-        introduction_1_osm_foundation: Фундацією OpenStreetMap
-        introduction_2_html: |-
-          Ви можете вільно копіювати, поширювати, передавати та адаптувати наші дані, за умови, що ви посилаєтесь на OpenStreetMap та його
-          учасників. Якщо ви змінюєте або використовуєте наші дані, ви
-          можете поширювати результат лише за тією самою ліцензією. Повний текст %{legal_code_link} пояснює ваші права та обов’язки.
-        introduction_2_legal_code: Ліцензійної угоди
-        introduction_3_html: Наша документація надається на умовах ліцензії %{creative_commons_link}
+        lead_1_html: OpenStreetMap надає відкриті картографічні дані для тисяч вебсайтів,
+          мобільних застосунків та пристроїв. Дані OpenStreetMap створюються спільнотою
+          людей, таких як ви. Вони вносять і підтримують картографічні дані про дороги,
+          стежки, кафе, залізничні станції та багато інших речей по всьому світу.
+        lead_2_html: |-
+          %{learn_more_about_osm_link} та %{get_started_mapping_link}!
+          Ви можете дізнатися більше в %{osm_blog_link} та підписатися на %{weeklyosm_link}. Знайдіть інших маперів у вашій місцевій %{osm_community_link}. Підтримайте проєкт, приєднавшись до %{osm_foundation_link} та %{making_donation_link}.
+        lead_2_learn_more_about_osm: Дізнайтеся більше про OpenStreetMap
+        lead_2_learn_more_about_osm_url: https://wiki.openstreetmap.org/wiki/Uk:About_OpenStreetMap
+        lead_2_get_started_mapping: розпочніть мапити
+        lead_2_osm_blog: Блозі OpenStreetMap
+        lead_2_osm_blog_url: https://blog.openstreetmap.org/?lang=uk
+        lead_2_weeklyosm: Тижневик weeklyOSM
+        lead_2_weeklyosm_url: https://weeklyosm.eu/uk/
+        lead_2_osm_community: Спільноті OSM
+        lead_2_osm_foundation: Фундації OSM
+        lead_2_making_donation: зробивши пожертву
+        licensing_title: Ліцензування OpenStreetMap
+        licensing_1_html: 'Дані OpenStreetMap є %{open} даними, що надаються на умовах
+          Ліцензії %{odc_odbl_link} (ODbL) %{osm_foundation_link} (OSMF). Скорочено:'
+        licensing_1_open: відкриті
+        licensing_1_odc_odbl: Open Data Commons Open Database License
+        licensing_1_osm_foundation: Фондом OpenStreetMap
+        licensing_2_html: |-
+          Ви можете вільно копіювати, поширювати, передавати та адаптувати наші дані, за умови, що ви посилаєтесь на проєкт OpenStreetMap та його учасників. Якщо ви змінюєте або використовуєте наші дані, ви
+          можете поширювати результат лише за тією самою ліцензією. %{legal_code_link} пояснює ваші права та обов’язки.
+        licensing_2_legal_code: Повний текст Ліцензії на Open Data Commons
+        licensing_3_html: Наша Документація поширюється на умовах Ліцензії %{creative_commons_license_link}
           (CC BY-SA 2.0).
-        introduction_3_creative_commons: Creative Commons Attribution-ShareAlike 2.0
+        licensing_3_creative_commons_license: Creative Commons Attribution-ShareAlike
+          2.0
+        licensing_3_creative_commons_license_url: https://creativecommons.org/licenses/by-sa/2.0/deed.uk
+        licensing_4_html: Дізнайтеся більше про використання наших даних на %{osmf_license_page_link}.
+        licensing_4_osmf_license_page: сторінці OSMF Licence
         credit_title_html: Як посилатись на OpenStreetMap
         credit_1_html: 'У разі використання даних OpenStreetMap, вам потрібно зробити
           дві речі:'
-        credit_2_1: Зазначити авторські права OpenStreetMap показуючи наше повідомлення
-          про авторське право.
-        credit_2_2: Явним чином зазначити, що дані доступні на умовах Open Database
+        credit_2_attribution: Вказати на OpenStreetMap, показуючи наше повідомлення
+          про авторство.
+        credit_2_license: Явним чином зазначити, що дані доступні на умовах Open Database
           License.
-        credit_3_html: |-
-          Що стосується сповіщення про авторські права, ми маємо різні вимоги щодо того, як це має бути зазначено, залежно від того, як ви використовуєте наші дані. Наприклад, застосовуються різні
-          правила щодо того, як показувати повідомлення про авторські права, залежно від того, чи ви створили мапу для онлайн перегляду, друковану мапу чи статичне зображення. Повну інформацію про
-          вимоги можна знайти в %{attribution_guidelines_link}.
-        credit_3_attribution_guidelines: Настановах з атрибуції
-        credit_4_1_html: Ви повинні чітко вказувати, що дані доступні на умовах ліцензії
-          Open Database License. Ви можете зробити це, пославшись на %{this_copyright_page_link}.
-          Або ж, під час розповсюдження даних OSM, ви можете безпосередньо вказувати
-          назву ліцензії(й) та посилання на її(їх) текст. Якщо ви користуєтесь носіями,
-          де використання гіпертекстових посилань неможливе (наприклад друковані матеріали),
-          ми пропонуємо посилатися безпосередньо на www.openstreetmap.org (або розширено
-          "www.openstreetmap.org, OpenStreetMap") та на opendatacommons.org. В цьому
-          прикладі посилання знаходиться в куті мапи.
-        credit_4_1_this_copyright_page: сторінку з роз’ясненням ліцензійних вимог
+        credit_3_v2025_html: Щодо повідомлення про авторство ми маємо різні %{requirements_on_how_displayed_link},
+          залежно від того, як ви використовуєте наші дані. Наприклад, застосовуються
+          різні правила щодо показу повідомлення про авторство залежно від того, чи
+          ви створили електронну мапу для перегляду, друковану мапу або статичне зображення.
+          Більш детальну інформацію можна знайти в %{attribution_guidelines_link}
+          в розділі %{licensing_requirements_link}.
+        credit_3_v2025_requirements_on_how_displayed: вимоги до того, як воно має
+          відображатися
+        credit_3_v2025_attribution_guidelines: Настановах з атрибуції
+        credit_3_v2025_licensing_requirements: ліцензійних вимог
+        credit_4_v2025_html: Загалом, щоб пояснити, що дані доступні на умовах Ліцензії
+          Open Database License, ви можете посилатися на %{this_copyright_page_link}.
+          Якщо ви поширюєте OSM у вигляді даних, будь ласка, вказуйте назву та посилання
+          безпосередньо на Ліцензію(ї). У випадках, коли посилання неможливе (наприклад,
+          друковані видання), будь ласка, вказуйте повну URL-адресу на сторінці, наприклад,
+          %{copyright_page_url}.
+        credit_4_v2025_this_copyright_page: сторінку з роз’ясненням ліцензійних вимог
+        credit_5_v2025_html: 'У цьому прикладі посилання на авторство в кутку мапи:'
         attribution_example:
           alt: Приклад того, як треба посилатись на OpenStreetMap на веб-сторінці
           title: Приклад зазначення авторства
-        more_title_html: Дізнатися більше
-        more_1_1_html: Дізнайтеся більше про використання наших даних і про те, як
-          посилатись на проєкт, на %{osmf_licence_page_link}.
-        more_1_1_osmf_licence_page: сторінці OSMF Licence
-        more_2_1_html: |-
-          Хоча OpenStreetMap є відкритими даними, ми не можемо надати
-          безплатний API для мап для всіх.
-          Ознайомтесь з нашими %{api_usage_policy_link}, %{tile_usage_policy_link} і %{nominatim_usage_policy_link}.
-        more_2_1_api_usage_policy: Правилами використання API
-        more_2_1_tile_usage_policy: Правилами використання тайлів
-        more_2_1_nominatim_usage_policy: Правилами використання сервісу Nominatim
+        infringement_title_html: Порушення авторських прав
+        infringement_1_html: Члени спільноти OSM повинні завжди пам’ятати про те,
+          що забороняється додавати дані з будь-яких захищених авторським правом джерел
+          (наприклад, з Google Maps чи з друкованих мап) без отримання попереднього
+          дозволу правовласників.
+        infringement_2_1_html: Якщо ви вважаєте, що матеріал, захищений авторським
+          правом, було неналежним чином додано до бази даних OpenStreetMap або на
+          цей сайт, ознайомтеся з нашою %{takedown_procedure_link} або залиште звернення
+          безпосередньо на %{online_filing_page_link}.
+        infringement_2_1_takedown_procedure: процедурою вилучення даних
+        infringement_2_1_online_filing_page: нашій онлайн сторінці для звернень
+        trademarks_title: Торгові марки
+        trademarks_1_1_html: OpenStreetMap, логотип у вигляді лупи та State of the
+          Map є зареєстрованими товарними знаками Фонду OpenStreetMap. Якщо у вас
+          виникли запитання щодо використання вами цих знаків, перегляньте наші %{trademark_policy_link}.
+        trademarks_1_1_trademark_policy: Правила використання торгової марки
+        services_title_html: Додаткові послуги
+        services_1_html: Хоч дані OpenStreetMap є відкритими дані, ми не можемо надавати
+          безплатний картографічний API або тайли мапи іншим. Ознайомтесь з нашими
+          %{api_usage_policy_link}, %{tile_usage_policy_link} та %{nominatim_usage_policy_link}.
+        services_1_api_usage_policy: Правилами використання API
+        services_1_tile_usage_policy: Правилами використання тайлів
+        services_1_nominatim_usage_policy: Правилами використання сервісу Nominatim
         contributors_title_html: Наші учасники
         contributors_intro_html: 'Нашими учасниками є тисячі людей. Наші дані також
           містять дані від національних картографічних агенцій, які розповсюджуються
@@ -2365,6 +2730,7 @@ uk:
         contributors_au_geoscape_australia: Geoscape Австралія
         contributors_au_cc_licence: Creative Commons Attribution 4.0 International
           (CC BY 4.0)
+        contributors_au_cc_licence_url: https://creativecommons.org/licenses/by/4.0/deed.uk
         contributors_ca_credit_html: '%{canada}: дані від GeoBase&reg;, GeoGratis
           (&copy; Департамент природних ресурсів Канади), CanVec (&copy; Департамент
           природних ресурсів Канади), та StatCan (Відділ Географії, Статистичне відомство
@@ -2375,6 +2741,7 @@ uk:
         contributors_cz_czechia: Чехія
         contributors_cz_cc_licence: Creative Commons Attribution 4.0 International
           licence (CC BY 4.0)
+        contributors_cz_cc_licence_url: https://creativecommons.org/licenses/by/4.0/deed.uk
         contributors_fi_credit_html: |-
           %{finland}: Містить дані з топографічної бази даних
           Національної служби землеустрою Фінляндії
@@ -2389,7 +2756,8 @@ uk:
         contributors_hr_croatia: Хорватія
         contributors_hr_dgu: Державне геодезичне управління Хорватії
         contributors_hr_open_data_portal: Національний портал відкритих даних
-        contributors_nl_credit_html: '%{netherlands}: Містить дані © AND, 2007 (%{and_link})'
+        contributors_nl_credit_new_html: '%{netherlands}: Містить &copy; дані AND,
+          2007'
         contributors_nl_netherlands: Нідерланди
         contributors_nz_credit_html: |-
           %{new_zealand}: містить дані, отримані з %{linz_data_service_link}
@@ -2431,30 +2799,12 @@ uk:
         contributors_footer_2_html: Включення даних до OpenStreetMap не означає, що
           постачальник цих даних якимось чином підтримує OpenStreetMap, надає які-небудь
           гарантії чи бере на себе якусь  відповідальність.
-        infringement_title_html: Порушення авторських прав
-        infringement_1_html: Члени спільноти OSM повинні завжди пам’ятати про те,
-          що забороняється додавати дані з будь-яких захищених авторським правом джерел
-          (наприклад, з Google Maps чи з друкованих мап) без отримання попереднього
-          дозволу правовласників.
-        infringement_2_1_html: Якщо ви вважаєте, що матеріал, захищений авторським
-          правом, було неналежним чином додано до бази даних OpenStreetMap або на
-          цей сайт, ознайомтеся з нашою %{takedown_procedure_link} або залиште звернення
-          безпосередньо на %{online_filing_page_link}.
-        infringement_2_1_takedown_procedure: процедурою вилучення даних
-        infringement_2_1_online_filing_page: нашій онлайн сторінці для звернень
-        trademarks_title: Торгові марки
-        trademarks_1_1_html: |-
-          OpenStreetMap, логотип у вигляді лупи та State of the Map є зареєстрованими товарними знаками Фундації OpenStreetMap. Якщо у вас виникли запитання щодо використання вами цих знаків, перегляньте наші
-          %{trademark_policy_link}.
-        trademarks_1_1_trademark_policy: Правила використання торгової марки
     index:
       js_1: Ви користуєтесь оглядачем, в якому не підтримується або відключений JavaScript.
       js_2: OpenStreetMap використовує JavaScript для мапи.
       license:
         copyright: Авторські права за OpenStreetMap та його учасниками на умовах відкритої
           ліцензії
-      remote_failed: Редагування не вдалося — переконайтеся, що JOSM або Merkaartor
-        завантажений та втулок дистанційного керування увімкнений.
     not_public_flash:
       not_public: Ви не зробили свої редагування загальнодоступними.
       not_public_description_html: 'Ви не можете більше анонімно редагувати мапу.
@@ -2463,8 +2813,6 @@ uk:
       anon_edits_html: '%{link}'
       anon_edits_link: https://wiki.openstreetmap.org/wiki/Uk:Анонімне_редагування
       anon_edits_link_text: З’ясувати в чому справа.
-    edit:
-      id_not_configured: iD не був налаштований
     export:
       title: Експорт
       manually_select: Виділіть іншу ділянку
@@ -2483,8 +2831,7 @@ uk:
           description: Регулярно оновлювана копія усієї бази даних OpenStreetMap
         overpass:
           title: Overpass API
-          description: Завантаження даних з поточного вигляду мапи з дзеркала бази
-            даних OpenStreetMap
+          description: Завантажити цю рамку межі з дзеркала бази даних OpenStreetMap
         geofabrik:
           title: Завантаження Geofabrik
           description: Регулярно оновлювані вибірки континентів, країн і деяких міст
@@ -2492,6 +2839,13 @@ uk:
           title: Інші джерела
           description: Додаткові джерела перераховані у вікі OpenStreetMap
       export_button: Експортувати
+      export_download: Завантаження…
+      confirmation:
+        header: Завантажити XML-дані
+        body: Ви хочете завантажити дані мапи для цієї області у форматі XML? Зверніть
+          увагу, що завантаження великих областей може зайняти деякий час.
+        cancel: Скасувати
+        download: Завантажити
     fixthemap:
       title: Повідомити про проблему / Виправити мапу
       how_to_help:
@@ -2501,11 +2855,6 @@ uk:
           explanation_html: Якщо ви помітили, неточності в наших даних, наприклад
             відсутня дорога або ваша адреса, найкращий спосіб це виправити — приєднатись
             до спільноти OpenStreetMap і додати або виправити дані самостійно.
-        add_a_note:
-          instructions_1_html: Натисніть %{note_icon} або такий же значок на мапі.
-            Це дозволить додати маркер, який ви зможете перетягувати на мапі. Додайте
-            ваше повідомлення та натисніть кнопку Зберегти й інші учасники матимуть
-            змогу з цим розібратись.
       other_concerns:
         title: Інші проблеми
         concerns_html: |-
@@ -2578,6 +2927,8 @@ uk:
         bicycle: Велосипед
         car: Машина
         foot: Пішки
+      providers:
+        description: Прокладання маршрутів
     welcome:
       title: Ласкаво просимо!
       introduction: Ласкаво просимо до OpenStreetMap, вільної мапи світу, покращувати
@@ -2614,22 +2965,20 @@ uk:
         title: Правила!
         para_1_html: |-
           OpenStreetMap має кілька формальних правил, але ми очікуємо, що всі учасники співпрацюватимуть
-          зі спільнотою та спілкуватимуться з нею. Якщо ви маєте наміри робити внесок, окрім редагування вручну, прочитайте та дотримуйтеся вказівок щодо
+          зі спільнотою та спілкуватимуться з нею. Якщо ви маєте наміри робити внесок, окрім редагування вручну, прочитайте та дотримуйтеся настанов щодо
           %{imports_link} та %{automated_edits_link}.
         imports: імпортів
         automated_edits: автоматизованих змін
       start_mapping: Розпочати мапити
       continue_authorization: Продовжити авторизацію
-      add_a_note:
-        title: Немаєте часу, щоб виправити мапу? Додайте нотатку!
-        para_1: Якщо потрібно внести дрібне уточнення, заради якого немає потреби
-          витрачати час на реєстрацію та вивчення правил редагування, то можна просто
-          додати нотатку.
-        para_2_html: 'Перейдіть до %{map_link} та натисніть піктограму нотатки: %{note_icon}.
-          Це дозволить додати маркер на мапу, який ви зможете перетягнути мишею. Додайте
-          ваше повідомлення, натисніть «зберегти», і інші учасники проєкту побачать
-          його та, у разі потреби, внесуть зміни на мапу.'
-        the_map: мапи
+    add_a_note:
+      title: Немаєте часу, щоб виправити мапу? Додайте нотатку!
+      para_1: Якщо потрібно внести дрібне уточнення, заради якого немає потреби витрачати
+        час на реєстрацію та вивчення правил редагування, то можна просто додати нотатку.
+      para_2_html: Натисніть %{note_icon} або такий же значок на %{map_link}. На мапі
+        зʼявиться маркер, який можна перетягувати. Додайте ваше повідомлення, натисніть
+        зберегти й інші учасники спробують розібратись що до чого.
+      the_map: мапи
     communities:
       title: Спільноти
       lede_text: "Люди з усього світу роблять свій внесок в OpenStreetMap.\nХоча багато
@@ -2642,7 +2991,7 @@ uk:
           крок до створення юридичних осіб у своєму регіоні. Як правило, це не прибуткові
           громадські організації. Вони є представниками місцевих маперів, коли йдеться
           про стосунки з місцевою владою, бізнесом і ЗМІ. Вони також є представниками
-          Фундації OpenStreetMap (OSMF), виконуючи роль сполучної ланки між юридичним
+          Фонду OpenStreetMap (OSMF), виконуючи роль сполучної ланки між юридичним
           представництвом та керівним органом проєкту, що є тримачем авторських прав.
         list_text: 'Наступні спільноти мають офіційно створені місцеві осередки:'
       other_groups:
@@ -2653,7 +3002,14 @@ uk:
           це докладніше на сторінці %{communities_wiki_link}
         communities_wiki: Групи користувачів OpenStreetMap
         communities_wiki_url: https://wiki.openstreetmap.org/wiki/Uk:User_group
-  map_keys:
+  social_links:
+    show:
+      website: Вебсайт
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: Збільшить масштаб, щоб побачити більше нотаток
+      map_data_zoom_in_tooltip: Збільшить, щоб побачити дані мапи
+  legend_panes:
     show:
       entries:
         motorway: Автомагістраль
@@ -2666,10 +3022,11 @@ uk:
         track: Путівець
         bridleway: Дорога для їзди кіньми
         cycleway: Велодоріжка
-        cycleway_national: Національні велошляхи
-        cycleway_regional: Регіональні велошляхи
-        cycleway_local: Місцеві велошляхи
-        cycleway_mtb: Маршрут для гірських велосипедів
+        international_bike_route: Міжнародний велосипедний маршрут
+        national_bike_route: Національні велошляхи
+        regional_bike_route: Регіональні велошляхи
+        local_bike_route: Місцеві велошляхи
+        mountain_bike_route: Маршрут для гірських велосипедів
         footway: Пішохідна доріжка
         rail: Залізниця
         train: Поїзд
@@ -2742,6 +3099,34 @@ uk:
         bicycle_parking: Велопарковка
         bicycle_parking_small: Невелика велопарковка
         toilets: Туалети
+      see_external_legend: Переглянути легенду сторонньої мапи
+  share_panes:
+    show:
+      link: Посилання або HTML
+      include_marker: Додати маркер
+      long_link: Посилання
+      short_link: Кор.посил.
+      embed: HTML
+      embed_html_disabled: Вбудовування HTML недоступне для цього шару мапи
+      paste_html: HTML-код для вбудування у сайт
+      geo_uri: Geo URI
+      image: Зображення
+      only_layers_exported_as_image: 'Лише наступні шари можна експортувати як зображення:'
+      format: 'Формат:'
+      scale: 'Масштаб:'
+      custom_dimensions: Встановити власні розміри
+      image_dimensions_html: На зображені буде шар %{layer} (%{width} * %{height})
+      download: Завантажити
+      downloading: Завантаження…
+  webgl_error_panes:
+    show:
+      compact_message: Для показу цієї мапи потрібен WebGL.
+      description_html: На жаль, схоже, що %{your_browser_does_not_support_webgl},
+        технологію для відтворення 3D-графіки у веб.
+      your_browser_does_not_support_webgl: ваш оглядач не підтримує WebGL
+      webgl_is_required_for_this_map: Для показу цієї мапи потрібен WebGL.
+      read_more_about_webgl: Докладніше
+      read_more_about_webgl_url: https://wiki.openstreetmap.org/wiki/Uk:This_map_requires_WebGL
   traces:
     visibility:
       private: Приватний (доступний тільки як анонімний, невпорядковані точки)
@@ -2791,13 +3176,13 @@ uk:
       points: 'Кількість точок:'
       start_coordinates: 'Координати початку:'
       coordinates_html: '%{latitude}; %{longitude}'
-      map: на мапі
-      edit: редагувати
+      map: переглянути місцезнаходження на карті
+      edit: відкрити в редакторі
       owner: 'Власник:'
       description: 'Опис:'
       tags: 'Теґи:'
       none: Нічого
-      edit_trace: Редагувати трек
+      edit_trace: Редагувати дані треку
       delete_trace: Вилучити цей трек
       trace_not_found: Трек не знайдено!
       visibility: 'Видимість:'
@@ -2811,8 +3196,8 @@ uk:
         other: ""
       more: більше
       trace_details: Показати дані треку
-      view_map: Перегляд мапи
-      edit_map: Редагувати мапу
+      view_map: Переглянути місцезнаходження на карті
+      edit_map: Відкрити в редакторі
       public: ЗАГАЛЬНИЙ
       identifiable: ІДЕНТИФІКОВУВАНИЙ
       private: ПРИВАТНИЙ
@@ -2872,14 +3257,12 @@ uk:
       oauth2_authorizations: Авторизації OAuth 2
       muted_users: Стишені учасники
     auth_providers:
-      openid_url: OpenID URL
-      openid_login_button: Продовжити
-      openid:
-        title: Увійти за OpenID
-        alt: OpenID лого
       google:
         title: Увійти через Google
         alt: Google лого
+      apple:
+        title: Увійти через Apple
+        alt: Логотип Apple
       facebook:
         title: Увійти з Facebook
         alt: Facebook лого
@@ -2893,6 +3276,9 @@ uk:
         title: Увійти через Вікіпедію
         alt: Wikipedia лого
     share:
+      share:
+        title: Поділитися
+        alt: Значок «Поділитися»
       email:
         title: Поділитися через електронну пошту
         alt: Піктограма електронної пошти
@@ -2928,10 +3314,10 @@ uk:
       write_gpx: Завантажувати GPS-треки
       write_notes: Змінювати нотатки
       write_redactions: Виконувати очищення даних
-      write_blocks: Створювати та скасовувати блокування користувачів
+      write_blocks: Створення та скасовування блокувань учасників
       read_email: Отримувати адресу е-пошти
-      consume_messages: Прочитати, оновити статус та видалити повідомлення користувача
-      send_messages: Надіслати приватне повідомлення іншим користувачам
+      consume_messages: Прочитати, оновити статус та видалити повідомлення учасника
+      send_messages: Надіслати приватне повідомлення іншим учасникам
       skip_authorization: Автоматичне схвалення заявки
     for_roles:
       moderator: Цей дозвіл призначений для дій, доступних лише модераторам
@@ -2993,9 +3379,8 @@ uk:
         щоб отримати доступ до %{client_app_name}.
       no_auto_account_create: На жаль, наразі ми не в змозі створити для вас обліковий
         запис автоматично.
-      please_contact_support_html: Будь ласка, зв’яжіться з %{support_link}, щоб домовитися
-        про створення облікового запису – ми постараємося розглянути запит якомога
-        швидше.
+      please_contact_support_html: Будь ласка, зв’яжіться з %{support_link} по допомогу –
+        ми спробуємо розглянути запит якомога швидше.
       support: підтримкою
       about:
         header: Вільні й доступні для редагування дані.
@@ -3013,6 +3398,7 @@ uk:
       by_signing_up:
         html: Реєструючись, ви приймаєте наші %{tou_link}, %{contributor_terms_link}
           та погоджуєтесь з %{privacy_policy_link}.
+        tou: Умови використання
         privacy_policy: Політикою конфіденційності
         privacy_policy_title: Політика конфіденційності OSMF, включаючи розділ про
           адреси електронної пошти
@@ -3027,6 +3413,10 @@ uk:
       or: або
       use external auth: або використовуйте, облікові записи з інших ресурсів для
         входу
+      verify_human: Підтвердьте, що ви людина
+    create:
+      not_human: На жаль, ми не можемо підтвердити, що ви людина. Це необхідно для
+        створення нових облікових записів.
     no_such_user:
       title: Немає такого учасника
       heading: Учасника %{user} не існує.
@@ -3042,13 +3432,12 @@ uk:
       my profile: Профіль
       my_account: Обліковий запис
       my comments: Мої коментарі
-      my_preferences: Вподобання
+      my_preferences: Налаштування
       my_dashboard: Інфо панель
       blocks on me: Мої блокування
       blocks by me: Заблоковано мною
       create_mute: Стишити цього учасника
       destroy_mute: Зняти стишення з цього учасника
-      edit_profile: Редагувати профіль
       send message: Надіслати повідомлення
       diary: Щоденник
       edits: Редагування
@@ -3067,18 +3456,6 @@ uk:
       created from: 'Створено з:'
       status: 'Статус:'
       spam score: 'Оцінка Спаму:'
-      role:
-        administrator: Цей учасник є адміністратором
-        moderator: Цей учасник є модератором
-        importer: Цей користувач виконує імпорт
-        grant:
-          administrator: Надати права адміністратора
-          moderator: Надати права модератора
-          importer: Надати дозвіл на імпорт
-        revoke:
-          administrator: Відкликати права адміністратора
-          moderator: Відкликати права модератора
-          importer: Відкликати доступ на імпорт
       block_history: Активні блокування
       moderator_history: Створені блокування
       revoke_all_blocks: Скасувати всі блокування
@@ -3086,13 +3463,43 @@ uk:
       create_block: Заблокувати цього учасника
       activate_user: Активувати цього учасника
       confirm_user: Підтвердити цього учасника
-      unconfirm_user: Скасувати підтвердження цього користувача
-      unsuspend_user: Скасувати призупинення цього користувача
-      hide_user: Приховати цього учасника
-      unhide_user: Показати цього учасника
-      delete_user: Вилучити цього учасника
+      unconfirm_user: Скасувати підтвердження цього учасника
+      suspend_user: Призупинити цього учасника
+      unsuspend_user: Скасувати призупинення цього учасника
+      undelete_user: Скасувати вилучення цього учасника
       confirm: Підтвердити
       report: Поскаржитись на цього учасника
+      edit_profile_details: Редагувати деталі профілю
+      edit_description: Редагувати опис
+      edit_links: Редагувати посилання
+      change_image: Змінити зображення
+      edit_company: Редагувати компанію
+      edit_location: Редагувати розташування
+      edit_contribution_calendar: Налаштувати календар участі
+      contributions:
+        one: Кількість редагувань за останній рік — %{count} елемент
+        few: Кількість редагувань за останній рік — %{count} елементи
+        many: Кількість редагувань за останній рік — %{count} елементів
+        other: 'Кількість редагувань за останній рік — '
+      title:
+        administrator: Цей учасник є адміністратором
+        moderator: Цей учасник є модератором
+        importer: Цей учасник виконує імпорт
+      grant:
+        administrator: Надати права адміністратора
+        moderator: Надати права модератора
+        importer: Надати дозвіл на імпорт
+        are_you_sure: Ви впевнені, що бажаєте надати роль «%{role}» учаснику «%{name}»?
+      revoke:
+        administrator: Відкликати права адміністратора
+        moderator: Відкликати права модератора
+        importer: Відкликати доступ на імпорт
+        are_you_sure: Ви впевнені, що хочете відкликати роль «%{role})» в учасника
+          «%{name}»?
+    sidebar_section:
+      home_location: Місце розташування
+      company: Компанія
+      company_tooltip: Приналежність до компанії вказується самостійно та не верифікується.
     go_public:
       flash success: Усі Ваші редагування тепер є загальнодоступними, і Ви тепер можете
         редагувати.
@@ -3138,12 +3545,12 @@ uk:
         search: Пошук
       page:
         found_users:
-          one: знайдено %{count} користувача
-          few: знайдено %{count} користувачів
-          many: знайдено %{count} користувачів
+          one: знайдено %{count} учасника
+          few: знайдено %{count} учасника
+          many: знайдено %{count} учасників
           other: 'знайдено '
         confirm: Підтвердити вибір учасників
-        hide: Сховати вибраних учасників
+        suspend: Призупинити вибраних учасників
         empty: Не знайдено учасників відповідно до критеріїв пошуку
       user:
         summary_html: '%{name} зареєстровано з %{ip_address}, %{date}'
@@ -3197,10 +3604,6 @@ uk:
       doesnt_have_role: Учасник не має ролі %{role}.
       not_revoke_admin_current_user: Неможливо відкликати права адміністратора у поточного
         учасника.
-    grant:
-      are_you_sure: Ви впевнені, що бажаєте надати роль «%{role}» учаснику «%{name}»?
-    revoke:
-      are_you_sure: Ви впевнені, що хочете відкликати роль «%{role})» в учасника «%{name}»?
   user_blocks:
     model:
       non_moderator_update: Потрібно бути модератором, щоб створити або змінити блокування.
@@ -3348,6 +3751,7 @@ uk:
       all: Всі
       open: Відкриті
       closed: Закриті
+      hidden: Приховані
       status: Стан
     show:
       title: 'Нотатка: %{id}'
@@ -3412,6 +3816,7 @@ uk:
         Будь ласка, не додавайте персональні дані або інформацію, яка міститься на
         захищених авторським правом мапах чи каталогах.
       add: Додати нотатку
+      error: При створенні нотатки сталася помилка
     new_readonly:
       title: Нова нотатка
       warning: Неможливо створити нові нотатки, оскільки API OpenStreetMap зараз у
@@ -3426,36 +3831,28 @@ uk:
     close: Закрити
     share:
       title: Поділитися
-      cancel: Скасувати
-      image: Зображення
-      link: Посилання або HTML
-      long_link: Посилання
-      short_link: Кор.посил.
-      geo_uri: Geo URI
-      embed: HTML
-      custom_dimensions: Встановити власні розміри
-      format: 'Формат:'
-      scale: 'Масштаб:'
-      image_dimensions: На зображені буде шар %{layer} (%{width} * %{height})
-      download: Завантажити
-      short_url: Скорочене URL-посилання
-      include_marker: Додати маркер
-      center_marker: Центрувати мапу на маркері
-      paste_html: HTML-код для вбудування у сайт
       view_larger_map: Переглянути більшу мапу
-      only_layers_exported_as_image: 'Лише наступні шари можна експортувати як зображення:'
+      export_failed_title: Не вдалося експортувати мапу
+      filename: мапа
     embed:
       report_problem: Повідомити про проблему
-    key:
+    legend:
       title: Умовні знаки
       tooltip: Умовні знаки
       tooltip_disabled: Легенда мапи недоступна для цього шару
     map:
-      zoom:
-        in: Збільшити
-        out: Зменшити
-      locate:
-        title: Показати моє місцезнаходження
+      map:
+        title: Мапа
+        marker:
+          title: Мітка на мапі
+      popup:
+        close: Закрити
+      navigation_control:
+        zoom_in: Збільшити
+        zoom_out: Зменшити
+      geolocate_control:
+        find_my_location: Показати моє місцезнаходження
+        location_not_available: Розташування недоступне
         metersPopup:
           one: Ви перебуваєте за %{count} метр від цієї точки
           few: Ви перебуваєте за %{count} метри від цієї точки
@@ -3466,6 +3863,8 @@ uk:
           few: Ви перебуваєте за %{count} фути від цієї точки
           many: Ви перебуваєте за %{count} футів від цієї точки
           other: ""
+      attribution_control:
+        toggle_attribution: Показувати атрибуцію
       base:
         standard: Стандартний
         cyclosm: ЦиклОСМ
@@ -3473,6 +3872,8 @@ uk:
         transport_map: Мапа Транспорту
         tracestracktop_topo: Tracestrack Топо
         hot: Humanitarian‎
+        shortbread: Shortbread
+        openmaptiles_osm: MapTiler OMT
       layers:
         header: Шари мапи
         notes: Нотатки
@@ -3490,27 +3891,31 @@ uk:
       tracestrack_credit: Тайли надаються %{tracestrack_link}
       hotosm_credit: Тайли %{hotosm_link} з %{osm_france_link}
       hotosm_name: Humanitarian OpenStreetMap Team
+      openmaptiles_credit: Векторні тайли від %{openmaptiles_link} розміщені на %{maptiler_link}
     site:
       edit_tooltip: Редагування мапи
       edit_disabled_tooltip: Збільшить масштаб для редагування мапи
       createnote_tooltip: Додати нотатку на мапу
       createnote_disabled_tooltip: Треба наблизитись для додання нотатки
-      map_notes_zoom_in_tooltip: Збільшить масштаб, щоб побачити більше нотаток
-      map_data_zoom_in_tooltip: Збільшить, щоб побачити дані мапи
       queryfeature_tooltip: Отримати об’єкти
       queryfeature_disabled_tooltip: Наблизитись для отримання об’єктів
-      embed_html_disabled: Вбудовування HTML недоступне для цього шару мапи
+    profile:
+      social_link_n: Посилання на профілі в соцмережах %{n}
+      remove_social_link_n: Видалити посилання на профіль %{n}
     edit_help: Перемістіть мапу і наблизьтесь до місця, яке ви бажаєте змінити, потім
       клацніть тут.
     directions:
-      ascend: Підйом
-      descend: Спуск
-      distance: Відстань
-      distance_m: '%{distance} м'
-      distance_km: '%{distance} км'
+      distance_in_units:
+        m: '%{distance} м'
+        km: '%{distance} км'
+        ft: '%{distance} фт'
+        yd: '%{distance} фт'
+        mi: '%{distance} мл'
       errors:
         no_route: Не вдалося знайти маршрут між цими двома точками.
-        no_place: На жаль неможливо знайти '%{place}'.
+        no_place:
+          title: Помилка пошуку
+          body: Не вдалося знайти '%{place}'.
       instructions:
         continue_without_exit: Рухайтесь далі по %{name}
         slight_right_without_exit: Плавно поверніть праворуч на %{name}
@@ -3572,8 +3977,8 @@ uk:
         roundabout_with_exit: На кільці поверніть на %{exit} виїзд на %{name}
         roundabout_with_exit_ordinal: На кільці поверніть у %{exit} виїзд до %{name}
         exit_roundabout: Поверніть з кільця %{name}
+        ferry_without_exit: Скористайтесь поромом %{name}
         unnamed: без імені
-        courtesy: Маршрут наданий %{link}
         exit_counts:
           first: 1й
           second: 2й
@@ -3585,9 +3990,6 @@ uk:
           eighth: 8й
           ninth: 9й
           tenth: 10й
-      time: Час
-      download: Завантажити маршрут як GeoJSON
-      filename: маршрут
     query:
       node: Точка
       way: Лінія
@@ -3595,6 +3997,8 @@ uk:
       nothing_found: Об’єкти не знайдені
       error: 'Помилка зв’язку %{server}: %{error}'
       timeout: Сервер не відповідає %{server}
+    element:
+      wikipedia: Вікіпедія
     context:
       directions_from: Маршрут звідси
       directions_to: Маршрут сюди
@@ -3602,10 +4006,11 @@ uk:
       show_address: Показати адресу
       query_features: Отримати об’єкти
       centre_map: Центрувати мапу тут
+      scroll_to_changeset: Прокрутити до набору змін
     home:
       marker_title: Моє розташування
       not_set: Для вашого облікового запису не вказано його розташування
-    heatmap:
+    contribution_calendar:
       tooltip:
         no_contributions: Немає внесків станом на %{date}
         contributions:
@@ -3613,6 +4018,15 @@ uk:
           few: '%{count} внески станом на %{date}'
           many: '%{count} внесків станом на %{date}'
           other: ' станом на %{date}'
+    remote_edit:
+      failed:
+        title: Помилка редагування
+        body: Переконайтеся, що JOSM або Merkaartor завантажено та дистанційне керування
+          увімкнене.
+    edit:
+      id_not_configured:
+        title: iD не був налаштований
+        body: Будь ласка, дивіться CONFIGURE.md для отримання додаткової інформації.
   redactions:
     edit:
       heading: Змінити редакцію

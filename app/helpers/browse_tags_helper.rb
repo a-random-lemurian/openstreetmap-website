@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 module BrowseTagsHelper
-  # https://wiki.openstreetmap.org/wiki/Key:wikipedia#Secondary_Wikipedia_links
-  # https://wiki.openstreetmap.org/wiki/Key:wikidata#Secondary_Wikidata_links
-  SECONDARY_WIKI_PREFIXES = "architect|artist|brand|buried|flag|genus|manufacturer|model|name:etymology|network|operator|species|subject".freeze
+  SECONDARY_WIKI_PREFIX_PATTERN = /[a-z:_-]+:/
+  QID_PATTERN = /[Qq][1-9][0-9]*/
+
+  # regex to match all wikipedia locale project identifiers
+  WIKIPEDIA_PROJECT_IDENTIFIER_PATTERN = /[a-z]{2,3}(?:-[a-z]{2,3})?|be-tarask|roa-tara|simple|zh-classical|zh-min-nan/
 
   def format_key(key)
     if url = wiki_link("key", key)
@@ -12,15 +16,24 @@ module BrowseTagsHelper
   end
 
   def format_value(key, value)
-    if wp = wikipedia_link(key, value)
-      link_to h(wp[:title]), wp[:url], :title => t("browse.tag_details.wikipedia_link", :page => wp[:title])
+    if wp = wikipedia_links(key, value)
+      wp = wp.map do |w|
+        link_to(h(w[:title]), w[:url], :title => t("browse.tag_details.wikipedia_link", :page => w[:title]))
+      end
+      safe_join(wp, ";")
     elsif wdt = wikidata_links(key, value)
       # IMPORTANT: Note that wikidata_links() returns an array of hashes, unlike for example wikipedia_link(),
       # which just returns one such hash.
+      svg = button_tag :type => "button", :role => "button", :class => "btn btn-link float-end d-flex m-1 mt-0 me-n1 border-0 p-0 wdt-preview", :data => { :qids => wdt.pluck(:title) } do
+        tag.svg :width => 27, :height => 16 do
+          concat tag.title t("browse.tag_details.wikidata_preview", :count => wdt.length)
+          concat tag.path :fill => "currentColor", :d => "M0 16h1V0h-1Zm2 0h3V0h-3Zm4 0h3V0h-3Zm4 0h1V0h-1Zm2 0h1V0h-1Zm2 0h3V0h-3Zm4 0h1V0h-1Zm2 0h3V0h-3Zm4 0h1V0h-1Zm2 0h1V0h-1Z"
+        end
+      end
       wdt = wdt.map do |w|
         link_to(w[:title], w[:url], :title => t("browse.tag_details.wikidata_link", :page => w[:title].strip))
       end
-      safe_join(wdt, ";")
+      svg + safe_join(wdt, ";")
     elsif wmc = wikimedia_commons_link(key, value)
       link_to h(wmc[:title]), wmc[:url], :title => t("browse.tag_details.wikimedia_commons_link", :page => wmc[:title])
     elsif url = wiki_link("tag", "#{key}=#{value}")
@@ -39,8 +52,10 @@ module BrowseTagsHelper
         concat tag.rect :x => 0.5, :y => 0.5, :width => 13, :height => 13, :fill => colour_value, :stroke => "#2222"
       end
       svg + colour_value
+    elsif %w[opening_hours collection_times service_times].include?(key)
+      tag2link_link(key, value) || linkify(h(value))
     else
-      safe_join(value.split(";", -1).map { |x| linkify(h(x)) }, ";")
+      safe_join(value.split(";", -1).map { |x| tag2link_link(key, x) || linkify(h(x)) }, ";")
     end
   end
 
@@ -63,33 +78,36 @@ module BrowseTagsHelper
     url
   end
 
-  def wikipedia_link(key, value)
+  def wikipedia_links(key, value)
     # Some k/v's are wikipedia=http://en.wikipedia.org/wiki/Full%20URL
     return nil if %r{^https?://}.match?(value)
 
-    case key
-    when "wikipedia", /^(#{SECONDARY_WIKI_PREFIXES}):wikipedia/o
-      lang = "en"
-    when /^wikipedia:(\S+)$/
+    if key =~ /^(?:#{SECONDARY_WIKI_PREFIX_PATTERN})?wikipedia(?::(#{WIKIPEDIA_PROJECT_IDENTIFIER_PATTERN}))?$/o
       lang = Regexp.last_match(1)
     else
       return nil
     end
 
-    # This regex should match Wikipedia language codes, everything
-    # from de to zh-classical
-    if value =~ /^([a-z-]{2,12}):(.+)$/i
-      lang = Regexp.last_match(1)
-      title_section = Regexp.last_match(2)
-    else
-      title_section = value
+    # Value could be a semicolon-separated list of Wikipedia pages
+    value.split(";").map do |wiki_value|
+      wiki_value = wiki_value.strip
+
+      if wiki_value =~ /^(#{WIKIPEDIA_PROJECT_IDENTIFIER_PATTERN}):(.+)$/oi
+        page_lang = Regexp.last_match(1)
+        title_section = Regexp.last_match(2)
+      else
+        page_lang = lang
+        return nil unless page_lang
+
+        title_section = wiki_value
+      end
+
+      title, section = title_section.split("#", 2)
+      url = "https://#{page_lang}.wikipedia.org/wiki/#{wiki_encode(title)}?uselang=#{I18n.locale}"
+      url += "##{wiki_encode(section)}" if section
+
+      { :url => url, :title => wiki_value }
     end
-
-    title, section = title_section.split("#", 2)
-    url = "https://#{lang}.wikipedia.org/wiki/#{wiki_encode(title)}?uselang=#{I18n.locale}"
-    url += "##{wiki_encode(section)}" if section
-
-    { :url => url, :title => value }
   end
 
   def wiki_encode(s)
@@ -98,15 +116,14 @@ module BrowseTagsHelper
 
   def wikidata_links(key, value)
     # The simple wikidata-tag (this is limited to only one value)
-    if key == "wikidata" && value =~ /^[Qq][1-9][0-9]*$/
+    if key == "wikidata" && value =~ /^#{QID_PATTERN}$/o
       return [{
         :url => "//www.wikidata.org/entity/#{value}?uselang=#{I18n.locale}",
         :title => value
       }]
-    # Key has to be one of the accepted wikidata-tags
-    elsif key =~ /(#{SECONDARY_WIKI_PREFIXES}):wikidata/o &&
+    elsif key =~ /^#{SECONDARY_WIKI_PREFIX_PATTERN}wikidata$/o &&
           # Value has to be a semicolon-separated list of wikidata-IDs (whitespaces allowed before and after semicolons)
-          value =~ /^[Qq][1-9][0-9]*(\s*;\s*[Qq][1-9][0-9]*)*$/
+          value =~ /^#{QID_PATTERN}(?:\s*;\s*#{QID_PATTERN})*$/o
       # Splitting at every semicolon to get a separate hash for each wikidata-ID
       return value.split(";").map do |id|
         { :title => id, :url => "//www.wikidata.org/entity/#{id.strip}?uselang=#{I18n.locale}" }
@@ -116,7 +133,7 @@ module BrowseTagsHelper
   end
 
   def wikimedia_commons_link(key, value)
-    if key == "wikimedia_commons" && value =~ /^(file|category):([^#]+)/i
+    if key =~ /^(?:#{SECONDARY_WIKI_PREFIX_PATTERN})?wikimedia_commons$/o && value =~ /^(file|category):([^#]+)/i
       namespace = Regexp.last_match(1)
       title = Regexp.last_match(2)
       return {
@@ -125,6 +142,13 @@ module BrowseTagsHelper
       }
     end
     nil
+  end
+
+  def tag2link_link(key, value)
+    link = Tag2link.link(key, value)
+    return nil unless link
+
+    link_to(h(value), link, :rel => "nofollow")
   end
 
   def email_link(key, value)

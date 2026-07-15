@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class HistoryTest < ApplicationSystemTestCase
@@ -10,8 +12,10 @@ class HistoryTest < ApplicationSystemTestCase
     end
 
     visit "#{user_path(user)}/history"
-    changesets = find "div.changesets"
-    changesets.assert_text "first-changeset-in-history"
+
+    within_sidebar do
+      assert_text "first-changeset-in-history"
+    end
 
     assert_css "link[type='application/atom+xml'][href$='#{user_path(user)}/history/feed']", :visible => false
   end
@@ -30,26 +34,30 @@ class HistoryTest < ApplicationSystemTestCase
 
     assert_nothing_raised do
       visit "#{user_path(user)}/history"
-      changesets = find "div.changesets"
-      changesets.assert_text "bottom-changeset-in-batch-1"
-      changesets.assert_no_text "bottom-changeset-in-batch-2"
-      changesets.assert_no_text "first-changeset-in-history"
-      changesets.assert_selector "ol", :count => 1
-      changesets.assert_selector "li[data-changeset]", :count => PAGE_SIZE
 
-      click_on "Older Changesets"
-      changesets.assert_text "bottom-changeset-in-batch-1"
-      changesets.assert_text "bottom-changeset-in-batch-2"
-      changesets.assert_no_text "first-changeset-in-history"
-      changesets.assert_selector "ol", :count => 1
-      changesets.assert_selector "li[data-changeset]", :count => 2 * PAGE_SIZE
+      within_sidebar do
+        assert_text "bottom-changeset-in-batch-1"
+        assert_no_text "bottom-changeset-in-batch-2"
+        assert_no_text "first-changeset-in-history"
+        assert_selector "ol", :count => 1
+        assert_selector "li[data-changeset]", :count => PAGE_SIZE
 
-      click_on "Older Changesets"
-      changesets.assert_text "bottom-changeset-in-batch-1"
-      changesets.assert_text "bottom-changeset-in-batch-2"
-      changesets.assert_text "first-changeset-in-history"
-      changesets.assert_selector "ol", :count => 1
-      changesets.assert_selector "li[data-changeset]", :count => (2 * PAGE_SIZE) + 1
+        click_on "Older Changesets"
+
+        assert_text "bottom-changeset-in-batch-1"
+        assert_text "bottom-changeset-in-batch-2"
+        assert_no_text "first-changeset-in-history"
+        assert_selector "ol", :count => 1
+        assert_selector "li[data-changeset]", :count => 2 * PAGE_SIZE
+
+        click_on "Older Changesets"
+
+        assert_text "bottom-changeset-in-batch-1"
+        assert_text "bottom-changeset-in-batch-2"
+        assert_text "first-changeset-in-history"
+        assert_selector "ol", :count => 1
+        assert_selector "li[data-changeset]", :count => (2 * PAGE_SIZE) + 1
+      end
     end
   end
 
@@ -110,9 +118,9 @@ class HistoryTest < ApplicationSystemTestCase
   end
 
   test "update sidebar when before param is included and map is moved" do
-    changeset1 = create(:changeset, :num_changes => 1, :min_lat => 50000000, :max_lat => 50000001, :min_lon => 50000000, :max_lon => 50000001)
+    changeset1 = create(:changeset, :num_changes => 1, :bbox => [5, 5, 5, 5])
     create(:changeset_tag, :changeset => changeset1, :k => "comment", :v => "changeset-at-fives")
-    changeset2 = create(:changeset, :num_changes => 1, :min_lat => 50100000, :max_lat => 50100001, :min_lon => 50100000, :max_lon => 50100001)
+    changeset2 = create(:changeset, :num_changes => 1, :bbox => [5.01, 5.01, 5.01, 5.01])
     create(:changeset_tag, :changeset => changeset2, :k => "comment", :v => "changeset-close-to-fives")
     changeset3 = create(:changeset)
 
@@ -123,7 +131,9 @@ class HistoryTest < ApplicationSystemTestCase
       assert_no_link "changeset-close-to-fives"
     end
 
-    find("#map [aria-label='Zoom Out']").click(:shift)
+    within "#map" do
+      find_link("Zoom Out").click(:shift)
+    end
 
     within_sidebar do
       assert_link "changeset-at-fives"
@@ -131,6 +141,65 @@ class HistoryTest < ApplicationSystemTestCase
     end
 
     assert_current_path history_path
+  end
+
+  test "all changesets are listed when fully zoomed out" do
+    user = create(:user)
+    [-177, -90, 0, 90, 177].each do |lon|
+      create(:changeset, :user => user, :num_changes => 1, :bbox => [lon - 1, 0, lon + 1, 1]) do |changeset|
+        create(:changeset_tag, :changeset => changeset, :k => "comment", :v => "changeset-at-lon(#{lon})")
+      end
+    end
+
+    visit history_path(:anchor => "map=0/0/0")
+
+    within_sidebar do
+      assert_link "changeset-at-lon(-177)", :count => 1
+      assert_link "changeset-at-lon(-90)", :count => 1
+      assert_link "changeset-at-lon(0)", :count => 1
+      assert_link "changeset-at-lon(90)", :count => 1
+      assert_link "changeset-at-lon(177)", :count => 1
+    end
+  end
+
+  test "changesets at both sides of antimeridian are listed" do
+    user = create(:user)
+    PAGE_SIZE.times do
+      create(:changeset, :user => user, :num_changes => 1, :bbox => [176, 0, 178, 1]) do |changeset|
+        create(:changeset_tag, :changeset => changeset, :k => "comment", :v => "West-of-antimeridian-changeset")
+      end
+      create(:changeset, :user => user, :num_changes => 1, :bbox => [-178, 0, -176, 1]) do |changeset|
+        create(:changeset_tag, :changeset => changeset, :k => "comment", :v => "East-of-antimeridian-changeset")
+      end
+    end
+
+    visit history_path(:anchor => "map=6/0/179")
+
+    within_sidebar do
+      assert_link "West-of-antimeridian-changeset", :count => PAGE_SIZE / 2
+      assert_link "East-of-antimeridian-changeset", :count => PAGE_SIZE / 2
+
+      click_on "Older Changesets"
+
+      assert_link "West-of-antimeridian-changeset", :count => PAGE_SIZE
+      assert_link "East-of-antimeridian-changeset", :count => PAGE_SIZE
+    end
+  end
+
+  test "changeset bbox is shown on the map and clickable" do
+    user = create(:user)
+    changeset = create(:changeset, :user => user, :num_changes => 1, :bbox => [50, 50, 51, 51])
+    create(:changeset_tag, :changeset => changeset, :k => "comment", :v => "Clickable changeset")
+
+    visit "#{user_path(user)}/history"
+
+    within_sidebar do
+      assert_link "Clickable changeset"
+    end
+
+    find_by_id("map").click
+
+    assert_current_path changeset_path(changeset)
   end
 
   private

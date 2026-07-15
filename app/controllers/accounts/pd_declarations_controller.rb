@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Accounts
   class PdDeclarationsController < ApplicationController
-    layout "site"
+    layout :site_layout
 
     before_action :authorize_web
     before_action :set_locale

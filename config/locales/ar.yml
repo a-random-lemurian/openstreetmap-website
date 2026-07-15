@@ -24,6 +24,7 @@
 # Author: Hubaishan
 # Author: Karim185.3
 # Author: Kassem7899
+# Author: Kopmil
 # Author: Kuwaity26
 # Author: LaMagiaaa
 # Author: Lolekek
@@ -33,6 +34,7 @@
 # Author: McDutchie
 # Author: Meno25
 # Author: Mido
+# Author: Mo.Hajeer
 # Author: Mohammed Qays
 # Author: Mohammed Qubati
 # Author: Mutarjem horr
@@ -60,6 +62,9 @@
 ar:
   html:
     dir: rtl
+  date:
+    formats:
+      contribution_calendar: '%B %-d'
   time:
     formats:
       friendly: '%e %B %Y في %H:%M'
@@ -75,9 +80,9 @@ ar:
       issue_comment:
         create: إضافة تعليق
       message:
-        create: أرسل
+        create: إرسال
       oauth2_application:
-        create: سجِّل
+        create: تسجيل
         update: تحديث
       redaction:
         create: إنشاء تنقيح
@@ -90,16 +95,23 @@ ar:
         update: تحديث المنع
   activerecord:
     errors:
+      messages:
+        display_name_is_user_n: لا يمكن أن يكون user_n إلا إذا كان n هو معرّف المستخدم
+          الخاص بك
       models:
         user_mute:
-          is_already_muted: تمت كتم الصوت بالفعل
+          is_already_muted: كُتم بالفعل
+        social_link:
+          attributes:
+            url:
+              http_parse_error: يجب أن يبدأ عنوان URL بـ http://، أو https://
     models:
-      acl: لائحة التحكم بالوصول
+      acl: قائمة التحكُّم بالوصول
       changeset: حزمة التغييرات
       changeset_tag: وسم حزمة التغييرات
-      country: الدولة
-      diary_comment: تعليق يومية
-      diary_entry: مدخلة يومية
+      country: البلد
+      diary_comment: تعليق على اليوميات
+      diary_entry: مدخلة في اليوميات
       friend: صديق
       issue: قضية
       language: اللغة
@@ -122,7 +134,7 @@ ar:
       session: جلسة
       trace: أثر
       tracepoint: نقطة أثر
-      tracetag: سمة الأثر
+      tracetag: وسم الأثر
       user: المستخدم
       user_preference: تفضيل المستخدم
       user_token: رمز المستخدم
@@ -130,18 +142,6 @@ ar:
       way_node: عقدة طريق
       way_tag: سمة طريق
     attributes:
-      client_application:
-        name: الاسم (مطلوب)
-        url: ' مسار (URL) للتطبيق الرئيسي (مطلوب)'
-        callback_url: رابط الرد
-        support_url: رابط الدعم
-        allow_read_prefs: قراءة تفضيلات المستخدم الخاصة بهم
-        allow_write_prefs: تعديل تفضيلات المستخدم الخاصة بهم
-        allow_write_diary: إنشاء إدخالات اليوميات والتعليقات
-        allow_write_api: تعديل الخريطة.
-        allow_read_gpx: قراءة آثار جي بي إس الخاصة بهم
-        allow_write_gpx: رفع آثار جي بي إس.
-        allow_write_notes: تعديل الملاحظات.
       diary_comment:
         body: الجسم
       diary_entry:
@@ -190,8 +190,10 @@ ar:
         active: نشط
         display_name: عرض الاسم
         description: وصف الملف الشخصي
+        company: شركة
         home_lat: خط العرض
         home_lon: خط الطول
+        home_location_name: اسم الموقع الرئيس
         languages: اللغات المفضلة
         preferred_editor: المحرر المفضل
         pass_crypt: كلمة السر
@@ -311,6 +313,7 @@ ar:
       none: لا شيء
       openid: هوية مفتوحة
       google: جوجل
+      apple: آبل
       facebook: فيسبوك
       microsoft: مايكروسوفت
       github: جيت هب
@@ -343,18 +346,24 @@ ar:
   accounts:
     show:
       title: عدل الحساب
+      my_account: حسابي
       current email address: عنوان البريد الإلكرتروني الحالي
       external auth: مصادقة خارجية
-      openid:
-        link text: ما هذا؟
-      contributor terms:
+      contributor_terms:
         heading: شروط المساهم
-        agreed: لقد وافقت على شروط المساهم الجديدة.
-        not yet agreed: لم توافق بعد على شروط المساهم الجديدة.
-        review link text: يُرجَى اتباع هذا الرابط في الوقت الذي يناسبك لمراجعة وقبول
-          شروط المساهمة الجديدة.
+        agreed: لقد وافقت على شروط المساهم في %{date}.
+        not_agreed: لم توافق بعد على شروط المساهمة.
         agreed_with_pd: وقد أعلنت أيضًا أنك تعتبر تعديلاتك ملكية عامة.
-        link text: ما هذا؟
+        not_agreed_with_pd: لم تصرّح بأنك تعتبر تعديلاتك ملكًا عامًّا.
+        review: مراجعة الشروط
+        review_and_accept: المراجعة والموافقة على الشروط
+        consider_pd: اعتبار تعديلاتي ملكًا عامًّا
+      terms_of_use:
+        heading: شروط الاستخدام
+        agreed: لقد وافقت على شروط الاستخدام في %{date}.
+        not_agreed: لم توافق بعد على شروط الاستخدام.
+        review: مراجعة الشروط
+        review_and_accept: المراجعة والموافقة على الشروط
       save changes button: حفظ التغييرات
       delete_account: حذف الحساب...
     go_public:
@@ -407,15 +416,22 @@ ar:
         title: شروط
         heading: شروط
         heading_ct: شروط المساهمة
-        read and accept with tou: تُرجَى قراءة اتفاقية المساهم وشروط الاستخدام، والتحقق
-          من خانتي الاختيار عند الانتهاء، ثم اضغط على زر "متابعة".
+        read and accept with tou: يُرجى قراءة شروط المساهمة وشروط الاستخدام، وتحديد
+          كلا المربّعين عند الانتهاء، ثم الضغط على ”متابعة“.
         contributor_terms_explain: هذا الاتفاق يحكم شروط مساهماتك الحالية والمستقبلية
         read_ct: قرأت شروط المساهمة المعطاة في الأعلى وأوافق عليها
-        tou_explain_html: هذا ال%{tou_link} يحكم استخدام موقع الويب والبنية الأساسية
-          الأخرى التي يوفرها مؤسسة خريطة الشارع المفتوحة، يُرجَى النقر على الرابط،
-          وقراءة والموافقة على النص.
+        tou_explain:
+          html: هذا ال%{tou_link} يحكم استخدام موقع الويب والبنية الأساسية الأخرى
+            التي يوفرها مؤسسة خريطة الشارع المفتوحة، يُرجَى النقر على الرابط، وقراءة
+            والموافقة على النص.
+          tou: شروط الاستخدام
         read_tou: قرأت شروط الاستخدام وأوافق عليها.
-        continue: استمر
+        guidance_info_html: 'معلومات تساعد على فهم هذه المصطلحات: %{readable_summary_link}
+          وبعض %{informal_translations_link}'
+        readable_summary: ملخّص يمكن قراءته من قِبل البشر
+        informal_translations: ترجمات غير رسمية
+        continue: استمرار
+        cancel: إلغاء
         you need to accept or decline: الرجاء القراءة ومن ثم قبول أو رفض شروط المساهمة
           الجديدة للمتابعة.
         legale_select: 'بلد الإقامة:'
@@ -425,6 +441,20 @@ ar:
           rest_of_world: بقية العالم
       update:
         terms accepted: نشكرك على قبول شروط المساهم الجديدة!
+      terms_declined_flash:
+        terms_declined_html: نأسف لقرارك بعدم قبول شروط المساهمة الجديدة. لمزيد من
+          المعلومات، يُرجى الاطّلاع على %{terms_declined_link}
+        terms_declined_link: صفحة الويكي هذه
+    pd_declarations:
+      show:
+        title: اعتبار مساهماتي ملكًا عامًا
+        consider_pd: أعتبر مساهماتي ملكًا عامًّا
+        consider_pd_why: لماذا أرغب في أن تكون مساهماتي ملكًا عامًّا؟
+        confirm: تأكيد
+      create:
+        successfully_declared: لقد أعلنت بنجاح أنك تعتبر تعديلاتك ملكًا عامًّا.
+        already_declared: لقد أعلنت بالفعل أنك تعتبر تعديلاتك ملكًا عامًّا.
+        did_not_confirm: لم تؤكّد أنك تعتبر تعديلاتك ملكًا عامًّا.
   browse:
     deleted_ago_by_html: تم حذف %{time_ago} بواسطة %{user}
     edited_ago_by_html: تم تحرير %{time_ago} بواسطة %{user}
@@ -434,6 +464,13 @@ ar:
     anonymous: مجهول
     no_comment: (لا تعليق)
     part_of: جزء من
+    part_of_relations:
+      zero: لا علاقات
+      one: علاقة واحدة
+      two: علاقتان
+      few: '%{count} علاقات'
+      many: '%{count} علاقة'
+      other: '%{count} علاقة'
     part_of_ways:
       zero: ""
       one: طريق واحد
@@ -442,21 +479,33 @@ ar:
       many: '%{count} طريقًا'
       other: '%{count} طريقٍ'
     download_xml: تنزيل XML
-    view_history: عرض السجل
     view_unredacted_history: عرض التاريخ غير المُحرف
-    view_details: شاهد التفاصيل
     location: 'الموقع:'
     node:
       title_html: 'عقدة: %{name}'
     way:
       title_html: 'طريق: %{name}'
       nodes: العقد
+      nodes_count:
+        zero: لا عُقد
+        one: عقدة واحدة
+        two: عقدتان
+        few: '%{count} عُقد'
+        many: '%{count} عقدة'
+        other: '%{count} عقدة'
       also_part_of_html:
         one: جزء من طريق %{related_ways}
         other: جزء من طرق %{related_ways}
     relation:
       title_html: 'صلة: %{name}'
       members: الأعضاء
+      members_count:
+        zero: لا أعضاء
+        one: عضو واحد
+        two: عضوان
+        few: '%{count} أعضاء'
+        many: '%{count} عضو'
+        other: '%{count} عضو'
     relation_member:
       entry_role_html: '%{type} %{name} كــ%{role}'
       type:
@@ -488,6 +537,7 @@ ar:
     start_rjs:
       feature_warning: جارٍ تحميل %{num_features} من الميزات، مما قد يؤدي إلى بطء
         متصفحك أو عدم استجابته. هل أنت متأكد من أنك تريد عرض هذه البيانات؟
+      feature_error: 'تعذّر تحميل الميّزات: %{message}'
       load_data: تحميل البيانات
       loading: جارٍ التحميل...
     tag_details:
@@ -501,6 +551,13 @@ ar:
       telephone_link: اتصل بـ%{phone_number}
       colour_preview: معاينة اللون %{colour_value}
       email_link: إرسال بريد إلكتروني %{email}
+    versions_navigation:
+      node: العقدة
+      way: طريق
+      relation: العلاقة
+      history: تاريخ
+      version: 'النسخة #%{version}'
+      versions_label: 'الإصدارات:'
   feature_queries:
     show:
       title: ميزات الاستفهام
@@ -515,6 +572,22 @@ ar:
         title_html: 'تاريخ الطريق: %{name}'
       relation:
         title_html: 'تاريخ الصلة: %{name}'
+      older_versions: الإصدارات الأقدم
+      newer_versions: الإصدارات الأحدث
+    actions:
+      view_redacted_data: عرض البيانات المحجوبة
+      view_redaction_message: عرض رسالة التنقيح
+  nodes:
+    not_found_message:
+      sorry: عذرًا، لم يُعثر على العقدة رقم %{id}.
+    timeout:
+      sorry: عذرًا، استغرقت عملية استرداد بيانات العقدة ذات المعرّف %{id} وقتًا طويلًا.
+  old_nodes:
+    not_found_message:
+      sorry: عذرًا، لم يُعثر على العقدة رقم %{id} الإصدار %{version}.
+  ways:
+    not_found_message:
+      sorry: عذرًا، لم يُعثر على الطريقة رقم %{id}.
   changeset_comments:
     feeds:
       comment:
@@ -616,9 +689,6 @@ ar:
       title_nearby: يوميات المستخدمين القريبين
       user_title: يومية %{user}
       in_language_title: مدخلات اليومية باللغة %{language}
-      new: مدخلة يومية جديدة
-      new_title: تأليف إدخال جديد في مذكرات المستخدم الخاصة بي
-      my_diary: يومياتي
       no_entries: لا توجد مدخلات يومية
     page:
       recent_entries: إدخالات يوميات حديثة
@@ -679,6 +749,13 @@ ar:
     unsubscribe:
       heading: إلغاء الاشتراك في مناقشة إدخال اليوميات التالية؟
       button: إلغاء الاشتراك من المناقشة
+    navigation:
+      in_language: المدخلات اليومية باللغة %{language}
+      my_diary: يومياتي
+      new: مدخلة يومية جديدة
+      new_title: تأليف إدخال جديد في مذكرات المستخدم الخاصة بي
+    profile_diaries:
+      title_label: مدخلة يومية
   doorkeeper:
     errors:
       messages:
@@ -704,11 +781,6 @@ ar:
       description: تعذر العثور على ملف / دليل / عملية API بهذا الاسم على خادم OpenStreetMap
         (HTTP 404)
   geocoder:
-    search:
-      title:
-        latlon: داخلي
-        osm_nominatim: OpenStreetMap Nominatim
-        osm_nominatim_reverse: OpenStreetMap Nominatim
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -1083,7 +1155,7 @@ ar:
           sports_centre: مركز رياضي
           stadium: ستاد
           swimming_pool: مسبح
-          track: مضمار سباق
+          track: حلبة سباق (غير مخصصة لرياضة السيارات)
           water_park: منتزه ألعاب مائية
           "yes": وقت الفراغ
         man_made:
@@ -1365,7 +1437,7 @@ ar:
           pet: متجر حيوانات أليفة
           pet_grooming: العناية بالحيوانات الأليفة
           photo: متجر صور
-          seafood: أكلات بحرية
+          seafood: المأكولات البحرية
           second_hand: متجر أغراض مستعملة
           sewing: محل خياطة
           shoes: متجر أحذية
@@ -1443,12 +1515,22 @@ ar:
         level9: الحدود الإدارية (المستوى 9)
         level10: الحدود الإدارية (المستوى 10)
         level11: الحدود الإدارية (المستوى 11)
-    results:
-      no_results: لم يتم العثور على نتائج
-      more_results: المزيد من النتائج
+  searches:
+    show:
+      title:
+        latlon: داخلي
+    queries:
+      create:
+        no_results: لم يتم العثور على نتائج
+        more_results: المزيد من النتائج
   directions:
-    search:
+    show:
       title: الاتجاهات
+      distance: المسافات
+      time: الوقت
+      ascend: رفع
+      descend: منحدر
+      directions_courtesy_html: الاتجاهات مجاملة من %{link}
   issues:
     index:
       title: مشاكل
@@ -1495,14 +1577,13 @@ ar:
       other_issues_against_this_user: مشاكل أخرى ضد هذا المستخدم
       no_other_issues: لا مشاكل أخرى ضد هذا المستخدم.
       comments_on_this_issue: التعليقات على هذه المشكلة
+      comment_from_html: التعليق من %{user_link} في %{comment_created_at}
     resolve:
       resolved: تم تعيين حالة المشكلة إلى 'محلولة'
     ignore:
       ignored: تم تعيين حالة المشكلة إلى 'تم تجاهلها'
     reopen:
       reopened: تم تعيين حالة المشكلة إلى 'مفتوحة'
-    comments:
-      comment_from_html: التعليق من %{user_link} في %{comment_created_at}
     reports:
       reported_by_html: تم الإبلاغ عنه ك%{category} بواسطة %{user} في %{updated_at}
     helper:
@@ -1516,7 +1597,6 @@ ar:
   reports:
     new:
       title_html: بلاغ %{link}
-      missing_params: لا يمكن إنشاء بلاغ جديد
       disclaimer:
         intro: 'قبل إرسال تقريرك إلى مشرف الموقع، يُرجَى التأكد مما يلي:'
         not_just_mistake: أنك متأكد من أن المشكلة ليست مجرد خطأ
@@ -1548,35 +1628,52 @@ ar:
     create:
       successful_report: لقد تم تسجيل بلاغك بنجاح
       provide_details: يُرجَى تقديم التفاصيل المطلوبة
+  languages_panes:
+    select_language_list:
+      search_language: بحث...
+      languages:
+        gsw: الألمانية
+        dsb: الصربية السفلى
+        es: إسباني
+        ga: الأيرلندية
+        ia: إنترلينغوا
+        fit: تورنيدالين الفنلندية
+        nds: الألمانية المنخفضة
+        sc: السردينية
+        sr: الصربية (السيريلية)
+        he: العبرية
+        hi: الهندية
+        ka: جورجي
+        ko: كوري
   layouts:
     project_name:
       title: خريطة الشارع المفتوحة
-      h1: خريطة الشارع المفتوحة
     logo:
       alt_text: شعار خريطة الشارع المفتوحة
-    home: اذهب إلى الصفحة الرئيسية
-    logout: سجل خروج
-    log_in: تسجيل الدخول
-    sign_up: أنشئ حسابًا
     start_mapping: ابدأ التخطيط
-    edit: تعديل
-    history: تاريخ
-    export: صدِّر
-    issues: المشاكل
-    gps_traces: آثار جي بي أس
-    user_diaries: يوميات المستخدمين
-    edit_with: حرر باستعمال %{editor}
     intro_header: مرحبا بكم في خريطة الشارع المفتوحة!
     intro_text: خريطة الشارع المفتوحة هي خريطة العالم، أُنشِئت بواسطة أشخاص مثلك وحرة
       الاستخدام برخصة مفتوحة.
     partners_partners: الشركاء
     tou: شروط الاستخدام
-    help: مساعدة
-    about: حول
-    copyright: حقوق النسخ
-    communities: مجتمعات
     learn_more: التعرف على المزيد
-    more: المزيد
+    header:
+      about: حول
+      communities: مجتمعات
+      copyright: حقوق النسخ
+      edit: تعديل
+      edit_with: حرر باستعمال %{editor}
+      export: صدِّر
+      gps_traces: آثار جي بي أس
+      help: مساعدة
+      history: تاريخ
+      home: اذهب إلى الصفحة الرئيسية
+      issues: المشاكل
+      log_out: تسجيل الخروج
+      log_in: تسجيل الدخول
+      more: المزيد
+      sign_up: أنشئ حسابًا
+      user_diaries: يوميات المستخدمين
   user_mailer:
     diary_comment_notification:
       subject: '[خريطة الشارع المفتوحة] %{user} علق على مدخلتك في اليومية'
@@ -1720,6 +1817,9 @@ ar:
       whitelist: إذا كنت تستخدم نظام مكافحة البريد العشوائي الذي يرسل طلبات تأكيد
         ، فيرجى التأكد من إدراج %{sender} في القائمة البيضاء حيث يتعذر علينا الرد
         على أي طلبات تأكيد.
+    gravatar:
+      disabled: تم تعطيل Gravatar .
+      enabled: تم تمكين عرض Gravatar الخاص بك.
   messages:
     new:
       title: أرسل رسالة
@@ -1813,34 +1913,49 @@ ar:
     update:
       flash changed: كلمة مرورك قد تغيرت.
   preferences:
-    show:
-      title: تفضيلاتي
-      save: حدث التفضيلات
-    update:
-      failure: تعذر تحديث التفضيلات.
-    update_success_flash:
-      message: تم تحديث التفضيلات.
+    preferences:
+      update:
+        failure: تعذر تحديث التفضيلات.
+      update_success_flash:
+        message: تم تحديث التفضيلات.
+      navigation:
+        preferences: الواجهة
+        advanced_preferences: متقدّم
+    basic_preferences:
+      show:
+        title: تفضيلاتي
+        preferred_language: اللغة المفضلة
+        save: حدث التفضيلات
+    advanced_preferences:
+      show:
+        title: تفضيلاتي المتقدمة
+        save: حدث التفضيلات
   profiles:
-    edit:
-      title: عدل الملف
-      save: تحديث الملف الشخصي
-      cancel: إلغاء
-      image: "\uFEFFالصورة"
-      gravatar:
-        gravatar: استخدام Gravatar
-        disabled: تم تعطيل Gravatar .
-        enabled: تم تمكين عرض Gravatar الخاص بك.
-      new image: أضف صورة
-      keep image: احتفظ بالصورة الحالية
-      delete image: أزل الصورة الحالية
-      replace image: "\uFEFFاستبدل الصورة الحالية"
-      image size hint: "\uFEFF(صورة مربعة على الأقل 100 × 100 تعمل بشكل أفضل)"
-      home location: موقع المنزل
-      no home location: لم تدخل موقع منزلك.
-      update home location on click: تحديث موقع المنزل عندما أنقر على الخريطة؟
-    update:
-      success: تم تحديث الملف الشخصي.
-      failure: تعذر تحديث الملف الشخصي.
+    profile_sections:
+      navigation:
+        image: "\uFEFFالصورة"
+        company: شركة
+    descriptions:
+      show:
+        title: عدل الملف
+        save: تحديث الملف الشخصي
+        cancel: إلغاء
+    links:
+      show:
+        title: عدل الملف
+    images:
+      show:
+        gravatar:
+          gravatar: استخدام Gravatar
+        new image: أضف صورة
+        keep image: احتفظ بالصورة الحالية
+        delete image: أزل الصورة الحالية
+        replace image: "\uFEFFاستبدل الصورة الحالية"
+        image size hint: "\uFEFF(صورة مربعة على الأقل 100 × 100 تعمل بشكل أفضل)"
+    locations:
+      show:
+        no home location: لم تدخل موقع منزلك.
+        update home location on click: تحديث موقع المنزل عندما أنقر على الخريطة؟
   sessions:
     new:
       tab_title: تسجيل الدخول
@@ -1896,6 +2011,7 @@ ar:
       lede_text: تم بناء خريطة الشارع المفتوحة من قبل مجتمع من مصممي الخرائط، وتساهم
         وتحافظ على البيانات حول الطرق والممرات والمقاهي ومحطات السكك الحديدية، وأكثر
         من ذلك بكثير، في جميع أنحاء العالم.
+    about_section:
       local_knowledge_title: المعرفة المحلية
       local_knowledge_html: |-
         خريطة الشارع المفتوحة يؤكد على المعرفة المحلية، يستخدم المساهمون
@@ -1919,8 +2035,9 @@ ar:
       legal_1_1_terms_of_use: شروط الاستخدام
       legal_1_1_aup: سياسات الاستخدام المقبولة
       legal_1_1_privacy_policy: سياسة الخصوصية
-      legal_2_1_html: من فضلك %{contact_the_osmf_link} إذا كان لديك ترخيص أو حقوق
-        طبع ونشر أو أسئلة قانونية أخرى.
+      legal_2_1_html: |-
+        يرجى %{contact_the_osmf_link}
+        لأي أسئلة أخرى تتعلق بالترخيص أو حقوق النشر أو أي أسئلة قانونية أخرى.
       legal_2_1_contact_the_osmf: اتصل بـ OSMF
       legal_2_2_html: OpenStreetMap وشعار العدسة المكبرة وحالة الخريطة هي %{registered_trademarks_link}.
       legal_2_2_registered_trademarks: العلامات التجارية المسجلة لـ OSMF
@@ -1940,22 +2057,30 @@ ar:
         native_link: النسخة العربية
         mapping_link: ابدأ التخطيط
       legal_babble:
-        introduction_1_open_data: البيانات المفتوحة
-        introduction_1_osm_foundation: مؤسسة خريطة الشارع المفتوحة
-        introduction_2_html: "أنت حر في نسخ، وتوزيع، ونقل وتطويع بياناتنا، \nطالما
-          أنك تقيد خريطة الشارع المفتوحة\nوالمساهمين فيها، إذا عدلت أو بنيت على بياناتنا،
-          \nفلا يحق لك توزيع النتيجة إلا تحت نفس الترخيص، و\nالكود القانوني الكامل
-          يشرح حقوقك ومسؤولياتك.%{legal_code_link}"
-        introduction_2_legal_code: شفرة قانونية
-        introduction_3_html: وثائقنا مرخصة بموجب ترخيص٪ {creative_commons_link} (CC
-          BY-SA 2.0).%{creative_commons_link}
+        licensing_title: ترخيص خريطة الشارع المفتوحة
+        licensing_1_osm_foundation: مؤسسة خريطة الشارع المفتوحة
         credit_title_html: كيفية النسبة لخريطة الشارع المفتوحة
         credit_1_html: 'عندما تستخدم بيانات OpenStreetMap، فأنت مطالب بالقيام بالأمرين
           التاليين:'
         attribution_example:
           alt: مثال على كيفية إسناد خريطة الشارع المفتوحة على صفحة ويب
           title: مثال الإسناد
-        more_title_html: معرفة المزيد
+        infringement_title_html: انتهاك حقوق الملكية
+        infringement_1_html: |-
+          يتم تذكير المساهمين OSM لا لإضافة البيانات من أي
+          المصادر المحمية بحقوق الطبع والنشر (مثل خرائط Google أو الخرائط المطبوعة) بدون
+          إذن صريح من أصحاب حقوق النشر.
+        infringement_2_1_html: |-
+          إذا كنت تعتقد أن المواد المحمية بحقوق الطبع والنشر قد تم بشكل غير لائق
+           المضافة إلى قاعدة بيانات OpenStreetMap أو هذا الموقع ، يرجى الرجوع
+           إلى %{takedown_procedure_link} أو ملف مباشرة على موقعنا
+            %{online_filing_page_link}.
+        trademarks_title: العلامات التجارية
+        trademarks_1_1_html: |-
+          خريطة الشارع المفتوح، وشعار العدسة المكبرة، وحالة الخريطة علامات تجارية مسجلة لمؤسسة
+          OpenStreetMap. إذا كانت لديك أي أسئلة حول استخدامك لهذه العلامات، يُرجى الاطلاع على رابط سياسة العلامة التجارية
+          %{trademark_policy_link}.
+        services_title_html: خدمات إضافية
         contributors_title_html: المساهمين
         contributors_intro_html: "مساهمونا هم آلاف الأفراد، نوفر أيضا \nبيانات مرخصة
           بشكلٍ مفتوح من وكالات الخرائط الوطنية \nوغيرها من المصادر، من بينها:"
@@ -2008,40 +2133,21 @@ ar:
           إدراج البيانات في OpenStreetMap لا يعني أن الأصلي
           مزود البيانات يؤيد OpenStreetMap ، يوفر أي ضمان ، أو
           يقبل أي مسؤولية.
-        infringement_title_html: انتهاك حقوق الملكية
-        infringement_1_html: |-
-          يتم تذكير المساهمين OSM لا لإضافة البيانات من أي
-          المصادر المحمية بحقوق الطبع والنشر (مثل خرائط Google أو الخرائط المطبوعة) بدون
-          إذن صريح من أصحاب حقوق النشر.
-        infringement_2_1_html: |-
-          إذا كنت تعتقد أن المواد المحمية بحقوق الطبع والنشر قد تم بشكل غير لائق
-           المضافة إلى قاعدة بيانات OpenStreetMap أو هذا الموقع ، يرجى الرجوع
-           إلى %{takedown_procedure_link} أو ملف مباشرة على موقعنا
-            %{online_filing_page_link}.
-        trademarks_title: العلامات التجارية
-        trademarks_1_1_html: |-
-          OpenStreetMap وشعار العدسة المكبرة وحالة الخريطة هي علامات تجارية مسجلة لـ
-           مؤسسة OpenStreetMap.  إذا كانت لديك أسئلة حول استخدامك للعلامات ، فيرجى الاطلاع على
-            %{trademark_policy_link}.
     index:
       js_1: إما أنك تستخدم متصفحا لا يدعم جافا سكريبت، أو أنك عطلت استعمال جافا سكريبت.
       js_2: خريطة الشارع المفتوحة تستخدم جافا سكريبت لخريطتها المنزلقة.
       license:
         copyright: حقوق طبع ونشر ومساهمو خريطة الشارع المفتوحة، تحت رخصة مفتوحة
-      remote_failed: فشل التعديل - تأكد من تحميل JOSM أو Merkaartor وتمكين خيار التحكم
-        عن بعد
     not_public_flash:
       not_public: لم تقم بتعيين تعديلاتك لتكون علنية.
       not_public_description_html: أنت لم تعد قادر على تعديل الخريطة إلا إذا قمت بذلك،
         يمكنك تعيين تعديلاتك لتكون علنية من %{user_page} الخاصة بك.
       user_page_link: صفحة مستخدم
       anon_edits_link_text: ابحث عن السبب لماذا هو هذا الحال.
-    edit:
-      id_not_configured: لم يتم تكوين آي دي
     export:
       title: صدِّر
       manually_select: اختر يدويًا منطقة أخرى
-      licence: الرخصة
+      licence: الترخيص
       too_large:
         advice: 'إذا فشل التصدير أعلاه، فكِّر من فضلك باستخدام أحد المصادر الموضَّحة
           أدناه:'
@@ -2120,6 +2226,8 @@ ar:
         bicycle: دراجة
         car: سيارة
         foot: قدم
+      providers:
+        description: خدمات الاتجاهات
     welcome:
       title: مرحبا!
       introduction: مرحبًا بك في OpenStreetMap ، خريطة حرة وقابلة للتعديل بواسطة العالم.
@@ -2134,11 +2242,15 @@ ar:
       rules:
         title: قواعد!
       start_mapping: ابدأ التخطيط
-      add_a_note:
-        title: لا وقت للتعديل؟ أضف ملاحظة!
-        para_1: إذا كنت تريد إصلاح مجرد شيء صغير وليس لديك الوقت للتسجيل ومعرفة كيفية
-          التحرير، فإنه من السهل أن تضيف ملاحظة.
-  map_keys:
+    add_a_note:
+      title: لا وقت للتعديل؟ أضف ملاحظة!
+      para_1: إذا كنت تريد إصلاح مجرد شيء صغير وليس لديك الوقت للتسجيل ومعرفة كيفية
+        التحرير، فإنه من السهل أن تضيف ملاحظة.
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: تكبير الخريطة لرؤية ملاحظات الخريطة
+      map_data_zoom_in_tooltip: تكبير الخريطة لرؤية بيانات الخريطة
+  legend_panes:
     show:
       entries:
         motorway: طريق سريع
@@ -2151,9 +2263,9 @@ ar:
         track: مسار
         bridleway: مسلك خيول
         cycleway: طريق دراجات
-        cycleway_national: طريق الدراجات الوطني
-        cycleway_regional: طريق الدراجات الإقليمي
-        cycleway_local: طريق الدراجات المحلي
+        national_bike_route: طريق الدراجات الوطني
+        regional_bike_route: طريق الدراجات الإقليمي
+        local_bike_route: طريق الدراجات المحلي
         footway: طريق مشاة
         rail: سكة حديدية
         train: قطار
@@ -2203,6 +2315,20 @@ ar:
         bicycle_shop: متجر دراجات
         bicycle_parking: مرآب دراجات
         toilets: مرحاض
+  share_panes:
+    show:
+      link: وصلة أو HTML
+      include_marker: تتضمن علامة
+      long_link: وصلة
+      short_link: رابط قصير
+      embed: HTML
+      paste_html: ألصق HTML لتضمينه في موقع ويب
+      geo_uri: رابط جغرافي
+      image: صورة
+      format: 'التنسيق:'
+      scale: 'المقياس:'
+      custom_dimensions: تعيين المكونات المخصصة
+      download: نزل
   traces:
     visibility:
       private: خصوصي (يظهر كمجهول الهوية ونقاط غير مرتبة)
@@ -2227,7 +2353,7 @@ ar:
       heading: تعديل الأثر %{name}
       visibility_help: ماذا يعني هذا؟
     update:
-      updated: تم تحديث التتبع
+      updated: حُدثَ التتبع
     show:
       title: عرض الأثر %{name}
       heading: عرض الأثر %{name}
@@ -2237,17 +2363,17 @@ ar:
       uploaded: 'تم الرفع في:'
       points: 'النقاط:'
       start_coordinates: 'إحداثيات البدء:'
-      map: خريطة
-      edit: تعديل
+      map: عرض الموقع على الخريطة
+      edit: افتح في المحرر
       owner: 'المالك:'
       description: 'الوصف:'
       tags: 'الوسوم:'
       none: لا يوجد
-      edit_trace: عدل هذا الأثر
+      edit_trace: تعديل تفاصيل التتبع
       delete_trace: احذف هذا الأثر
       trace_not_found: لم يتم العثور على الأثر!
       visibility: 'الرؤية:'
-      confirm_delete: احذف هذا الأثر
+      confirm_delete: حذف هذا الأثر؟
     trace:
       pending: في الانتظار
       count_points:
@@ -2259,8 +2385,8 @@ ar:
         other: '%{count} نقطة'
       more: المزيد
       trace_details: اعرض تفاصيل الأثر
-      view_map: اعرض الخريطة
-      edit_map: عدّل الخريطة
+      view_map: عرض الموقع على الخريطة
+      edit_map: افتح في المحرر
       public: عام
       identifiable: محدد الهوية
       private: خاص
@@ -2302,9 +2428,6 @@ ar:
     settings_menu:
       account_settings: إعدادات الحساب
     auth_providers:
-      openid:
-        title: تسجيل الدخول باستخدام OpenID
-        alt: شعار OpenID
       google:
         title: تسجيل الدخول باستخدام جوجل
         alt: شعار جوجل
@@ -2351,6 +2474,7 @@ ar:
         في التفضيلات في وقت لاحق.
       continue: أنشئ حسابًا
       use external auth: أو قم بالتسجيل مع طرف ثالث
+      verify_human: تأكد من أنك إنسان
     no_such_user:
       title: لا يوجد مستخدم كهذا
       heading: المستخدم %{user} غير موجود
@@ -2367,7 +2491,6 @@ ar:
       my comments: تعليقاتي
       blocks on me: عمليات منعي
       blocks by me: عمليات المنع بواسطتي
-      edit_profile: عدل الملف
       send message: إرسل رسالة
       diary: يومية
       edits: مساهمات
@@ -2381,26 +2504,25 @@ ar:
       created from: 'أُنشِئ من:'
       status: 'الحالة:'
       spam score: 'نتيجة السخام:'
-      role:
-        administrator: هذا المستخدم إداري
-        moderator: هذا المستخدم مشرف
-        grant:
-          administrator: منح وصول إداري
-          moderator: منح وصول مشرف
-        revoke:
-          administrator: إبطال وصول إداري
-          moderator: إبطال وصول مشرف
       block_history: عمليات المنع المفعلة
       moderator_history: عمليات المنع المعطاة
       comments: التعليقات
       create_block: منع هذا المستخدم
       activate_user: نشِّط هذا المستخدم
       confirm_user: تأكيد هذا المستخدم
-      hide_user: اخفِ هذا المستخدم
-      unhide_user: أظهر هذا المستخدم
-      delete_user: احذف هذا المستخدم
       confirm: تأكيد
       report: أبلغ عن هذا المستخدم
+      title:
+        administrator: هذا المستخدم إداري
+        moderator: هذا المستخدم مشرف
+      grant:
+        administrator: منح وصول إداري
+        moderator: منح وصول مشرف
+        are_you_sure: هل أنت متأكد أنك تريد منح الدور '%{role}' للمستخدم '%{name}'؟
+      revoke:
+        administrator: إبطال وصول إداري
+        moderator: إبطال وصول مشرف
+        are_you_sure: هل أنت متأكد أنك تريد إلغاء الدور '%{role}' من المستخدم '%{name}'؟
     go_public:
       flash success: جميع تعديلاتك الآن عامة، ومسموح لك بالتعديل الآن.
     issued_blocks:
@@ -2419,7 +2541,6 @@ ar:
         heading: المستخدمون
       page:
         confirm: تأكيد المستخدمين المحددين
-        hide: إخفاء المستخدمين المحددين
         empty: لم يتم العثور على مستخدمين متطابقين
       user:
         summary_html: '%{name} تم إنشاؤها من %{ip_address} في %{date}'
@@ -2457,10 +2578,6 @@ ar:
       already_has_role: لدى المستخدم الدور  %{role} سابقًا
       doesnt_have_role: ليس للمستخدم الدور %{role}.
       not_revoke_admin_current_user: لا يمكن إبطال دور المشرف من المستخدم الحالي.
-    grant:
-      are_you_sure: هل أنت متأكد أنك تريد منح الدور '%{role}' للمستخدم '%{name}'؟
-    revoke:
-      are_you_sure: هل أنت متأكد أنك تريد إلغاء الدور '%{role}' من المستخدم '%{name}'؟
   user_blocks:
     model:
       non_moderator_update: يجب أن تكون وسيط لإنشاء أو تحديث عرقلة.
@@ -2601,34 +2718,19 @@ ar:
     close: أغلق
     share:
       title: شارك
-      cancel: إلغاء
-      image: صورة
-      link: وصلة أو HTML
-      long_link: وصلة
-      short_link: رابط قصير
-      geo_uri: رابط جغرافي
-      embed: HTML
-      custom_dimensions: تعيين المكونات المخصصة
-      format: 'التنسيق:'
-      scale: 'المقياس:'
-      download: نزل
-      short_url: مسار قصير
-      include_marker: تتضمن علامة
-      center_marker: مركز الخريطة على العلامة
-      paste_html: ألصق HTML لتضمينه في موقع ويب
       view_larger_map: عرض خريطة بحجم أكبر
     embed:
       report_problem: أبلغ عن مشكلة
-    key:
-      title: مفتاح الخريطة
-      tooltip: مفتاح الخريطة
-      tooltip_disabled: مفتاح الخريطة غير متاح لهذه الطبقة
+    legend:
+      title: أسطورة
+      tooltip: أسطورة
+      tooltip_disabled: الأسطورة غير متوفرة لهذه الطبقة
     map:
-      zoom:
-        in: تقريب
-        out: بَعِّدْ
-      locate:
-        title: أظهر موقعي
+      navigation_control:
+        zoom_in: تقريب
+        zoom_out: بَعِّدْ
+      geolocate_control:
+        find_my_location: أظهر موقعي
         metersPopup:
           zero: أنت على بعد %{count} متر من هذه النقطة
           one: أنت على بعد متر واحد من هذه النقطة
@@ -2660,18 +2762,15 @@ ar:
       edit_disabled_tooltip: قم بالتكبير لتحرير الخريطة
       createnote_tooltip: إضافة ملاحظة إلى الخريطة
       createnote_disabled_tooltip: تكبير لإضافة ملاحظة إلى الخريطة
-      map_notes_zoom_in_tooltip: تكبير الخريطة لرؤية ملاحظات الخريطة
-      map_data_zoom_in_tooltip: تكبير الخريطة لرؤية بيانات الخريطة
       queryfeature_tooltip: ميزات الاستعلام
       queryfeature_disabled_tooltip: ميزات تكبير الاستعلام
+    profile:
+      social_link_n: وصلة الملف الشخصي الاجتماعي %{n}
+      remove_social_link_n: إزالة وصلة الملف الشخصي الاجتماعي %{n}
     edit_help: انقل الخريطة وكبر الموقع الذي تريد تحريره، ثم اضغط هنا.
     directions:
-      ascend: رفع
-      descend: منحدر
-      distance: المسافات
       errors:
         no_route: لا يمكن أن تجد طريقا بين هذين المكانين.
-        no_place: عذرا - لا يمكن أن تجد هذا المكان %{place}.
       instructions:
         continue_without_exit: الاستمرار في %{name}
         slight_right_without_exit: اتجه إلى اليمين قليلا %{name}
@@ -2732,7 +2831,6 @@ ar:
         roundabout_with_exit_ordinal: في الدوار، خذ %{exit} إلى %{name}
         exit_roundabout: الخروج من الدوار نحو %{name}
         unnamed: طريق غير مسمى
-        courtesy: الاتجاهات مجاملة من %{link}
         exit_counts:
           first: الأول
           second: الثاني
@@ -2744,7 +2842,6 @@ ar:
           eighth: الثامن
           ninth: التاسع
           tenth: العاشر
-      time: الوقت
     query:
       node: عُقدة
       way: طريق
@@ -2759,6 +2856,9 @@ ar:
       show_address: أظهر العنوان
       query_features: ميزات الاستعلام
       centre_map: مركز الخريطة هنا
+    edit:
+      id_not_configured:
+        title: لم يتم تكوين آي دي
   redactions:
     edit:
       heading: تحرير التنقيح

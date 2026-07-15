@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class ReportDiaryEntryTest < ApplicationSystemTestCase
   def setup
-    create(:language, :code => "en")
     @diary_entry = create(:diary_entry)
   end
 
   def test_no_link_when_not_logged_in
-    visit diary_entry_path(@diary_entry.user.display_name, @diary_entry)
+    visit diary_entry_path(@diary_entry.user, @diary_entry)
     assert_content @diary_entry.title
 
     assert_no_content I18n.t("diary_entries.diary_entry.report")
@@ -15,7 +16,7 @@ class ReportDiaryEntryTest < ApplicationSystemTestCase
 
   def test_it_works
     sign_in_as(create(:user))
-    visit diary_entry_path(@diary_entry.user.display_name, @diary_entry)
+    visit diary_entry_path(@diary_entry.user, @diary_entry)
     assert_content @diary_entry.title
 
     click_on I18n.t("diary_entries.diary_entry.report")
@@ -39,7 +40,7 @@ class ReportDiaryEntryTest < ApplicationSystemTestCase
     issue.resolve!
 
     sign_in_as(create(:user))
-    visit diary_entry_path(@diary_entry.user.display_name, @diary_entry)
+    visit diary_entry_path(@diary_entry.user, @diary_entry)
     assert_content @diary_entry.title
 
     click_on I18n.t("diary_entries.diary_entry.report")
@@ -55,11 +56,5 @@ class ReportDiaryEntryTest < ApplicationSystemTestCase
     issue.reload
     assert_not_predicate issue, :resolved?
     assert_predicate issue, :open?
-  end
-
-  def test_missing_report_params
-    sign_in_as(create(:user))
-    visit new_report_path
-    assert_content I18n.t("reports.new.missing_params")
   end
 end

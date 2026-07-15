@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
@@ -9,11 +11,11 @@ class ApplicationHelperTest < ActionView::TestCase
 
       html = linkify(text)
       assert_predicate html, :html_safe?
-      assert_dom_equal "Test <a href=\"#{link}\" rel=\"nofollow\">#{link}</a> is &lt;b&gt;made&lt;/b&gt; into a link", html
+      assert_dom_equal "Test <a href=\"#{link}\" rel=\"nofollow\" dir=\"auto\">#{link}</a> is &lt;b&gt;made&lt;/b&gt; into a link", html
 
       html = linkify(text.html_safe)
       assert_predicate html, :html_safe?
-      assert_dom_equal "Test <a href=\"#{link}\" rel=\"nofollow\">#{link}</a> is <b>made</b> into a link", html
+      assert_dom_equal "Test <a href=\"#{link}\" rel=\"nofollow\" dir=\"auto\">#{link}</a> is <b>made</b> into a link", html
     end
 
     %w[test@example.com mailto:test@example.com].each do |link|
@@ -31,12 +33,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   def test_rss_link_to
     link = rss_link_to(:controller => :diary_entries, :action => :rss)
-    assert_dom_equal "<a href=\"/diary/rss\"><img height=\"16\" src=\"/images/RSS.png\" width=\"16\" class=\"align-text-bottom\" /></a>", link
-  end
-
-  def test_atom_link_to
-    link = atom_link_to(:controller => :changesets, :action => :feed)
-    assert_dom_equal "<a href=\"/history/feed\"><img height=\"16\" src=\"/images/RSS.png\" width=\"16\" class=\"align-text-bottom\" /></a>", link
+    assert_dom_equal "<a href=\"/diary/rss\"><i class=\"bi bi-rss-fill fs-6\" aria-hidden=\"true\"></i></a>", link
   end
 
   def test_dir

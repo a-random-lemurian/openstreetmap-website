@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module Api
   class TracesController < ApiController
     before_action :check_api_writable, :only => [:create, :update, :destroy]
+    before_action :set_request_formats, :only => [:show]
     before_action :set_locale
     before_action :authorize
 
@@ -10,9 +13,14 @@ module Api
     skip_around_action :api_call_timeout, :only => :create
 
     def show
-      @trace = Trace.visible.find(params[:id])
+      @trace = Trace.visible.find(params.expect(:id))
 
-      head :forbidden unless @trace.public? || @trace.user == current_user
+      return head :forbidden unless @trace.public? || @trace.user == current_user
+
+      respond_to do |format|
+        format.xml
+        format.json
+      end
     end
 
     def create
@@ -21,14 +29,14 @@ module Api
       visibility = params[:visibility]
 
       if visibility.nil?
-        visibility = if params[:public]&.to_i&.nonzero?
+        visibility = if params.fetch(:public, "0").to_i.nonzero?
                        "public"
                      else
                        "private"
                      end
       end
 
-      if params[:file].respond_to?(:read)
+      if params.expect(:file).respond_to?(:read)
         trace = do_create(params[:file], tags, description, visibility)
 
         if trace.id
@@ -45,7 +53,7 @@ module Api
     end
 
     def update
-      trace = Trace.visible.find(params[:id])
+      trace = Trace.visible.find(params.expect(:id))
 
       if trace.user == current_user
         trace.update_from_xml(request.raw_post)
@@ -58,7 +66,7 @@ module Api
     end
 
     def destroy
-      trace = Trace.visible.find(params[:id])
+      trace = Trace.visible.find(params.expect(:id))
 
       if trace.user == current_user
         trace.visible = false

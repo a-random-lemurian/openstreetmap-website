@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Traces
   class FeedsController < ApplicationController
     before_action :authorize_web
@@ -12,7 +14,7 @@ module Traces
       @traces = @traces.joins(:user).where(:users => { :display_name => params[:display_name] }) if params[:display_name]
 
       @traces = @traces.tagged(params[:tag]) if params[:tag]
-      @traces = @traces.order("timestamp DESC")
+      @traces = @traces.order(:timestamp => :desc)
       @traces = @traces.limit(20)
       @traces = @traces.includes(:user)
     end

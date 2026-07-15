@@ -73,9 +73,6 @@ dsb:
       way_node: Puśowy suk
       way_tag: Puśowy atribut
     attributes:
-      client_application:
-        callback_url: URL slědkwołanja
-        support_url: URL pódpěry
       diary_comment:
         body: Tekst
       diary_entry:
@@ -159,16 +156,10 @@ dsb:
     show:
       title: Konto wobźěłaś
       current email address: 'Aktualna e-mailowa adresa:'
-      openid:
-        link text: Co to jo?
-      contributor terms:
+      contributor_terms:
         heading: 'Wuměnjenja za sobustatkujucych:'
         agreed: Sy nowe wuměnjenja za sobuskutkujucych akceptěrował.
-        not yet agreed: Hyšći njejsy nowe wuměnjenja za sobuskutkujucych akceptěrował.
-        review link text: Pšosym slěduj toś tomu wótkazoju, aby pśeglědał a akceptěrował
-          nowe wuměnjenja za sobuskutkajucych.
         agreed_with_pd: Sy teke deklarěrował, až twóje změny su zjawne.
-        link text: Co to jo?
       save changes button: Změny składowaś
     go_public:
       heading: 'Zjawne wobźěłowanje:'
@@ -200,8 +191,6 @@ dsb:
     no_comment: (žeden komentar)
     part_of: Źěl wót
     download_xml: XML ześěgnuś
-    view_history: Historiju pokazaś
-    view_details: Drobnostki pokazaś
     location: 'Městno:'
     node:
       title_html: 'Suk: %{name}'
@@ -316,8 +305,6 @@ dsb:
       title_nearby: Dnjowniki wužywarjow w bliskosći
       user_title: dnjownik wužywarja %{user}
       in_language_title: Zapiski dnjownika w %{language}
-      new: Nowy zapisk dnjownika
-      new_title: Nowy zapisk w twójom dnjowniku spisaś
       no_entries: Žedne zapiski dnjownika
     page:
       recent_entries: Nejnowše zapiski dnjownika
@@ -364,6 +351,9 @@ dsb:
       all:
         title: Zapiski dnjownika OpenStreetMap
         description: Nejnowše zapiski dnjownika wót wužywarjow OpenStreetMap
+    navigation:
+      new: Nowy zapisk dnjownika
+      new_title: Nowy zapisk w twójom dnjowniku spisaś
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -817,33 +807,36 @@ dsb:
         level8: Měsćańska granica
         level9: Granica měsćańskego źěla
         level10: Pśedměsćańska granica
-    results:
-      no_results: Žedne wuslědki namakane
-      more_results: Dalšne wuslědki
+  searches:
+    queries:
+      create:
+        no_results: Žedne wuslědki namakane
+        more_results: Dalšne wuslědki
   layouts:
     logo:
       alt_text: Logo OpenStreetMap
-    home: K domacnemu městnoju
-    logout: Wótzjawiś
-    log_in: Pśizjawiś
-    sign_up: Registrěrowaś
     start_mapping: Kartěrowanje zachopiś
-    edit: Wobźěłaś
-    history: Historija
-    export: Eksport
-    gps_traces: GPS-slědy
-    user_diaries: Dnjowniki
-    edit_with: Z %{editor} wobźěłaś
     intro_header: Witaj k OpenStreetMap!
     intro_text: OpenStreetMap jó kórta swěta, napórana wót luźi ako ty a dajo se licho
       pód wótwórjoneju licencu wužywaś.
     partners_partners: partnerow
-    help: Pomoc
-    about: Wó
-    copyright: Awtorske pšawo
-    communities: Zgromadnosći
     learn_more: Dalšne informacije
-    more: Wěcej
+    header:
+      about: Wó
+      communities: Zgromadnosći
+      copyright: Awtorske pšawo
+      edit: Wobźěłaś
+      edit_with: Z %{editor} wobźěłaś
+      export: Eksport
+      gps_traces: GPS-slědy
+      help: Pomoc
+      history: Historija
+      home: K domacnemu městnoju
+      log_out: Wótzjawiś
+      log_in: Pśizjawiś
+      more: Wěcej
+      sign_up: Registrěrowaś
+      user_diaries: Dnjowniki
   user_mailer:
     diary_comment_notification:
       subject: '[OpenStreetMap] %{user} jo twój zapisk dnjownika komentěrował.'
@@ -1027,27 +1020,36 @@ dsb:
     update:
       flash changed: Twójo gronidło jo se změniło.
   preferences:
-    show:
-      title: Móje preference
-      save: Preference aktualizěrowaś
-    update:
-      failure: Preference njedaju se aktualizěrowaś.
-    update_success_flash:
-      message: Preference su se zaktualizěrowali.
+    preferences:
+      update:
+        failure: Preference njedaju se aktualizěrowaś.
+      update_success_flash:
+        message: Preference su se zaktualizěrowali.
+    basic_preferences:
+      show:
+        title: Móje preference
+        save: Preference aktualizěrowaś
   profiles:
-    edit:
-      cancel: Pśetergnuś
-      image: 'Wobraz:'
-      gravatar:
-        gravatar: Gravatar wužywaś
-      new image: Wobraz pśidaś
-      keep image: Aktualny wobraz wobchowaś
-      delete image: Aktualny wobraz wótpóraś
-      replace image: Aktualny wobraz wuměniś
-      image size hint: (kwadratiske wobraze z nanejmjenjej 100x100 funkcioněruju nejlěpjej)
-      home location: 'Bydlišćo:'
-      no home location: Njejsy swóje bydlišćo zapódał.
-      update home location on click: Bydlišćo pśi kliknjenju na kórtu aktualizěrowaś?
+    profile_sections:
+      navigation:
+        image: 'Wobraz:'
+    descriptions:
+      show:
+        cancel: Pśetergnuś
+    images:
+      show:
+        gravatar:
+          gravatar: Gravatar wužywaś
+        new image: Wobraz pśidaś
+        keep image: Aktualny wobraz wobchowaś
+        delete image: Aktualny wobraz wótpóraś
+        replace image: Aktualny wobraz wuměniś
+        image size hint: (kwadratiske wobraze z nanejmjenjej 100x100 funkcioněruju
+          nejlěpjej)
+    locations:
+      show:
+        no home location: Njejsy swóje bydlišćo zapódał.
+        update home location on click: Bydlišćo pśi kliknjenju na kórtu aktualizěrowaś?
   sessions:
     new:
       tab_title: Pśizjawjenje
@@ -1079,6 +1081,7 @@ dsb:
       lede_text: OpenStreetMap twóri se wót zgromaźeństwa kartěrowarjow, kótarež pśinosuju
         a woplěwaju daty wó drogach, puśach, kafejownjach, dwórnišćach a wjele wěcej
         na cełem swěśe.
+    about_section:
       local_knowledge_title: Lokalna wěda
       local_knowledge_html: Za OpenStreetMap jo wažna lokalna wěda. Sobustatkujuce
         wužywaju wobraze z powětša, GPS-graty a pólne kórty, aby pśeglědali, aby OSM
@@ -1105,7 +1108,10 @@ dsb:
         attribution_example:
           alt: Pśikład, kak pokazujo se na webboku na OpenStreetMap
           title: Pśipokazański pśikład
-        more_title_html: Dalšne informacije
+        infringement_title_html: Pśejźenje stwóriśelskego pšawa
+        infringement_1_html: Sobustatkujucych OSM napominamy, až njedodawaju nigda
+          daty ze žrědłow, kótarež su pśez awtorske pšawo šćitane (na pś. z Google
+          Maps abo z wuśišćanych kórtow) bźez wurazneje dowólnosći awtorow.
         contributors_title_html: Naše sobustatkujuce
         contributors_intro_html: 'Naše sobustatkujuce su towzynty wósobow. Zapśimujomy
           teke daty wótwórjoneje licence z narodnych kartěrowańskich pśedewześow a
@@ -1113,26 +1119,18 @@ dsb:
         contributors_footer_2_html: Zapśimowanje datow do OpenStreetMap njegroni,
           až póbitowaŕ originalnych datow pśipóznawa OpenStreetMap, dawa někaku garantiju
           abo pśewzejo rukowanje.
-        infringement_title_html: Pśejźenje stwóriśelskego pšawa
-        infringement_1_html: Sobustatkujucych OSM napominamy, až njedodawaju nigda
-          daty ze žrědłow, kótarež su pśez awtorske pšawo šćitane (na pś. z Google
-          Maps abo z wuśišćanych kórtow) bźez wurazneje dowólnosći awtorow.
     index:
       js_1: Pak wužywaš wobglědowak, kótaryž njepódpěra JavaScript, pak sy znjemóžnił
         JavaScript.
       js_2: OpenStreetMap wužywa JavaScript za suwatu kórtu.
       license:
         copyright: Copyright OpenStreetMap a sobustatkujuce, pód wótewrjoneju licencu
-      remote_failed: Wobźěłowanje njejo se raźiło - pśeznań se, lěc JOSM jo zacytany
-        a opcija zdalokawóźenje jo zmóžnjona
     not_public_flash:
       not_public: Njejsy swóje změny ako zjawne markěrował.
       not_public_description_html: Njamóžoš wěcej kórtu wobzěłaś, snaźkuli cyniś to
         rowno. Móžoš swóje změny na swójom %{user_page} ako zjawne markěrowaś.
       user_page_link: wužywarskem boku
       anon_edits_link_text: Wuslěź, cogodla tomu tak jo.
-    edit:
-      id_not_configured: iD njejo se konfigurěrował
     export:
       title: Eksportěrowaś
       manually_select: Drugi wurězk manuelnje wubraś
@@ -1214,10 +1212,10 @@ dsb:
         paragraph_1: OpenStreetMap wužywa někotare wósebne zapśimjeśa. How su někotare
           z nich, kótarež by mógli śi wužytne byś.
       start_mapping: Kartěrowanje zachopiś
-      add_a_note:
-        title: Njamaš chyle za wobźěłowanje? Pśidaj pokazku!
-        para_1: Jolic coš jano drobnosć korigěrowaś a njamaš chyle, aby se zregistrěrował
-          a wuknuł, kak se wobźěłujo, móžoš jadnorje pokazku pśidaś.
+    add_a_note:
+      title: Njamaš chyle za wobźěłowanje? Pśidaj pokazku!
+      para_1: Jolic coš jano drobnosć korigěrowaś a njamaš chyle, aby se zregistrěrował
+        a wuknuł, kak se wobźěłujo, móžoš jadnorje pokazku pśidaś.
     communities:
       title: Zgromadnosći
       local_chapters:
@@ -1225,7 +1223,11 @@ dsb:
         list_text: 'Slědujuce zgromadnosći su oficielnje ako lokalne zwězki zregistrěrowane:'
       other_groups:
         title: Druge kupki
-  map_keys:
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: Powětš kórtu,  aby pokazki wiźeł
+      map_data_zoom_in_tooltip: Powětš kórtu, aby daty wiźeł
+  legend_panes:
     show:
       entries:
         motorway: Awtodroga
@@ -1277,6 +1279,19 @@ dsb:
         destination: Jano za pśigranicujucych
         construction: Drogi w twari
         bicycle_shop: Kólasaŕnja
+  share_panes:
+    show:
+      link: Wótkaz abo HTML
+      include_marker: Kórtowu marku stajiś
+      long_link: Wótkaz
+      short_link: Krotki wótkaz
+      embed: HTML
+      paste_html: HTML-kod kopěrowaś, aby se do websedła zasajźił
+      image: Wobraz
+      format: 'Format:'
+      scale: 'Měritko:'
+      custom_dimensions: Swójske pśiměrjenja stajiś
+      download: Ześěgnuś
   traces:
     visibility:
       private: Priwatny (jano źělony ako anonymne, njezrědowane dypki)
@@ -1405,25 +1420,24 @@ dsb:
       created from: 'Napórany z:'
       status: 'Status:'
       spam score: 'Spamowe gódnośenje:'
-      role:
-        administrator: Toś ten wužywaŕ jo administrator
-        moderator: Toś ten wužywaŕ jo moderator
-        grant:
-          administrator: Pšawo administratora rozdaś
-          moderator: Pšawo moderatora rozdaś
-        revoke:
-          administrator: Pšawo administratora zajmjeś
-          moderator: Pšawo moderatora zajmjeś
       block_history: dostane blokěrowanja
       moderator_history: Rozdane blokěrowanja
       comments: Komentary
       create_block: toś togo wužywarja blokěrowaś
       activate_user: toś togo wužywarja aktiwěrowaś
       confirm_user: toś togo wužywarja wobkšuśiś
-      hide_user: toś togo wužywarja schowaś
-      unhide_user: toś togo wužiwarja pokazaś
-      delete_user: toś togo wužywarja lašowaś
       confirm: Wobkšuśiś
+      title:
+        administrator: Toś ten wužywaŕ jo administrator
+        moderator: Toś ten wužywaŕ jo moderator
+      grant:
+        administrator: Pšawo administratora rozdaś
+        moderator: Pšawo moderatora rozdaś
+        are_you_sure: Coš napšawdu wužywarjeju "%{name}" rolu "%{role}" daś?
+      revoke:
+        administrator: Pšawo administratora zajmjeś
+        moderator: Pšawo moderatora zajmjeś
+        are_you_sure: Coš napšawdu wužywarjeju "%{name}" rolu "%{role}" zajmjeś?
     go_public:
       flash success: Wše twóje změny su něnto zjawne, a ty móžoš je něnto wobźěłaś.
     issued_blocks:
@@ -1442,7 +1456,6 @@ dsb:
         heading: Wužywarje
       page:
         confirm: Wubranych wužywarjow wobkšuśiś
-        hide: Wubranych wužywarjow schowaś
         empty: Žedne wótpowědujuce wužywarje namakane
       user:
         summary_html: '%{name} wót %{ip_address} dnja %{date} napórany'
@@ -1462,10 +1475,6 @@ dsb:
       not_a_role: Znamuškowy rjeśazk "%{role}" njejo płaśiwa rola.
       already_has_role: Wužywaŕ ma južo rolu %{role}.
       doesnt_have_role: Wužywaŕ njama rolu %{role}.
-    grant:
-      are_you_sure: Coš napšawdu wužywarjeju "%{name}" rolu "%{role}" daś?
-    revoke:
-      are_you_sure: Coš napšawdu wužywarjeju "%{name}" rolu "%{role}" zajmjeś?
   user_blocks:
     model:
       non_moderator_update: Musy moderator byś, aby blokěrowanje wuźělił abo aktualizěrował.
@@ -1555,31 +1564,17 @@ dsb:
     close: Zacyniś
     share:
       title: Źěliś
-      cancel: Pśetergnuś
-      image: Wobraz
-      link: Wótkaz abo HTML
-      long_link: Wótkaz
-      short_link: Krotki wótkaz
-      embed: HTML
-      custom_dimensions: Swójske pśiměrjenja stajiś
-      format: 'Format:'
-      scale: 'Měritko:'
-      download: Ześěgnuś
-      short_url: Krotki URL
-      include_marker: Kórtowu marku stajiś
-      center_marker: Kórtu pó marce centrěrowaś
-      paste_html: HTML-kod kopěrowaś, aby se do websedła zasajźił
       view_larger_map: Wětšu kórtu pokazaś
-    key:
+    legend:
       title: Legenda
       tooltip: Legenda
       tooltip_disabled: Legenda stoj jano za standardnu rowninu k dispoziciji
     map:
-      zoom:
-        in: Pówětšyś
-        out: Pómjeńšyś
-      locate:
-        title: Aktualne městno pokazaś
+      navigation_control:
+        zoom_in: Pówětšyś
+        zoom_out: Pómjeńšyś
+      geolocate_control:
+        find_my_location: Aktualne městno pokazaś
       base:
         standard: Standard
         cycle_map: Kórta za kolesowarjow
@@ -1596,10 +1591,11 @@ dsb:
       edit_disabled_tooltip: Za wobźěłowanje kórty  powětšyś
       createnote_tooltip: Kórśe pokazku pśidaś
       createnote_disabled_tooltip: Powětšyś, aby kórśe pokazku pśidało
-      map_notes_zoom_in_tooltip: Powětš kórtu,  aby pokazki wiźeł
-      map_data_zoom_in_tooltip: Powětš kórtu, aby daty wiźeł
     edit_help: Pśesuń kórtu do městna, kótarež coš wobźěłaś, powětš tam a klikni pótom
       how.
+    edit:
+      id_not_configured:
+        title: iD njejo se konfigurěrował
   redactions:
     edit:
       heading: Redakciju wobźěłaś

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: oauth_applications
@@ -26,6 +28,8 @@
 class Oauth2Application < Doorkeeper::Application
   belongs_to :owner, :polymorphic => true
 
+  validates :redirect_uri, :presence => true
+
   validate :allowed_scopes
 
   def authorized_scopes_for(user)
@@ -37,6 +41,6 @@ class Oauth2Application < Doorkeeper::Application
   def allowed_scopes
     return if owner.administrator?
 
-    errors.add(:scopes) if scopes.any? { |scope| Oauth::PRIVILEGED_SCOPES.include?(scope) }
+    errors.add(:scopes) if scopes.any? { |scope| Oauth::PRIVILEGED_SCOPES.include?(scope) } # rubocop:disable Style/ArrayIntersect
   end
 end

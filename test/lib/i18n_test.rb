@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class I18nTest < ActiveSupport::TestCase
@@ -56,12 +58,35 @@ class I18nTest < ActiveSupport::TestCase
   end
 
   Rails.root.glob("config/locales/*.yml").each do |filename|
-    lang = File.basename(filename, ".yml")
-    test "#{lang} for raw html" do
-      yml = YAML.load_file(filename)
+    code = File.basename(filename, ".yml")
+    yml = YAML.load_file(filename)
+
+    test "#{code} for raw html" do
       assert_nothing_raised do
         check_values_for_raw_html(yml)
       end
+    end
+
+    test "#{code} for mediawiki magic" do
+      assert_nothing_raised do
+        check_values_for_mediawiki_magic(yml)
+      end
+    end
+
+    test "#{code} present once in ui_languages.yml" do
+      assert_equal(1, AVAILABLE_LANGUAGES.count { |language| language[:code] == code })
+    end
+  end
+
+  def test_ui_languages_have_yml_files
+    AVAILABLE_LANGUAGES.each do |language|
+      assert_path_exists Rails.root.join("config/locales/#{language[:code]}.yml")
+    end
+  end
+
+  def test_ui_languages_have_required_fields
+    AVAILABLE_LANGUAGES.each do |language|
+      assert_pattern { language => { code: String, native_name: String } }
     end
   end
 
@@ -115,6 +140,16 @@ class I18nTest < ActiveSupport::TestCase
       else
         next unless k.to_s.end_with?("_html")
         raise "Avoid using raw html in '#{k}: #{v}'" if v.include? "<"
+      end
+    end
+  end
+
+  def check_values_for_mediawiki_magic(hash)
+    hash.each_pair do |k, v|
+      if v.is_a? Hash
+        check_values_for_mediawiki_magic(v)
+      else
+        raise "Avoid using mediawiki magic in '#{k}: #{v}'" if v.match?(/\{\{(PLURAL|GENDER|GRAMMAR)[|:]/)
       end
     end
   end

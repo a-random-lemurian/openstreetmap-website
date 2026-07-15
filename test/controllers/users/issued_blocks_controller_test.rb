@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 require_relative "../user_blocks/table_test_helper"
 
@@ -83,7 +85,7 @@ module Users
     def test_show_invalid_paged
       user = create(:moderator_user)
 
-      %w[-1 0 fred].each do |id|
+      %w[-1 fred].each do |id|
         get user_issued_blocks_path(user, :before => id)
         assert_redirected_to :controller => "/errors", :action => :bad_request
 

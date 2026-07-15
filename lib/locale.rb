@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Locale < I18n::Locale::Tag::Rfc4646
   class List < Array
     attr_reader :locales
@@ -15,11 +17,11 @@ class Locale < I18n::Locale::Tag::Rfc4646
     end
 
     def expand
-      List.new(reverse.each_with_object([]) do |locale, expanded|
-                 locale.candidates.uniq.reverse_each do |candidate|
-                   expanded << candidate if candidate == locale || expanded.exclude?(candidate)
-                 end
-               end.reverse.uniq)
+      @expand ||= List.new(reverse.each_with_object([]) do |locale, expanded|
+        locale.candidates.uniq.reverse_each do |candidate|
+          expanded << candidate if candidate == locale || expanded.exclude?(candidate)
+        end
+      end.reverse.uniq)
     end
   end
 
@@ -36,9 +38,7 @@ class Locale < I18n::Locale::Tag::Rfc4646
   end
 
   def invalid?
-    I18n.t("activerecord.models.acl", :locale => self, :fallback => false, :raise => true).nil?
-  rescue I18n::MissingTranslationData
-    true
+    !I18n.exists? "activerecord.models.acl", :locale => self, :fallback => false
   end
 
   def candidates

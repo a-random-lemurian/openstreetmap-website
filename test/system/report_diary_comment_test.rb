@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class ReportDiaryCommentTest < ApplicationSystemTestCase
   def setup
-    create(:language, :code => "en")
     @diary_entry = create(:diary_entry)
     @comment = create(:diary_comment, :diary_entry => @diary_entry)
   end
 
   def test_no_link_when_not_logged_in
-    visit diary_entry_path(@diary_entry.user.display_name, @diary_entry)
+    visit diary_entry_path(@diary_entry.user, @diary_entry)
     assert_content @comment.body
 
     assert_no_content I18n.t("diary_entries.diary_comment.report")
@@ -16,7 +17,7 @@ class ReportDiaryCommentTest < ApplicationSystemTestCase
 
   def test_it_works
     sign_in_as(create(:user))
-    visit diary_entry_path(@diary_entry.user.display_name, @diary_entry)
+    visit diary_entry_path(@diary_entry.user, @diary_entry)
     assert_content @diary_entry.title
 
     click_on I18n.t("diary_entries.diary_comment.report")

@@ -2,6 +2,7 @@
 # Exported from translatewiki.net
 # Export driver: phpyaml
 # Author: )8
+# Author: 0x48fe75df30
 # Author: 500000000006城
 # Author: A Chinese Wikipedian
 # Author: A Retired User
@@ -9,14 +10,18 @@
 # Author: Angrydog001
 # Author: Anterdc99
 # Author: Assoc
+# Author: Avehah
 # Author: Boyuan Yang
+# Author: By H
 # Author: C933103
 # Author: Chimes
+# Author: Clover Yan
 # Author: David S. Hwang
 # Author: Deathkon
 # Author: Dimension
 # Author: Dream Star.cn
 # Author: Duolaimi
+# Author: ExoHyper2026
 # Author: FakeGreenHand
 # Author: Fanjiayi
 # Author: Gerongfenh
@@ -26,6 +31,7 @@
 # Author: GuoPC
 # Author: Hehua
 # Author: Hmgrmb
+# Author: HoweyYuan
 # Author: Huajing
 # Author: Hudafu
 # Author: Hydra
@@ -37,6 +43,7 @@
 # Author: Jiwei
 # Author: John Smith Ri
 # Author: Josephine W.
+# Author: Kcx36
 # Author: Ken418
 # Author: Koalberry
 # Author: Lakejason0
@@ -45,15 +52,21 @@
 # Author: LaoShuBaby
 # Author: Lepus
 # Author: Liangent
+# Author: Lily9814
 # Author: LittlePaw365
 # Author: Liuxinyu970226
+# Author: Lpf452
 # Author: Marwin H.H.
+# Author: McDutchie
 # Author: Mmyangfl
 # Author: Mywood
 # Author: Nemo bis
 # Author: NigelSoft
+# Author: Peterxy
+# Author: Peterxy12
 # Author: PhiLiP
 # Author: Qiyue2001
+# Author: Ral-hole
 # Author: RyRubyy
 # Author: RyanCray88
 # Author: Shizhao
@@ -94,9 +107,12 @@
 # Author: 아라
 ---
 zh-CN:
+  date:
+    formats:
+      contribution_calendar: '%-m月%-d日'
   time:
     formats:
-      friendly: '%Y年%B%e日 %H:%M'
+      friendly: '%Y年%m月%e日 %H:%M'
       blog: '%Y年%B%e日'
   helpers:
     file:
@@ -130,6 +146,10 @@ zh-CN:
       models:
         user_mute:
           is_already_muted: 已忽视
+        social_link:
+          attributes:
+            url:
+              http_parse_error: URL应以http://或https://开头
     models:
       acl: 访问控制列表
       changeset: 变更集
@@ -137,7 +157,7 @@ zh-CN:
       country: 国家
       diary_comment: 日记评论
       diary_entry: 日记文章
-      friend: 朋友
+      friend: 好友
       issue: 问题
       language: 语言
       message: 消息
@@ -167,19 +187,6 @@ zh-CN:
       way_node: 路径节点
       way_tag: 路径标签
     attributes:
-      client_application:
-        name: 名称（必填）
-        url: 主程序URL（必填）
-        callback_url: 回调 URL
-        support_url: 支持 URL
-        allow_read_prefs: 读取其用户设置
-        allow_write_prefs: 修改其用户偏好
-        allow_write_diary: 创建日记和评论
-        allow_write_api: 修改地图
-        allow_write_changeset_comments: 评论变更集
-        allow_read_gpx: 读取他们的私人GPS轨迹
-        allow_write_gpx: 上传GPS轨迹
-        allow_write_notes: 修改注记
       diary_comment:
         body: 正文
       diary_entry:
@@ -196,7 +203,7 @@ zh-CN:
         scopes: 权限
       friend:
         user: 用户
-        friend: 朋友
+        friend: 好友
       trace:
         user: 用户
         visible: 可见
@@ -228,8 +235,10 @@ zh-CN:
         active: 激活
         display_name: 显示名称
         description: 个人资料描述
+        company: 公司
         home_lat: 纬度
         home_lon: 经度
+        home_location_name: 家庭地址名称
         languages: 首选语言
         preferred_editor: 首选编辑器
         pass_crypt: 密码
@@ -297,6 +306,7 @@ zh-CN:
       none: 无
       openid: 开放式身份验证(OpenID)
       google: 谷歌
+      apple: Apple
       facebook: 脸书
       microsoft: 微软
       github: GitHub
@@ -331,15 +341,21 @@ zh-CN:
       my_account: 我的账户
       current email address: 当前电子邮件地址
       external auth: 外部身份验证
-      openid:
-        link text: 这是什么？
-      contributor terms:
+      contributor_terms:
         heading: 贡献者条款
-        agreed: 您已同意新的贡献者条款。
-        not yet agreed: 您还没有同意新的贡献者条款。
-        review link text: 请跟随此链接，方便您查看并接受新的贡献者条款。
-        agreed_with_pd: 您也将您的编辑释于公有领域。
-        link text: 这是什么？
+        agreed: 您已于%{date}同意贡献者条款。
+        not_agreed: 您尚未同意贡献者条款。
+        agreed_with_pd: 您也已声明将您的编辑释于公有领域。
+        not_agreed_with_pd: 你尚未声明您的编辑将在公有领域发布。
+        review: 检阅条款
+        review_and_accept: 检阅并同意条款
+        consider_pd: 考虑公有领域
+      terms_of_use:
+        heading: 使用条款
+        agreed: 您已于%{date}同意使用条款。
+        not_agreed: 您尚未同意使用条款。
+        review: 检阅条款
+        review_and_accept: 检阅并同意条款
       save changes button: 保存更改
       delete_account: 删除账户
     go_public:
@@ -361,7 +377,7 @@ zh-CN:
         warning: 警告！这是账户删除流程的最后一步，并且不可被恢复。
         delete_account: 删除账户
         delete_introduction: 您可以通过下方的按钮删除您的OpenStreetMap账户。请注意如下细节：
-        delete_profile: 您的个人简介，包括您的头像、介绍和家的位置，都将被移除。
+        delete_profile: 您的个人资料信息，包括您的头像、个人介绍和家的位置，都将被移除。
         delete_display_name: 您的用户名将被移除，并且可以被其他账户重复使用。
         retain_caveats: 然而，部分关于您的信息仍将被保留在OpenStreetMap里，即使在您的账户被删除后：
         retain_edits: 您对地图数据库的编辑，如果有，将被保留。
@@ -378,10 +394,12 @@ zh-CN:
         title: 条款
         heading: 条款
         heading_ct: 贡献者条款
-        read and accept with tou: 请阅读贡献者协议和使用条款，勾选下列2个复选框，并点击“确定”按钮。
+        read and accept with tou: 请阅读贡献者条款和使用条款，勾选下面2个复选框，然后点击“继续”。
         contributor_terms_explain: 该协议影响到有关您过去、现在及将来的贡献的条款。
         read_ct: 我已了解并同意贡献者条款
-        tou_explain_html: 这些%{tou_link}适用于网站方面的使用，与其它由OSMF提供的基础内容。请点击链接，阅读并同意该条款。
+        tou_explain:
+          html: 这些%{tou_link}适用于网站方面的使用，与其它由OSMF提供的基础内容。请点击链接，阅读并同意该条款。
+          tou: 使用条款
         read_tou: 我已阅读并同意使用条款
         guidance_info_html: 有助于理解这些术语的信息：一个 %{readable_summary_link} 和一些 %{informal_translations_link}
         readable_summary: 人类可读的摘要
@@ -401,9 +419,14 @@ zh-CN:
         terms_declined_link: 此wiki页面
     pd_declarations:
       show:
+        title: 认定我的贡献属于公共领域
+        consider_pd: 我认定我的贡献属于公共领域
+        consider_pd_why: 为什么我希望我的贡献属于公共领域？
         confirm: 确认
       create:
-        successfully_declared: 您已成功声明您的编辑属于公共领域。
+        successfully_declared: 您已成功声明您的编辑属于公有领域。
+        already_declared: 您已成功声明您的编辑将在公有领域发布。
+        did_not_confirm: 您仍未确认您将在公有领域发布您的编辑。
   browse:
     deleted_ago_by_html: 由 %{user} 删除于 %{time_ago}
     edited_ago_by_html: 由%{user} 编辑于 %{time_ago}
@@ -420,9 +443,7 @@ zh-CN:
       one: '%{count} 条路径'
       other: '%{count} 条路径'
     download_xml: 下载 XML
-    view_history: 查看历史
     view_unredacted_history: 查看未隐删的历史
-    view_details: 查看详情
     location: 位置：
     node:
       title_html: 节点：%{name}
@@ -467,19 +488,28 @@ zh-CN:
         relation: 关系
     start_rjs:
       feature_warning: 正在加载 %{num_features} 个要素，这可能会使您的浏览器变慢或无响应。您确定要显示此数据吗？
+      feature_error: 无法加载功能：%{message}
       load_data: 加载数据
-      loading: 加载中…
+      loading: 加载中……
     tag_details:
       tags: 标签
       wiki_link:
         key: '%{key} 标签的 wiki 说明页面'
         tag: '%{key}=%{value} 标签的 wiki 说明页面'
       wikidata_link: 维基数据上的%{page}项
+      wikidata_preview: 维基数据项目预览
       wikipedia_link: 维基百科上的 %{page} 条目
       wikimedia_commons_link: 在维基共享资源上的%{page}项目
       telephone_link: 请拨打 %{phone_number}
       colour_preview: '%{colour_value}的颜色预览'
       email_link: 电子邮件 %{email}
+    versions_navigation:
+      node: 节点
+      way: 路径
+      relation: 关系
+      history: 历史
+      version: '版本: #%{version}'
+      versions_label: 版本：
   feature_queries:
     show:
       title: 查询要素
@@ -494,6 +524,8 @@ zh-CN:
         title_html: 路径历史：%{name}
       relation:
         title_html: 关系历史：%{name}
+      older_versions: 较旧版本
+      newer_versions: 较新版本
     actions:
       view_redacted_data: 查看已隐删的数据
       view_redaction_message: 查看隐删消息
@@ -522,11 +554,21 @@ zh-CN:
       sorry: '抱歉，未能找到编号为 #%{id} 的关联关系。'
     timeout:
       sorry: 抱歉，检索id为%{id}的关系数据花费时间过长。
+  relation_members:
+    not_found_message:
+      sorry: 抱歉，未能找到编号为#%{id}的关联关系。
+    timeout:
+      sorry: 抱歉，检索id为%{id}的关系数据花费时间过长。
   old_relations:
     not_found_message:
       sorry: '抱歉，无法找到关系 #%{id} 的版本 %{version}。'
     timeout:
       sorry: 抱歉，检索id为%{id}的关系历史花费时间过长。
+  old_relation_members:
+    not_found_message:
+      sorry: 抱歉，无法找到关系#%{id}的版本%{version}。
+    timeout:
+      sorry: 抱歉，与ID%{id}关联的成员数据获取耗时过长。
   changeset_comments:
     feeds:
       comment:
@@ -538,10 +580,21 @@ zh-CN:
       timeout:
         sorry: 抱歉，您请求的变更集评论列表检索时间过长。
   changesets:
+    changeset_line:
+      comments:
+        one: '%{count} 个评论'
+        other: '%{count} 个评论'
+      changes:
+        one: '%{count}个更改'
+        other: '%{count}个更改'
+      n_elements_created: 创建%{count}个元素
+      n_elements_modified: 修改%{count}个元素
+      n_elements_deleted: 删除%{count}个元素
     index:
       title: 变更集
       title_user: '%{user}的变更集'
       title_user_link_html: '%{user_link}的变更集'
+      title_followed: 您关注的用户的变更集
       title_nearby: 附近用户的变更集
       empty: 未找到变更集。
       empty_area: 该区域内没有变更集。
@@ -549,6 +602,8 @@ zh-CN:
       no_more: 未找到更多变更集。
       no_more_area: 该区域内没有更多变更集。
       no_more_user: 该用户无更多变更集。
+      older_changesets: 较旧的变更集
+      newer_changesets: 较新的变更集
       feed:
         title: 变更集 %{id}
         title_comment: 变更集 %{id} - %{comment}
@@ -576,9 +631,13 @@ zh-CN:
       changesetxml: 变更集 XML
       osmchangexml: osmChange XML
     paging_nav:
+      nodes_title: 节点
       nodes_paginated: 节点 (%{x}-%{y}，共 %{count})
+      ways_title: 路径
       ways_paginated: 路径 (%{x}-%{y}，共 %{count})
+      relations_title: 关系
       relations_paginated: 关系 (%{x}-%{y}，共 %{count})
+      range: '%{x}-%{y} 共%{count}'
     not_found_message:
       sorry: '抱歉，未能找到编号为 #%{id} 的更改集。'
     timeout:
@@ -612,7 +671,7 @@ zh-CN:
       title: 我的综合面板
       no_home_location_html: '%{edit_profile_link}并设定你的家庭地址来查看附近的用户。'
       edit_your_profile: 编辑你的档案
-      followings: 关注中的用户
+      followings: 您关注的用户
       no followings: 您还没有关注任何用户。
       nearby users: 其他附近的用户
       no nearby users: 附近没有在进行制图的用户。
@@ -628,13 +687,10 @@ zh-CN:
       use_map_link: 使用地图
     index:
       title: 用户日记
-      title_followed: 关注中的用户的日记
+      title_followed: 关注的用户的日记
       title_nearby: 附近用户的日记
       user_title: '%{user}的日记'
       in_language_title: '%{language}日记文章'
-      new: 新日记文章
-      new_title: 在我的用户日记中撰写新文章
-      my_diary: 我的日记
       no_entries: 无日记文章
     page:
       recent_entries: 最近的日记文章
@@ -657,6 +713,7 @@ zh-CN:
     diary_entry:
       posted_by_html: '%{link_user} 于 %{created} 以 %{language_link} 发布'
       updated_at_html: 最后一次更新于%{updated}。
+      full_entry: 查看完整日记文章
       comment_link: 评论该文章
       reply_link: 向作者发送消息
       comment_count:
@@ -692,13 +749,22 @@ zh-CN:
     unsubscribe:
       heading: 退订以下日记讨论吗？
       button: 退订讨论
+    navigation:
+      in_language: '%{language}日记文章'
+      my_diary: 我的日记
+      new: 新日记文章
+      new_title: 在我的用户日记中撰写新文章
+    profile_diaries:
+      latest_diaries: 最新日记
+      comments: '%{count}条评论'
+      title_label: 日记条目
   diary_comments:
     new:
       heading: 在以下日记条目的讨论中留言吗？
   doorkeeper:
     errors:
       messages:
-        account_selection_required: 授权服务器需要最终用户帐户选择
+        account_selection_required: 授权服务器需要最终用户账户选择
         consent_required: 授权服务器需要最终用户同意
         interaction_required: 授权服务器需要最终用户交互
         login_required: 授权服务器需要最终用户身份验证
@@ -722,7 +788,7 @@ zh-CN:
     scopes:
       address: 查看您的实际地址
       email: 查看您的电子邮件地址
-      openid: 验证您的帐户
+      openid: 验证您的账户
       phone: 查看您的电话号码
       profile: 查看您的个人资料信息
   errors:
@@ -744,6 +810,9 @@ zh-CN:
     not_found:
       title: 文件未找到
       description: 在 OpenStreetMap 服务器上找不到该名称的文件、目录或API 操作（HTTP 404）
+  export:
+    show:
+      title: 嵌入式OpenStreetMap
   follows:
     show:
       follow:
@@ -752,10 +821,15 @@ zh-CN:
       unfollow:
         heading: 您想要取消关注%{user}吗？
         button: 取消关注用户
+    create:
+      success: 您已关注%{name}！
+      failed: 抱歉，您关注%{name}的请求失败。
+      already_followed: 您已关注%{name}。
+      limit_exceeded: 您最近关注了大量用户。请稍候再试关注更多用户。
+    destroy:
+      success: 您已成功取消关注%{name}。
+      not_followed: 您未关注%{name}。
   geocoder:
-    search:
-      title:
-        latlon: 内部
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -896,9 +970,13 @@ zh-CN:
           aboriginal_lands: 原住民土地
           administrative: 行政区边界
           census: 人口普查边界
+          low_emission_zone: 低排放区
           national_park: 国家公园
           political: 选区边界
+          postal_code: 邮政编码
           protected_area: 保护区
+          public_transport: 公共交通区域
+          timezone: 时区
           "yes": 边界
         bridge:
           aqueduct: 沟渠
@@ -1074,6 +1152,7 @@ zh-CN:
           milestone: 历史里程碑
           mine: 矿井
           mine_shaft: 矿井
+          monastery: 历史悠久的修道院
           monument: 纪念碑
           railway: 历史铁路
           roman_road: 罗马道路
@@ -1164,7 +1243,7 @@ zh-CN:
           sports_centre: 体育中心
           stadium: 体育场
           swimming_pool: 游泳池
-          track: 跑道
+          track: 赛道（非赛车运动）
           water_park: 水上公园
           "yes": 闲暇
         lock:
@@ -1200,6 +1279,7 @@ zh-CN:
           mineshaft: 矿井
           monitoring_station: 监测站
           petroleum_well: 石油井
+          planter: 花盆
           pier: 码头
           pipeline: 管道
           pumping_station: 泵站
@@ -1340,6 +1420,7 @@ zh-CN:
           abandoned: 已拆除铁路
           buffer_stop: 止冲器
           construction: 在建铁路
+          crossing: 铁路-小路交叉口
           disused: 废弃铁路
           funicular: 缆索铁路
           halt: 火车停车点
@@ -1540,28 +1621,76 @@ zh-CN:
           weir: 堰
           "yes": 航道
       admin_levels:
-        level2: 国界
-        level3: 大区界
-        level4: 州界/省界
-        level5: 地区界(地级行政区界)
-        level6: 县界
-        level7: 市边界
-        level8: 乡界
-        level9: 村界
-        level10: 村界
-        level11: 邻里界
-    results:
-      no_results: 没有找到结果
-      more_results: 更多结果
+        level2: 国际边界
+        level3: 行政边界（3 级）
+        level4: 行政边界（4 级）
+        level5: 行政边界（5 级）
+        level6: 行政边界（6 级）
+        level7: 行政边界（7 级）
+        level8: 行政边界（8 级）
+        level9: 行政边界（9 级）
+        level10: 行政边界（10 级）
+        level11: 行政边界（11 级）
+      border_types:
+        arrondissement: 区界
+        borough: 行政区界
+        cercle: 环界
+        city: 市界
+        comarca: 县界
+        county: 县界
+        departement: 省界
+        department: 县界
+        district: 区界
+        distrito: 区界
+        freguesia: 堂区界
+        local_authority: 地方政府界
+        municipality: 市镇界
+        municipi: 市镇界
+        município: 市镇界
+        nation: 国际边界
+        national: 国际边界
+        neighbourhood: 邻里界
+        parish: 堂区界
+        province: 省界
+        região: 自治区界
+        region: 大区界
+        state: 州界
+        town: 镇界
+        township: 乡界
+        village: 村界
+  searches:
+    show:
+      title:
+        latlon: 内部
+        nominatim: 提名者
+        nominatim_reverse: 提名者
+    queries:
+      create:
+        no_results: 没有找到结果
+        more_results: 更多结果
   directions:
-    search:
+    show:
       title: 方向
+      distance: 距离
+      time: 时间
+      ascend: 上升
+      descend: 下降
+      kilometers: 公里
+      miles_feet: 英里、英尺
+      miles_yards: 英里、码
+      distance_units_settings: 距离单位设置
+      download: 以GeoJSON格式下载路线
+      filename: 路线
+      directions_courtesy_html: 方向经由%{link}
+      check_demo_html: 更多来自%{link}的详细信息
   issues:
     index:
       title: 问题
       select_status: 选择状态
       select_type: 选择类型
+      select_last_managed_by: 选择上次管理者
       reported_user: 被举报用户
+      not_managed: 未管理
       search: 搜索
       search_guidance: 搜索问题：
       states:
@@ -1575,6 +1704,7 @@ zh-CN:
       status: 状态
       reports: 举报
       last_updated: 最后更新
+      last_managed: 上次管理
       reporting_users: 举报用户
       reports_count:
         one: '%{count}个举报'
@@ -1605,21 +1735,29 @@ zh-CN:
       other_issues_against_this_user: 其他有关此用户的问题
       no_other_issues: 没有其他有关此用户的问题。
       comments_on_this_issue: 评论该问题
+      comment_from_html: '%{user_link}于%{comment_created_at}发表的评论'
+      reassign_to_moderators: 重新指派问题给仲裁员
+      reassign_to_administrators: 重新指派问题给管理员
     resolve:
       resolved: 问题状态已设置为“已解决”
     ignore:
       ignored: 问题状态已设置为“已忽略”
     reopen:
       reopened: 问题状态已设置为“开放”
-    comments:
-      comment_from_html: '%{user_link}于%{comment_created_at}发表的评论'
     reports:
       reported_by_html: 由%{user}在%{updated_at}报告为%{category}
     helper:
       reportable_title:
         diary_comment: '%{entry_title}，评论#%{comment_id}'
         note: 注记#%{note_id}
+      reportable_heading:
+        diary_comment_html: 日记评论 %{title} 创建于 %{datetime_created}，更新于 %{datetime_updated}
+        diary_entry_html: 日记条目 %{title} 创建于 %{datetime_created}，更新于 %{datetime_updated}
+        note_html: '%{title} 创建于 %{datetime_created}，更新于 %{datetime_updated}'
+        user_html: 用户 %{title} 创建于 %{datetime_created}
     reporters:
+      index:
+        title: '第 #%{issue_id} 期记者'
       reporters:
         more_reporters: 以及%{count}个
   issue_comments:
@@ -1629,7 +1767,6 @@ zh-CN:
   reports:
     new:
       title_html: 举报%{link}
-      missing_params: 不能创建新的举报
       disclaimer:
         intro: 在发送您的举报至网站仲裁员前，请确保：
         not_just_mistake: 您确信这个问题不只是失误
@@ -1660,35 +1797,165 @@ zh-CN:
     create:
       successful_report: 您的举报已成功提交
       provide_details: 请提供所需详情
+  languages_panes:
+    select_language_list:
+      search_language: 搜索...
+      languages:
+        af: 南非语
+        gsw: 阿勒曼尼语
+        frp: 阿皮坦语
+        ast: 阿斯图里亚斯语
+        az: 阿塞拜疆语
+        id: 印度尼西亚语
+        ms: 马来语
+        bcl: 中比科尔语
+        bs: 波斯尼亚语
+        br: 布列塔尼语
+        ca: 加泰罗尼亚语
+        cs: 捷克语
+        cy: 威尔士语
+        da: 丹麦语
+        de: 德语
+        dsb: 下索布语
+        et: 爱沙尼亚语
+        en: 英语
+        en-GB: 英语（英国）
+        es: 西班牙语
+        eo: 世界语
+        eu: 巴斯克语
+        fr: 法语
+        fy: 西弗里斯兰语
+        fur: 弗留利语
+        ga: 爱尔兰语
+        gd: 苏格兰盖尔语
+        gl: 加利西亚语
+        aln: 阿尔巴尼亚语盖格方言
+        hsb: 上索布语
+        hr: 克罗地亚语
+        ia: 国际语
+        is: 冰岛语
+        it: 意大利语
+        kw: 康沃尔语
+        gcf: 瓜德罗普克里奥尔语
+        ku-Latn: 库尔德语（拉丁字母）
+        lv: 拉脱维亚语
+        lb: 卢森堡语
+        lkt: 拉科塔语
+        lt: 立陶宛语
+        hu: 匈牙利语
+        fit: 托尔讷河谷芬兰语
+        nl: 荷兰语
+        nb: 书面挪威语
+        nn: 新挪威语
+        oc: 奥克语
+        nds: 低地德语
+        pl: 波兰语
+        pt-PT: 葡萄牙语
+        pt: 葡萄牙语（巴西）
+        ksh: 科隆方言
+        ro: 罗马尼亚语
+        sc: 撒丁语
+        sco: 低地苏格兰语
+        sq: 阿尔巴尼亚语
+        scn: 西西里语
+        sk: 斯洛伐克语
+        sl: 斯洛文尼亚语
+        sr-Latn: 塞尔维亚语（拉丁字母）
+        sh: 塞尔维亚-克罗地亚语（拉丁字母）
+        fi: 芬兰语
+        sv: 瑞典语
+        tl: 他加禄语
+        kab: 卡拜尔语
+        vi: 越南语
+        tr: 土耳其语
+        yo: 约鲁巴语
+        diq: 扎扎其语
+        el: 希腊语
+        ba: 巴什基尔语
+        be: 白俄罗斯语
+        be-Tarask: 白俄罗斯语（传统正写法）
+        bg: 保加利亚语
+        mk: 马其顿语
+        mo: 摩尔多瓦语
+        ce: 车臣语
+        ru: 俄语
+        sr: 塞尔维亚语（西里尔字母）
+        tt: 鞑靼语（西里尔字母）
+        uk: 乌克兰语
+        kk-cyrl: 哈萨克语（西里尔字母）
+        yi: 意第绪语
+        he: 希伯来语
+        ar: 阿拉伯语
+        skr-arab: 色莱基语
+        fa: 波斯语
+        arz: 埃及阿拉伯语
+        pnb: 西旁遮普语
+        ps: 普什图语
+        nqo: 西非书面文字
+        ne: 尼泊尔语
+        mr: 马拉地语
+        hi: 印地语
+        bn: 孟加拉语
+        pa: 旁遮普语
+        gu: 古吉拉特语
+        ta: 泰米尔语
+        te: 泰卢固语
+        kn: 卡纳达语
+        th: 泰语
+        my: 缅甸语
+        shn: 掸语
+        xmf: 明格列尔语
+        ka: 格鲁吉亚语
+        km: 高棉语
+        sat: 桑塔利语
+        zh-CN: 简体中文
+        zh-TW: 繁体中文
+        zh-HK: 中文（香港）
+        ja: 日语
+        ko: 韩语
   layouts:
     logo:
       alt_text: OpenStreetMap 标志
-    home: 返回家位置
-    logout: 退出
-    log_in: 登录
-    sign_up: 注册
+    main_navigation: 主导航
+    layer_info: 图层信息
     start_mapping: 开始绘制地图
-    edit: 编辑
-    history: 历史
-    export: 导出
-    issues: 问题
-    gps_traces: GPS 轨迹
-    user_diaries: 用户日记
-    edit_with: 使用 %{editor} 编辑
     intro_header: 欢迎访问 OpenStreetMap！
     intro_text: OpenStreetMap 是一个世界地图，由像您一样的人们所构筑，可依据开放许可协议自由使用。
     hosting_partners_2024_html: 由%{fastly}、%{corpmembers}，以及其他%{partners}支持托管。
     partners_corpmembers: OSMF 企业会员
     partners_partners: 合作伙伴
+    welcome_tou_notice_html: 通过使用本网站或OpenStreetMap基金会提供的其他基础设施，您同意%{terms_link}。
+    terms_of_use: 使用条款
     tou: 使用条款
     nothing_to_preview: 无可预览内容。
-    help: 帮助
-    about: 关于
-    copyright: 著作权
-    communities: 社区
     learn_more: 了解更多
-    more: 更多
+    header:
+      about: 关于
+      communities: 社区
+      copyright: 著作权
+      donate: 捐赠
+      edit: 编辑
+      edit_with: 使用 %{editor} 编辑
+      export: 导出
+      gps_traces: GPS 轨迹
+      help: 帮助
+      history: 历史
+      home: 前往家庭地址
+      issues: 问题
+      log_out: 退出
+      log_in: 登录
+      more: 更多
+      select_language: 选择语言
+      sign_up: 注册
+      user_diaries: 用户日记
+    meta:
+      openstreetmap_search: OpenStreetMap搜索
+    select_language_button:
+      title: 选择语言
     offline_flash:
+      osm_offline: 由于正在进行基本的数据库维护工作，OpenStreetMap 数据库目前处于脱机状态。
+      osm_read_only: 由于正在进行基本的数据库维护工作，OpenStreetMap 数据库目前处于只读模式。
+      expected_restore_html: 服务预计于%{time}内恢复。
       announcement: 您可以在此阅读公告。
   user_mailer:
     diary_comment_notification:
@@ -1710,8 +1977,12 @@ zh-CN:
       footer_html: 您还可以在%{readurl}阅读这条信息并在%{replyurl}向作者发送信息
     follow_notification:
       hi: 您好，%{to_user}：
+      subject: '[OpenStreetMap] %{user} 关注了您'
+      followed_you: '%{user} 现在正在 OpenStreetMap 上关注您。'
       see_their_profile: 您可以在%{userurl}查看他们的个人资料。
       see_their_profile_html: 您可以在%{userurl}查看他们的个人资料。
+      follow_them: 您也可以通过%{followurl}关注他。
+      follow_them_html: 您也可以通过%{followurl}关注他。
     gpx_details:
       details: 文件详细信息：
       filename: 文件名
@@ -1736,9 +2007,9 @@ zh-CN:
     signup_confirm:
       subject: '[OpenStreetMap] 欢迎加入 OpenStreetMap'
       greeting: 您好！
-      created: 有人(希望是您)刚在%{site_url}创建了一个账户。
-      confirm: 在开始之前，我们需要确认这个请求来自于您。如果确实这样，那么请点击以下链接以确认您的帐户：
-      welcome: 等您确认帐号后，我们将提供一些额外的信息以帮助您开始使用。
+      created: 有人（希望是您）刚在%{site_url}创建了一个账户。
+      confirm: 在开始之前，我们需要确认这个请求来自于您。如果确实这样，那么请点击以下链接以确认您的账户：
+      welcome: 等您确认账户后，我们将提供一些额外的信息以帮助您开始使用。
     email_confirm:
       subject: '[OpenStreetMap] 确认您的电子邮件地址'
       greeting: 您好，
@@ -1747,7 +2018,7 @@ zh-CN:
     lost_password:
       subject: '[OpenStreetMap] 密码重置请求'
       greeting: 您好，
-      hopefully_you: 某人(可能是您)已要求重置该电子邮件地址上的 openstreetmap.org 帐户密码。
+      hopefully_you: 某人（可能是您）已要求重置该电子邮件地址上的openstreetmap.org账户密码。
       click_the_link: 如果这是您，请点击下面的链接重置您的密码。
     note_comment_notification:
       description: 'OpenStreetMap 注记 #%{id}'
@@ -1817,6 +2088,9 @@ zh-CN:
     resend_success_flash:
       confirmation_sent: 我们已经向%{email}发出一条新的确认通知，一旦您确认您的账户，就能开始绘图。
       whitelist: 如果您用于发送确认请求的邮箱具有反垃圾邮件系统，请确保将%{sender}加入白名单，因为我们无法恢复任何确认请求。
+    gravatar:
+      disabled: Gravatar已禁用。
+      enabled: 您的Gravatar显示已启用。
   messages:
     new:
       title: 发消息
@@ -1908,52 +2182,135 @@ zh-CN:
       flash changed: 您的密码已经更改。
       flash token bad: 未找到标记，建议检查 URL?
   preferences:
-    show:
-      title: 我的偏好
-      preferred_site_color_scheme: 首选网站配色方案
-      site_color_schemes:
-        auto: 自动
-        light: 浅色
-        dark: 深色
-      preferred_map_color_scheme: 首选地图配色方案
-      map_color_schemes:
-        auto: 自动
-        light: 浅色
-        dark: 深色
-      save: 更新首选项
-    update:
-      failure: 无法更新首选项。
-    update_success_flash:
-      message: 偏好已更新。
+    preferences:
+      update:
+        failure: 无法更新首选项。
+      update_success_flash:
+        message: 偏好已更新。
+      navigation:
+        preferences: 界面
+        notification_preferences: 通知
+        advanced_preferences: 高级
+    basic_preferences:
+      show:
+        title: 我的偏好
+        preferred_language: 首选语言
+        preferred_site_color_scheme: 首选网站配色方案
+        site_color_schemes:
+          auto: 自动
+          light: 浅色
+          dark: 深色
+        preferred_map_color_scheme: 首选地图配色方案
+        map_color_schemes:
+          auto: 与网站相同
+          light: 浅色
+          dark: 深色
+        preferred_editor_color_scheme: 偏好的编辑器配色
+        editor_color_schemes:
+          auto: 与网站相同
+          light: 浅色
+          dark: 深色
+        save: 更新首选项
+    notification_preferences:
+      show:
+        title: 通知设置
+        changeset_comment: 变更集评论
+        diary_comment: 日记评论
+        direct_message: 私信
+        gpx_import_failure: GPS轨迹导入：失败
+        gpx_import_success: GPX轨迹导入：成功
+        new_follower: 新关注者
+        note_comment: 注释评论
+        save: 更新偏好设置
+        delivery_mechanisms:
+          email: 电子邮件
+    advanced_preferences:
+      show:
+        title: 我的高级偏好设置
+        save: 更新首选项
   profiles:
-    edit:
-      title: 编辑个人资料
-      save: 更新个人资料
-      cancel: 取消
-      image: 图像
-      gravatar:
-        gravatar: 使用 Gravatar
-        what_is_gravatar: 什么是Gravatar？
-        disabled: Gravatar已禁用。
-        enabled: 您的Gravatar显示已启用。
-      new image: 添加图像
-      keep image: 保持当前图像
-      delete image: 删除当前图像
-      replace image: 替换当前图像
-      image size hint: (正方形图像，尺寸至少为100x100)
-      home location: 住所位置
-      no home location: 您还没有输入您的住所位置。
-      update home location on click: 点击地图时更新所在位置？
-      show: 显示
-      delete: 删除
-      undelete: 撤销删除
-    update:
-      success: 个人资料已更新。
-      failure: 无法更新个人资料。
+    profile_sections:
+      navigation:
+        description: 简介
+        links: 链接
+        image: 图像
+        company: 公司
+        location: 位置
+        contribution_calendar: 贡献日历
+    descriptions:
+      show:
+        title: 编辑个人资料
+        save: 更新个人资料
+        cancel: 取消
+      update:
+        success: 个人资料描述已更新。
+        failure: 无法更新个人资料描述。
+    links:
+      show:
+        title: 编辑个人资料
+        save: 更新个人资料
+        cancel: 取消
+        social_links:
+          title: 社交媒体链接
+          remove: 移除
+          add: 添加社交媒体链接
+      update:
+        success: 个人资料链接已更新。
+        failure: 无法更新个人资料链接。
+    images:
+      show:
+        title: 编辑个人资料
+        save: 更新个人资料
+        cancel: 取消
+        gravatar:
+          gravatar: 使用Gravatar
+          link: http://wiki.openstreetmap.org/wiki/Gravatar
+          what_is_gravatar: 什么是Gravatar？
+        new image: 添加图像
+        keep image: 保持当前图像
+        delete image: 删除当前图像
+        replace image: 替换当前图像
+        image size hint: (正方形图像，尺寸至少为100x100)
+      update:
+        success: 个人资料图像已更新。
+        failure: 无法更新个人资料图像。
+    companies:
+      show:
+        title: 编辑个人资料
+        save: 更新个人资料
+        cancel: 取消
+      update:
+        success: 个人资料公司信息已更新。
+        failure: 无法更新个人资料的公司信息。
+    locations:
+      show:
+        title: 编辑个人资料
+        save: 更新个人资料
+        cancel: 取消
+        no home location: 您还没有输入您的家庭地址。
+        update home location on click: 当我点击地图时更新家庭地址？
+        show: 显示
+        delete: 删除
+        undelete: 撤销删除
+      update:
+        success: 个人位置已更新。
+        failure: 无法更新个人位置。
+    heatmaps:
+      show:
+        title: 配置贡献日历
+        show_contribution_calendar_in_public: 在您的个人资料页面上显示贡献日历
+        save: 更新贡献日历配置
+        cancel: 取消
+      update:
+        success: 贡献日历已更新。
+        failure: 无法更新贡献日历。
   sessions:
     new:
       tab_title: 登录
       login_to_authorize_html: 登录 OpenStreetMap 以访问 %{client_app_name}。
+      already_logged_in_html: 您已以 %{user} 身份登录。重新登录将会更改您当前的账户。
+      access_another_page: 您在尝试访问另一个页面时到达此处。如果您想使用当前账户访问该页面，请点击下方按钮：
+      visit_referring_page: 访问引用页面
       email or username: 电子邮件地址或用户名
       password: 密码
       remember: 记住我
@@ -1961,13 +2318,14 @@ zh-CN:
       login_button: 登录
       with external: 或使用第三方服务登录
       or: 或
+      reset_to_login: 抱歉，您的密码已过期。请重置密码以登录。
       auth failure: 对不起，凭这些信息您无法登录。
     destroy:
       title: 退出
       heading: 退出登录OpenStreetMap
       logout_button: 退出
     suspended_flash:
-      suspended: 抱歉，由于异常活动，您的帐户已被暂停使用。
+      suspended: 抱歉，由于异常活动，您的账户已被暂停使用。
       contact_support_html: 如果您想就此讨论，请联系%{support_link}。
       support: 支持
   shared:
@@ -1994,29 +2352,44 @@ zh-CN:
       changeset_comments:
         older: 较旧评论
         newer: 较新评论
+        oldest: 最早评论
+        newest: 最新评论
       diary_comments:
         older: 较旧评论
         newer: 较新评论
+        oldest: 最早评论
+        newest: 最新评论
       diary_entries:
         older: 较早的文章
         newer: 较新的文章
+        oldest: 最早文章
+        newest: 最新文章
       issues:
         older: 旧问题
         newer: 新问题
+        oldest: 最早问题
+        newest: 最新问题
       traces:
         older: 较旧轨迹
         newer: 较新轨迹
+        oldest: 最早轨迹
+        newest: 最新轨迹
       user_blocks:
         older: 旧的封禁
         newer: 新的封禁
+        oldest: 最早封禁
+        newest: 最新封禁
       users:
         older: 老用户
         newer: 新用户
+        oldest: 最早用户
+        newest: 最新用户
   site:
     about:
       heading_html: '%{copyright}OpenStreetMap %{br} 贡献者'
       used_by_html: '%{name} 为数以千计的网站、移动应用以及硬件设备提供地图数据'
       lede_text: OpenStreetMap 是一个由地图制作爱好者组成的社区。这些爱好者提供并维护世界各地关于道路、小道、咖啡馆、铁路车站等各种各样的数据。
+    about_section:
       local_knowledge_title: 本地知识库
       local_knowledge_html: OpenStreetMap 强调使用本地知识。贡献者们使用航空图像、GPS 设备与传统的地区地图来确保 OSM
         的精确性和时效性。
@@ -2038,9 +2411,15 @@ zh-CN:
       legal_1_1_terms_of_use: 使用条款
       legal_1_1_aup: 可接受的使用政策
       legal_1_1_privacy_policy: 隐私政策
-      legal_2_1_html: |-
-        若您有许可证、著作权或其他法律上的问题，请%{contact_the_osmf_link}
-        。
+      legal_1_2_html: 如果您想使用OpenStreetMap地图或数据，请务必注明OpenStreetMap出处——更多信息请参阅%{attribution_guidelines_link}。
+      legal_attribution_guidelines_title: 署名指南
+      legal_attribution_guidelines_url: https://wiki.osmfoundation.org/wiki/Licence/Attribution_Guidelines
+      legal_1_3_html: 具体来说，如果您想直接在书籍、出版物、电影或电视节目中使用OpenStreetMap的屏幕截图，则无需征得许可，因为OpenStreetMap中的数据是开放的，任何人都可以使用。请参阅%{attribution_guidelines_link}，并查看%{attribution_example_film}和%{attribution_example_tv}中的现有示例。
+      legal_attribution_example_film_title: 电影
+      legal_attribution_example_film_url: https://wiki.openstreetmap.org/wiki/Films
+      legal_attribution_example_tv_title: 电视
+      legal_attribution_example_tv_url: https://wiki.openstreetmap.org/wiki/TV_series
+      legal_2_1_html: 如有其他许可、版权或法律相关问题，请%{contact_the_osmf_link}。
       legal_2_1_contact_the_osmf: 联系 OSM 基金会
       legal_2_2_html: OpenStreetMap、放大镜标志和SotM是%{registered_trademarks_link}。
       legal_2_2_registered_trademarks: OSMF 的注册商标
@@ -2049,7 +2428,7 @@ zh-CN:
       title: 著作权与许可
       foreign:
         title: 关于本译文
-        html: 当该翻译页面与%{english_original_link}冲突时，英语页面会被优先采用
+        html: 如有歧义，请以%{english_original_link}为准。
         english_link: 英语原文
       native:
         title: 关于本页面
@@ -2057,38 +2436,65 @@ zh-CN:
         native_link: 简体中文版本
         mapping_link: 开始绘制地图
       legal_babble:
-        introduction_1_html: |-
-          OpenStreetMap%{registered_trademark_link} 是%{open_data}，由 %{osm_foundation_link} (OSMF) 在
-          %{odc_odbl_link} (ODbL) 下获得许可。
-        introduction_1_open_data: 开放数据
-        introduction_1_odc_odbl: 开放数据共享开放数据库许可协议
-        introduction_1_osm_foundation: OpenStreetMap 基金会
-        introduction_2_html: 只要你表明来源为OpenStreetMap及其贡献者，你就可以自由地复制、分发、传送和改编我们的数据。如果你想转换或者以我们的数据为基础进行创作，你只能采用相同的许可协议发表你的作品。完整的%{legal_code_link}阐明了你的权利和义务。
-        introduction_2_legal_code: 法律条款
-        introduction_3_html: 我们的文档根据 %{creative_commons_link} 许可协议（CC BY-SA 2.0）获得许可。
-        introduction_3_creative_commons: 知识共享署名-相同方式共享 2.0
+        lead_1_html: |-
+          OpenStreetMap为数以千计的网站、移动应用程序和硬件设备提供开放地图数据。
+          OpenStreetMap是一个由像您一样的志愿者们组成的社区，志愿者会维护涵盖世界各地道路、小径、咖啡馆、火车站等的地图数据。
+        lead_2_html: '%{learn_more_about_osm_link}并%{get_started_mapping_link}吧！您可以访问
+          %{osm_blog_link}，也可以订阅 %{weeklyosm_link}来了解更多信息。同时，您也可以访问本地的 %{osm_community_link}来寻找其他的贡献者。此外，您还可以通过加入
+          %{osm_foundation_link}或%{making_donation_link}来支持这个我们热爱的项目。'
+        lead_2_learn_more_about_osm: 了解有关 OpenStreetMap 的更多信息
+        lead_2_get_started_mapping: 开始绘制地图
+        lead_2_osm_blog: OpenStreetMap 博客
+        lead_2_weeklyosm: OSM 周刊
+        lead_2_osm_community: OSM 社区
+        lead_2_osm_foundation: OSM 基金会
+        lead_2_making_donation: 捐款
+        licensing_title: OpenStreetMap许可
+        licensing_1_html: OpenStreetMap是%{open}数据，由%{osm_foundation_link}（OSMF）根据%{odc_odbl_link}（ODbL）许可协议发布。简而言之：
+        licensing_1_open: 开放
+        licensing_1_odc_odbl: 开放数据共享开放数据库许可协议
+        licensing_1_osm_foundation: OpenStreetMap 基金会
+        licensing_2_html: |-
+          在注明OpenStreetMap及其贡献者后，您可以自由地复制、分发、传输和改编我们的数据。如果您基于我们的数据进行创作或修改，您只能在相同的许可协议下分发您的创作和修改成果。
+          您的权利和责任可在%{legal_code_link}获取。
+        licensing_2_legal_code: 开放数据共同体（Open Data Commons）
+        licensing_3_html: 我们的文档使用%{creative_commons_license_link}（CC BY-SA 2.0）许可协议。
+        licensing_3_creative_commons_license: 知识共享-署名-相同方式共享许可协议2.0
+        licensing_3_creative_commons_license_url: https://creativecommons.org/licenses/by-sa/2.0/
+        licensing_4_html: 请参阅 %{osmf_license_page_link} 了解有关使用我们数据的更多信息。
+        licensing_4_osmf_license_page: OSMF 许可页面
         credit_title_html: 如何表明作者是 OpenStreetMap
         credit_1_html: 当您使用 OpenStreetMap 的数据，您会被要求遵循两件事：
-        credit_2_1: 通过显示我们的版权声明为 OpenStreetMap 提供署名。
-        credit_2_2: 明确数据在开放数据库许可证下可用。
-        credit_3_html: 对于版权声明的显示，我们会依据您如何使用我们的数据，而有不同的要求。例如，不同的规则要如何显示版权声明，具体取决于您是否建立了可浏览的地图、列印的地图或是静态图像。完整的详细信息要求可以在%{attribution_guidelines_link}上查看。
-        credit_3_attribution_guidelines: 署名指南
-        credit_4_1_html: |-
-          请明确表示数据在开放数据库许可协议下可用，您可以链接到%{this_copyright_page_link}。
-          相对地，如果您以数据表来分发 OSM，您可以命名并直接链接到许可协议。在一些无法作出链接的媒介（例如印刷品），我们建议您引导您的读者到 openstreetmap.org（像是注明“OpenStreetMap”的完整网址）以及 opendatacommons.org。
-          在此示例中，版权相关的归属会出现在地图的角落。
-        credit_4_1_this_copyright_page: 该版权页
+        credit_2_attribution: 为OpenStreetMap提供署名；
+        credit_2_license: 明确数据在开放数据库许可证下可用。
+        credit_3_v2025_html: |-
+          根据您使用我们数据的方式，有不同的%{requirements_on_how_displayed_link}。
+          不同的地图种类，如可浏览的地图、打印的地图或静态图像可能适用不同的署名要求。
+          更多详细信息请参阅%{licensing_requirements_link}的%{attribution_guidelines_link}部分。
+        credit_3_v2025_requirements_on_how_displayed: 署名要求
+        credit_3_v2025_attribution_guidelines: 署名指南
+        credit_3_v2025_licensing_requirements: 许可证要求
+        credit_4_v2025_html: 若想要表明数据由开放数据共享开放数据库许可协议（ODbL）授权使用，您可以在您的作品中添加一个到%{this_copyright_page_link}的链接。如果您是以数据形式使用OpenStreetMap，请直接添加到ODbL许可证的链接。如果无法使用链接的形式（如在纸质出版物中），您可以直接在作品中添加完整的URL，如%{copyright_page_url}。
+        credit_4_v2025_this_copyright_page: 该版权页
+        credit_5_v2025_html: 您可将署名置于地图角落，如下例所示：
         attribution_example:
           alt: 如何在网页上署名 OpenStreetMap 的示例
           title: 署名示例
-        more_title_html: 了解更多
-        more_1_1_html: 在 %{osmf_licence_page_link} 阅读更多关于使用我们的数据以及如何为我们署名的信息。
-        more_1_1_osmf_licence_page: OSMF 许可页面
-        more_2_1_html: 尽管 OpenStreetMap 是开放数据，但我们无法为第三方提供免费的地图 API。请参阅我们的 %{api_usage_policy_link}、%{tile_usage_policy_link}
+        infringement_title_html: 著作权侵犯
+        infringement_1_html: 请各位OpenStreetMap贡献者注意，除非经明确许可，不要添加从任何受版权保护的地图上提取的数据（如谷歌地图或印刷版地图）。
+        infringement_2_1_html: 如果您认为OpenStreetMap中已经添加受版权保护且未获适当授权的材料，请转到%{takedown_procedure_link}或在%{online_filing_page_link}提交申请。
+        infringement_2_1_takedown_procedure: 下架程序
+        infringement_2_1_online_filing_page: 在线申请页面
+        trademarks_title: 商标
+        trademarks_1_1_html: OpenStreetMap、放大镜标志和 State of the Map 是 OpenStreetMap
+          Foundation 的注册商标。如果您对商标的使用有任何疑问，请参阅我们的 %{trademark_policy_link}。
+        trademarks_1_1_trademark_policy: 商标政策
+        services_title_html: 附加服务
+        services_1_html: 尽管 OpenStreetMap 属于开放数据，但我们无法为第三方提供免费的地图API或瓦片。请参阅我们的 %{api_usage_policy_link}、%{tile_usage_policy_link}
           和 %{nominatim_usage_policy_link}。
-        more_2_1_api_usage_policy: API 使用政策
-        more_2_1_tile_usage_policy: 瓦片使用政策
-        more_2_1_nominatim_usage_policy: Nominatim使用政策
+        services_1_api_usage_policy: API 使用政策
+        services_1_tile_usage_policy: 瓦片使用政策
+        services_1_nominatim_usage_policy: Nominatim使用政策
         contributors_title_html: 我们的贡献者
         contributors_intro_html: 我们的数据来源于成千上万人的贡献。但我们也从国家测绘机构等处获取公共版权的数据，其中包括：
         contributors_at_credit_html: |-
@@ -2124,7 +2530,7 @@ zh-CN:
         contributors_hr_croatia: 克罗地亚
         contributors_hr_dgu: 克罗地亚国家大地测量局
         contributors_hr_open_data_portal: 国家开放数据门户
-        contributors_nl_credit_html: '%{netherlands}: 包含 &copy; AND data, 2007 (%{and_link})'
+        contributors_nl_credit_new_html: '%{netherlands}: 包含 &copy; AND 数据，2007 年'
         contributors_nl_netherlands: 荷兰
         contributors_nz_credit_html: |-
           %{new_zealand}：包含来自 %{linz_data_service_link}
@@ -2161,29 +2567,16 @@ zh-CN:
           Wiki 上的 %{contributors_page_link}。
         contributors_2_contributors_page: 贡献者页面
         contributors_footer_2_html: OpenStreetMap 纳入数据并不意味着原始数据提供者认可 OpenStreetMap、提供任何担保或担负任何法律责任。
-        infringement_title_html: 著作权侵犯
-        infringement_1_html: OSM 的贡献者会被提醒，绝不要在没有著作权人的明确许可时添加来自任何有著作权的来源的数据(如谷歌地图或印刷地图)。
-        infringement_2_1_html: 如果您认为受版权保护的材料已被不适当地添加到 OpenStreetMap 数据库或本网站，请参考、我们的
-          %{takedown_procedure_link} 或直接在我们的 %{online_filing_page_link} 递交。
-        infringement_2_1_takedown_procedure: 下架程序
-        infringement_2_1_online_filing_page: 在线申请页面
-        trademarks_title: 商标
-        trademarks_1_1_html: "OpenStreetMap、放大镜标志和 State of the Map 是 \nOpenStreetMap
-          Foundation 的注册商标。如果您对商标的使用有任何疑问，请参阅我们的\n%{trademark_policy_link}。"
-        trademarks_1_1_trademark_policy: 商标政策
     index:
       js_1: 您或许正在使用不支持 JavaScript 的浏览器，或您禁用了 JavaScript。
       js_2: OpenStreetMap 使用 JavaScript 让地图更平滑。
       license:
         copyright: 版权所有 OpenStreetMap及其贡献者，采用开放授权协议
-      remote_failed: 编辑失败 - 请确保已加载 JOSM 或 Merkaartor 并启用了远程控制
     not_public_flash:
       not_public: 您尚未公开您的编辑。
       not_public_description_html: 您将无法再编辑此地图，直到您做到如上所述。您可以通过您的%{user_page}公开您的编辑。
       user_page_link: 用户页面
       anon_edits_link_text: 了解为什么这很重要。
-    edit:
-      id_not_configured: iD 尚未配置
     export:
       title: 导出
       manually_select: 手动选择不同的区域
@@ -2206,6 +2599,12 @@ zh-CN:
           title: 其他来源
           description: OpenStreetMap wiki 上列出的其他来源
       export_button: 导出
+      export_download: 正在下载……
+      confirmation:
+        header: 下载XML数据
+        body: 您想以XML格式下载此区域的地图数据吗？请注意，下载大面积区域可能需要一些时间。
+        cancel: 取消
+        download: 下载
     fixthemap:
       title: 报告问题/修正地图
       how_to_help:
@@ -2214,10 +2613,6 @@ zh-CN:
           title: 加入社区
           explanation_html: 如果您发现我们的地图数据有问题，例如缺少某条道路或者您的地址，最好的处理方法就是加入 OpenStreetMap
             社区，然后您自己添加或者改进数据。
-        add_a_note:
-          instructions_1_html: |-
-            只需点击%{note_icon}或地图显示上的相同图标。
-            这会在地图上添加一个标记，您可以通过拖动它。添加您的注记，然后点击保存，其他绘图者将作出查证。
       other_concerns:
         title: 其他问题
         concerns_html: 如果您对我们的数据使用方式或内容有疑虑，请参阅我们的%{copyright_link}来了解更多法律信息，或者联系相应的%{working_group_link}。
@@ -2280,10 +2675,11 @@ zh-CN:
         car: 汽车
         foot: 步行
       providers:
+        description: 导航服务
         fossgis_valhalla: 瓦尔哈拉
     welcome:
       title: 欢迎！
-      introduction: 欢迎访问 OpenStreeMap，自由且可编辑的世界地图。您已经登录，可以开始绘制地图。这里是含有您需要知道的最重要的信息的快速指南。
+      introduction: 欢迎来到 OpenStreetMap，自由且可编辑的世界地图。您已经登录，可以开始绘制地图。这里是一份快速指南，其中有您需要知道的最重要信息。
       whats_on_the_map:
         title: 地图上有什么
         on_the_map_html: OpenStreetMap 是一个%{real_and_current}的地图，它包含数百万的建筑、道路以及其他的位置细节。您基本可以编辑现实世界中您感兴趣的任何东西。
@@ -2311,11 +2707,11 @@ zh-CN:
         automated_edits: 自动化编辑
       start_mapping: 开始绘制地图
       continue_authorization: 继续授权
-      add_a_note:
-        title: 没有时间编辑？添加注记！
-        para_1: 如果您这是想做一些微小改动而没有时间登录来学习如何编辑，那添加注记是非常容易的。
-        para_2_html: 只要去%{map_link}并单击注记图标：%{note_icon}。这将在地图上添加一个标记，您可以拖动它，并添加您的备注，然后单击保存，其他人绘图者将确认其是否正确。
-        the_map: 地图
+    add_a_note:
+      title: 没有时间编辑？添加注记！
+      para_1: 如果您这是想做一些微小改动而没有时间登录来学习如何编辑，那添加注记是非常容易的。
+      para_2_html: 只需点击%{note_icon}或%{map_link}上的相同图标即可。这将在地图上添加一个标记，拖动可移动位置。写上您的留言，然后点击保存，其他制图者将会调查。
+      the_map: 地图
     communities:
       title: 社区
       lede_text: |-
@@ -2333,7 +2729,14 @@ zh-CN:
           没有必要正式建立一个与地方分会同等规模的团体。
           事实上，许多团体作为非正式的聚会或社区团体非常成功地存在。任何人都可以创设或加入这些团体。在%{communities_wiki_link}上阅读更多内容。
         communities_wiki: 社区 wiki 页面
-  map_keys:
+  social_links:
+    show:
+      website: 网站
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: 放大地图以查看注记
+      map_data_zoom_in_tooltip: 放大地图以查看数据
+  legend_panes:
     show:
       entries:
         motorway: 高速公路
@@ -2346,10 +2749,11 @@ zh-CN:
         track: 小路
         bridleway: 马道
         cycleway: 自行车道
-        cycleway_national: 国家自行车道
-        cycleway_regional: 地区自行车道
-        cycleway_local: 本地自行车道
-        cycleway_mtb: 山地自行车路线
+        international_bike_route: 国际自行车路线
+        national_bike_route: 国家自行车路线
+        regional_bike_route: 地区自行车路线
+        local_bike_route: 本地自行车路线
+        mountain_bike_route: 山地自行车路线
         footway: 步道
         rail: 铁路
         train: 火车
@@ -2422,6 +2826,33 @@ zh-CN:
         bicycle_parking: 自行车停车场
         bicycle_parking_small: 小型自行车停车场
         toilets: 厕所
+      see_external_legend: 参见外部地图图例
+  share_panes:
+    show:
+      link: 链接或 HTML
+      include_marker: 包含标记
+      long_link: 链接
+      short_link: 短链接
+      embed: HTML
+      embed_html_disabled: HTML 嵌入不适用于此地图图层
+      paste_html: 粘贴HTML以嵌入网站
+      geo_uri: Geo URI
+      image: 图像
+      only_layers_exported_as_image: 仅以下图层可以导出为图像：
+      format: 格式：
+      scale: 比例：
+      custom_dimensions: 设定自定义区域
+      image_dimensions_html: 将以%{width} x %{height}的尺寸按%{layer}图层输出图像
+      download: 下载
+      downloading: 正在下载……
+  webgl_error_panes:
+    show:
+      compact_message: 此地图需要WebGL功能。
+      description_html: 很抱歉，但%{your_browser_does_not_support_webgl}，一种用于在web上渲染3D图形的技术。
+      your_browser_does_not_support_webgl: 您的浏览器似乎不支持WebGL
+      webgl_is_required_for_this_map: 需要使用WebGL来显示此地图。
+      read_more_about_webgl: 阅读更多
+      read_more_about_webgl_url: https://wiki.openstreetmap.org/wiki/This_map_requires_WebGL
   traces:
     visibility:
       private: 私有 (只以匿名分享，无顺序的点)
@@ -2455,13 +2886,13 @@ zh-CN:
       points: 点：
       start_coordinates: 起始坐标：
       coordinates_html: '%{latitude}; %{longitude}'
-      map: 地图
-      edit: 编辑
+      map: 在地图上查看位置
+      edit: 在编辑器中打开
       owner: 所有者：
       description: 描述：
       tags: 标签：
       none: 无
-      edit_trace: 编辑这条轨迹
+      edit_trace: 编辑轨迹详情
       delete_trace: 删除这条轨迹
       trace_not_found: 未找到轨迹！
       visibility: 可见性：
@@ -2473,13 +2904,13 @@ zh-CN:
         other: '%{count}个点'
       more: 更多
       trace_details: 查看轨迹详情
-      view_map: 查看地图
-      edit_map: 编辑地图
+      view_map: 在地图上查看位置
+      edit_map: 在编辑器中打开
       public: 公开
       identifiable: 可识别
       private: 私有
       trackable: 可追踪
-      details_with_tags_html: 由%{user}在%{tags}于%{time_ago}
+      details_with_tags_html: '%{time_ago}由%{user}发布于%{tags}'
       details_without_tags_html: 由%{user}于%{time_ago}
     index:
       public_traces: 公开GPS轨迹
@@ -2525,14 +2956,12 @@ zh-CN:
       oauth2_authorizations: OAuth 2授权
       muted_users: 已忽视用户
     auth_providers:
-      openid_url: OpenID URL
-      openid_login_button: 继续
-      openid:
-        title: 使用OpenID登录
-        alt: OpenID 标志
       google:
         title: 使用Google登录
         alt: Google 标志
+      apple:
+        title: 使用Apple登录
+        alt: Apple标志
       facebook:
         title: 使用Facebook登录
         alt: Facebook 标志
@@ -2546,6 +2975,9 @@ zh-CN:
         title: 使用维基百科登录
         alt: 维基百科标志
     share:
+      share:
+        title: 分享
+        alt: 分享图标
       email:
         title: 通过电子邮件分享
         alt: 电子邮件图标
@@ -2639,8 +3071,8 @@ zh-CN:
       title: 注册
       tab_title: 注册
       signup_to_authorize_html: 注册 OpenStreetMap 以访问 %{client_app_name}
-      no_auto_account_create: 很遗憾，我们目前无法为您自动创建一个帐户。
-      please_contact_support_html: 请联系 %{support_link} 以安排创建帐户 - 我们会尽快处理该请求。
+      no_auto_account_create: 很遗憾，我们目前无法为您自动创建一个账户。
+      please_contact_support_html: 如需协助，请联系%{support_link} - 我们会尽快处理您的请求。
       support: 支持
       about:
         header: 自由且可编辑。
@@ -2651,6 +3083,7 @@ zh-CN:
       display name description: 你的公开展示的用户名。你可以稍后在设置中进行修改。
       by_signing_up:
         html: 注册意味着您同意我们的%{tou_link}、%{privacy_policy_link}和%{contributor_terms_link}。
+        tou: 使用条款
         privacy_policy: 隐私政策
         privacy_policy_title: OSM基金会隐私政策包括电子邮件地址部分
         contributor_terms: 贡献者条款
@@ -2661,6 +3094,9 @@ zh-CN:
         html: 您的地址不会公开显示，请参阅我们的%{privacy_policy_link}了解更多信息。
       or: 或
       use external auth: 或使用第三方服务登录
+      verify_human: 请验证您是真人
+    create:
+      not_human: 抱歉，我们无法确认您是真人。创建新账号需要通过此验证。
     no_such_user:
       title: 无此用户
       heading: 用户 %{user} 不存在
@@ -2681,7 +3117,6 @@ zh-CN:
       blocks by me: 被我封禁
       create_mute: 忽视此用户
       destroy_mute: 取消忽视此用户
-      edit_profile: 编辑个人资料
       send message: 发送消息
       diary: 日记
       edits: 编辑
@@ -2700,18 +3135,6 @@ zh-CN:
       created from: 创建于：
       status: 状态：
       spam score: 垃圾邮件评分：
-      role:
-        administrator: 此用户是管理员
-        moderator: 此用户是仲裁员
-        importer: 此用户是导入者
-        grant:
-          administrator: 授予管理员权限
-          moderator: 授予仲裁员权限
-          importer: 授予导入者权限
-        revoke:
-          administrator: 撤销管理员权限
-          moderator: 撤销仲裁员权限
-          importer: 撤销导入者权限
       block_history: 激活的封禁
       moderator_history: 给予封禁
       revoke_all_blocks: 撤销所有封禁
@@ -2720,12 +3143,37 @@ zh-CN:
       activate_user: 启用此用户
       confirm_user: 确认此用户
       unconfirm_user: 取消确认该用户
+      suspend_user: 暂停此用户
       unsuspend_user: 取消暂停该用户
-      hide_user: 隐藏此用户
-      unhide_user: 取消隐藏此用户
-      delete_user: 删除此用户
+      undelete_user: 取消删除此用户
       confirm: 确认
       report: 举报此用户
+      edit_profile_details: 编辑个人资料详情
+      edit_description: 编辑描述
+      edit_links: 编辑链接
+      change_image: 更改图片
+      edit_company: 编辑公司
+      edit_location: 编辑位置
+      edit_contribution_calendar: 配置贡献日历
+      contributions: 去年有%{count}贡献
+      title:
+        administrator: 此用户是管理员
+        moderator: 此用户是仲裁员
+        importer: 此用户是导入者
+      grant:
+        administrator: 授予管理员权限
+        moderator: 授予仲裁员权限
+        importer: 授予导入者权限
+        are_you_sure: 您确定要赋予用户 '%{name}' 角色 '%{role}' 吗?
+      revoke:
+        administrator: 撤销管理员权限
+        moderator: 撤销仲裁员权限
+        importer: 撤销导入者权限
+        are_you_sure: 您确定要吊销用户 '%{name}' 角色 '%{role}' 吗?
+    sidebar_section:
+      home_location: 家庭地址
+      company: 公司
+      company_tooltip: 该公司隶属关系为自我揭露，未经证实
     go_public:
       flash success: 您的所有编辑现在均已公开，现在允许您开始编辑。
     issued_blocks:
@@ -2754,14 +3202,24 @@ zh-CN:
         title: 用户
         heading: 用户
         select_status: 选择状态
+        states:
+          pending: 待处理
+          active: 活跃
+          confirmed: 已确认
+          suspended: 挂起
+          deleted: 已删除
+        name_or_email: 姓名或电子邮件
         ip_address: IP地址
+        edits: 编辑？
+        has_edits: 有编辑
+        no_edits: 无编辑
         search: 搜索
       page:
         found_users:
           one: 找到%{count}位用户
           other: 找到%{count}位用户
         confirm: 确认所选用户
-        hide: 隐藏所选用户
+        suspend: 暂停所选用户
         empty: 未找到匹配用户
       user:
         summary_html: '%{name}在%{date}从%{ip_address}创建'
@@ -2787,10 +3245,10 @@ zh-CN:
         when: 时间
         comment: 评论
     suspended:
-      title: 帐户已暂停
-      heading: 帐户已暂停
+      title: 账户已暂停
+      heading: 账户已暂停
       support: 支持
-      automatically_suspended: 抱歉，由于存在可疑活动，您的帐户已被自动暂停。
+      automatically_suspended: 抱歉，由于存在可疑活动，您的账户已被自动暂停。
       contact_support_html: 管理员很快会审查此决定，或者如果您想讨论这个问题，您可以联系 %{support_link}。
     auth_failure:
       connection_failed: 连接身份验证提供方失败
@@ -2809,10 +3267,6 @@ zh-CN:
       already_has_role: 这个用户已经有角色 %{role}。
       doesnt_have_role: 这个用户没有角色 %{role}。
       not_revoke_admin_current_user: 不能撤销当前用户的管理员角色。
-    grant:
-      are_you_sure: 您确定要赋予用户 '%{name}' 角色 '%{role}' 吗?
-    revoke:
-      are_you_sure: 您确定要吊销用户 '%{name}' 角色 '%{role}' 吗?
   user_blocks:
     model:
       non_moderator_update: 必须为仲裁员才能创建或更新一个封禁。
@@ -2936,8 +3390,9 @@ zh-CN:
       last_changed: 最后更改于
       apply: 应用
       all: 全部
-      open: 打开
-      closed: 关闭
+      open: 未解决
+      closed: 已解决
+      hidden: 已隐藏
       status: 状态
     show:
       title: 注记：%{id}
@@ -2946,6 +3401,7 @@ zh-CN:
       closed_title: '已解决注记 #%{note_name}'
       hidden_title: '隐藏注记 #%{note_name}'
       description_when_author_is_deleted: 已删除
+      description_when_there_is_no_opening_comment: 未知
       event_opened_by_html: 由%{user}%{time_ago}创建
       event_opened_by_anonymous_html: 由匿名用户%{time_ago}创建
       event_commented_by_html: 来自%{user}%{time_ago}的评论
@@ -2978,15 +3434,14 @@ zh-CN:
       anonymous_warning_sign_up: 注册
       counter_warning_html: 您已至少发布了 %{x_anonymous_notes}条匿名留言，这对社区来说很棒，谢谢！现在我们鼓励您
         %{contribute_by_yourself}，这并不复杂，而且 %{community_can_help}。
-      x_anonymous_notes:
-        one: '%{count} 个匿名注释'
-        other: '%{count} 个匿名注释'
+      x_anonymous_notes: '%{count}项匿名注记'
       counter_warning_guide_link:
         text: 自己贡献
       counter_warning_forum_link:
         text: 社区可以帮助你
       advice: 您的注释会公开，并可能用于更新地图，所以不要输入个人信息，或是来自版权保护地图的信息或目录列表。
       add: 添加注记
+      error: 创建笔记时出错
     new_readonly:
       title: 新注记
       warning: 无法创建新注释，因为 OpenStreetMap API 当前处于只读模式。
@@ -3000,42 +3455,36 @@ zh-CN:
     close: 关闭
     share:
       title: 分享
-      cancel: 取消
-      image: 图像
-      link: 链接或 HTML
-      long_link: 链接
-      short_link: 短链接
-      geo_uri: Geo URI
-      embed: HTML
-      custom_dimensions: 设定自定义区域
-      format: 格式：
-      scale: 比例：
-      image_dimensions: 将以%{width} x %{height}的尺寸按%{layer}图层输出图像
-      download: 下载
-      short_url: 短URL
-      include_marker: 包含标记
-      center_marker: 以标记作为地图中心
-      paste_html: 粘贴HTML以嵌入网站
       view_larger_map: 查看更大的地图
-      only_layers_exported_as_image: 仅以下图层可以导出为图像：
+      export_failed_title: 地图导出失败
+      filename: 地图
     embed:
       report_problem: 报告问题
-    key:
+    legend:
       title: 图例
       tooltip: 图例
       tooltip_disabled: 图例不可用于此图层
     map:
-      zoom:
-        in: 放大
-        out: 缩小
-      locate:
-        title: 显示我的位置
+      map:
+        title: 地图
+        marker:
+          title: 地图标记
+      popup:
+        close: 关闭
+      navigation_control:
+        zoom_in: 放大
+        zoom_out: 缩小
+      geolocate_control:
+        find_my_location: 显示我的位置
+        location_not_available: 位置不可用
         metersPopup:
           one: 你距离该点%{count}米
           other: 你距离该点%{count}米
         feetPopup:
           one: 你就在这个位置的%{count}英尺范围内
           other: 你就在这个位置的%{count}英尺范围内
+      attribution_control:
+        toggle_attribution: 切换署名
       base:
         standard: 标准
         cyclosm: 自行车地图
@@ -3043,6 +3492,8 @@ zh-CN:
         transport_map: 交通运输地图
         tracestracktop_topo: 地形地貌地图
         hot: 人道救援地图
+        shortbread: 黄油酥饼
+        openmaptiles_osm: MapTiler OMT
       layers:
         header: 地图图层
         notes: 地图注记
@@ -3061,26 +3512,30 @@ zh-CN:
       tracestrack: 踪迹地图
       hotosm_credit: 由%{osm_france_link}托管的%{hotosm_link}图块风格
       hotosm_name: 人道主义开放街图团队
+      openmaptiles_credit: 来自%{openmaptiles_link}的矢量图砖，由%{maptiler_link}托管
     site:
       edit_tooltip: 编辑地图
       edit_disabled_tooltip: 放大地图以编辑
       createnote_tooltip: 添加注记至地图
       createnote_disabled_tooltip: 放大地图以添加注记
-      map_notes_zoom_in_tooltip: 放大地图以查看注记
-      map_data_zoom_in_tooltip: 放大地图以查看数据
       queryfeature_tooltip: 查询特征
       queryfeature_disabled_tooltip: 放大以查询特征
-      embed_html_disabled: HTML 嵌入不适用于此地图图层
+    profile:
+      social_link_n: 社交资料链接%{n}
+      remove_social_link_n: 删除社交资料链接%{n}
     edit_help: 移动地图并在您想编辑的位置放大，然后点击这里。
     directions:
-      ascend: 上升
-      descend: 下降
-      distance: 距离
-      distance_m: '%{distance}m'
-      distance_km: '%{distance}公里'
+      distance_in_units:
+        m: '%{distance}m'
+        km: '%{distance}公里'
+        ft: '%{distance}英尺'
+        yd: '%{distance}码'
+        mi: '%{distance}英里'
       errors:
         no_route: 找不到那两个地方之间的路径。
-        no_place: 对不起——无法定位“%{place}”。
+        no_place:
+          title: 搜索失败
+          body: 无法定位“%{place}”。
       instructions:
         continue_without_exit: 在%{name}上直走
         slight_right_without_exit: 稍向右转至%{name}
@@ -3134,8 +3589,8 @@ zh-CN:
         roundabout_with_exit: 在环形交叉的%{exit}号出口离开前往%{name}
         roundabout_with_exit_ordinal: 在环形交叉的%{exit}号出口离开前往%{name}
         exit_roundabout: 沿环形交叉退出至%{name}
+        ferry_without_exit: 乘坐%{name}渡轮
         unnamed: 未命名道路
-        courtesy: 方向经由%{link}
         exit_counts:
           first: 第1
           second: 第2
@@ -3147,9 +3602,6 @@ zh-CN:
           eighth: 第8
           ninth: 第9
           tenth: 第10
-      time: 时间
-      download: 以GeoJSON格式下载路线
-      filename: 路线
     query:
       node: 节点
       way: 路径
@@ -3157,6 +3609,8 @@ zh-CN:
       nothing_found: 未找到要素
       error: 连接 %{server} 时出错：%{error}
       timeout: 连接 %{server} 超时
+    element:
+      wikipedia: 维基百科
     context:
       directions_from: 从此处出发
       directions_to: 到此处的路线
@@ -3164,8 +3618,22 @@ zh-CN:
       show_address: 显示地址
       query_features: 查询要素
       centre_map: 将此处置于地图中间
+      scroll_to_changeset: 滚动到变更集
     home:
-      marker_title: 我家位置
+      marker_title: 我的家庭地址
+      not_set: 您的账户尚未设置家庭地址
+    contribution_calendar:
+      tooltip:
+        no_contributions: '%{date}未有贡献'
+        contributions: '%{date}有%{count}贡献'
+    remote_edit:
+      failed:
+        title: 编辑失败
+        body: 确保JOSM或Merkaartor已加载并且远程控制选项已启用
+    edit:
+      id_not_configured:
+        title: iD 尚未配置
+        body: 请参阅 CONFIGURE.md 以了解更多信息
   redactions:
     edit:
       heading: 编辑隐删

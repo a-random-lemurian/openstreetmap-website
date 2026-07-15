@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ReportsController < ApplicationController
-  layout "site"
+  layout :site_layout
 
   before_action :authorize_web
   before_action :set_locale
@@ -14,7 +16,7 @@ class ReportsController < ApplicationController
       @report = Report.new
       @report.issue = Issue.find_or_initialize_by(create_new_report_params)
     else
-      redirect_to root_path, :notice => t(".missing_params")
+      head :bad_request
     end
   end
 
@@ -33,7 +35,7 @@ class ReportsController < ApplicationController
 
       redirect_to helpers.reportable_url(@report.issue.reportable), :notice => t(".successful_report")
     else
-      flash.now[:notice] = t(".provide_details")
+      flash.now[:warning] = t(".provide_details")
       render :action => "new"
     end
   end

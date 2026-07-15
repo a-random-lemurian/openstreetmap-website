@@ -23,11 +23,11 @@ pa:
         create: ਟਿੱਪਣੀ
       diary_entry:
         create: ਛਾਪੋ
-        update: ਅੱਪਡੇਟ ਕਰੋ
+        update: ਨਵਿਆਓ
       issue_comment:
         create: ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕਰੋ
       message:
-        create: ਭੇਜੋ
+        create: ਘੱਲੋ
       oauth2_application:
         create: ਇੰਦਰਾਜ ਕਰਾਓ
         update: ਨਵਿਆਉ
@@ -85,19 +85,6 @@ pa:
       way_node: ਰਾਹ ਨੋਡ
       way_tag: ਰਾਹ ਟੈਗ
     attributes:
-      client_application:
-        name: ਨਾਮ (ਲੋੜੀਂਦਾ)
-        url: ਮੁੱਢਲਾ Application URL (ਲੋੜੀਂਦਾ ਹੈ)
-        callback_url: ਮੁੜਕੇ-ਫੋਨ-ਕਰੋ  URL
-        support_url: ਮਦਦ URL
-        allow_read_prefs: ਉਹਨਾਂ ਦੀਆਂ ਵਰਤੋਂਕਾਰ ਤਰਜੀਹਾਂ ਨੂੰ ਪੜ੍ਹੋ
-        allow_write_prefs: ਉਹਨਾਂ ਦੀਆਂ ਵਰਤੋਂਕਾਰ ਤਰਜੀਹਾਂ ਨੂੰ ਸੋਧੋ
-        allow_write_diary: ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ ਅਤੇ ਟਿੱਪਣੀਆਂ ਦਰਜ਼ ਕਰੋ
-        allow_write_api: ਨਕਸ਼ੇ ਨੂੰ ਬਦਲੋ
-        allow_write_changeset_comments: ਤਬਦੀਲੀ-ਲੜੀਆਂ ਉੱਤੇ ਟਿੱਪਣੀ
-        allow_read_gpx: ਉਹਨਾਂ ਦੇ ਨਿੱਜੀ GPS ਖੁਰਾ-ਖੋਜ ਪੜ੍ਹੋ
-        allow_write_gpx: GPS ਖੁਰਾ-ਖੋਜ ਜੋੜੋ
-        allow_write_notes: ਨੋਟਾਂ ਨੂੰ ਸੋਧੋ
       diary_comment:
         body: ਮੁੱਖ ਭਾਗ
       diary_entry:
@@ -108,7 +95,7 @@ pa:
         longitude: ਲੰਬਕਾਰ
         language_code: ਭਾਸ਼ਾ
       doorkeeper/application:
-        name: ਨਾਮ
+        name: ਨਾਂ
         redirect_uri: URIs ਵਾਪਸ-ਮੋੜੋ
         confidential: ਗੁਪਤ ਅਰਜ਼ੀ?
         scopes: ਇਜਾਜ਼ਤਾਂ
@@ -147,8 +134,9 @@ pa:
         description: ਪ੍ਰੋਫਾਈਲ ਵੇਰਵਾ
         home_lat: ਵਿਥਕਾਰ
         home_lon: ਲੰਬਕਾਰ
+        home_location_name: ਘਰ ਦੇ ਟਿਕਾਣੇ ਦਾ ਨਾਂ
         languages: ਤਰਜੀਹੀ ਭਾਸ਼ਾਵਾਂ
-        preferred_editor: ਤਰਜੀਹੀ ਸੰਪਾਦਕ
+        preferred_editor: ਤਰਜੀਹੀ ਸੋਧਕ
         pass_crypt: ਪਛਾਣ-ਸ਼ਬਦ
         pass_crypt_confirmation: ਪਛਾਣ-ਸ਼ਬਦ ਦੀ ਤਸਦੀਕ ਕਰੋ
     help:
@@ -214,6 +202,7 @@ pa:
     providers:
       none: ਕੋਈ ਨਹੀਂ
       google: ਗੂਗਲ
+      apple: ਐਪਲ
       facebook: ਫੇਸਬੁੱਕ
       microsoft: ਮਾਈਕ੍ਰੋਸਾਫਟ
       github: ਗਿੱਟਹੱਬ
@@ -247,20 +236,18 @@ pa:
       my_account: ਮੇਰਾ ਖਾਤਾ
       current email address: 'ਮੌਜੂਦਾ ਈਮੇਲ ਪਤਾ:'
       external auth: ਬਾਹਰੀ ਤਸਦੀਕ
-      openid:
-        link text: ਇਹ ਕੀ ਹੈ?
-      contributor terms:
+      contributor_terms:
         heading: 'ਯੋਗਦਾਨ ਦੀਆਂ ਸ਼ਰਤਾਂ:'
         agreed: ਤੁਸੀਂ ਯੋਗਦਾਨੀ ਦੀਆਂ ਨਵੀਆਂ ਸ਼ਰਤਾਂ ਨਾਲ਼ ਸਹਿਮਤੀ ਜਤਾਈ ਹੈ।
-        not yet agreed: ਤੁਸੀਂ ਯੋਗਦਾਨੀ ਦੀਆਂ ਨਵੀਆਂ ਸ਼ਰਤਾਂ ਨਾਲ਼ ਸਹਿਮਤੀ ਨਹੀਂ ਜਤਾਈ।
-        review link text: ਕ੍ਰਿਪਾ ਕਰਕੇ ਨਵੀਂ ਯੋਗਦਾਨ ਦੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਅਤੇ ਸਵੀਕਾਰ
-          ਕਰਨ ਲਈ ਆਪਣੀ ਸਹੂਲਤ ਅਨੁਸਾਰ ਇਸ ਕੜੀ ਦੀ ਪਾਲਣਾ ਕਰੋ।
         agreed_with_pd: ਤੁਸੀਂ ਇਹ ਵੀ ਐਲਾਨ ਕੀਤਾ ਹੈ ਕਿ ਤੁਸੀਂ ਆਪਣੇ ਸੋਧਾਂ ਨੂੰ ਜਨਤਕ ਖੇਤਰ
           ਵਿੱਚ ਮੰਨਦੇ ਹੋ।
-        link text: ਇਹ ਕੀ ਹੈ?
         not_agreed_with_pd: ਤੁਸੀਂ ਇਹ ਐਲਾਨ ਨਹੀਂ ਕੀਤਾ ਹੈ ਕਿ ਤੁਸੀਂ ਆਪਣੇ ਸੋਧਾਂ ਨੂੰ ਜਨਤਕ
           ਖੇਤਰ ਵਿੱਚ ਮੰਨਦੇ ਹੋ।
-        pd_link_text: ਐਲਾਨ ਕਰੋ
+        review: ਸ਼ਰਤਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ
+      terms_of_use:
+        heading: ਵਰਤੋਂ ਦੀਆਂ ਸ਼ਰਤਾਂ
+        review: ਸ਼ਰਤਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ
+        review_and_accept: ਸ਼ਰਤਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ ਅਤੇ ਕਬੂਲੋ
       save changes button: ਤਬਦੀਲੀਆਂ ਸਾਂਭੋ
       delete_account: ਖਾਤਾ ਮਿਟਾਓ
     go_public:
@@ -366,9 +353,7 @@ pa:
       one: '%{count} ਤਰੀਕਾ'
       other: '%{count} ਤਰੀਕੇ'
     download_xml: XML ਲਾਹੋ
-    view_history: ਅਤੀਤ ਵੇਖੋ
     view_unredacted_history: ਸੋਧਿਆ ਨਹੀਂ ਗਿਆ ਇਤਿਹਾਸ ਵੇਖੋ
-    view_details: ਵੇਰਵੇ ਵੇਖੋ
     location: 'ਟਿਕਾਣਾ:'
     way:
       title_html: 'ਤਰੀਕਾ: %{name}'
@@ -421,6 +406,9 @@ pa:
       telephone_link: '%{phone_number} ਨੂੰ ਫੋਨ ਕਰੋ'
       colour_preview: ਰੰਗ %{colour_value} ਝਲਕ
       email_link: ਈਮੇਲ %{email}
+    versions_navigation:
+      way: ਰਾਹ
+      history: ਇਤਿਹਾਸ
   feature_queries:
     show:
       title: ਪੁੱਛਗਿੱਛ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ
@@ -504,6 +492,7 @@ pa:
       changesetxml: ਤਬਦੀਲੀ ਲੜੀ XML
     paging_nav:
       ways_paginated: '%{count} ਵਿੱਚੋਂ (%{x}-%{y} ਦਾ ਤਰੀਕਾ'
+      relations_title: ਰਿਸ਼ਤੇ
       relations_paginated: '%{count} ਵਿੱਚੋਂ (%{x}-%{y} ਦਾ ਸਬੰਧ'
     timeout:
       sorry: ਮੁਆਫ ਕਰਨਾ, ਤੁਹਾਡੇ ਵੱਲੋਂ ਬੇਨਤੀ ਕੀਤੀ ਤਬਦੀਲੀ-ਲੜੀਆਂ ਦੀ ਸੂਚੀ ਨੂੰ ਪ੍ਰਾਪਤ ਕਰਨ
@@ -556,9 +545,6 @@ pa:
       title_nearby: ਨੇਡ਼ਲੇ ਵਰਤੋਂਕਾਰਾਂ ਦੇ ਰੋਜ਼ਨਾਮਚੇ
       user_title: '%{user} ਦੇ ਰੋਜ਼ਨਾਮਚੇ'
       in_language_title: '%{language} ਵਿੱਚ ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ਼'
-      new: ਰੋਜ਼ਨਾਮਚੇ 'ਚ ਨਵਾਂ ਇੰਦਰਾਜ
-      new_title: ਮੇਰੇ ਰੋਜ਼ਨਾਮਚੇ ਵਿੱਚ ਇੱਕ ਨਵਾਂ ਇੰਦਰਾਜ਼ ਲਿਖੋ
-      my_diary: ਮੇਰਾ ਰੋਜ਼ਨਾਮਚਾ
       no_entries: ਕੋਈ ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ਼ ਨਹੀਂ ਏ
     page:
       recent_entries: ਹਾਲੀਆ ਦੇ ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ਼
@@ -584,8 +570,9 @@ pa:
       posted_by_html: '%{link_user} ਵੱਲੋਂ %{created} ਨੂੰ %{language_link} ਵਿੱਚ ਜੋੜਿਆ
         ਗਿਆ।'
       updated_at_html: ਆਖ਼ਰੀ ਵਾਰ %{updated} ਨੂੰ ਨਵਿਆਇਆ ਗਿਆ।
+      full_entry: ਪੂਰੇ ਇੰਦਰਾਜ ਵੇਖੋ
       comment_link: ਇਸ ਇੰਦਰਾਜ 'ਤੇ ਟਿੱਪਣੀ ਕਰੋ
-      reply_link: ਲੇਖਕ ਨੂੰ ਸੁਨੇਹਾ ਭੇਜੋ
+      reply_link: ਲਿਖਾਰੀ ਨੂੰ ਸੁਨੇਹਾ ਘੱਲੋ
       comment_count:
         one: '%{count} ਟਿੱਪਣੀ'
         other: '%{count} ਟਿੱਪਣੀਆਂ'
@@ -620,6 +607,10 @@ pa:
     unsubscribe:
       heading: ਹੇਠ ਲਿਖੇ ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ ਚਰਚਾ ਤੋਂ ਗਾਹਕੀ ਹਟਾਓ?
       button: ਚਰਚਾ ਤੋਂ ਗਾਹਕੀ ਹਟਾਓ
+    navigation:
+      my_diary: ਮੇਰਾ ਰੋਜ਼ਨਾਮਚਾ
+      new: ਰੋਜ਼ਨਾਮਚੇ 'ਚ ਨਵਾਂ ਇੰਦਰਾਜ
+      new_title: ਮੇਰੇ ਰੋਜ਼ਨਾਮਚੇ ਵਿੱਚ ਇੱਕ ਨਵਾਂ ਇੰਦਰਾਜ਼ ਲਿਖੋ
   diary_comments:
     new:
       heading: ਹੇਠ ਲਿਖੇ ਰੋਜ਼ਨਾਮਚਾ ਇੰਦਰਾਜ ਚਰਚਾ ਵਿੱਚ ਕੋਈ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕਰੋ?
@@ -655,9 +646,9 @@ pa:
         ਹੈ ਤਾਂ ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ (ਓਪਨਸਟ੍ਰੀਟਮੈਪ) ਭਾਈਚਾਰਾ ਨਾਲ %{contact_link} ਬੇਝਿਜਕ
         ਰਾਬਤਾ ਬਣਾਓ। ਆਪਣੀ ਬੇਨਤੀ ਦੇ ਸਹੀ URL ਦਾ ਨੋਟ(ਲਿਖੋ) ਬਣਾਓ।
     bad_request:
-      title: ਮਾਡ਼ੀ ਬੇਨਤੀ
+      title: ਮਾੜੀ ਬੇਨਤੀ
     forbidden:
-      title: ਵਰਜਿਤ
+      title: ਪਾਬੰਦੀਸ਼ੁਦਾ
     internal_server_error:
       title: ਆਦੇਸ਼ਕਾਰੀ ਦੀ ਗਲਤੀ
     not_found:
@@ -667,9 +658,6 @@ pa:
       follow:
         button: ਵਰਤੋਂਕਾਰ ਨਾਲ ਜੁੜੋ
   geocoder:
-    search:
-      title:
-        latlon: ਅੰਦਰੂਨੀ
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -991,7 +979,7 @@ pa:
           vineyard: ਅੰਗੂਰਾਂ ਦਾ ਬਾਗ਼
           "yes": ਜ਼ਮੀਨ ਦੀ ਵਰਤੋਂ
         leisure:
-          common: ਸ਼ਾਮਲਾਟ
+          common: ਆਮ ਜ਼ਮੀਨ
           dog_park: ਕੁੱਤਾ ਪਾਰਕ
           firepit: ਅੱਗ ਦਾ ਟੋਆ
           fishing: ਮੱਛੀ-ਖੋਜ ਇਲਾਕਾ
@@ -1078,7 +1066,7 @@ pa:
           point: ਬਿੰਦੂ
           reef: ਰੀਫ਼
           ridge: ਰਿੱਜ
-          rock: ਚਟਾਨ
+          rock: ਪੱਥਰ
           saddle: ਕਾਠੀ
           sand: ਰੇਤ
           scree: ਰੇੜ੍ਹ
@@ -1096,7 +1084,7 @@ pa:
           "yes": ਕੁਦਰਤੀ ਗੁਣ
         office:
           accountant: ਲੇਖਾਕਾਰ
-          administrative: ਪ੍ਰਸ਼ਾਸਨ
+          administrative: ਪ੍ਰਬੰਧਕੀ
           architect: ਨਕਸ਼ਾਕਾਰ
           company: ਕੰਪਨੀ
           educational_institution: ਵਿਦਿਅਕ ਸੰਸਥਾ
@@ -1313,9 +1301,20 @@ pa:
         level9: ਪਿੰਡ ਦੀ ਹੱਦ
         level10: ਉਪਨਗਰ ਦੀ ਜੂਹ
         level11: ਗੁਆਂਢ ਦੀ ਹੱਦ
-    results:
-      no_results: ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ ਲੱਭੇ
-      more_results: ਹੋਰ ਨਤੀਜੇ
+  searches:
+    show:
+      title:
+        latlon: ਅੰਦਰੂਨੀ
+    queries:
+      create:
+        no_results: ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ ਲੱਭੇ
+        more_results: ਹੋਰ ਨਤੀਜੇ
+  directions:
+    show:
+      distance: ਵਾਟ
+      time: ਵਕਤ
+      ascend: ਚਡ਼੍ਹਾਈ
+      descend: ਉਤਰਾਈ
   issues:
     index:
       title: ਮੁੱਦੇ
@@ -1355,14 +1354,13 @@ pa:
         ਗਿਆ
       resolve: ਹੱਲ-ਕੱਢੋ
       ignore: ਨਜ਼ਰਅੰਦਾਜ਼ ਕਰੋ
-      reopen: ਮੁਡ਼ ਖੋਲ੍ਹੋ
+      reopen: ਮੁੜ ਖੋਲ੍ਹੋ
       reports_of_this_issue: ਇਸ ਮੁੱਦੇ ਦੀ ਇਤਲਾਹ ਦਿਓ
       read_reports: ਇਤਲਾਹ ਪੜ੍ਹੋ
       new_reports: ਨਵੀਂ ਇਤਲਾਹ
       other_issues_against_this_user: ਇਸ ਵਰਤੋਂਕਾਰ ਦੇ ਖਿਲਾਫ ਹੋਰ ਮੁੱਦੇ
       no_other_issues: ਇਸ ਵਰਤੋਂਕਾਰ ਦੇ ਖਿਲਾਫ ਕੋਈ ਹੋਰ ਮੁੱਦੇ ਨਹੀਂ ਹਨ।
       comments_on_this_issue: ਇਸ ਮੁੱਦੇ 'ਤੇ ਟਿੱਪਣੀ
-    comments:
       comment_from_html: '%{user_link} ਤੋਂ %{comment_created_at} ''ਤੇ ਟਿੱਪਣੀ'
     reports:
       reported_by_html: '%{updated_at} ਨੂੰ %{user} ਵੱਲੋਂ %{category} ਵਜੋਂ ਇਤਲਾਹ ਕੀਤੀ
@@ -1376,7 +1374,6 @@ pa:
   reports:
     new:
       title_html: ਇਤਲਾਹ ਦਿਓ %{link}
-      missing_params: ਨਵੀਂ ਇਤਲਾਹ ਨਹੀਂ ਬਣਾਈ ਜਾ ਸਕਦੀ
       disclaimer:
         intro: 'ਸਾਈਟ ਸੰਚਾਲਕਾਂ ਨੂੰ ਆਪਣੀ ਇਤਲਾਹ ਭੇਜਣ ਤੋਂ ਪਹਿਲਾਂ, ਕਿਰਪਾ ਕਰਕੇ ਯਕੀਨੀ ਬਣਾਓ
           ਕਿ:'
@@ -1402,27 +1399,29 @@ pa:
   layouts:
     logo:
       alt_text: ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਮਾਰਕਾ
-    home: ਘਰੇਲੂ ਟਿਕਾਣੇ 'ਤੇ ਜਾਉ
-    logout: ਵਿਦਾਈ ਲਉ
-    log_in: ਦਾਖ਼ਲ ਹੋਵੋ
-    sign_up: ਖ਼ਾਤਾ ਬਣਾਓ
+    layer_info: ਪਰਤ ਜਾਣਕਾਰੀ
     start_mapping: ਨਕਸ਼ਾਬੰਦੀ ਸ਼ੁਰੂ ਕਰੋ
-    edit: ਸੋਧੋ
-    history: ਪੁਰਾਣਾ
-    export: ਬਰਾਮਦ
-    issues: ਮੁੱਦੇ
-    gps_traces: GPS ਖੁਰਾ-ਖੋਜ
-    user_diaries: ਵਰਤੋਂਕਾਰਾਂ ਦੇ ਰੋਜ਼ਨਾਮਚੇ
-    edit_with: '%{editor} ਨਾਲ ਸੋਧੋ'
     intro_header: ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਉੱਤੇ ਜੀ ਆਇਆਂ ਨੂੰ
     partners_partners: ਜੋੜੀਦਾਰ
     tou: ਵਰਤੋਂ ਦੀਆਂ ਸ਼ਰਤਾਂ
-    help: ਮਦਦ
-    about: ਬਾਬਤ
-    copyright: ਨਕਲ-ਹੱਕ
-    communities: ਭਾਈਚਾਰੇ
     learn_more: ਹੋਰ ਜਾਣੋ
-    more: ਹੋਰ
+    header:
+      about: ਬਾਬਤ
+      communities: ਭਾਈਚਾਰੇ
+      copyright: ਨਕਲ-ਹੱਕ
+      edit: ਸੋਧੋ
+      edit_with: '%{editor} ਨਾਲ ਸੋਧੋ'
+      export: ਬਰਾਮਦ
+      gps_traces: GPS ਖੁਰਾ-ਖੋਜ
+      help: ਮਦਦ
+      history: ਪੁਰਾਣਾ
+      home: ਘਰੇਲੂ ਟਿਕਾਣੇ 'ਤੇ ਜਾਉ
+      issues: ਮੁੱਦੇ
+      log_out: ਬਾਹਰ ਆਓ
+      log_in: ਦਾਖ਼ਲ ਹੋਵੋ
+      more: ਹੋਰ
+      sign_up: ਖ਼ਾਤਾ ਬਣਾਓ
+      user_diaries: ਵਰਤੋਂਕਾਰਾਂ ਦੇ ਰੋਜ਼ਨਾਮਚੇ
   user_mailer:
     diary_comment_notification:
       hi: ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ %{to_user}
@@ -1523,40 +1522,52 @@ pa:
     update:
       flash changed: ਤੁਹਾਡਾ ਪਛਾਣ ਸ਼ਬਦ ਬਦਲਿਆ ਜਾ ਚੁੱਕਾ ਹੈ।
   preferences:
-    show:
-      title: ਮੇਰੀਆਂ ਤਰਜੀਹਾਂ
-      preferred_site_color_scheme: ਪਸੰਦੀਦਾ ਵੈੱਬਸਾਈਟ ਰੰਗ ਸਕੀਮ
-      site_color_schemes:
-        auto: ਸਵੈ
-        light: ਚਾਨਣ
-        dark: ਗੂੜ੍ਹਾ
-      preferred_map_color_scheme: ਪਸੰਦੀਦਾ ਨਕਸ਼ਾ ਰੰਗ ਸਕੀਮ
-      map_color_schemes:
-        auto: ਸਵੈ
-        light: ਚਾਨਣ
-        dark: ਗੂੜ੍ਹਾ
-      save: ਤਰਜੀਹਾਂ ਨਵਿਆਓ
-    update:
-      failure: ਤਰਜੀਹਾਂ ਨੂੰ ਨਵਿਆਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।
-    update_success_flash:
-      message: ਤਰਜੀਹਾਂ ਨਵਿਆਈਆਂ ਗਈਆਂ।
+    preferences:
+      update:
+        failure: ਤਰਜੀਹਾਂ ਨੂੰ ਨਵਿਆਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।
+      update_success_flash:
+        message: ਤਰਜੀਹਾਂ ਨਵਿਆਈਆਂ ਗਈਆਂ।
+    basic_preferences:
+      show:
+        title: ਮੇਰੀਆਂ ਤਰਜੀਹਾਂ
+        preferred_site_color_scheme: ਪਸੰਦੀਦਾ ਵੈੱਬਸਾਈਟ ਰੰਗ ਸਕੀਮ
+        site_color_schemes:
+          auto: ਸਵੈ
+          light: ਚਾਨਣ
+          dark: ਗੂੜ੍ਹਾ
+        preferred_map_color_scheme: ਪਸੰਦੀਦਾ ਨਕਸ਼ਾ ਰੰਗ ਸਕੀਮ
+        map_color_schemes:
+          auto: ਸਵੈ
+          light: ਚਾਨਣ
+          dark: ਗੂੜ੍ਹਾ
+        save: ਤਰਜੀਹਾਂ ਨਵਿਆਓ
   profiles:
-    edit:
-      cancel: ਰੱਦ ਕਰੋ
-      image: 'ਤਸਵੀਰ:'
-      gravatar:
-        gravatar: ਗਰੈਵੇਤਾਰ ਵਰਤੋ
-        what_is_gravatar: ਗਰਾਵਤਾਰ ਕੀ ਹੈ?
-      new image: ਇੱਕ ਤਸਵੀਰ ਜੋੜੋ
-      keep image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਰੱਖੋ
-      delete image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਹਟਾਉ
-      replace image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਵਟਾਉ
-      home location: ਘਰ ਦਾ ਟਿਕਾਣਾ
-      no home location: ਤੁਸੀਂ ਆਪਣੇ ਘਰ ਦਾ ਟਿਕਾਣਾਂ ਨਹੀਂ ਦਾਖਲ ਕੀਤਾ ਹੈ।
-      show: ਵਿਖਾਓ
-      delete: ਮਿਟਾਓ
-    update:
-      success: ਪ੍ਰੋਫਾਈਲ ਨਵਿਆਈਆ ਗਿਆ।
+    profile_sections:
+      navigation:
+        image: 'ਤਸਵੀਰ:'
+    descriptions:
+      show:
+        cancel: ਰੱਦ ਕਰੋ
+    links:
+      show:
+        title: ਪ੍ਰੋਫਾਈਲ ਸੋਧੋ
+    images:
+      show:
+        gravatar:
+          gravatar: ਗਰੈਵੇਤਾਰ ਵਰਤੋ
+          what_is_gravatar: ਗਰਾਵਤਾਰ ਕੀ ਹੈ?
+        new image: ਇੱਕ ਤਸਵੀਰ ਜੋੜੋ
+        keep image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਰੱਖੋ
+        delete image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਹਟਾਉ
+        replace image: ਮੌਜੂਦਾ ਤਸਵੀਰ ਵਟਾਉ
+    locations:
+      show:
+        no home location: ਤੁਸੀਂ ਆਪਣੇ ਘਰ ਦਾ ਟਿਕਾਣਾਂ ਨਹੀਂ ਦਾਖਲ ਕੀਤਾ ਹੈ।
+        show: ਵਿਖਾਓ
+        delete: ਮਿਟਾਓ
+    heatmaps:
+      show:
+        cancel: ਰੱਦ ਕਰੋ
   sessions:
     new:
       tab_title: ਦਾਖ਼ਲ ਹੋਵੋ
@@ -1597,7 +1608,7 @@ pa:
         newer: ਨਵੇਂ ਇੰਦਰਾਜ
       issues:
         older: ਪੁਰਾਣੇ ਮੁੱਦੇ
-        newer: ਨਵੇਂ ਮੁੱਦੇ
+        newer: ਨਵੇਂ ਮਾਮਲੇ
       traces:
         older: ਪੁਰਾਣੇ ਖੁਰਾ-ਖੋਜ
         newer: ਨਵੇਂ ਖੁਰਾ-ਖੋਜ
@@ -1610,6 +1621,7 @@ pa:
   site:
     about:
       heading_html: '%{copyright}ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ %{br} ਯੋਗਦਾਨੀ'
+    about_section:
       local_knowledge_title: ਸਥਾਨੀ ਗਿਆਨ
       community_driven_user_diaries: ਵਰਤੋਂਕਾਰਾਂ ਦੇ ਰੋਜ਼ਨਾਮਚੇ
       open_data_title: ਡਾਟਾ ਖੋਲ੍ਹੋ
@@ -1630,14 +1642,13 @@ pa:
         native_link: ਪੰਜਾਬੀ ਵਰਜਨ
         mapping_link: ਨਕਸ਼ਾਬੰਦੀ ਸ਼ੁਰੂ ਕਰੋ
       legal_babble:
-        introduction_1_osm_foundation: ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਸੰਸਥਾ
-        introduction_2_legal_code: ਕਾਨੂੰਨੀ ਜ਼ਾਬਤਾ
+        licensing_1_open: ਖੁੱਲ੍ਹਾ
+        licensing_1_osm_foundation: ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਸੰਸਥਾ
         credit_title_html: ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਨੂੰ ਕਿਵੇਂ ਸੇਹਰਾ ਦੇਣਾ ਹੈ
         credit_1_html: 'ਜਿੱਥੇ ਤੁਸੀਂ ਖੁੱਲ੍ਹਾ-ਗਲੀ-ਨਕਸ਼ਾ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋ, ਤੁਹਾਨੂੰ
           ਹੇਠ ਲਿਖੀਆਂ ਦੋ ਚੀਜ਼ਾਂ ਕਰਨ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ:'
-        credit_3_attribution_guidelines: ਗੁਣ-ਸੰਬੰਧੀ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼
-        credit_4_1_this_copyright_page: ਇਹ ਨਕਲ-ਹੱਕ ਸਫ਼ਾ
-        more_title_html: ਹੋਰ ਜਾਣਕਾਰੀ ਲੱਭਣ ਵਾਸਤੇ
+        credit_3_v2025_attribution_guidelines: ਗੁਣ-ਸੰਬੰਧੀ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼
+        credit_4_v2025_this_copyright_page: ਇਹ ਨਕਲ-ਹੱਕ ਸਫ਼ਾ
         contributors_title_html: ਸਾਡੇ ਯੋਗਦਾਨੀ
         contributors_at_austria: ਆਸਟਰੀਆ
         contributors_at_stadt_wien: ਸਟੈਡਟ ਵਿਏਨ
@@ -1721,9 +1732,9 @@ pa:
         title: ਅਸੂਲ!
         imports: ਦਰਾਮਦ
       start_mapping: ਨਕਸ਼ਾਬੰਦੀ ਸ਼ੁਰੂ ਕਰੋ
-      add_a_note:
-        title: ਸੋਧਣ ਦੀ ਵਿਹਲ ਨਹੀਂ? ਕੋਈ ਨੋਟ ਜੋੜੋ!
-        the_map: ਨਕਸ਼ਾ
+    add_a_note:
+      title: ਸੋਧਣ ਦੀ ਵਿਹਲ ਨਹੀਂ? ਕੋਈ ਨੋਟ ਜੋੜੋ!
+      the_map: ਨਕਸ਼ਾ
     communities:
       title: ਭਾਈਚਾਰੇ
       local_chapters:
@@ -1731,7 +1742,7 @@ pa:
       other_groups:
         title: ਹੋਰ ਸਮੂਹ
         communities_wiki: ਭਾਈਚਾਰੇ ਵਿਕੀ ਸਫ਼ਾ
-  map_keys:
+  legend_panes:
     show:
       entries:
         motorway: ਮੋਟਰਵੇਅ
@@ -1768,7 +1779,7 @@ pa:
         sand: ਰੇਤ
         golf: ਗੋਲਫ਼ ਮੈਦਾਨ
         park: ਪਾਰਕ
-        common: ਸ਼ਾਮਲਾਟ
+        common: ਕਾਮਨਜ਼
         resident: ਰਿਹਾਇਸ਼ੀ ਇਲਾਕਾ
         retail: ਪਰਚੂਨ ਖੇਤਰ
         industrial: ਉਦਯੋਗਿਕ ਖੇਤਰ
@@ -1792,6 +1803,17 @@ pa:
         private: ਨਿੱਜੀ ਲਾਂਘਾ
         construction: ਉਸਾਰੀ ਹੇਠ ਸੜਕਾਂ
         bicycle_rental: ਸਾਈਕਲ ਕਿਰਾਏ 'ਤੇ
+  share_panes:
+    show:
+      link: ਕੜੀ ਜਾਂ ਐੱਚ.ਟੀ.ਐੱਮ.ਐੱਲ.
+      include_marker: ਨਿਸ਼ਾਨੀ ਸ਼ਾਮਲ ਕਰੋ
+      long_link: ਕੜੀ
+      short_link: ਨਿੱਕੀ ਕੜੀ
+      embed: ਐੱਚ.ਟੀ.ਐੱਮ.ਐੱਲ.
+      image: ਤਸਵੀਰ
+      format: 'ਤਰਤੀਬ:'
+      scale: 'ਪੈਮਾਨਾ:'
+      download: ਉਤਾਰੋ
   traces:
     visibility:
       private: ਨਿੱਜੀ (ਸਿਰਫ਼ ਅਗਿਆਤ, ਬਿਨਾਂ ਕ੍ਰਮਬੱਧ ਬਿੰਦੂਆਂ ਵਜੋਂ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ)
@@ -1812,8 +1834,8 @@ pa:
       heading: ਖੁਰਾ-ਖੋਜ %{name} ਵੇਖ ਰਿਹਾ ਹੈ
       pending: ਲਮਕਦਾ
       filename: 'ਫ਼ਾਈਲ ਦਾ ਨਾਂ:'
-      download: ਡਾਊਨਲੋਡ
-      uploaded: 'ਅੱਪਲੋਡ ਹੋਇਆ:'
+      download: ਲਾਹੋ
+      uploaded: ਚੜ੍ਹਾਇਆ ਗਿਆ
       points: ਬਿੰਦੂ
       start_coordinates: 'ਸ਼ੁਰੂਆਤੀ ਗੁਣਕ:'
       coordinates_html: '%{latitude}; %{longitude}'
@@ -1866,12 +1888,11 @@ pa:
       account_settings: ਖਾਤਾ ਤਰਜੀਹਾਂ
       muted_users: ਚੁੱਪ ਕਰਾਏ ਵਰਤੋਂਕਾਰ
     auth_providers:
-      openid_login_button: ਜਾਰੀ ਰੱਖੋ
-      openid:
-        title: OpenID ਨਾਲ ਦਾਖ਼ਲ ਹੋਵੋ
       google:
         title: ਗੂਗਲ ਨਾਲ ਦਾਖਲ ਹੋਵੋ
         alt: ਗੂਗਲ ਮਾਰਕਾ
+      apple:
+        title: ਐਪਲ ਨਾਲ ਦਾਖਲ ਹੋਵੋ
       facebook:
         title: ਫੇਸਬੁੱਕ ਨਾਲ ਦਾਖਲ ਹੋਵੋ
         alt: ਫੇਸਬੁੱਕ ਮਾਰਕਾ
@@ -1884,6 +1905,8 @@ pa:
         title: ਵਿਕੀਪੀਡੀਆ ਨਾਲ ਦਾਖਲ ਹੋਵੋ
         alt: ਵਿਕੀਪੀਡੀਆ ਮਾਰਕਾ
     share:
+      share:
+        title: ਸਾਂਝਾ ਕਰੋ
       email:
         title: ਈਮੇਲ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ
       bluesky:
@@ -1966,6 +1989,7 @@ pa:
           ਸਾਡਾ %{privacy_policy_link} ਵੇਖੋ।
       or: ਜਾਂ
       use external auth: ਜਾਂ ਕਿਸੇ ਤੀਜੀ ਧਿਰ ਨਾਲ ਦਾਖਲ ਹੋਵੋ
+      verify_human: ਸਾਬਤ ਕਰੋ ਕਿ ਤੁਸੀਂ ਇੱਕ ਮਨੁੱਖ ਹੋ
     no_such_user:
       title: ਕੋਈ ਅਜਿਹਾ ਵਰਤੋਂਕਾਰ ਨਹੀਂ
       heading: ਵਰਤੋਂਕਾਰ %{user} ਮੌਜੂਦ ਨਹੀਂ ਹੈ
@@ -1985,7 +2009,6 @@ pa:
       blocks on me: ਮੇਰੇ ਉੱਤੇ ਰੋਕਾਂ
       blocks by me: ਮੇਰੇ ਵੱਲੋਂ ਰੋਕਾਂ
       create_mute: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਚੁੱਪ ਕਰੋ
-      edit_profile: ਪ੍ਰੋਫਾਈਲ ਸੋਧੋ
       send message: ਸੁਨੇਹਾ ਘੱਲੋ
       diary: ਰੋਜ਼ਨਾਮਚਾ
       edits: ਸੋਧਾਂ
@@ -2001,17 +2024,6 @@ pa:
       email address: 'ਈਮੇਲ ਪਤਾ:'
       created from: 'ਕਿੱਥੋਂ ਉਸਾਰਿਆ:'
       status: 'ਦਰਜਾ:'
-      role:
-        administrator: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਪ੍ਰਬੰਧਕ ਹੈ।
-        moderator: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਵਿਚੋਲਾ ਹੈ।
-        importer: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਦਰਾਮਦਕਾਰ ਹੈ
-        grant:
-          administrator: ਪ੍ਰਬੰਧਕੀ ਹੱਕ ਦਿਓ
-          moderator: ਵਿਚੋਲਗੀ ਦੇ ਹੱਕ ਦਿਉ
-          importer: ਦਰਾਮਦਕਾਰ ਪਹੁੰਚ ਪ੍ਰਦਾਨ ਕਰੋ
-        revoke:
-          administrator: ਪ੍ਰਬੰਧਕੀ ਪਹੁੰਚ ਰੱਦ ਕਰੋ
-          importer: ਦਰਾਮਦਕਾਰ ਪਹੁੰਚ ਰੱਦ ਕਰੋ
       block_history: ਸਰਗਰਮ ਪਾਬੰਦੀਆਂ
       moderator_history: ਪਾਬੰਦੀਆਂ ਦਿੱਤਿਆ ਹਨ
       comments: ਟਿੱਪਣੀਆਂ
@@ -2019,11 +2031,23 @@ pa:
       activate_user: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਸਰਗਰਮ ਕਰੋ
       confirm_user: ਇਸ ਵਰਤੋਂਕਾਰ ਦੀ ਤਸਦੀਕ ਕਰੋ
       unsuspend_user: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਮੁਅੱਤਲ ਨਾ ਕਰੋ
-      hide_user: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਲੁਕਾਉ
-      unhide_user: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਮੁੜ-ਵਿਖਾਓ
-      delete_user: ਇਸ ਵਰਤੋਂਕਾਰ ਨੂੰ ਮਿਟਾਉ
       confirm: ਤਸਦੀਕ ਕਰੋ
       report: ਇਸ ਵਰਤੋਂਕਾਰ ਦੀ ਇਤਲਾਹ ਦਿਓ
+      title:
+        administrator: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਪ੍ਰਬੰਧਕ ਹੈ।
+        moderator: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਵਿਚੋਲਾ ਹੈ।
+        importer: ਇਹ ਵਰਤੋਂਕਾਰ ਇੱਕ ਦਰਾਮਦਕਾਰ ਹੈ
+      grant:
+        administrator: ਪ੍ਰਬੰਧਕੀ ਹੱਕ ਦਿਓ
+        moderator: ਵਿਚੋਲਗੀ ਦੇ ਹੱਕ ਦਿਉ
+        importer: ਦਰਾਮਦਕਾਰ ਪਹੁੰਚ ਪ੍ਰਦਾਨ ਕਰੋ
+        are_you_sure: ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਵਰਤੋਂਕਾਰ '%{name}' ਨੂੰ '%{role}' ਜ਼ੁੰਮੇਵਾਰੀ
+          ਦੇਣਾ ਚਾਹੁੰਦੇ ਹੋ?
+      revoke:
+        administrator: ਪ੍ਰਬੰਧਕੀ ਪਹੁੰਚ ਰੱਦ ਕਰੋ
+        importer: ਦਰਾਮਦਕਾਰ ਪਹੁੰਚ ਰੱਦ ਕਰੋ
+        are_you_sure: ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਵਰਤੋਂਕਾਰ '%{name}' ਤੋਂ ਜ਼ੁੰਮੇਵਾਰੀ '%{role}'
+          ਨੂੰ ਰੱਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?
     go_public:
       flash success: ਤੁਹਾਡੇ ਸਾਰੇ ਸੋਧ ਹੁਣ ਜਨਤਕ ਹਨ, ਅਤੇ ਤੁਹਾਨੂੰ ਹੁਣ ਸੋਧ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ
         ਹੈ।
@@ -2065,7 +2089,6 @@ pa:
           one: '%{count} ਵਰਤੋਂਕਾਰ ਲੱਭੇ'
           other: '%{count} ਵਰਤੋਂਕਾਰ ਲੱਭੇ'
         confirm: ਚੁਣੇ ਹੋਏ ਵਰਤੋਂਕਾਰਾਂ ਦੀ ਤਸਦੀਕ ਕਰੋ
-        hide: ਚੁਣੇ ਹੋਏ ਵਰਤੋਂਕਾਰ ਲੁਕਾਉ
         empty: ਕੋਈ ਮੇਲ ਖਾਂਦੇ ਵਰਤੋਂਕਾਰ ਨਹੀਂ ਲੱਭੇ
       user:
         summary_html: '%{date} ਨੂੰ %{ip_address} ਤੋਂ %{name} ਬਣਾਇਆ ਗਿਆ'
@@ -2105,12 +2128,6 @@ pa:
       doesnt_have_role: ਵਰਤੋਂਕਾਰ ਕੋਲ ਜ਼ੁੰਮੇਵਾਰੀ %{role} ਨਹੀਂ ਏ।
       not_revoke_admin_current_user: ਮੌਜੂਦਾ ਵਰਤੋਂਕਾਰ ਤੋਂ ਪ੍ਰਬੰਧਕ ਦੀ ਜ਼ੁੰਮੇਵਾਰੀ ਨੂੰ
         ਰੱਦ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਏ।
-    grant:
-      are_you_sure: ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਵਰਤੋਂਕਾਰ '%{name}' ਨੂੰ '%{role}' ਜ਼ੁੰਮੇਵਾਰੀ
-        ਦੇਣਾ ਚਾਹੁੰਦੇ ਹੋ?
-    revoke:
-      are_you_sure: ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਵਰਤੋਂਕਾਰ '%{name}' ਤੋਂ ਜ਼ੁੰਮੇਵਾਰੀ '%{role}'
-        ਨੂੰ ਰੱਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?
   user_blocks:
     model:
       non_moderator_update: ਇੱਕ ਪਾਬੰਦੀ ਬਣਾਉਣ ਜਾਂ ਨਵਿਆਓਣ ਲਈ ਇੱਕ ਪ੍ਰਬੰਧਕ ਹੋਣਾ ਲਾਜ਼ਮੀ
@@ -2248,29 +2265,20 @@ pa:
     close: ਬੰਦ ਕਰੋ
     share:
       title: ਸਾਂਝਾ ਕਰੋ
-      cancel: ਰੱਦ ਕਰੋ
-      image: ਤਸਵੀਰ
-      link: ਕੜੀ ਜਾਂ ਐੱਚ.ਟੀ.ਐੱਮ.ਐੱਲ.
-      long_link: ਕੜੀ
-      short_link: ਨਿੱਕੀ ਕੜੀ
-      embed: ਐੱਚ.ਟੀ.ਐੱਮ.ਐੱਲ.
-      format: 'ਤਰਤੀਬ:'
-      scale: 'ਪੈਮਾਨਾ:'
-      download: ਉਤਾਰੋ
-      short_url: ਨਿੱਕਾ ਯੂ.ਆਰ.ਐੱਲ.
-      include_marker: ਨਿਸ਼ਾਨੀ ਸ਼ਾਮਲ ਕਰੋ
       view_larger_map: ਵਡੇਰਾ ਨਕਸ਼ਾ ਵੇਖੋ
     embed:
       report_problem: ਸਮੱਸਿਆ ਦੀ ਇਤਲਾਹ ਦਿਓ
-    key:
+    legend:
       title: ਨਕਸ਼ੇ ਦਾ ਟੀਕਾ
       tooltip: ਨਕਸ਼ੇ ਦਾ ਟੀਕਾ
     map:
-      zoom:
-        in: ਅੰਦਰ ਨੂੰ ਜਾਉ
-        out: ਬਾਹਰ ਨੂੰ ਆਉ
-      locate:
-        title: ਮੇਰਾ ਟਿਕਾਣਾ ਵਿਖਾਓ
+      popup:
+        close: ਬੰਦ ਕਰੋ
+      navigation_control:
+        zoom_in: ਅੰਦਰ ਨੂੰ ਜਾਉ
+        zoom_out: ਬਾਹਰ ਨੂੰ ਆਉ
+      geolocate_control:
+        find_my_location: ਮੇਰਾ ਟਿਕਾਣਾ ਵਿਖਾਓ
       base:
         standard: ਮਿਆਰੀ
         cycle_map: ਸਾਈਕਲ ਨਕਸ਼ਾ
@@ -2292,14 +2300,13 @@ pa:
       createnote_tooltip: ਨਕਸ਼ੇ 'ਤੇ ਕੋਈ ਨੋਟ ਜੋੜੋ
       createnote_disabled_tooltip: ਨਕਸ਼ੇ 'ਤੇ ਕੋਈ ਨੋਟ ਜੋੜਨ ਵਾਸਤੇ ਅੰਦਰ ਨੂੰ ਜਾਉ
     directions:
-      ascend: ਚਡ਼੍ਹਾਈ
-      descend: ਉਤਰਾਈ
-      distance: ਵਾਟ
-      distance_m: '%{distance}ਮੀਟਰ'
-      distance_km: '%{distance}ਕਿਲੋਮੀਟਰ'
+      distance_in_units:
+        m: '%{distance}ਮੀਟਰ'
+        km: '%{distance}ਕਿਲੋਮੀਟਰ'
+        ft: '%{distance}ਫੁੱਟ'
+        mi: '%{distance}ਮੀਲ'
       errors:
         no_route: ਦੋਵਾਂ ਥਾਵਾਂ ਵਿਚਕਾਰ ਕੋਈ ਰਾਹ ਨਹੀਂ ਲੱਭਿਆ।
-        no_place: ਮਾਫ਼ ਕਰਨਾ - '%{place}' ਨੂੰ ਲੱਭ ਨਹੀਂ ਸਕਿਆ।
       instructions:
         continue_without_exit: '%{name} ''ਤੇ ਚੱਲੀ-ਚੱਲੋ'
         slight_right_without_exit: '%{name} ਉੱਤੇ ਥੋੜ੍ਹਾ ਜਿਹਾ ਸੱਜੇ ਪਾਸੇ'
@@ -2340,7 +2347,6 @@ pa:
           eighth: 8ਵਾਂ(ਅੱਠਵਾਂ)
           ninth: 9ਵਾਂ(ਨੌਵਾਂ)
           tenth: 10ਵਾਂ(ਦਸਵਾਂ)
-      time: ਵਕਤ
     query:
       way: ਰਾਹ
       relation: ਸਬੰਧ

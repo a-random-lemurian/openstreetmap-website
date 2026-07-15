@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserHelper
   # User images
 
@@ -48,34 +50,6 @@ module UserHelper
     else
       image_url("avatar.svg")
     end
-  end
-
-  # External authentication support
-
-  def auth_button(provider, options = {})
-    link_to(
-      image_tag("auth_providers/#{provider}.svg",
-                :alt => t("application.auth_providers.#{provider}.alt"),
-                :class => "rounded-1",
-                :size => "36"),
-      auth_path(options.merge(:provider => provider)),
-      :method => :post,
-      :class => "auth_button btn btn-outline-secondary border p-2",
-      :title => t("application.auth_providers.#{provider}.title")
-    )
-  end
-
-  def auth_button_preferred(provider, options = {})
-    link_to(
-      image_tag("auth_providers/#{provider}.svg",
-                :alt => t("application.auth_providers.#{provider}.alt"),
-                :class => "rounded-1 me-3",
-                :size => "36") + t("application.auth_providers.#{provider}.title"),
-      auth_path(options.merge(:provider => provider)),
-      :method => :post,
-      :class => "auth_button btn btn-outline-secondary border py-2 px-4 d-flex justify-content-center align-items-center",
-      :title => t("application.auth_providers.#{provider}.title")
-    )
   end
 
   private

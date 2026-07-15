@@ -76,18 +76,6 @@ nqo:
       way_node: ߛߌߟߊ ߘߐ߬ߞߌߛߍ
       way_tag: ߛߌߟߊ ߞߍߛߙߋ
     attributes:
-      client_application:
-        name: ߕߐ߮ (ߢߌ߬ߣߌ߲߬ߞߊ߬ߣߍ߲)
-        url: ߟߥߊߟߌߟߊ߲ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߕߊ߲ߓߊ߲ URL (ߘߌߦߊߜߏߦߊ)
-        callback_url: ߛߊ߲߬ߓߊ߬ߕߐ߮ URL ߞߟߌߟߌ ߡߊߛߊ߬ߦߌ
-        support_url: URL ߞߐߞߘߐߓߌ߲ߓߌ߲
-        allow_read_prefs: ߊ߬ߟߎ߫ ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߦߟߌߡߊߛߙߋ ߘߐߞߊ߬ߙߊ߲߬
-        allow_write_prefs: ߊ߬ߟߎ߫ ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߦߟߌߡߊߛߙߋ ߡߊߦߟߍ߬ߡߊ߲߫
-        allow_write_diary: ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲ ߛߌ߲ߘߌ߫߸ ߡߙߌߣߊ߲ ߊ߬ ߣߌ߫ ߞߊ߬ ߕߋߙߌ ߟߎ߬ ߟߊߘߊ߲߫
-        allow_write_api: ߔߊ߬ߔߘߊ ߡߊߦߟߍ߬ߡߊ߲߫
-        allow_read_gpx: ߊ߬ߟߎ߫ ߘߎ߲߬ߘߎ߬ߡߊ߬ GPS ߝߏ߲߬ߝߏ߲ ߠߎ߬ ߘߐߞߊ߬ߙߊ߲߬
-        allow_write_gpx: GPS ߝߏ߲߬ߝߏ߲ ߠߎ߬ ߟߊߦߟߍ߬
-        allow_write_notes: ߦߙߌߡߊߛߙߋ ߟߎ߬ ߡߊߦߟߍ߬ߡߊ߲
       diary_comment:
         body: ߝߊ߬ߘߌ
       diary_entry:
@@ -200,17 +188,11 @@ nqo:
       title: ߖߊ߬ߕߋ߬ߘߊ ߡߊߦߟߍ߬ߡߊ߲߬
       current email address: ߕߋ߲߭ߕߋ߲߭ ߢߎߡߍߙߋ߲߫ ߞߏ߲ߘߏ
       external auth: ߞߐߞߊ߲ߠߊ ߕߎ߬ߡߊ߬ߢߐ߲߰ߦߊ߬ߟߌ
-      openid:
-        link text: ߡߎ߲߬ ߦߋ߫ ߣߌ߲߬ ߘߌ߫؟
-      contributor terms:
+      contributor_terms:
         heading: ߓߟߏߓߌߟߊߢߐ߲߯ߞߊ߲ ߛߙߊߕߌ ߟߎ߬
         agreed: ߌ ߓߘߊ߫ ߘߌ߬ߢߍ߫ ߓߟߏߓߌߟߊߢߐ߲߯ߞߊ߲ߠߊ߫ ߞߎߘߊ ߛߙߊߕߌ ߟߎ߬ ߡߊ߬.
-        not yet agreed: ߌ ߡߊ߫ ߘߌ߬ߢߍ߬ ߓߟߏߓߌߟߊߢߐ߲߯ߞߊ߲ߠߊ߫ ߞߎߘߊ ߛߙߊߕߌ ߟߎ߬ ߡߊ߬ ߡߎߣߎ߲߬.
-        review link text: ߛߘߌ߬ߜߋ߲ ߣߌ߲߬ ߠߊߓߊ߬ߕߏ߫ ߌ ߟߊ߫ ߓߍ߲߬ߢߐ߲߰ߡߊ ߘߌ߫ ߖߊ߰ߣߌ߲߫߸، ߞߊ߬
-          ߓߟߏߡߊߜߍ߲߫ ߞߎߘߊ ߛߙߊߕߌ ߟߎ߬ ߖߊ߬ߕߋߡߌ߬ߘߊ߬߸ ߊ߬ ߣߌ߫ ߞߵߊ߬ߟߎ߬ ߟߊߡߌ߬ߣߊ߬.
         agreed_with_pd: ߌ ߓߘߊ߫ ߓߊ߲߫ ߊ߬ ߦߌ߬ߘߊ߬ ߟߊ߫ ߞߴߌ ߦߴߌ ߟߊ߫ ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲ ߖߊ߬ߕߋ߬
           ߟߊ߫ ߞߵߊ߬ ߦߋ߫ ߞߍ߫ ߝߘߏ߬ߓߊ߬ ߘߊߞߎ߲ ߘߐ߫.
-        link text: ߡߎ߲߬ ߦߋ߫ ߣߌ߲߬ ߘߌ߫؟
       save changes button: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲ ߠߎ߬ ߠߊߞߎ߲߬ߘߎ߬
       delete_account: ߖߊ߬ߕߋ߬ߘߊ ߖߏ߰ߛߌ߬ߟߌ...
     go_public:
@@ -290,8 +272,6 @@ nqo:
     no_comment: (ߡߙߌߣߊ߲߫ ߕߴߦߋ߲߬)
     part_of: ߝߊ߲߭ ߘߏ߫
     download_xml: XML ߟߊߖߌ߰ ߌ ߞߎ߲߬
-    view_history: ߘߐ߬ߝߐ ߘߐߜߍ߫
-    view_details: ߝߊߙߊ߲ߝߊ߯ߛߟߌ ߘߐߜߍ߫
     location: ߘߌ߲߬ߞߌߙߊ
     node:
       title_html: 'ߥߎߙߋ߲ߛߋ߲: %{name}'
@@ -440,9 +420,6 @@ nqo:
       title_nearby: ߛߌ߰ߢߐ߲߮ ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߟߎ߬ ߕߋ߬ߟߋ߲
       user_title: '%{user} ߕߋ߬ߟߋ߲'
       in_language_title: '%{language} ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲ ߠߎ߬'
-      new: ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲߬ ߞߎߘߊ
-      new_title: ߟߊ߬ߘߏ߲߬ߠߌ߲߬ ߞߎߘߊ߫ ߛߏ߯ߙߏ߫ ߒ ߕߋ߬ߟߋ߲ ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߘߐ߫
-      my_diary: ߒ ߕߋ߬ߟߋ߲
       no_entries: ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲߬ߣߐ߬ ߟߎ߬ ߕߴߦߋ߲߬
     page:
       recent_entries: ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲߬ߣߐ ߞߐߟߕߊ ߟߎ߬
@@ -489,6 +466,10 @@ nqo:
       all:
         title: ߏߔߌ߲ߛߕߑߙߌߕߑߡߊߔ ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲ ߠߎ߬
         description: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߟߊ߫ ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲ ߏߔߌ߲ߛߕߑߙߌߕߑߡߊߔ ߞߊ߲߬
+    navigation:
+      my_diary: ߒ ߕߋ߬ߟߋ߲
+      new: ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲߬ ߞߎߘߊ
+      new_title: ߟߊ߬ߘߏ߲߬ߠߌ߲߬ ߞߎߘߊ߫ ߛߏ߯ߙߏ߫ ߒ ߕߋ߬ߟߋ߲ ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߘߐ߫
   doorkeeper:
     flash:
       applications:
@@ -504,9 +485,6 @@ nqo:
     not_found:
       title: ߞߐߕߐ߮ ߡߊ߬ ߛߐ߬ߘߐ߲߬
   geocoder:
-    search:
-      title:
-        latlon: ߞߣߐߟߊ
     search_osm_nominatim:
       prefix:
         aerialway:
@@ -948,12 +926,19 @@ nqo:
         level8: ߛߏ ߓߐߕߏ߲
         level9: ߕߏߘߊ ߓߐߕߏ߲
         level11: ߛߌ߰ߢߐ߲߰ߦߊ߬ ߦߙߐ ߓߐߕߏ߲
-    results:
-      no_results: ߞߐߝߟߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬
-      more_results: ߞߐߝߟߌ߫ ߜߘߍ ߟߎ߬
+  searches:
+    show:
+      title:
+        latlon: ߞߣߐߟߊ
+    queries:
+      create:
+        no_results: ߞߐߝߟߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬
+        more_results: ߞߐߝߟߌ߫ ߜߘߍ ߟߎ߬
   directions:
-    search:
+    show:
       title: ߞߎ߲߬ߕߋߟߋ߲
+      distance: ߝߏ߬ߣߊ߲
+      time: ߕߎ߬ߡߊ
   issues:
     index:
       title: ߓߐ߲ߘߊ ߟߎ߫
@@ -985,14 +970,13 @@ nqo:
       other_issues_against_this_user: ߝߛߌ߬ ߜߘߍ߫ ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߓߟߏ߫ ߌߞߐ߫
       no_other_issues: ߝߛߌ߬ ߜߘߍ߫ ߕߍ߫ ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߓߟߴߏ߬ ߞߐ߫.
       comments_on_this_issue: ߡߙߌߣߊ߲ ߡߍ߲ ߠߎ߬ ߦߋ߫ ߝߌ߬ߛߌ ߣߌ߲߬ ߠߊ߫
+      comment_from_html: ߡߙߌߣߊ߲ ߞߊ߬ ߝߘߊ߫ %{user_link} ߟߊ߫ %{comment_created_at} ߘߐ߫
     resolve:
       resolved: ߝߌ߬ߛߌ ߟߌ߬ߤߟߊ ߓߘߊ߫ ߘߐߓߍ߲߬ ߊ߬ ߢߊߓߐ߫ ߞߊ߲ߡߊ߬
     ignore:
       ignored: ߝߌ߬ߛߌ ߟߌ߬ߤߟߊ ߓߘߊ߫ ߘߐߓߍ߲߬ ߊ߬ ߡߊߓߌ߬ߟߊ߬ ߞߊ߲ߡߊ߬
     reopen:
       reopened: ߝߌ߬ߛߌ ߟߌ߬ߤߟߊ ߓߘߊ߫ ߘߐߓߍ߲߬ ߊ߬ ߘߊߦߟߍ߬ ߞߊ߲ߡߊ߬
-    comments:
-      comment_from_html: ߡߙߌߣߊ߲ ߞߊ߬ ߝߘߊ߫ %{user_link} ߟߊ߫ %{comment_created_at} ߘߐ߫
     helper:
       reportable_title:
         diary_comment: '%{entry_title} ߡߙߌߣߊ߲ #%{comment_id}'
@@ -1022,29 +1006,30 @@ nqo:
   layouts:
     logo:
       alt_text: ߏߔߌ߲ߛߑߕߙߌߕߑߡߊߔ ߛߌ߲ߞߐ߲
-    home: ߕߊ߯ ߛߏ߫ ߘߌ߲߬ߞߌߙߊ ߘߐ߫
-    logout: ߌ ߜߊ߲߬ߞߎ߲߬ߣߍ߲ ߓߐ߫
-    log_in: ߌ ߜߊ߲߬ߞߎ߲߫
-    sign_up: ߖߊ߬ߕߋ߬ߘߊ ߟߊߞߊ߬
     start_mapping: ߔߊ߬ߔߘߊ߬ ߡߊ߬ߝߟߍ ߘߊߡߌ߬ߣߊ߬
-    edit: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲
-    history: ߘߐ߬ߝߐ
-    export: ߟߊ߬ߝߏ߬ߦߌ߬ߟߌ
-    issues: ߓߐ߲ߘߊ ߟߎ߫
-    gps_traces: GPS ߣߐ߬ߣߐ߬ߟߌ
-    user_diaries: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߕߋߟߋ߲ ߠߎ߬
-    edit_with: ߊ߬ ߡߊߦߟߍ߬ߡߊ߲߫ %{editor} ߘߌ߫
     intro_header: ߌ ߣߌ߫ ߛߣߍ߫ ߏߔߌ߲߫ ߛߕߑߙߌߕ ߡߊߔ ߞߊ߲߬߹
     intro_text: ߏߔߌ߲߫ ߛߕߑߙߌߕ ߡߊߔ ߦߋ߫ ߘߎߢߊ߫ ߔߊ߬ߔߘߊ ߟߋ߬ ߘߌ߫߸ ߡߍ߲ ߛߌ߲ߘߌߣߍ߲߫ ߦߋ߫ ߡߐ߱ ߟߎ߬
       ߓߟߏ߫ ߦߏ߫ ߌߟߋ߸ ߊ߬ ߟߊߓߊ߯ߙߊ ߦߋ߫ ߛߙߊ߬ߓߊߟߌ ߟߋ߬ ߘߌ߫ ߟߊ߬ߘߤߊ߬ߟߌ߫ ߘߊߦߟߍ߬ߣߍ߲ ߞߘߐ߫.
     partners_fastly: ߝߊߛߕߑߟߋ߫
     partners_partners: ߞߊ߬ߝߏ߬ߢߐ߲߮ ߠߎ߬
     tou: ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߛߙߊߕߌ
-    help: ߘߍ߬ߡߍ߲߬ߠߌ߲
-    about: ߞߊ߬ ߓߍ߲߬
-    copyright: ߓߊߦߟߍߡߊ߲ ߤߊߞߍ
     learn_more: ߘߏߜߘߍ߫ ߟߎ߫ ߘߐߞߊ߬ߙߊ߲߬
-    more: ߡߊ߬ߞߊ߬ߝߏ߬ ߜߘߍ ߟߎ߬
+    header:
+      about: ߞߊ߬ ߓߍ߲߬
+      copyright: ߓߊߦߟߍߡߊ߲ ߤߊߞߍ
+      edit: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲
+      edit_with: ߊ߬ ߡߊߦߟߍ߬ߡߊ߲߫ %{editor} ߘߌ߫
+      export: ߟߊ߬ߝߏ߬ߦߌ߬ߟߌ
+      gps_traces: GPS ߣߐ߬ߣߐ߬ߟߌ
+      help: ߘߍ߬ߡߍ߲߬ߠߌ߲
+      history: ߘߐ߬ߝߐ
+      home: ߕߊ߯ ߛߏ߫ ߘߌ߲߬ߞߌߙߊ ߘߐ߫
+      issues: ߓߐ߲ߘߊ ߟߎ߫
+      log_out: ߌ ߜߊ߲߬ߞߎ߲߬ߣߍ߲ ߓߐ߫
+      log_in: ߌ ߜߊ߲߬ߞߎ߲߫
+      more: ߡߊ߬ߞߊ߬ߝߏ߬ ߜߘߍ ߟߎ߬
+      sign_up: ߖߊ߬ߕߋ߬ߘߊ ߟߊߞߊ߬
+      user_diaries: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߕߋߟߋ߲ ߠߎ߬
   user_mailer:
     diary_comment_notification:
       subject: '[ߏߔߌ߲ߛߑߕߙߌߕߑߡߊߔ] %{user} ߓߘߊ߫ ߕߋ߬ߟߋ߲ ߟߊ߬ߘߏ߲߬ߠߌ߲ ߘߏ߫ ߡߓߊߟߌߡߊ߫'
@@ -1166,6 +1151,9 @@ nqo:
       success: ߌ ߟߊ߫ ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ߫ ߞߎߘߊ ߡߊߝߊ߬ߟߋ߲߬ߠߌ߲ ߓߘߊ߫ ߟߊߛߙߋߦߊ߫߹
       failure: ߢ:ߞߏ߲ߘߏ ߘߏ߫ ߓߘߊ߫ ߟߊߛߙߋߦߊ߫ ߖߐߟߐ߲ߞߐ (ߥߏߘߌߜߊߠߊ߲) ߣߌ߲߬ ߠߊ߫ ߞߘߐ߬ߡߊ߲߫.
       unknown_token: ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ߬ ߘߏߞߊ߲ ߣߌ߲߬ ߛߕߊ ߓߘߊ߫ ߝߊ߫ ߥߟߴߊ߬ ߕߴߦߋ߲߬.
+    gravatar:
+      disabled: ߜ߭ߙߊߝ߭ߕߊ ߓߘߊ߫ ߓߴߊ߬ ߟߊ߫
+      enabled: ߌ ߟߊ߫ ߜ߭ߙߊߝ߭ߕߊ߫ ߦߌ߬ߘߊ߬ߟߌ ߓߘߊ߫ ߓߌ߬ߟߴߊ߬ ߟߊ߫.
   messages:
     new:
       title: ߗߋߛߓߍ ߗߋ߫
@@ -1244,36 +1232,41 @@ nqo:
     update:
       flash changed: ߌ ߟߊ߫ ߕߊ߬ߡߌ߲߬ߞߊ߲ ߓߘߊ߫ ߓߊ߲߫ ߡߊߝߊ߬ߟߋ߲߬ ߠߊ߫.
   preferences:
-    show:
-      title: ߒ ߠߊ߫ ߦߟߌߡߊߛߙߋ ߟߎ߬
-      save: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߟߊߞߎߘߦߊ߫
-    update:
-      failure: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߕߍ߫ ߛߐ߲߬ ߟߊߞߎߘߦߊ߫ ߟߊ߫.
-    update_success_flash:
-      message: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߓߘߊ߫ ߟߊߞߎߘߦߊ߫.
+    preferences:
+      update:
+        failure: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߕߍ߫ ߛߐ߲߬ ߟߊߞߎߘߦߊ߫ ߟߊ߫.
+      update_success_flash:
+        message: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߓߘߊ߫ ߟߊߞߎߘߦߊ߫.
+    basic_preferences:
+      show:
+        title: ߒ ߠߊ߫ ߦߟߌߡߊߛߙߋ ߟߎ߬
+        save: ߦߟߌߡߊߛߙߋ ߟߎ߬ ߟߊߞߎߘߦߊ߫
   profiles:
-    edit:
-      title: ߢߊߞߙߍ ߡߊߦߟߍ߬ߡߊ߲߫
-      save: ߢߊߞߙߍ ߟߊߞߎߘߦߊ߫
-      cancel: ߊ߬ ߘߐߛߊ߬
-      image: ߖߌ߬ߦߊ߬ߓߍ
-      gravatar:
-        gravatar: ߜ߭ߙߊߝ߭ߕߊ߫ ߟߊߓߊ߯ߙߊ߫
-        link: https://wiki.openstreetmap.org/wiki/nqo:Gravatar
-        what_is_gravatar: ߡߎ߲߬ ߦߋ߫ ߜ߭ߙߊߝ߭ߕߊ ߘߌ߫؟
-        disabled: ߜ߭ߙߊߝ߭ߕߊ ߓߘߊ߫ ߓߴߊ߬ ߟߊ߫
-        enabled: ߌ ߟߊ߫ ߜ߭ߙߊߝ߭ߕߊ߫ ߦߌ߬ߘߊ߬ߟߌ ߓߘߊ߫ ߓߌ߬ߟߴߊ߬ ߟߊ߫.
-      new image: ߖߌ߬ߦߊ߬ߓߍ ߘߏ߫ ߝߙߊ߬
-      keep image: ߖߌ߬ߦߊ߬ߓߍ ߞߘߐ߬ߡߊ߲ ߠߊߡߙߊ߬
-      delete image: ߖߌ߬ߦߊ߬ߓߍ ߞߘߐ߬ߡߊ߲ ߛߋ߲߬ߓߐ߫
-      replace image: ߖߌ߬ߦߊ߬ߓߍ ߡߍ߲ ߦߋ߫ ߦߋ߲߬ ߕߊ߲߬߸ ߏ߬ ߣߐ߬ߘߐߓߌ߬ߟߊ߬
-      image size hint: (ߖߌ߬ߦߊ߬ߓߍ ߕߎ߲ߞߎ߲ ߠߎ߬ ߓߊ߯ ߞߍ߫ ߁߀߀×߁߀߀ ߟߋ߬ ߦߋ߫ ߓߊ߯ߙߊ߫ ߟߊ߫ ߞߏߢߊ߬)
-      home location: ߌ ߓߘߊ ߘߌ߲߬ߞߌߙߊ
-      no home location: ߌ ߡߴߌ ߟߊ߫ ߟߎ ߘߌ߲߬ߞߌߙߊ ߟߊߘߏ߲߬ ߝߟߐ߫
-      update home location on click: ߞߊ߬ ߟߎ ߘߌ߲߬ߞߌߙߊ ߡߊߝߊ߬ߟߋ߲߫ ߣߌ߫ ߒ ߞߊ߬ ߡߊߔ ߛߐ߲߬ߞߌ߲߫؟
-    update:
-      success: ߢߊߞߙߍ ߓߘߊ߫ ߟߊߞߎߘߦߊ߫
-      failure: ߢߊߞߙߍ ߕߍ߫ ߛߐ߲߬ ߟߏ߲ߘߐߦߊ߫ ߟߊ߫.
+    profile_sections:
+      navigation:
+        image: ߖߌ߬ߦߊ߬ߓߍ
+    descriptions:
+      show:
+        title: ߢߊߞߙߍ ߡߊߦߟߍ߬ߡߊ߲߫
+        save: ߢߊߞߙߍ ߟߊߞߎߘߦߊ߫
+        cancel: ߊ߬ ߘߐߛߊ߬
+    links:
+      show:
+        title: ߢߊߞߙߍ ߡߊߦߟߍ߬ߡߊ߲߫
+    images:
+      show:
+        gravatar:
+          gravatar: ߜ߭ߙߊߝ߭ߕߊ߫ ߟߊߓߊ߯ߙߊ߫
+          what_is_gravatar: ߡߎ߲߬ ߦߋ߫ ߜ߭ߙߊߝ߭ߕߊ ߘߌ߫؟
+        new image: ߖߌ߬ߦߊ߬ߓߍ ߘߏ߫ ߝߙߊ߬
+        keep image: ߖߌ߬ߦߊ߬ߓߍ ߞߘߐ߬ߡߊ߲ ߠߊߡߙߊ߬
+        delete image: ߖߌ߬ߦߊ߬ߓߍ ߞߘߐ߬ߡߊ߲ ߛߋ߲߬ߓߐ߫
+        replace image: ߖߌ߬ߦߊ߬ߓߍ ߡߍ߲ ߦߋ߫ ߦߋ߲߬ ߕߊ߲߬߸ ߏ߬ ߣߐ߬ߘߐߓߌ߬ߟߊ߬
+        image size hint: (ߖߌ߬ߦߊ߬ߓߍ ߕߎ߲ߞߎ߲ ߠߎ߬ ߓߊ߯ ߞߍ߫ ߁߀߀×߁߀߀ ߟߋ߬ ߦߋ߫ ߓߊ߯ߙߊ߫ ߟߊ߫ ߞߏߢߊ߬)
+    locations:
+      show:
+        no home location: ߌ ߡߴߌ ߟߊ߫ ߟߎ ߘߌ߲߬ߞߌߙߊ ߟߊߘߏ߲߬ ߝߟߐ߫
+        update home location on click: ߞߊ߬ ߟߎ ߘߌ߲߬ߞߌߙߊ ߡߊߝߊ߬ߟߋ߲߫ ߣߌ߫ ߒ ߞߊ߬ ߡߊߔ ߛߐ߲߬ߞߌ߲߫؟
   sessions:
     new:
       tab_title: ߌ ߜߊ߲߬ߞߎ߲߫
@@ -1321,6 +1314,7 @@ nqo:
         ߠߎ߬ ߦߋ߫ ߡߊ߬ߜߍ߲ ߞߍ߫ ߟߊ߫ ߓߟߏߡߟߊߞߏ ߘߐ߫߸ ߊ߬ ߣߌ߫ ߞߵߊ߬ ߘߊߘߐߓߍ߲߬. \nߞߊ߬ ߓߍ߲߬ ߛߌߟߊ
         ߟߎ߬ ߡߊ߬߸ ߜߋ߬ߙߋ ߟߎ߬ ߡߊ߬߸ ߞߊߝߋ ߟߎ߬ ߡߊ߬߸ ߣߍ߰ߛߌߟߊ ߟߐ߬ߦߙߐ ߟߎ߬ ߡߊ߬߸ ߊ߬ ߣߌ߫ ߝߋ߲߫
         ߜߘߍ߫ ߛߌߦߊߡߊ߲߫ ߠߎ߫ ߘߎߢߊ߫ ߝߊ߲߭ ߓߍ߯ ߝߍ߬."
+    about_section:
       local_knowledge_title: ߕߌ߲߬ߞߎߘߎ߲ ߡߊ߬ߟߐ߲߬ߠߌ߲
       community_driven_title: ߘߍ߬ߘߊ ߟߊ߬ߓߏ߬ߙߌ߬ߟߌ
       open_data_title: ߓߟߏߡߟߊ߫ ߘߊߦߟߍ߬ߣߍ߲
@@ -1336,7 +1330,6 @@ nqo:
         mapping_link: ߔߊ߬ߔߘߊ߬ߦߊ߬ߟߌ ߘߊߡߌ߬ߣߊ߫
       legal_babble:
         credit_title_html: ߟߊߒߣߦߊ ߦߋ߫ ߛߐ߬ߘߐ߲߬ ߠߊ߫ ߏߔߌ߲ߛߑߕߙߌߕߑߡߊߔ ߟߊ߫ ߘߌ߬
-        more_title_html: ߛߌߦߊߡߊ߲߫ ߜߘߍ߫ ߟߎ߫ ߢߌߣߌ߲ ߦߴߌ ߘߐ߫
         contributors_title_html: ߊ߲ ߠߊ߫ ߓߟߏߡߊߜߍ߲ ߠߎ߬
     index:
       license:
@@ -1350,8 +1343,6 @@ nqo:
         ߟߊ߫ %{user_page} ߞߣߐ߫.
       user_page_link: ߞߐߜߍ߫ ߟߊߓߊ߯ߙߕߊ
       anon_edits_link_text: ߊ߬ ߢߊߢߌߣߌ߲߫ ߓߊ߫ ߡߎ߲߬ ߘߐ߫ ߣߌ߲߬ ߞߍߣߍ߲߫.
-    edit:
-      id_not_configured: ID ߡߊ߫ ߘߊߘߐߓߍ߲߬ ߡߎߣߎ߲߬
     export:
       title: ߟߊ߬ߝߏ߬ߦߌ߬ߟߌ
       manually_select: ߦߙߐ߫ ߓߐߣߍ߲ߢߐ߲߰ߡߊ ߟߎ߬ ߓߊߕߐ߬ߡߐ߲߬ ߓߟߏߟߕߊߦߊ ߘߐ߫
@@ -1410,9 +1401,13 @@ nqo:
       whats_on_the_map:
         title: ߡߎ߲߬ ߠߋ߬ ߦߋ߫ ߡߊߔ ߞߊ߲߬
       start_mapping: ߔߊ߬ߔߘߊ߬ߦߊ߬ߟߌ ߘߊߡߌ߬ߣߊ߫
-      add_a_note:
-        title: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲ ߕߎ߬ߡߊ߬ ߕߴߦߋ߲߬؟ ߦߟߌߣߐ ߘߏ߫ ߝߙߊ߬߹
-  map_keys:
+    add_a_note:
+      title: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲ ߕߎ߬ߡߊ߬ ߕߴߦߋ߲߬؟ ߦߟߌߣߐ ߘߏ߫ ߝߙߊ߬߹
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߔߊ߬ߔߘߊ ߦߟߌߣߐ ߟߎ߬ ߦߋ߫
+      map_data_zoom_in_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߔߊ߬ߔߘߊ ߟߐ߲ߕߊ ߦߋ߫
+  legend_panes:
     show:
       entries:
         motorway: ߝߏ߲߬ߘߏ
@@ -1446,6 +1441,16 @@ nqo:
         bicycle_shop: ߣߍ߰ߛߏ߬ ߝߎ߲ߞߎ߲
         bicycle_parking: ߣߍ߰ߛߏ߬ ߟߐ߬ߘߊ߮
         toilets: ߢߍ߲߮
+  share_panes:
+    show:
+      link: ߛߘߌ߬ߜߋ߲ ߥߟߊ߫ HTML
+      long_link: ߛߘߌ߬ߜߋ߲
+      short_link: ߛߘߌ߬ߜߋ߲߫ ߛߎߘߎ߲
+      embed: HTML
+      geo_uri: ߘߎ߰ߡ URL
+      image: ߖߌ߬ߦߊ߬ߓߍ
+      format: 'ߖߙߎߡߎ߲:'
+      download: ߟߊ߬ߖߌ߰ߒ߬ߞߎ߲߬ߠߌ߲
   traces:
     new:
       upload_trace: GPS ߜߋ߬ߙߋ ߟߊߞߎߘߦߊ߫
@@ -1528,9 +1533,6 @@ nqo:
       oauth2_applications: 0Auth 2 ߟߥߊ߬ߟߌ߬ߟߌ ߟߎ߬
       oauth2_authorizations: 0Auth 2 ߖߡߊ߬ߙߌ߬ߦߊ߬ߟߌ
     auth_providers:
-      openid:
-        title: ߌ ߜߊ߲߬ߞߎ߲߫ ߏߔߌ߲ ID ߘߌ߫
-        alt: ߌ ߜߊ߲߬ߞߎ߲߫ ߏߔߌ߲ ID URL ߟߊ߫
       google:
         title: ߌ ߜߊ߲߬ߞߎ߲߫ ߜ߭ߎߜ߭ߏߟ ߟߊ߫
         alt: ߌ ߜߊ߲߬ߞߎ߲߫ ߜ߭ߎߜ߭ߏߟ ߏߔߌ߲ ID ߟߊ߫
@@ -1617,7 +1619,6 @@ nqo:
       my_preferences: ߒ ߠߊ߫ ߝߌ߬ߛߊ߬ߡߊ߲߬ߕߋ ߟߎ߬
       blocks on me: ߓߊ߬ߟߊ߲߬ߠߌ߲ ߡߍ߲ ߦߋ߫ ߒ ߞߊ߲߬
       blocks by me: ߡߍ߲ ߠߎ߬ ߓߊ߬ߟߊ߲߬ߣߍ߲߫ ߦߋ߫ ߒߠߋ ߓߟߏ߫
-      edit_profile: ߢߊߞߙߍ ߡߊߦߟߍ߬ߡߊ߲߫
       send message: ߗߋߛߓߍ߫ ߗߋߣߍ߲
       diary: ߕߋ߬ߟߋ߲
       edits: ߡߊ߬ߦߟߍ߬ߡߊ߲߬ߠߌ߲ ߠߎ߬
@@ -1627,23 +1628,19 @@ nqo:
       ct status: 'ߓߟߏߓߌߟߊߢߐ߲߯ߞߊ߲ ߛߙߊߕߌ ߟߎ߬:'
       email address: 'ߢߎߡߍߙߋ߲߫ߞߏ߲ߘߏ ߛߊ߲߬ߓߊ߬ߕߐ߮:'
       created from: 'ߊ߬ ߛߌ߲ߘߌߣߍ߲߫ ߦߋ߫ ߞߊ߬ ߝߘߊ߫:'
-      role:
-        administrator: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߦߋ߫ ߞߎ߲߬ߠߊ߬ߛߌ߰ߟߊ ߟߋ߬ ߘߌ߫
       create_block: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߓߊ߬ߟߌ߬
       activate_user: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߠߊߢߣߊߡߦߊ߫
       confirm_user: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߠߊߛߙߋߦߊ߫
-      hide_user: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߥߣߊ߬ߙߌ߫
-      unhide_user: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߥߣߊ߬ߙߌ߬ߣߍ߲ ߓߐ߫
-      delete_user: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߖߏ߰ߛߌ߫
       confirm: ߊ߬ ߟߊߛߙߋߦߊ߫
       report: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߠߊߞߏߝߐ߫
+      title:
+        administrator: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߣߌ߲߬ ߦߋ߫ ߞߎ߲߬ߠߊ߬ߛߌ߰ߟߊ ߟߋ߬ ߘߌ߫
     lists:
       show:
         title: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߟߎ߬
         heading: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ ߟߎ߬
       page:
         confirm: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ߫ ߓߊߕߐ߬ߡߐ߲߬ߣߍ߲ ߠߎ߬ ߟߊߛߙߋߦߊ߫
-        hide: ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ߫ ߓߊߕߐ߬ߡߐ߲߬ߣߍ߲ ߠߎ߬ ߢߡߊߘߏ߲߰
         empty: ߕߙߏ߬ߞߏ ߟߊ߬ߓߊ߰ߙߊ߬ߟߊ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߫
       user:
         summary_html: '%{name} ߛߌ߲ߘߌߣߍ߲߫ ߦߋ߫ %{ip_address} ߟߋ߬ ߡߊ߬ %{date} ߟߊ߫'
@@ -1705,24 +1702,13 @@ nqo:
     close: ߊ߬ ߘߊߕߎ߲߯
     share:
       title: ߊ߬ ߟߊߖߍ߲ߛߍ߲߫
-      cancel: ߊ߬ ߘߐߛߊ߬
-      image: ߖߌ߬ߦߊ߬ߓߍ
-      link: ߛߘߌ߬ߜߋ߲ ߥߟߊ߫ HTML
-      long_link: ߛߘߌ߬ߜߋ߲
-      short_link: ߛߘߌ߬ߜߋ߲߫ ߛߎߘߎ߲
-      geo_uri: ߘߎ߰ߡ URL
-      embed: HTML
-      format: 'ߖߙߎߡߎ߲:'
-      download: ߟߊ߬ߖߌ߰ߒ߬ߞߎ߲߬ߠߌ߲
-      short_url: URL ߛߎߘߎ߲
-      center_marker: ߔߊ߬ߔߘߊ ߕߊ߲ߓߊ߲ߓߐ߫ ߣߐ߬ߣߐ߬ߟߊ߲ ߠߊ߫
       view_larger_map: ߔߊ߬ߔߘߊ߬ ߘߐߥߛߊ߬ߣߍ߲ ߦߋ߫
     map:
-      zoom:
-        in: ߞߵߊ߬ ߡߊߛߊ߬ߡߊ߲߫
-        out: ߊ߬ ߡߊߓߐ߫
-      locate:
-        title: ߒ ߘߌ߲߬ߞߌߙߊ ߦߌ߬ߘߊ߬
+      navigation_control:
+        zoom_in: ߞߵߊ߬ ߡߊߛߊ߬ߡߊ߲߫
+        zoom_out: ߊ߬ ߡߊߓߐ߫
+      geolocate_control:
+        find_my_location: ߒ ߘߌ߲߬ߞߌߙߊ ߦߌ߬ߘߊ߬
       base:
         standard: ߛߎߡߊ߲ߘߊ߲ߕߊ
         transport_map: ߡߊ߬ߘߏ߬ߣߌ߲߬ߠߌ߲ ߔߊ߬ߔߘߊ
@@ -1735,15 +1721,11 @@ nqo:
       edit_disabled_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߔߊ߬ߔߘߊ ߡߊߦߟߍ߬ߡߊ߲߫
       createnote_tooltip: ߦߟߌߣߐ ߘߏ߫ ߓߌ߬ߟߊ߫ ߔߊ߬ߔߘߊ ߟߊ߫
       createnote_disabled_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߦߟߌߣߐ ߘߏ߫ ߓߌ߬ߟߊ߫ ߔߊ߬ߔߘߊ ߟߊ߫
-      map_notes_zoom_in_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߔߊ߬ߔߘߊ ߦߟߌߣߐ ߟߎ߬ ߦߋ߫
-      map_data_zoom_in_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߔߊ߬ߔߘߊ ߟߐ߲ߕߊ ߦߋ߫
       queryfeature_tooltip: ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߟߎ߬ ߡߊߢߌ߬ߣߌ߲߬ߞߊ߫
       queryfeature_disabled_tooltip: ߊ߬ ߡߊߛߊ߬ߡߊ߲߫ ߞߊ߬ ߟߊ߬ߓߊ߰ߙߊ߬ߟߌ ߘߏ߫ ߟߎ߫ ߡߊߢߌ߬ߣߌ߲߬ߞߊ߫
     directions:
-      distance: ߝߏ߬ߣߊ߲
       errors:
         no_route: ߛߌߟߊ߫ ߕߍ߫ ߛߐ߲߬ ߛߐ߬ߘߐ߲߬ ߠߊ߫ ߦߙߐ߫ ߝߌ߬ߟߊ ߏ߬ ߟߎ߫ ߕߍߟߊ ߘߐ߫.
-        no_place: ߤߊߞߍ߬ߕߏ߫ - '%{place}' ߕߍ߫ ߛߐ߲߬ ߛߐ߬ߘߐ߲߬ ߠߊ߫.
       instructions:
         continue_without_exit: ߊ߬ ߘߊߓߊ߲߫ %{name} ߘߌ߫
         slight_right_without_exit: ߊ߬ ߕߟߌߡߌ߲߫ ߞߌߣߌ߲ ߝߍ߬ %{name} ߟߊ߫.
@@ -1767,10 +1749,12 @@ nqo:
           eighth: ߈߲
           ninth: ߉߲
           tenth: ߁߀߲
-      time: ߕߎ߬ߡߊ
     query:
       node: ߥߎߙߋ߲ߛߋ߲
       way: ߛߌߟߊ
+    edit:
+      id_not_configured:
+        title: ID ߡߊ߫ ߘߊߘߐߓߍ߲߬ ߡߎߣߎ߲߬
   redactions:
     show:
       confirm: ߌ ߘߍ߲߬ߞߣߍ߬ߦߊ߬ߣߍ߲߫؟

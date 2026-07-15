@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BrowseHelper
   def element_icon(type, object)
     selected_icon_data = { :filename => "#{type}.svg", :priority => 1 }
@@ -47,17 +49,8 @@ module BrowseHelper
     # don't look at object tags if redacted, so as to avoid giving
     # away redacted version tag information.
     unless object.redacted?
-      available_locales = Locale.list(name_locales(object))
-
-      locale = available_locales.preferred(preferred_languages, :default => nil)
-
-      if object.tags.include? "name:#{locale}"
-        name = t "printable_name.with_name_html", :name => tag.bdi(object.tags["name:#{locale}"].to_s), :id => tag.bdi(name)
-      elsif object.tags.include? "name"
-        name = t "printable_name.with_name_html", :name => tag.bdi(object.tags["name"].to_s), :id => tag.bdi(name)
-      elsif object.tags.include? "ref"
-        name = t "printable_name.with_name_html", :name => tag.bdi(object.tags["ref"].to_s), :id => tag.bdi(name)
-      end
+      feature_name = feature_name(object.tags)
+      name = t "printable_name.with_name_html", :name => tag.bdi(feature_name), :id => tag.bdi(id.to_s) if feature_name.present?
     end
 
     name
@@ -69,7 +62,7 @@ module BrowseHelper
 
   def element_strikethrough(object, &)
     if object.redacted? || !object.visible?
-      tag.s(&)
+      tag.del(&)
     else
       yield
     end
@@ -79,32 +72,18 @@ module BrowseHelper
     "nofollow" if object.tags.empty?
   end
 
-  def sidebar_classic_pagination(pages, page_param)
-    max_width_for_default_padding = 35
-
-    width = 0
-    pagination_items(pages, {}).each do |(body)|
-      width += 2 # padding width
-      width += body.length
-    end
-    link_classes = ["page-link", { "px-1" => width > max_width_for_default_padding }]
-
-    tag.ul :class => "pagination pagination-sm mb-2" do
-      pagination_items(pages, {}).each do |body, page_or_class|
-        linked = !(page_or_class.is_a? String)
-        link = if linked
-                 link_to body, url_for(page_param => page_or_class.number), :class => link_classes, **yield(page_or_class)
-               else
-                 tag.span body, :class => link_classes
-               end
-        concat tag.li link, :class => ["page-item", { page_or_class => !linked }]
-      end
-    end
-  end
-
   private
 
-  def name_locales(object)
-    object.tags.keys.map { |k| Regexp.last_match(1) if k =~ /^name:(.*)$/ }.flatten
+  def feature_name(tags)
+    return nil if tags.empty?
+
+    locale_keys = preferred_languages.expand.map { |locale| "name:#{locale}" }
+
+    (locale_keys + %w[name ref addr:housename]).each do |key|
+      return tags[key] if tags[key]
+    end
+    return "#{tags['addr:housenumber']} #{tags['addr:street']}" if tags["addr:housenumber"] && tags["addr:street"]
+
+    nil
   end
 end

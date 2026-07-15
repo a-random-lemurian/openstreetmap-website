@@ -1,11 +1,8 @@
+//= require download_util
 L.extend(L.LatLngBounds.prototype, {
   getSize: function () {
     return (this._northEast.lat - this._southWest.lat) *
            (this._northEast.lng - this._southWest.lng);
-  },
-
-  wrap: function () {
-    return new L.LatLngBounds(this._southWest.wrap(), this._northEast.wrap());
   }
 });
 
@@ -13,37 +10,34 @@ L.OSM.Map = L.Map.extend({
   initialize: function (id, options) {
     L.Map.prototype.initialize.call(this, id, options);
 
-    this.baseLayers = [];
+    this.baseLayers = OSM.LAYER_DEFINITIONS.map((
+      { credit, nameId, leafletOsmId, leafletOsmDarkId, style, styleDark, ...layerOptions }
+    ) => {
+      if (credit) layerOptions.attribution = makeAttribution(credit);
+      if (nameId) layerOptions.name = OSM.i18n.t(`javascripts.map.base.${nameId}`);
 
-    for (const layerDefinition of OSM.LAYER_DEFINITIONS) {
-      let layerConstructor = L.OSM.TileLayer;
-      const layerOptions = {};
-
-      for (const [property, value] of Object.entries(layerDefinition)) {
-        if (property === "credit") {
-          layerOptions.attribution = makeAttribution(value);
-        } else if (property === "nameId") {
-          layerOptions.name = OSM.i18n.t(`javascripts.map.base.${value}`);
-        } else if (property === "leafletOsmId") {
-          layerConstructor = L.OSM[value];
-        } else if (property === "leafletOsmDarkId" && OSM.isDarkMap() && L.OSM[value]) {
-          layerConstructor = L.OSM[value];
-        } else {
-          layerOptions[property] = value;
-        }
+      let layerConstructor;
+      if (OSM.isDark("map")) {
+        layerConstructor = L.OSM[leafletOsmDarkId] ?? L.OSM[leafletOsmId] ?? L.OSM.TileLayer;
+        layerOptions.url = layerOptions.urlDark ?? layerOptions.url;
+      } else {
+        layerConstructor = L.OSM[leafletOsmId] ?? L.OSM.TileLayer;
       }
+
+      layerOptions.url = layerOptions.url?.replace("{ratio}", "{r}");
 
       const layer = new layerConstructor(layerOptions);
       layer.on("add", () => {
         this.fire("baselayerchange", { layer: layer });
       });
-      this.baseLayers.push(layer);
-    }
+      layer.options.style = (OSM.isDark("map") && styleDark) || style;
+      return layer;
+    });
 
     this.noteLayer = new L.FeatureGroup();
     this.noteLayer.options = { code: "N" };
 
-    this.dataLayer = new L.OSM.DataLayer(null, { asynchronous: true });
+    this.dataLayer = new L.OSM.DataLayer(null);
     this.dataLayer.options.code = "D";
 
     this.gpsLayer = new L.OSM.GPS({
@@ -55,7 +49,6 @@ L.OSM.Map = L.Map.extend({
     }).on("remove", () => {
       this.fire("overlayremove", { layer: this.gpsLayer });
     });
-
 
     this.on("baselayerchange", function (event) {
       if (this.baseLayers.indexOf(event.layer) >= 0) {
@@ -73,7 +66,7 @@ L.OSM.Map = L.Map.extend({
         }).prop("outerHTML")
       });
 
-      attribution += credit.donate ? " &hearts; " : ". ";
+      attribution += credit.donate ? " ♥️ " : ". ";
       attribution += makeCredit(credit);
       attribution += ". ";
 
@@ -91,19 +84,19 @@ L.OSM.Map = L.Map.extend({
         children[childId] = makeCredit(credit.children[childId]);
       }
       const text = OSM.i18n.t(`javascripts.map.${credit.id}`, children);
-      if (credit.href) {
-        const link = $("<a>", {
-          href: credit.href,
-          text: text
-        });
-        if (credit.donate) {
-          link.addClass("donate-attr");
-        } else {
-          link.attr("target", "_blank");
-        }
-        return link.prop("outerHTML");
+      if (!credit.href) {
+        return text;
       }
-      return text;
+      const link = $("<a>", {
+        href: credit.href,
+        text: text
+      });
+      if (credit.donate) {
+        link.addClass("donate-attr");
+      } else {
+        link.attr("target", "_blank");
+      }
+      return link.prop("outerHTML");
     }
   },
 
@@ -148,7 +141,9 @@ L.OSM.Map = L.Map.extend({
     const params = {};
 
     if (marker && this.hasLayer(marker)) {
-      [params.mlat, params.mlon] = OSM.cropLocation(marker.getLatLng(), this.getZoom());
+      const { lat, lng } = OSM.cropLocation(marker.getLatLng(), this.getZoom());
+      params.mlat = lat;
+      params.mlon = lng;
     }
 
     let url = location.protocol + "//" + OSM.SERVER_URL + "/";
@@ -230,10 +225,18 @@ L.OSM.Map = L.Map.extend({
       latLng = marker.getLatLng();
     }
 
-    return `geo:${OSM.cropLocation(latLng, zoom).join(",")}?z=${zoom}`;
+    const { lat, lng } = OSM.cropLocation(latLng, zoom);
+    return `geo:${lat},${lng}?z=${zoom}`;
   },
 
   addObject: function (object, callback) {
+    class ElementGoneError extends Error {
+      constructor(message = "Element is gone") {
+        super(message);
+        this.name = "ElementGoneError";
+      }
+    }
+
     const objectStyle = {
       color: "#FF6200",
       weight: 4,
@@ -289,11 +292,32 @@ L.OSM.Map = L.Map.extend({
       const map = this;
       this._objectLoader = new AbortController();
       fetch(OSM.apiUrl(object), {
-        headers: { accept: "application/json" },
+        headers: { accept: "application/json", ...OSM.oauth },
         signal: this._objectLoader.signal
       })
-        .then(response => response.json())
+        .then(async response => {
+          if (response.ok) {
+            return response.json();
+          }
+
+          if (response.status === 410) {
+            throw new ElementGoneError();
+          }
+
+          const status = `HTTP Error ${response.status} ${response.statusText}`;
+          if (response.status !== 400 && response.status !== 509) {
+            throw new Error(status);
+          }
+
+          const text = await response.text();
+          throw new Error(text || status);
+        })
         .then(function (data) {
+          const visible_data = {
+            ...data,
+            elements: data.elements?.filter(el => el.visible !== false) ?? []
+          };
+
           map._object = object;
 
           map._objectLayer = new L.OSM.DataLayer(null, {
@@ -310,13 +334,23 @@ L.OSM.Map = L.Map.extend({
                    (object.type === "relation" && Boolean(relationNodes[node.id]));
           };
 
-          map._objectLayer.addData(data);
+          map._objectLayer.addData(visible_data);
           map._objectLayer.addTo(map);
 
           if (callback) callback(map._objectLayer.getBounds());
           map.fire("overlayadd", { layer: map._objectLayer });
+          $("#browse_status").empty();
         })
-        .catch(() => {});
+        .catch(function (error) {
+          if (error.name === "AbortError") return;
+          if (error instanceof ElementGoneError) {
+            $("#browse_status").empty();
+            return;
+          }
+          OSM.displayLoadError(error?.message, () => {
+            $("#browse_status").empty();
+          });
+        });
     }
   },
 
@@ -366,42 +400,19 @@ L.OSM.Map = L.Map.extend({
   }
 });
 
-L.Icon.Default.imagePath = "/images/";
-
-L.Icon.Default.imageUrls = {
-  "/images/marker-icon.png": OSM.MARKER_ICON,
-  "/images/marker-icon-2x.png": OSM.MARKER_ICON_2X,
-  "/images/marker-shadow.png": OSM.MARKER_SHADOW
-};
-
-L.extend(L.Icon.Default.prototype, {
-  _oldGetIconUrl: L.Icon.Default.prototype._getIconUrl,
-
-  _getIconUrl: function (name) {
-    const url = this._oldGetIconUrl(name);
-    return L.Icon.Default.imageUrls[url];
-  }
-});
-
-OSM.isDarkMap = function () {
-  const mapTheme = $("body").attr("data-map-theme");
-  if (mapTheme) return mapTheme === "dark";
-  const siteTheme = $("html").attr("data-bs-theme");
-  if (siteTheme) return siteTheme === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-};
-
-OSM.getMarker = function ({ icon = "MARKER_RED", shadow = true, height = 41 }) {
-  const options = {
-    iconUrl: OSM[icon.toUpperCase()] || OSM.MARKER_RED,
-    iconSize: [25, height],
-    iconAnchor: [12, height],
+OSM.getMarker = function ({ icon = "dot", color = "var(--marker-red)", ...options }) {
+  const html = `<svg viewBox="0 0 25 40" class="pe-none" overflow="visible"><use href="#pin-shadow" /><use href="#pin-${icon}" color="${color}" class="pe-auto" /></svg>`;
+  return L.divIcon({
+    ...options,
+    html,
+    iconSize: [25, 40],
+    iconAnchor: [12.5, 40],
     popupAnchor: [1, -34]
-  };
-  if (shadow) {
-    options.shadowUrl = OSM.MARKER_SHADOW;
-    options.shadowSize = [41, 41];
-    options.shadowAnchor = [12, 41];
-  }
-  return L.icon(options);
+  });
+};
+
+OSM.noteMarkers = {
+  "closed": OSM.getMarker({ icon: "tick", color: "var(--marker-green)" }),
+  "new": OSM.getMarker({ icon: "plus", color: "var(--marker-blue)" }),
+  "open": OSM.getMarker({ icon: "cross", color: "var(--marker-red)" })
 };

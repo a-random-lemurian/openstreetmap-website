@@ -8,6 +8,7 @@
 # Author: Karthi.dr
 # Author: Krishnaprasaths
 # Author: Mahir78
+# Author: Matrix
 # Author: MrKomodoDragon
 # Author: Rakeshonwiki
 # Author: Sank
@@ -26,7 +27,7 @@ ta:
       prompt: கோப்பை தேர்ந்தெடுக்கவும்
     submit:
       diary_comment:
-        create: சேமி
+        create: கருத்துரை
       diary_entry:
         create: வெளியிடு
         update: புதுப்பி
@@ -48,9 +49,16 @@ ta:
         update: தொகுதியைப் புதுப்பி
   activerecord:
     errors:
+      messages:
+        display_name_is_user_n: n என்பது உங்கள் பயனர் ID-யாக இல்லாவிட்டால், user_n
+          ஆக இருக்க நீங்கள் முடியாது.
       models:
         user_mute:
           is_already_muted: ஏற்கனவே மௌனிக்கப்பட்டுள்ளார்
+        social_link:
+          attributes:
+            url:
+              http_parse_error: URL http:// அல்லது https:// உடன் தொடங்க வேண்டும்.
     models:
       acl: அனுமதிக் கட்டுப்பாட்டுப் பட்டியல்
       changeset: மாற்றங்கள்
@@ -64,6 +72,7 @@ ta:
       message: செய்தி
       node: முனையம்
       node_tag: முனைய இணைப்பு
+      note: குறிப்பு
       old_node: பழைய முனையம்
       old_node_tag: பழைய முனைய இணைப்பு
       old_relation: பழைய உறவு
@@ -87,23 +96,12 @@ ta:
       way_node: வழி முனையம்
       way_tag: வழி இணைப்பு
     attributes:
-      client_application:
-        name: பெயர் (தேவை)
-        url: முதன்மை பயன்பாட்டு URL (தேவை)
-        callback_url: திரும்ப அழைக்கும் URL
-        support_url: URL ஐ ஆதரிக்கவும்
-        allow_read_prefs: அவர்களின் பயனர் விருப்பங்களை வாசி
-        allow_write_prefs: அவர்களின் பயனர் விருப்பங்களை மாற்றவும்
-        allow_write_diary: நாட்குறிப்பு உள்ளீடுகள், கருத்துகள் மற்றும் நண்பர்களை உருவாக்குங்கள்
-        allow_write_api: வரைபடத்தை மாற்றவும்
-        allow_read_gpx: அவர்களின் தனிப்பட்ட GPS தடங்களைப் படிக்கவும்
-        allow_write_gpx: GPS தடங்களை பதிவேற்றவும்
-        allow_write_notes: குறிப்புகளை மாற்றவும்
       diary_comment:
         body: உள்ளடக்கம்
       diary_entry:
         user: பயனர்
         title: பொருள்
+        body: உள்ளடக்கம்
         latitude: குறுக்குக் கோடு
         longitude: குத்துயரக் கோடு
         language_code: மொழி
@@ -165,6 +163,7 @@ ta:
   auth:
     providers:
       google: கூகுள்
+      apple: ஆப்பிள்
       facebook: முகநூல்
       github: கிட்ஹப்
       wikipedia: விக்கிப்பீடியா
@@ -177,10 +176,6 @@ ta:
     show:
       title: கணக்கை திருத்து
       current email address: 'தற்பொழுதுள்ள மின்னஞ்சல் முகவரி:'
-      openid:
-        link text: இது என்ன?
-      contributor terms:
-        link text: இது என்ன?
       save changes button: மாற்றங்களைச் சேமி
     go_public:
       email_not_revealed: உங்கள் மின்னஞ்சல் முகவரி பொதுவில் வெளியிடப்படாது.
@@ -210,8 +205,6 @@ ta:
     version: பதிப்பு
     in_changeset: மாற்றங்கள்
     anonymous: அடையாளமற்றவர்
-    view_history: வரலாற்றைக் காண்க
-    view_details: விவரங்களைக் காட்டு
     location: 'இடம்:'
     relation:
       members: உறுப்பினர்கள்
@@ -280,8 +273,6 @@ ta:
       title_nearby: அருகிலுள்ள பயனர்களின் நாட்குறிப்பேடுகள்
       user_title: '%{user}''ரின் நாட்குறிப்பேடு'
       in_language_title: '%{language}ல் நாட்குறிப்பேடு உள்ளீடுகள்'
-      new: புதிய நாட்குறிப்பேடு உள்ளீடு
-      new_title: ஒரு புதிய பதிவை உங்கள் பயனர் நாட்குறிப்பேட்டில் உருவாக்கு
       no_entries: டைரி உள்ளீடுகள் இல்லை
     page:
       recent_entries: சமீப டைரி உள்ளீடுகள்
@@ -309,6 +300,9 @@ ta:
       report: இந்தப் பின்னூட்டத்தை முறையிடுக
     location:
       location: 'இடம்:'
+    navigation:
+      new: புதிய நாட்குறிப்பேடு உள்ளீடு
+      new_title: ஒரு புதிய பதிவை உங்கள் பயனர் நாட்குறிப்பேட்டில் உருவாக்கு
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -554,9 +548,11 @@ ta:
           lock: பூட்டு
           river: ஆறு
           waterfall: நீர்வீழ்ச்சி
-    results:
-      no_results: முடிவுகள் எதுவும் காணப்படவில்லை
-      more_results: மேலும் முடிவுகள்
+  searches:
+    queries:
+      create:
+        no_results: முடிவுகள் எதுவும் காணப்படவில்லை
+        more_results: மேலும் முடிவுகள்
   reports:
     new:
       categories:
@@ -566,15 +562,16 @@ ta:
           spam_label: இந்தக் குறிப்பு ஒரு எரிதம்
           personal_label: இந்தக் குறிப்பில் தனிநபர் தகவல்கள் உள்ளன
   layouts:
-    home: முகப்பு
-    logout: விடுபதிகை
-    log_in: புகுபதிகை
-    edit: தொகு
-    history: வரலாறு
-    help: உதவி
-    copyright: பதிப்புரிமை
     learn_more: மேலும் அறிய
-    more: மேலும்
+    header:
+      copyright: பதிப்புரிமை
+      edit: தொகு
+      help: உதவி
+      history: வரலாறு
+      home: முகப்பு
+      log_out: விடுபதிகை
+      log_in: புகுபதிகை
+      more: மேலும்
   user_mailer:
     email_confirm:
       greeting: வணக்கம்,
@@ -640,11 +637,14 @@ ta:
     update:
       flash changed: உங்கள் கடவுச்சொல் மாற்றப்பட்டது.
   profiles:
-    edit:
-      image: 'படம்:'
-      new image: ஒரு படத்தை சேர்
-      keep image: நடப்பு படத்தை வைத்திரு
-      delete image: நடப்பு படத்தை நீக்கு
+    profile_sections:
+      navigation:
+        image: 'படம்:'
+    images:
+      show:
+        new image: ஒரு படத்தை சேர்
+        keep image: நடப்பு படத்தை வைத்திரு
+        delete image: நடப்பு படத்தை நீக்கு
   sessions:
     new:
       tab_title: புகுபதிகை
@@ -688,13 +688,13 @@ ta:
       title: வருக!
       rules:
         title: விதிமுறைகள்!
-  map_keys:
+  legend_panes:
     show:
       entries:
         primary: முதன்மையான சாலை
         secondary: இரண்டாம் நிலை சாலை
         unclassified: வகைப்படுத்தாத சாலை
-        cycleway_mtb: மலையீருருளிப் பாதை
+        mountain_bike_route: மலையீருருளிப் பாதை
         rail: இரயில்வே
         capital: தலைநகரம்
         city: நகரம்
@@ -761,6 +761,10 @@ ta:
   application:
     settings_menu:
       muted_users: மௌனித்த பயனர்கள்
+    auth_providers:
+      apple:
+        title: ஆப்பிள் மூலம் உள்நுழையவும்
+        alt: ஆப்பிள் சின்னம்
   users:
     new:
       title: கணக்கை உருவாக்கு
@@ -779,25 +783,22 @@ ta:
       ct declined: நிராகரிக்கப்பட்டது
       email address: 'மின்னஞ்சல் முகவரி:'
       status: 'நிலை:'
-      role:
-        administrator: இந்த பயனர் ஒரு நிர்வாகி
-        moderator: இந்த பயனர் ஒரு நடுவர்
-        grant:
-          administrator: நிர்வாகி அனுமதியை அளிக்கவும்
-          moderator: நடுவர் அனுமதி அளிக்கவும்
-        revoke:
-          administrator: நிர்வாகி அனுமதியை திரும்பபெறவும்
-          moderator: நடுவர் அனுமதியை திரும்பபெறவும்
       block_history: பெறப்பட்ட தடுப்புகளை காண்
       moderator_history: கொடுக்கப்பட்ட தடைகளை காண்
       comments: கருத்துரைகள்
       create_block: இப் பயனரைத் தடைசெய்
       activate_user: இந்த பயனரை  செயற்படுத்து
       confirm_user: இந்த பயனரை உறுதிசெய்
-      hide_user: இந்த பயனரை மறை
-      unhide_user: இந்த பயனரை மறைத்ததை நீக்கு
-      delete_user: இப்பயனரை நீக்கு
       confirm: உறுதிசெய்
+      title:
+        administrator: இந்த பயனர் ஒரு நிர்வாகி
+        moderator: இந்த பயனர் ஒரு நடுவர்
+      grant:
+        administrator: நிர்வாகி அனுமதியை அளிக்கவும்
+        moderator: நடுவர் அனுமதி அளிக்கவும்
+      revoke:
+        administrator: நிர்வாகி அனுமதியை திரும்பபெறவும்
+        moderator: நடுவர் அனுமதியை திரும்பபெறவும்
     lists:
       show:
         title: பயனர்கள்
@@ -851,6 +852,11 @@ ta:
       title: புதுக் குறிப்பு
     notes_paging_nav:
       showing_page: பக்கம் %{page}
+  javascripts:
+    directions:
+      errors:
+        no_place:
+          title: தேடல் தோல்வியடைந்தது
   redactions:
     update:
       flash: மாற்றங்கள் சேமிக்கப்பட்டன

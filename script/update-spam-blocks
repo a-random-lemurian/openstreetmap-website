@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), "..", "config", "environment")
+require_relative File.join("..", "config", "environment")
 require "generator"
 
 addresses = User.count(
   :conditions => {
     :status => %w[suspended deleted],
-    :creation_time => Time.now.utc - 28.days..Time.now.utc
+    :creation_time => (Time.now.utc - 28.days)..Time.now.utc
   },
   :group => :creation_address
 )

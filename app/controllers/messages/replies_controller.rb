@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Messages
   class RepliesController < ApplicationController
-    layout "site"
+    layout :site_layout
 
     before_action :authorize_web
     before_action :set_locale
@@ -14,7 +16,7 @@ module Messages
 
     # Allow the user to reply to another message.
     def new
-      message = Message.find(params[:message_id])
+      message = Message.find(params.expect(:message_id))
 
       if message.recipient == current_user
         message.update(:message_read => true)

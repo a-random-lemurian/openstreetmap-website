@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class IssuesTest < ApplicationSystemTestCase
@@ -204,7 +206,7 @@ class IssuesTest < ApplicationSystemTestCase
     end
 
     # Second Page
-    click_on "Older Issues"
+    click_on "Older Issues", :match => :first
     assert_no_content I18n.t("issues.page.user_not_found")
     assert_no_content I18n.t("issues.page.issues_not_found")
     4.upto(8).each do |n|
@@ -215,7 +217,7 @@ class IssuesTest < ApplicationSystemTestCase
     end
 
     # Back to First Page
-    click_on "Newer Issues"
+    click_on "Newer Issues", :match => :first
     assert_no_content I18n.t("issues.page.user_not_found")
     assert_no_content I18n.t("issues.page.issues_not_found")
     4.upto(8).each do |n|

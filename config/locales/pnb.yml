@@ -3,6 +3,7 @@
 # Export driver: phpyaml
 # Author: Ajeje Brazorf
 # Author: Bgo eiu
+# Author: Maro21
 # Author: Marwin H.H.
 ---
 pnb:
@@ -74,19 +75,6 @@ pnb:
       way_node: راہ وچ نوڈ
       way_tag: راہ دا ٹیگ
     attributes:
-      client_application:
-        name: ناں (لازم)
-        url: ایس اَیپ لئی مکھ کڑی دا پتہ (لازم)
-        callback_url: کال‌بیک کڑی دا پتہ
-        support_url: مدد‌ کڑی دا پتہ
-        allow_read_prefs: اوس ورتنوالے دیاں ترجیحاں پڑھا سکدیاں
-        allow_write_prefs: اوس ورتنوالے دیان ترجیحاں سودھ سکدیاں
-        allow_write_diary: اوس روزنامچے وچ لیکھ بݨا سکدے، ٹپݨیاں کر سکدیاں تے دوست
-          جوڑ سکدے
-        allow_write_api: ایہہ نقشہ سودھ سکدا
-        allow_read_gpx: اوس ورتنوالے دیاں لُکاؤݨ کھرے کھوجاں پڑھا سکدیاں
-        allow_write_gpx: اوس لئی کھرے کھوجاں چڑھا سکدیاں
-        allow_write_notes: اوس لئی نوٹ سودھ سکدے
       diary_comment:
         body: مُکھ بھاگ
       diary_entry:
@@ -233,13 +221,9 @@ pnb:
       title: کھاتہ سودھو
       current email address: حالاں ای‌میل پتہ
       external auth: باہرلی تصدیق
-      openid:
-        link text: اِیہہ کی اے؟
-      contributor terms:
+      contributor_terms:
         heading: لیکھکاں لئی شرطنامہ
         agreed: تسیں یوگدانی دیاں نویاں شرتاں نال سہمتی جتائی اےـ
-        not yet agreed: توسیں یوگدانی دیاں نویاں شرتاں نال سہمتی نہیں جتائی۔
-        link text: اِیہہ کیہ اے؟
       save changes button: ویروے سانبھو
       delete_account: کھاتہ مٹاؤ…
     go_public:
@@ -286,8 +270,6 @@ pnb:
       one: 1 راہ
       other: '%{count} راہ'
     download_xml: سروت دی فئل
-    view_history: اتیت ویکھو
-    view_details: وروے ویکھو
     location: 'ستھتی:'
     common_details:
       coordinates_html: '%{latitude}; %{longitude}'
@@ -432,9 +414,6 @@ pnb:
       title_nearby: نیڑے تیڑے تے نقشے والے دے روزنامچے
       user_title: ایہہ «%{user}» روزنامچے دے لیکھ
       in_language_title: ایہہ %{language} وچ روزنامچے دے لیکھ
-      new: روزنامچے وچ نواں لیکھ بݨاؤ
-      new_title: میرے روزنامچے وچ نواں لیکھ لکھو
-      my_diary: میرا روزنامچہ
       no_entries: روزنامچے وچ لیکھ نہیں اے
     page:
       recent_entries: حالیہ روزنامچے دے لیکھ
@@ -486,6 +465,10 @@ pnb:
       all:
         title: نقشے بارے وچ روزنامچے دے لیکھ
         description: حالیہ نقشے بارے وچ روزنامچے دے لیکھ
+    navigation:
+      my_diary: میرا روزنامچہ
+      new: روزنامچے وچ نواں لیکھ بݨاؤ
+      new_title: میرے روزنامچے وچ نواں لیکھ لکھو
   doorkeeper:
     flash:
       applications:
@@ -1051,12 +1034,15 @@ pnb:
         level8: شہر دی حد
         level9: پنڈ دی جوہ
         level10: اُپنگر دی جوہ
-    results:
-      no_results: کوئی نتیجے نہیں لبھے
-      more_results: ہور نتیجے
+  searches:
+    queries:
+      create:
+        no_results: کوئی نتیجے نہیں لبھے
+        more_results: ہور نتیجے
   directions:
-    search:
+    show:
       title: دشاواں
+      time: ویلہ
   issues:
     index:
       title: مسئلے
@@ -1096,12 +1082,11 @@ pnb:
       other_issues_against_this_user: ایس ورتنوالے بارے وچ ہور مسئلے
       no_other_issues: ایس ورتنوالے بارے وچ ہور مسئلے کوئی نہیں اے۔
       comments_on_this_issue: ایس مسئلے تے ٹپݨیاں
+      comment_from_html: '%{comment_created_at} «%{user_link}» دی ٹپݨی'
     resolve:
       resolved: ہݨے مسئلے دا حال ”حل کھندھیا“
     reopen:
       reopened: ہݨے مسئلے دا حال ”کھُلھا“
-    comments:
-      comment_from_html: '%{comment_created_at} «%{user_link}» دی ٹپݨی'
     reports:
       reported_by_html: '%{updated_at} %{user} %{category} نال رپورٹ کیتی سی۔'
     helper:
@@ -1114,7 +1099,6 @@ pnb:
   reports:
     new:
       title_html: '%{link} رپورٹ کریو'
-      missing_params: نویں رپورٹ نہیں بݨا سکدی
       disclaimer:
         intro: 'پہلا پڑھیو:'
       categories:
@@ -1137,31 +1121,31 @@ pnb:
   layouts:
     project_name:
       title: اوپن سٹریٹ میپ
-      h1: اوپن سٹریٹ میپ
     logo:
       alt_text: اوپن سٹریٹ میپ دا لوگو
-    home: گھریلو ٹکاݨے تے جاؤ
-    logout: لوگ‌آؤٹ کرو
-    log_in: لَوگ اِین کرو
-    sign_up: بھرتی ہووو
     start_mapping: نکشابندی شُرو کرو
-    edit: سودھو
-    history: تریخ
-    export: برامد کرو
-    issues: مسئلے
-    gps_traces: کھرے کھوجاں
-    user_diaries: روزنامچے
-    edit_with: '%{editor} نال سودھو'
     intro_header: اوپن سٹریٹ میپ تے سواگت اے!
     partners_fastly: فَیستلی
     partners_partners: جوڑیدار
     tou: ورتن شرطاں
-    help: مدد
-    about: بارے
-    copyright: نکل حق
-    communities: مجلساں
     learn_more: ہور سکھو
-    more: ہور
+    header:
+      about: بارے
+      communities: مجلساں
+      copyright: نکل حق
+      edit: سودھو
+      edit_with: '%{editor} نال سودھو'
+      export: برامد کرو
+      gps_traces: کھرے کھوجاں
+      help: مدد
+      history: تریخ
+      home: گھریلو ٹکاݨے تے جاؤ
+      issues: مسئلے
+      log_out: لوگ‌آؤٹ کرو
+      log_in: لَوگ اِین کرو
+      more: ہور
+      sign_up: بھرتی ہووو
+      user_diaries: روزنامچے
   user_mailer:
     diary_comment_notification:
       subject: '[⁠اوایس‌ایم⁠] روزنامچے تے «⁠%{user}⁠» ٹپݨی کیتے'
@@ -1261,6 +1245,9 @@ pnb:
         سکوگے۔'
       whitelist: جے لبھ نہیں سکوگے، تہاڈے سپَیم میل دکھیو یا ”وائیٹ‌لِسٹ“ وچ %{sender}
         پایو۔
+    gravatar:
+      disabled: گریواتار بند کیتا
+      enabled: گروٹر ویکھݨ چالو اے۔
   messages:
     new:
       title: سنہا گھلو
@@ -1333,33 +1320,39 @@ pnb:
     update:
       flash changed: تہاڈے پاس‌ورڈ تبدیلی کیتی گئی سی۔
   preferences:
-    show:
-      title: ترجیحاں
-      save: ترجیحاں نواں کرو
-    update:
-      failure: ترجیحاں ناواں نہیں کر سکدے اے۔
-    update_success_flash:
-      message: ترجیحاں نواں کیتا
+    preferences:
+      update:
+        failure: ترجیحاں ناواں نہیں کر سکدے اے۔
+      update_success_flash:
+        message: ترجیحاں نواں کیتا
+    basic_preferences:
+      show:
+        title: ترجیحاں
+        save: ترجیحاں نواں کرو
   profiles:
-    edit:
-      title: تہاڈے صفحہ سودھو
-      save: ٹہاڈے صفحہ نواں کرو
-      cancel: رد کرو
-      image: تصویر
-      gravatar:
-        gravatar: گراوتر ورتے
-        what_is_gravatar: کی گراوتر اے؟
-        disabled: گریواتار بند کیتا
-        enabled: گروٹر ویکھݨ چالو اے۔
-      new image: اِک تصویر پایو
-      keep image: مَوجودہ تصویر رکھو
-      delete image: موجدہ تصویر مٹاؤ
-      replace image: موجودہ تصویر وٹاؤ
-      home location: کیہ رہندے
-      no home location: تسیں اپݨے گھر دی ستھتی نہیں دسّی اے۔
-    update:
-      success: صفحہ نواں کیتا
-      failure: تہاڈے صفحہ نہیں کر سکدے اے۔
+    profile_sections:
+      navigation:
+        image: تصویر
+    descriptions:
+      show:
+        title: تہاڈے صفحہ سودھو
+        save: ٹہاڈے صفحہ نواں کرو
+        cancel: رد کرو
+    links:
+      show:
+        title: تہاڈے صفحہ سودھو
+    images:
+      show:
+        gravatar:
+          gravatar: گراوتر ورتے
+          what_is_gravatar: کی گراوتر اے؟
+        new image: اِک تصویر پایو
+        keep image: مَوجودہ تصویر رکھو
+        delete image: موجدہ تصویر مٹاؤ
+        replace image: موجودہ تصویر وٹاؤ
+    locations:
+      show:
+        no home location: تسیں اپݨے گھر دی ستھتی نہیں دسّی اے۔
   sessions:
     new:
       tab_title: لوگ‌این کرو
@@ -1405,6 +1398,7 @@ pnb:
       used_by_html: ویب سائیٹ، اَیپ تے ہارڈویر لئی %{name} توں نقشے دے ڈیٹا دیندے
         اے۔
       lede_text: اِتھے سڑک، پِنڈ، شہر، نگر تے ہور نشان لئی نقشے والے نقش پاؤندے گیئے
+    about_section:
       local_knowledge_title: ستھانی گیان
       local_knowledge_html: اِتھے نیڑے تیڑے دے جاݨ نقشے والے چاہیدے۔ تصویراں، سیٹلائیٹ
         دا کھرا تے ہور نقشے لیکھک ورتدے جو نقشہ نواں کرن تے دُرُست اے۔
@@ -1431,25 +1425,21 @@ pnb:
         attribution_example:
           alt: ویب سائیٹ تے حوالے لئی مثال
           title: حوالے لئی مثال
-        more_title_html: ہور جاݨکاری لبھݨ واستے
-        contributors_title_html: ساڈی یوگدانی
         infringement_title_html: حوالے قواعد بارے وچ منع کرن
         infringement_1_html: نقشے والے نا آزاد سروت، مثلاً گوگل، ورت نہیں سکدے اے۔
           ایہہ لئی پہلے لیکھک کہݨ‌گیئے چاہیدے سی۔
+        contributors_title_html: ساڈی یوگدانی
     index:
       js_1: تہاڈے براؤزر جاواسکرپٹ نہیں ورتیئے، یا تسیں جاواسکرپٹ بند کیتے سی۔
       js_2: ایس ویب‌سائیٹ دا نقشہ جاواسکرپٹ ورتدا۔
       license:
         copyright: اوپن سٹریٹ میپ تے لیکھک لئی آزاد لائیسنس نال ویب سائیٹ چھپیا سی۔
-      remote_failed: سودھ کر نہیں سکدے۔ خبرے جو اَیپ چالو تے ریموٹ کنٹرول چالو وکھیو۔
     not_public_flash:
       not_public: تہاڈیاں سودھاں دی عوام چݨ نہیں چالو ہندی سی۔
       not_public_description_html: ہݨے تسیں نقشے سودھ نہیں سکدے، عوام چالو چݨ %{user_page}
         تے جایو۔
       user_page_link: ورتنوالے دا صفحہ
       anon_edits_link_text: پتہ کرو کہ ماملا ایس ترھاں کیوں اے۔
-    edit:
-      id_not_configured: آئی‌ڈی ایڈیٹر نہیں چالو ہندا سی۔
     export:
       title: برامد کرو
       manually_select: آپݨے آپ اِکّ وکھرا کھیتر چݨو
@@ -1530,11 +1520,15 @@ pnb:
       rules:
         title: قواعد!
       start_mapping: نکشابندی شُرو کرو
-      add_a_note:
-        title: سودھ کرن دی وہل نہیں اے؟ کجھ نوٹ پا سکیو!
+    add_a_note:
+      title: سودھ کرن دی وہل نہیں اے؟ کجھ نوٹ پا سکیو!
     communities:
       title: مجلساں
-  map_keys:
+  layers_panes:
+    show:
+      map_notes_zoom_in_tooltip: نوٹ دکھݨ لئی وڈا کریو
+      map_data_zoom_in_tooltip: ڈیٹے دکھݨ لئی وڈا کریو
+  legend_panes:
     show:
       entries:
         motorway: موٹروے
@@ -1546,9 +1540,9 @@ pnb:
         track: ٹرَیک
         bridleway: گھڑے دے ڈگرے
         cycleway: سائیکل‌وے
-        cycleway_national: راشٹری سائیکل‌وے
-        cycleway_regional: کھیتری سائیکل‌وے
-        cycleway_local: ستھانک سائیکل‌وے
+        national_bike_route: راشٹری سائیکل‌وے
+        regional_bike_route: کھیتری سائیکل‌وے
+        local_bike_route: ستھانک سائیکل‌وے
         footway: فُت‌وے
         rail: ریلوے
         subway: سبوے
@@ -1592,6 +1586,19 @@ pnb:
         bicycle_shop: سائیکل دی دکان
         bicycle_parking: سائیکل پارکنگ
         toilets: ٹوئیلٹ
+  share_panes:
+    show:
+      link: کڑی یا ایچ‌ٹی‌ایم‌ایل
+      include_marker: چِنھ نال سانجھو
+      long_link: کڑی
+      short_link: نکی کڑی
+      embed: ایچ ٹی ایم ایل
+      geo_uri: جیو یو آر ائی
+      image: تصویر
+      format: 'فارمیٹ:'
+      scale: 'پیمانا:'
+      image_dimensions_html: '%{height} × %{width} تصویر میعری نقشہ ویکھݨ‌گی اے'
+      download: ڈاؤنلوڈ کرو
   traces:
     visibility:
       private: نجی (صرف انام جاݨکاری ویکھدے، پوئینٹاں لئی کوئی لڑی نہیں اے)
@@ -1666,9 +1673,6 @@ pnb:
       oauth2_applications: آوتھ ورژن 2 اَیپ
       oauth2_authorizations: آوتھ ورژن 2 ورتݨ
     auth_providers:
-      openid:
-        title: اوپن آئی‌ڈی نال لوگ‌این کرو
-        alt: اوپن آئی ڈی یو آر ایل ورتو
       google:
         title: گوگل نال لوگ‌این کرو
         alt: گوگل ورتو
@@ -1753,7 +1757,6 @@ pnb:
       my_dashboard: ڈیش بورڈ
       blocks on me: میرے تے روکاں
       blocks by me: میرے ولوں رکاں
-      edit_profile: تہاڈے صفحہ سودھو
       send message: سنہا بھیجو
       diary: روزنامچہ
       edits: سودھاں
@@ -1767,12 +1770,6 @@ pnb:
       created from: 'کتھوں اُساریا:'
       status: حالت
       spam score: 'سپیم سکور:'
-      role:
-        administrator: ایہہ ورتنوالا اِکّ پرشاسک اے۔
-        moderator: ایہہ ورتنوالا اِکّ وچولا اے۔
-        grant:
-          administrator: پرشاسکی حق دیق
-          moderator: وچولگی دے حق دیو
       block_history: حالیہ روک
       moderator_history: روک دیݨے
       comments: ٹپݨیاں
@@ -1780,11 +1777,14 @@ pnb:
       activate_user: ایس ورتنوالے نوں کریا شیل کرو
       confirm_user: ایس ورتنوالے نوں تصدیق کرو
       unconfirm_user: ایس ورتنوالے نوں اݨ تصدیق کرو
-      hide_user: ایس ورتنوالے نوں لُکاؤ
-      unhide_user: ایس ورتنوالے دا اُہلا ہٹاؤ
-      delete_user: ایس ورتنوالے نوں مٹاؤ
       confirm: پکا کرو
       report: ایس ورتنوالا رپورٹ کریو
+      title:
+        administrator: ایہہ ورتنوالا اِکّ پرشاسک اے۔
+        moderator: ایہہ ورتنوالا اِکّ وچولا اے۔
+      grant:
+        administrator: پرشاسکی حق دیق
+        moderator: وچولگی دے حق دیو
     go_public:
       flash success: ہݨے تہادیاں ساریاں سودھاں عوام اے، تسیں سودھ سکدے اے۔
     lists:
@@ -1793,7 +1793,6 @@ pnb:
         heading: ورتنوالے
       page:
         confirm: چݨے ہوۓ ورتنوالیاں دی تصدیق کرو
-        hide: چݨے ہوۓ ورتنوالے لُکاؤ
         empty: کوئی میل کھاندے ورتنوالے نہیں لبھے
     changeset_comments:
       page:
@@ -1883,31 +1882,18 @@ pnb:
     close: بند کرو
     share:
       title: سانجھا کرو
-      cancel: رد کرو
-      image: تصویر
-      link: کڑی یا ایچ‌ٹی‌ایم‌ایل
-      long_link: کڑی
-      short_link: نکی کڑی
-      geo_uri: جیو یو آر ائی
-      embed: ایچ ٹی ایم ایل
-      format: 'فارمیٹ:'
-      scale: 'پیمانا:'
-      image_dimensions: '%{height} × %{width} تصویر میعری نقشہ ویکھݨ‌گی اے'
-      download: ڈاؤنلوڈ کرو
-      short_url: چھوٹی کڑی
-      include_marker: چِنھ نال سانجھو
       view_larger_map: وڈیرا نقشہ ویکھو
     embed:
       report_problem: کوئی مسئلہ رپورٹ کریو
-    key:
+    legend:
       title: نقشے دا ٹیکا
       tooltip: نقشے دا ٹیکا
     map:
-      zoom:
-        in: وڈا کرو
-        out: چھوٹی کرو
-      locate:
-        title: میری ستھتی ویکھاؤ
+      navigation_control:
+        zoom_in: وڈا کرو
+        zoom_out: چھوٹی کرو
+      geolocate_control:
+        find_my_location: میری ستھتی ویکھاؤ
       base:
         standard: معیاری
         cyclosm: سائیکل
@@ -1926,8 +1912,6 @@ pnb:
       edit_disabled_tooltip: نقشہ سودھݨ واسطے اندر نوں جاؤ
       createnote_tooltip: نقشے تے نوٹ پایو
       createnote_disabled_tooltip: نقشے تے نوٹ پاوݨ لئی وڈا کریو
-      map_notes_zoom_in_tooltip: نوٹ دکھݨ لئی وڈا کریو
-      map_data_zoom_in_tooltip: ڈیٹے دکھݨ لئی وڈا کریو
       queryfeature_tooltip: نقشاں لئی پرشن
       queryfeature_disabled_tooltip: نقش دے پرشن لئی وڈا کریو
     directions:
@@ -1947,7 +1931,6 @@ pnb:
           eighth: اٹھواں
           ninth: نونواں
           tenth: دسواں
-      time: ویلہ
     query:
       node: نوڈ
       way: راہ
@@ -1960,6 +1943,9 @@ pnb:
       show_address: پتہ ویکھو
       query_features: نقشاں لئی پرشن
       centre_map: نقشے نوں اِتھے کیندرت کرو
+    edit:
+      id_not_configured:
+        title: آئی‌ڈی ایڈیٹر نہیں چالو ہندا سی۔
   redactions:
     edit:
       heading: سینسر سودھو

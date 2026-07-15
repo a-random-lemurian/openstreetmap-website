@@ -2,6 +2,10 @@
 @import "parameters";
 @import "bootstrap";
 @import "rails_bootstrap_forms";
+@import "colors";
+
+$bootstrap-icons-font-dir: "bootstrap-icons/font/fonts";
+@import "bootstrap-icons/font/bootstrap-icons";
 
 /* Styles common to large and small screens */
 
@@ -9,42 +13,11 @@
 
 body {
   font-size: $typeheight;
-  --dark-mode-map-filter: none;
 }
 
 time[title] {
   text-decoration: underline dotted;
 }
-
-/* Rules for icons */
-
-.icon {
-  display: inline-block;
-  vertical-align: top;
-  width: 20px;
-  height: 20px;
-  background: transparent image-url("sprite.svg") no-repeat 0 0;
-  text-indent: -9999px;
-  overflow: hidden;
-}
-
-.icon.search      { /*rtl:ignore*/ background-position: 0 0; }
-.icon.donate      { /*rtl:ignore*/ background-position: -20px 0; }
-.icon.zoomin      { /*rtl:ignore*/ background-position: -40px 0; }
-.icon.zoomout     { /*rtl:ignore*/ background-position: -60px 0; }
-.icon.geolocate   { /*rtl:ignore*/ background-position: -80px 0; }
-.active .icon.geolocate   { /*rtl:ignore*/ background-position: -80px -20px; }
-.icon.layers      { /*rtl:ignore*/ background-position: -100px 0; }
-.icon.key         { /*rtl:ignore*/ background-position: -120px 0; }
-.icon.share       { /*rtl:ignore*/ background-position: -140px 0; }
-.icon.clipboard   { /*rtl:ignore*/ background-position: -160px 0; }
-.icon.link        { /*rtl:ignore*/ background-position: -180px 0; }
-.icon.close       { /*rtl:ignore*/ background-position: -200px 0; }
-.icon.close:hover { /*rtl:ignore*/ background-position: -200px -20px; }
-.icon.check       { /*rtl:ignore*/ background-position: -220px 0; }
-.icon.note        { /*rtl:ignore*/ background-position: -240px 0; }
-.icon.note.grey   { /*rtl:ignore*/ background-position: -240px -20px; }
-.icon.query       { /*rtl:ignore*/ background-position: -260px 0; }
 
 /* Utility for de-emphasizing content */
 
@@ -84,55 +57,43 @@ time[title] {
 
 /* Bootstrap close button overrides for nested light/dark themes */
 
-[data-bs-theme="dark"] .btn-close {
-  filter: var(--bs-btn-close-white-filter);
+[data-bs-theme="dark"],
+[data-bs-theme] [data-bs-theme="dark"] {
+  --bs-btn-close-filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-[data-bs-theme="light"] .btn-close {
-  filter: none;
+[data-bs-theme="light"],
+[data-bs-theme] [data-bs-theme="light"] {
+  --bs-btn-close-filter: none;
 }
 
 /* Rules for the header */
 
-#menu-icon {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: image-url("menu-icon.svg") no-repeat;
-  background-size: 30px 30px;
-  width: 30px;
-  height: 30px;
-  margin: 14px 10px 0 0;
-  opacity: 0.6;
-}
-
-@include color-mode(dark) {
-  #menu-icon {
-    filter: invert(1);
-  }
+#menu-icon i.bi {
+  font-size: 30px;
 }
 
 header {
-  height: $headerHeight;
-  position: relative;
   font-size: 14px;
 
-  > * {
+  > .d-flex,
+  #edit_tab {
     padding: $lineheight * 0.5;
   }
 
   h1 {
     height: $headerHeight;
     font-size: 18px;
+    gap: $lineheight * 0.5;
   }
 
   .btn {
     font-size: 14px;
   }
 
-  .username {
-    max-width: 12em;
+  &.closed nav {
+    @extend .d-none;
+    @extend .d-md-flex;
   }
 }
 
@@ -145,10 +106,6 @@ nav.primary {
     .btn-outline-primary {
       color: $grey;
       cursor: default;
-
-      .caret {
-        border-top-color: $grey;
-      }
 
       &:hover {
         background-color: lighten($green, 30%);
@@ -169,12 +126,8 @@ nav.primary {
 }
 
 nav.secondary {
-  .nav-link {
-    padding: 0 0.3rem;
-  }
-
-  > ul {
-    height: 1.5em;
+  .user-menu, .login-menu {
+    width: 100%;
   }
 }
 
@@ -187,74 +140,35 @@ nav.primary, nav.secondary {
   }
 }
 
-#compact-secondary-nav {
-  display: none;
-}
-
-body.small-nav {
-  #menu-icon {
-    display: block;
-  }
-
-  header {
-    flex-direction: column;
-    height: auto;
-    min-height: $headerHeight;
-
-    &.closed nav {
-      display: none !important;
-    }
-
-    .search_forms {
-      display: block;
-    }
-
-    .username {
-      max-width: unset;
-    }
-  }
-
-  #sidebar .search_forms {
-    display: none;
-  }
-
-  nav.primary {
-    margin-right: 0;
-    padding: 0;
-
-    #edit_tab {
-      width: 100%;
-      padding: 10px;
-    }
+@include media-breakpoint-up(md) {
+  header .username {
+    max-width: 12em;
   }
 
   nav.secondary {
-    flex-direction: column;
-
     > ul {
-      height: auto;
-      justify-content: center;
+      height: 1.5em;
     }
 
     .user-menu, .login-menu {
-      width: 100%;
+      width: auto;
     }
   }
+}
 
-  #compact-secondary-nav {
-    display: none;
-  }
+/* Rules for language selector */
 
-  .compact-hide {
-    display: inline-block;
-  }
+.select_language_list {
+  column-width: 165px;
 
-  .overlay-sidebar #sidebar .welcome {
-    display: none;
-  }
+  a {
+    .native_name small {
+      font-size: 10px;
+    }
 
-  .overlay-sidebar #sidebar #banner {
-    display: none;
+    &:hover .current_locale_name {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -278,11 +192,12 @@ body.small-nav {
 }
 
 .leaflet-control .control-button {
-  display: block;
+  display: grid;
   height: 40px;
   width: 40px;
-  background-color: #333;
-  background-color: rgba(0,0,0,.6);
+  color: white;
+  place-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
   outline: none;
 
   &:hover,
@@ -292,13 +207,8 @@ body.small-nav {
 
   &.disabled,
   &.leaflet-disabled {
-    background-color: #333;
     background-color: rgba(0,0,0,.5);
     cursor: default;
-  }
-
-  &.active {
-    background-color: $vibrant-green;
   }
 
   &-first {
@@ -309,10 +219,10 @@ body.small-nav {
     border-end-start-radius: 4px;
     margin-bottom: 10px;
   }
+}
 
-  .icon {
-    margin: 10px;
-  }
+.leaflet-control.active .control-button {
+  background-color: $vibrant-green;
 }
 
 /* Rules for the sidebar and main map area */
@@ -324,32 +234,24 @@ body.small-nav {
     top: $headerHeight;
     bottom: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  #sidebar, #map {
+  #sidebar, #map, #map-ui {
     position: relative;
-    height: 100%;
+    flex-basis: 50%;
+  }
+
+  #sidebar {
     overflow-x: hidden;
     overflow-y: auto;
   }
 
-  #sidebar {
-    float: left;
-    width: $sidebarWidth;
-  }
-
   .overlay-sidebar #sidebar {
     position: absolute;
-    height: auto;
+    width: $sidebarWidth;
     overflow: hidden;
-
-    #banner {
-      display: block;
-    }
-
-    .welcome {
-      display: block;
-    }
 
     .sidebar-close-controls,
     #sidebar_loader,
@@ -358,21 +260,15 @@ body.small-nav {
     }
   }
 
-  .welcome {
-    display: none;
+  #content:not(.overlay-sidebar) :is(.welcome, #banner) {
+    @extend .d-none;
   }
 
-  #banner {
-    display: none;
-
-    img {
-      display: block;
-      width: $sidebarWidth;
-    }
+  #banner img {
+    width: $sidebarWidth;
   }
 
   #map {
-    height: 100%;
     overflow: hidden;
 
     &.query-active {
@@ -398,40 +294,24 @@ body.small-nav {
 
   #map-ui {
     display: none;
-    position: relative;
-    float: right;
-    width: 250px;
-    height: 100%;
     overflow: auto;
   }
-}
 
-@include media-breakpoint-down(md) {
-  body.map-layout {
-    #sidebar, #map {
-      position: relative;
-      overflow-x: hidden;
-      width: 100%;
-      height: 50%;
+  @include media-breakpoint-up(md) {
+    #content {
+      flex-direction: row;
+    }
+
+    #sidebar {
+      flex-basis: $sidebarWidth;
+    }
+
+    #map {
+      flex-basis: auto;
     }
 
     #map-ui {
-      width: 100%;
-      height: 50%;
-      overflow-y: scroll;
-    }
-
-    .overlay-sidebar.overlay-right-sidebar {
-      #sidebar {
-        position: absolute;
-        width: 350px;
-        height: auto;
-        overflow: hidden;
-      }
-
-      #map {
-        height: 100%;
-      }
+      flex-basis: 250px;
     }
   }
 }
@@ -452,7 +332,7 @@ body.small-nav {
   }
 
   .overlay-layers {
-    li.disabled { color: $darkgrey; }
+    .form-check.disabled { color: $darkgrey; }
   }
 }
 
@@ -476,19 +356,28 @@ body.small-nav {
   border-top: 0px !important;
 }
 
+@each $anchor, $border in (
+  left: right,
+  right: left,
+  top: bottom,
+  bottom: top
+) {
+  .maplibregl-popup#{'[class*="anchor-#{$anchor}"]'} .maplibregl-popup-tip {
+    border-#{$border}-color: var(--bs-body-bg);
+  }
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-attrib,
+.maplibregl-popup-content,
 .leaflet-popup-content-wrapper, .leaflet-popup-tip,
-.leaflet-contextmenu, .leaflet-contextmenu-item,
 .leaflet-control-attribution, .leaflet-control-scale-line {
   @extend .bg-body, .text-body;
 }
 
+.maplibregl-ctrl.maplibregl-ctrl-attrib,
 .leaflet-control-attribution, .leaflet-control-scale-line {
   @extend .bg-opacity-75;
   text-shadow: none !important;
-}
-
-.leaflet-contextmenu-item.over {
-  @extend .bg-body-secondary, .border-secondary, .border-opacity-10;
 }
 
 .leaflet-popup-content-wrapper {
@@ -500,33 +389,13 @@ body.small-nav {
 }
 
 @include color-mode(dark) {
+  .maplibregl-ctrl.maplibregl-ctrl-attrib a,
   .leaflet-container .leaflet-control-attribution a {
     color: var(--bs-link-color);
   }
 
   .leaflet-control-scale-line {
     border-color: rgba(var(--bs-light-rgb), .75) !important;
-  }
-}
-
-@mixin dark-map-color-scheme {
-  .leaflet-tile-container,
-  .mapkey-table-entry td:first-child > * {
-    filter: var(--dark-mode-map-filter);
-  }
-
-  .leaflet-tile-container .leaflet-tile {
-    filter: none;
-  }
-}
-
-body[data-map-theme="dark"] {
-  @include dark-map-color-scheme;
-}
-
-@include color-mode(dark) {
-  body:not([data-map-theme]) {
-    @include dark-map-color-scheme;
   }
 }
 
@@ -567,25 +436,40 @@ legend {
   @include button-outline-variant($secondary, $color-hover: $white, $active-color: $white);
 }
 
+@each $variant, $color in (bluesky: #1185fe, email: #0971BD, facebook: #3B5998, linkedin: #0077B5, mastodon: #2b90d9, telegram: #54a9eb, x: #000000) {
+  .btn-#{$variant} {
+    @include button-variant($color, $color, $color: $white, $hover-color: $white, $active-color: $white, $disabled-color: $white);
+  }
+}
+
 /* Rules for the search and direction forms */
 
-header .search_forms,
 .directions_form {
   display: none;
+  .reverse_directions {
+    border-color: transparent;
+  }
 }
 
 .search_form {
   .describe_location {
     font-size: 10px;
   }
-}
 
-/* Rules for search sidebar */
-
-#sidebar .search_results_entry {
-  .search_more .loader {
+  input:not(:placeholder-shown) + .input-group-text .describe_location {
     display: none;
   }
+}
+
+/* Rules for search results */
+
+.search_results_entry li.list-group-item {
+  border-right: 1em solid var(--marker-color);
+}
+
+.leaflet-marker-icon.activatable:is(.active, :hover) > svg {
+  transform: scale(1.5);
+  transform-origin: bottom;
 }
 
 /* Rules for routing */
@@ -602,56 +486,94 @@ tr.turn {
   margin-right: .35rem;
   width: 15px;
 
-  img {
+  svg {
     cursor: move;
   }
 }
 
 /* Rules for the history sidebar */
 
+.changeset-above-sidebar-viewport {
+  --changeset-border-color: #CC6655;
+  --changeset-fill-color: #DDBBBB;
+  --changeset-outline-color: #FFF4F4;
+}
+.changeset-in-sidebar-viewport {
+  --changeset-border-color: #FF9500;
+  --changeset-fill-color: #FFFFAF;
+  --changeset-outline-color: #FFFFFF;
+  &.changeset-highlight-outline {
+    filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .75));
+  }
+}
+.changeset-below-sidebar-viewport {
+  --changeset-border-color: #8888AA;
+  --changeset-fill-color: #CCCCDD;
+  --changeset-outline-color: #F4F4FF;
+}
+.changeset-highlight-outline {
+  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, .25));
+}
+
 #sidebar .changesets {
+  .changeset-color-hint-bar {
+    height: 2px;
+    background: var(--changeset-border-color);
+  }
+
   li {
     &.selected {
       @extend :hover;
     }
 
-    a.stretched-link > span, a:not(.stretched-link), [title] {
+    a.stretched-link > bdi, a:not(.stretched-link), [title] {
       position: relative;
       z-index: 2; /* needs to be higher than Bootstrap's stretched link ::after z-index */
     }
   }
 }
 
+#sidebar .changeset_line .changeset_num_comments {
+  min-width: 2.5em;
+}
+
 /* Rules for the browse sidebar */
 
 #sidebar_content {
-  .browse-section {
-    padding-bottom: $spacer;
-    margin-bottom: $spacer;
-    border-bottom: 1px solid $grey;
+  .browse-tag-list {
+    table-layout: fixed;
 
-    h4:first-child {
+    tr > *:not([colspan]) {
+      white-space: pre-wrap;
       word-wrap: break-word;
+      word-break: break-word;
+    }
+
+    tr:last-child > * {
+      border-bottom: 0;
     }
   }
 
-  .browse-section:last-of-type {
-    border-bottom: none;
-  }
+  .browse-element-list {
+    line-height: 1.25rem;
 
-  .browse-tag-list {
-    table-layout: fixed;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-word;
+    .browse-icon {
+      height: 1.25rem;
+    }
 
-    tr:last-child th, tr:last-child td {
-      border-bottom: 0;
+    .d-flex > .browse-icon {
+      height: max(20px, 1.25rem);
     }
   }
 
   .query-results {
     display: none;
+  }
+}
+
+@include color-mode(dark) {
+  #sidebar_content .browse-element-list .browse-icon-invertible {
+    filter: invert(.8) hue-rotate(180deg);
   }
 }
 
@@ -674,12 +596,6 @@ tr.turn {
     > * {
         margin: -1px;
     }
-    #minlon {
-      /*rtl:ignore*/ float: left;
-    }
-    #maxlon {
-      /*rtl:ignore*/ float: right;
-    }
   }
 }
 
@@ -697,9 +613,7 @@ tr.turn {
 /* Rules for non-map content pages */
 
 .content-inner {
-  position: relative;
   max-width: 960px;
-  margin: auto;
   padding: $lineheight;
 }
 
@@ -712,25 +626,23 @@ tr.turn {
 }
 
 .header-illustration {
-  background-position: right;
+  /*rtl:ignore*/ background-position: bottom right;
+  background-size: contain;
   background-repeat: no-repeat;
   position: relative;
   min-height: 200px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
+  inset: 0;
 
   &.new-user-main {
-    background-image: image-url("sign-up-illustration.svg");
-    background-position-x: 70px;
+    background-image: image-url("illustrations/sign-up.svg");
   }
 
   &.confirm-main {
-    background-image: image-url("confirm-illustration.svg");
+    background-image: image-url("illustrations/confirm.svg");
   }
 
   &.new-user-terms {
-    background-image: image-url("terms-illustration.svg");
+    background-image: image-url("illustrations/terms.svg");
   }
 }
 
@@ -763,15 +675,13 @@ tr.turn {
 
 .content_map .leaflet-popup-content {
   margin: $spacer;
-  min-height: 50px;
 }
 
 /* Rules for user popups on maps */
 
 .user_popup {
   p {
-    padding: 0 0 5px 0;
-    margin: 0 0 0 60px;
+    margin: 0 0 5px 0 !important;
     font-size: 12px;
   }
 }
@@ -956,6 +866,10 @@ div.secondary-actions {
 
 /* Rules for traces */
 
+i.bi-rss.nobox {
+  clip-path: inset(10%);
+}
+
 img.trace_image {
   mix-blend-mode: darken;
 }
@@ -967,26 +881,88 @@ img.trace_image {
   }
 }
 
-/* Rules for map sidebar icons */
+/* Rules for the heatmap */
 
-.browse-section .browse-element-list {
-  line-height: 1.25rem;
+.heatmap {
+  grid-template-columns: auto;
+  grid-auto-columns: minmax(1em, 1fr);
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(1em, 1fr);
+  font-size: x-small;
+  gap: 0.3em;
 
-  .browse-icon {
-    height: 1.25rem;
+  [data-date], [data-date] span {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 25%;
   }
 
-  .d-flex > .browse-icon {
-    height: max(20px, 1.25rem);
-  }
-
-  @include color-mode(dark) {
-    .browse-icon-invertible {
-      filter: invert(.8) hue-rotate(180deg);
+  [data-date] {
+    background-color: #ededed;
+    span {
+      background-color: #14432a;
+    }
+    &[data-count] {
+      background-color: #4dd05a;
+    }
+    &:hover {
+      box-shadow: 0px 0px 0px 1px #8884;
     }
   }
 }
 
-.heatmap-wrapper {
-  height: 130px;
+@include color-mode(dark) {
+  .heatmap {
+    [data-date] {
+      background-color: #2d333b;
+      span {
+        background-color: #4dd05a;
+      }
+      &[data-count] {
+        background-color: #14432a;
+      }
+    }
+  }
+}
+
+.tooltip.wide {
+  --bs-tooltip-max-width: none;
+}
+
+/* Rules for auth provider logos */
+
+.apple-logo rect { fill: black; }
+.apple-logo path { fill: white; }
+
+@include color-mode(dark) {
+  .apple-logo rect { fill: white; }
+  .apple-logo path { fill: black; }
+}
+
+.github-logo rect { fill: black; }
+.github-logo path { fill: white; }
+
+@include color-mode(dark) {
+  .github-logo rect { fill: white; }
+  .github-logo path { fill: #1b1f24; }
+}
+
+/* Rules for contextmenu */
+
+#map-context-menu {
+  &.cm_dropdown {
+    position: absolute;
+    z-index: 1000;
+  }
+  &.cm_dropdown_menu {
+    position: absolute;
+    display: block;
+    min-width: 200px;
+  }
+}
+
+/* Map Layers Menu - Info Icon */
+
+.layer-info-toggle {
+  mix-blend-mode: difference;
 }

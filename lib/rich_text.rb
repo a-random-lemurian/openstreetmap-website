@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 module RichText
-  SPAMMY_PHRASES = [
-    "Business Description:", "Additional Keywords:"
-  ].freeze
-
-  MAX_DESCRIPTION_LENGTH = 500
+  DESCRIPTION_MAX_LENGTH = 500
+  DESCRIPTION_WORD_BREAK_THRESHOLD_LENGTH = 450
+  URL_UNSAFE_CHARS = "[^\\w!#$%&'*+,./:;=?@_~^\\-]"
 
   def self.new(format, text)
     case format
@@ -13,6 +11,23 @@ module RichText
     when "markdown" then Markdown.new(text || "")
     when "text" then Text.new(text || "")
     end
+  end
+
+  def self.reset_state
+    @gsub_pairs_for_linkify_detection = nil
+  end
+
+  def self.gsub_pairs_for_linkify_detection
+    @gsub_pairs_for_linkify_detection ||=
+      Array
+      .wrap(Settings.linkify&.detection_rules)
+      .select { |rule| rule.path_template && rule.patterns.is_a?(Array) }
+      .flat_map do |rule|
+        expanded_path = "#{rule.host || "#{Settings.server_protocol}://#{Settings.server_url}"}/#{rule.path_template}"
+        rule.patterns
+            .grep(String)
+            .map { |pattern| [Regexp.new("(?<=^|#{URL_UNSAFE_CHARS})#{pattern}", Regexp::IGNORECASE, :timeout => 1), expanded_path] }
+      end
   end
 
   class SimpleFormat
@@ -25,32 +40,6 @@ module RichText
   end
 
   class Base < String
-    def spam_score
-      link_count = 0
-      link_size = 0
-
-      doc = Nokogiri::HTML(to_html)
-
-      if doc.content.empty?
-        link_proportion = 0
-      else
-        doc.xpath("//a").each do |link|
-          link_count += 1
-          link_size += link.content.length
-        end
-
-        link_proportion = link_size.to_f / doc.content.length
-      end
-
-      spammy_phrases = SPAMMY_PHRASES.count do |phrase|
-        doc.content.include?(phrase)
-      end
-
-      ([link_proportion - 0.2, 0.0].max * 200) +
-        (link_count * 40) +
-        (spammy_phrases * 40)
-    end
-
     def image
       nil
     end
@@ -63,6 +52,48 @@ module RichText
       nil
     end
 
+    def truncate_html(max_length = nil, img_length = 1000)
+      html_doc = to_html
+      return html_doc if max_length.nil?
+
+      doc = Nokogiri::HTML::DocumentFragment.parse(html_doc)
+      keep_or_discards = %w[p h1 h2 h3 h4 h5 h6 pre a table ul ol dl]
+      accumulated_length = 0
+      exceeded_node_parent = nil
+      truncated = false
+
+      doc.traverse do |node|
+        if accumulated_length >= max_length
+          if node == exceeded_node_parent
+            exceeded_node_parent = node.parent
+            node.remove if keep_or_discards.include?(node.name)
+          else
+            node.remove
+          end
+          next
+        end
+
+        next unless node.children.empty?
+
+        if node.text?
+          accumulated_length += node.text.length
+        elsif node.name == "img"
+          accumulated_length += img_length
+        end
+
+        if accumulated_length >= max_length
+          truncated = true
+          exceeded_node_parent = node.parent
+          node.remove
+        end
+      end
+
+      {
+        :truncated => truncated,
+        :html => doc.to_html.html_safe
+      }
+    end
+
     protected
 
     def simple_format(text)
@@ -73,25 +104,59 @@ module RichText
       Sanitize.clean(text, Sanitize::Config::OSM).html_safe
     end
 
-    def linkify(text, mode = :urls)
-      link_attr = 'rel="nofollow noopener noreferrer"'
-      Rinku.auto_link(ERB::Util.html_escape(text), mode, link_attr) do |url|
-        url = shorten_host(url, Settings.linkify_hosts, Settings.linkify_hosts_replacement)
-        shorten_host(url, Settings.linkify_wiki_hosts, Settings.linkify_wiki_hosts_replacement) do |path|
-          path.sub(Regexp.new(Settings.linkify_wiki_optional_path_prefix || ""), "")
-        end
+    def linkify(text, mode = :urls, hosts: true, paths: true)
+      link_attr = 'rel="nofollow noopener noreferrer" dir="auto"'
+      html = ERB::Util.html_escape(text)
+
+      html = expand_link_shorthands(html) if paths
+      html = expand_host_shorthands(html) if hosts
+
+      Rinku.auto_link(html, mode, link_attr) do |url|
+        url = shorten_hosts(url) if hosts
+        url = shorten_link(url) if paths
+
+        url
       end.html_safe
     end
 
     private
 
-    def shorten_host(url, hosts, hosts_replacement)
+    def expand_link_shorthands(text)
+      RichText
+        .gsub_pairs_for_linkify_detection
+        .reduce(text) { |text, (pattern, replacement)| text.gsub(pattern, replacement) }
+    end
+
+    def expand_host_shorthands(text)
+      Array
+        .wrap(Settings.linkify&.normalisation_rules)
+        .select { |rule| rule.host_replacement && rule.hosts&.any? }
+        .reduce(text) do |text, rule|
+          text.gsub(/(?<=^|#{URL_UNSAFE_CHARS})\b#{Regexp.escape(rule.host_replacement)}/) do
+            "#{Settings.server_protocol}://#{rule.hosts[0]}"
+          end
+        end
+    end
+
+    def shorten_hosts(url)
+      Array
+        .wrap(Settings.linkify&.normalisation_rules)
+        .reduce(url) { |url, rule| shorten_host(url, rule) }
+    end
+
+    def shorten_link(url)
+      Array.wrap(Settings.linkify&.display_rules)
+           .select { |rule| rule.pattern && rule.replacement }
+           .reduce(url) { |url, rule| url.sub(Regexp.new(rule.pattern), rule.replacement) }
+    end
+
+    def shorten_host(url, rule)
       %r{^(https?://([^/]*))(.*)$}.match(url) do |m|
         scheme_host, host, path = m.captures
-        if hosts&.include?(host)
-          path = yield(path) if block_given?
-          if hosts_replacement
-            "#{hosts_replacement}#{path}"
+        if rule.hosts&.include?(host)
+          path = path.sub(Regexp.new(rule.optional_path_prefix || ""), "")
+          if rule.host_replacement
+            "#{rule.host_replacement}#{path}"
           else
             "#{scheme_host}#{path}"
           end
@@ -102,7 +167,7 @@ module RichText
 
   class HTML < Base
     def to_html
-      linkify(simple_format(self))
+      linkify(simple_format(self), :paths => false)
     end
 
     def to_text
@@ -112,7 +177,7 @@ module RichText
 
   class Markdown < Base
     def to_html
-      linkify(sanitize(document.to_html), :all)
+      linkify(sanitize(document.to_html), :all, :paths => false)
     end
 
     def to_text
@@ -138,7 +203,25 @@ module RichText
     private
 
     def document
-      @document ||= Kramdown::Document.new(self)
+      return @document if @document
+
+      @document = Kramdown::Document.new(self)
+
+      should_get_dir_auto = lambda do |el|
+        dir_auto_types = [:p, :header, :codespan, :codeblock, :pre, :ul, :ol, :table, :dl, :math]
+        return true if dir_auto_types.include?(el.type)
+        return true if el.type == :a && el.children.length == 1 && el.children[0].type == :text && el.children[0].value == el.attr["href"]
+
+        false
+      end
+
+      add_dir = lambda do |element|
+        element.attr["dir"] ||= "auto" if should_get_dir_auto.call(element)
+        element.children.each(&add_dir)
+      end
+      add_dir.call(@document.root)
+
+      @document
     end
 
     def first_image_element(element)
@@ -170,7 +253,7 @@ module RichText
         else
           child.children.each do |c|
             append_text.call(c)
-            break if text.length > MAX_DESCRIPTION_LENGTH
+            break if text.length > DESCRIPTION_MAX_LENGTH
           end
         end
       end
@@ -178,7 +261,13 @@ module RichText
 
       return nil if text.blank?
 
-      text.truncate(MAX_DESCRIPTION_LENGTH)
+      text_truncated_to_word_break = text.truncate(DESCRIPTION_MAX_LENGTH, :separator => /(?<!\s)\s+/)
+
+      if text_truncated_to_word_break.length >= DESCRIPTION_WORD_BREAK_THRESHOLD_LENGTH
+        text_truncated_to_word_break
+      else
+        text.truncate(DESCRIPTION_MAX_LENGTH)
+      end
     end
 
     def image?(element)

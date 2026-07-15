@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "boot"
 
 require "rails/all"
@@ -9,12 +11,12 @@ Bundler.require(*Rails.groups)
 module OpenStreetMap
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.0
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(:ignore => %w[assets classic_pagination tasks])
+    config.autoload_lib(:ignore => %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -30,20 +32,12 @@ module OpenStreetMap
     config.active_record.schema_format = :sql unless Settings.status == "database_offline"
 
     # Use memcached for caching if required
-    config.cache_store = :mem_cache_store, Settings.memcache_servers, { :namespace => "rails:cache" } if Settings.key?(:memcache_servers)
+    config.cache_store = :mem_cache_store, Settings.memcache_servers, { :protocol => :meta, :namespace => "rails:cache" } if Settings.key?(:memcache_servers)
 
     # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
     # the I18n.default_locale when a translation cannot be found).
     config.i18n.fallbacks = true
     # Enables custom error message formats
     config.active_model.i18n_customize_full_message = true
-
-    # Use logstash for logging if required
-    if Settings.key?(:logstash_path)
-      config.logstasher.enabled = true
-      config.logstasher.suppress_app_log = false
-      config.logstasher.logger_path = Settings.logstash_path
-      config.logstasher.log_controller_parameters = true
-    end
   end
 end

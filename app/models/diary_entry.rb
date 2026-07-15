@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: diary_entries
@@ -36,9 +38,10 @@ class DiaryEntry < ApplicationRecord
   has_many :subscribers, :through => :subscriptions, :source => :user
 
   scope :visible, -> { where(:visible => true) }
+  scope :visible_to, ->(user) { where(:visible => true).or(where(:user => user)) unless user&.moderator? || user&.administrator? }
 
   validates :title, :presence => true, :length => 1..255, :characters => true
-  validates :body, :presence => true, :characters => true
+  validates :body, :presence => true, :characters => true, :length => 1..262144
   validates :latitude, :allow_nil => true,
                        :numericality => { :greater_than_or_equal_to => -90,
                                           :less_than_or_equal_to => 90 }
@@ -51,6 +54,10 @@ class DiaryEntry < ApplicationRecord
 
   def body
     @body ||= RichText.new(self[:body_format], self[:body])
+  end
+
+  def visible_subscribers
+    subscribers.visible
   end
 
   private

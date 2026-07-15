@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 module Api
@@ -48,7 +50,7 @@ module Api
     end
 
     def test_capabilities_json
-      get api_capabilities_path, :params => { :format => "json" }
+      get api_capabilities_path(:format => "json")
       assert_response :success
       js = ActiveSupport::JSON.decode(@response.body)
       assert_not_nil js

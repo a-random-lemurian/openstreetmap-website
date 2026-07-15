@@ -1,7 +1,10 @@
 name: Docker
 on:
-  - push
-  - pull_request
+  push:
+    branches-ignore:
+      - "dependabot/**"
+      - translatewiki
+  pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
@@ -9,9 +12,10 @@ jobs:
   test:
     name: Docker
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
     - name: Checkout source
-      uses: actions/checkout@v4
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
     - name: Poke config
       run: |
         cp config/example.storage.yml config/storage.yml
@@ -33,7 +37,7 @@ jobs:
     - name: Test Basic Website
       run: |
         curl -siL http://127.0.0.1:3000 | egrep '^HTTP/1.1 200 OK'
-        curl -siL http://127.0.0.1:3000 | grep 'OpenStreetMap is the free wiki world map'
+        curl -siL http://127.0.0.1:3000 | grep 'OpenStreetMap is a map of the world'
         curl -siL http://127.0.0.1:3000/api/0.6/node/1 | grep 'Null Island'
     - name: Test Complete Suite
       run: |

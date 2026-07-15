@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
@@ -136,6 +138,37 @@ class UserTest < ActiveSupport::TestCase
     assert_predicate user, :valid?, "user_0 display_name is invalid but it hasn't been changed"
   end
 
+  def test_description_length
+    user = build(:user)
+    user.description = "x" * 65536
+    assert_predicate user, :valid?, "should allow 65536 char description"
+    user.description = "x" * 65537
+    assert_not_predicate user, :valid?, "should not allow 65537 char description"
+    user.description = ""
+    assert_predicate user, :valid?, "should allow blank/0 char description"
+    user.description = nil
+    assert_predicate user, :valid?, "should allow nil value"
+  end
+
+  def test_spam_score
+    user = build(:user, :description => "foo [bar](http://example.com/) baz")
+    assert_equal 12, user.spam_score
+  end
+
+  def test_suspend_if_possible
+    active = create(:user, :active)
+    active.suspend_if_possible!
+    assert_equal "suspended", active.reload.status
+
+    confirmed = create(:user, :confirmed)
+    confirmed.suspend_if_possible!
+    assert_equal "suspended", confirmed.reload.status
+
+    suspended = create(:user, :suspended)
+    suspended.suspend_if_possible!
+    assert_equal "suspended", suspended.reload.status
+  end
+
   def test_follows
     alice = create(:user, :active)
     bob = create(:user, :active)
@@ -194,6 +227,17 @@ class UserTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordInvalid) { user.save! }
   end
 
+  def test_heatmap_public_by_default
+    # A bit roundabout, but want to make sure that
+    # the factory doesn't betray us here by setting
+    # a default value.
+    attrs = attributes_for(:user)
+    attrs.delete(:public_heatmap)
+    user = User.new(attrs)
+    user.save!
+    assert_predicate user, :public_heatmap?
+  end
+
   def test_visible
     pending = create(:user, :pending)
     active = create(:user, :active)
@@ -243,19 +287,113 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_languages
-    create(:language, :code => "en")
-    create(:language, :code => "de")
-    create(:language, :code => "sl")
-
     user = create(:user, :languages => ["en"])
     assert_equal ["en"], user.languages
     user.languages = %w[de fr en]
     assert_equal %w[de fr en], user.languages
     user.languages = %w[fr de sl]
-    assert_equal "de", user.preferred_language
     assert_equal %w[fr de sl], user.preferred_languages.map(&:to_s)
     user = create(:user, :languages => %w[en de])
     assert_equal %w[en de], user.languages
+  end
+
+  def test_preferred_color_scheme_nil_if_nothing_selected
+    user = create(:user)
+    assert_nil user.preferred_color_scheme(:map, :site)
+  end
+
+  def test_preferred_color_scheme_as_selected
+    preferences = [
+      create(:user_preference, :k => "map.color_scheme", :v => "dark"),
+      create(:user_preference, :k => "site.color_scheme", :v => "light")
+    ]
+    user = create(:user, :preferences => preferences)
+
+    assert_equal "dark", user.preferred_color_scheme(:map, :site)
+  end
+
+  def test_preferred_color_scheme_fallback_if_auto
+    preferences = [
+      create(:user_preference, :k => "map.color_scheme", :v => "auto"),
+      create(:user_preference, :k => "site.color_scheme", :v => "light")
+    ]
+    user = create(:user, :preferences => preferences)
+
+    assert_nil user.preferred_color_scheme(:map)
+    assert_equal "light", user.preferred_color_scheme(:map, :site)
+  end
+
+  def test_preferred_color_scheme_fallback_if_missing
+    preferences = [
+      create(:user_preference, :k => "site.color_scheme", :v => "light")
+    ]
+    user = create(:user, :preferences => preferences)
+
+    assert_nil user.preferred_color_scheme(:map)
+    assert_equal "light", user.preferred_color_scheme(:map, :site)
+  end
+
+  def test_default_diary_language_undefined
+    create(:language, :code => "en")
+    user = create(:user, :languages => [])
+    assert_nil user.default_diary_language
+  end
+
+  def test_default_diary_language_known
+    create(:language, :code => "en")
+    user = create(:user, :languages => ["en"])
+    assert_equal "en", user.default_diary_language
+  end
+
+  def test_default_diary_language_known_with_fallback
+    create(:language, :code => "en")
+    create(:language, :code => "fr")
+    user = create(:user, :languages => ["fr en"])
+    assert_equal "fr", user.default_diary_language
+  end
+
+  def test_default_diary_language_unknown
+    create(:language, :code => "en")
+    user = create(:user, :languages => ["unknown"])
+    assert_nil user.default_diary_language
+  end
+
+  def test_default_diary_language_unknown_with_known_fallback
+    create(:language, :code => "en")
+    user = create(:user, :languages => ["unknown en"])
+    assert_equal "en", user.default_diary_language
+  end
+
+  def test_default_diary_language_set
+    create(:language, :code => "en")
+    user = create(:user, :languages => [])
+
+    assert_difference "user.preferences.count", 1 do
+      assert_equal "en", (user.default_diary_language = "en")
+    end
+
+    user.reload
+    assert_equal "en", user.default_diary_language
+    preference = user.preferences.find_by(:k => "diary.default_language")
+    assert_equal "en", preference.v
+  end
+
+  def test_default_diary_language_set_twice
+    create(:language, :code => "en")
+    create(:language, :code => "fr")
+    user = create(:user, :languages => [])
+
+    assert_difference "user.preferences.count", 1 do
+      assert_equal "en", (user.default_diary_language = "en")
+    end
+    assert_difference "user.preferences.count", 0 do
+      assert_equal "fr", (user.default_diary_language = "fr")
+    end
+
+    user.reload
+    assert_equal "fr", user.default_diary_language
+    preference = user.preferences.find_by(:k => "diary.default_language")
+    assert_equal "fr", preference.v
   end
 
   def test_visible?
@@ -291,6 +429,20 @@ class UserTest < ActiveSupport::TestCase
     assert create(:moderator_user).role?("moderator")
   end
 
+  def test_suspend
+    user = create(:user)
+    user.suspend
+    assert_equal "suspended", user.status
+  end
+
+  def test_suspend_closes_issues
+    user = create(:user)
+    issue = create(:issue, :reportable => user)
+    user.suspend
+    assert_equal "suspended", user.status
+    assert_equal "resolved", issue.reload.status
+  end
+
   def test_soft_destroy
     user = create(:user, :with_home_location, :description => "foo")
     user.soft_destroy
@@ -302,6 +454,14 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "deleted", user.status
     assert_not_predicate user, :visible?
     assert_not_predicate user, :active?
+  end
+
+  def test_soft_destroy_closes_issues
+    user = create(:user)
+    issue = create(:issue, :reportable => user)
+    user.soft_destroy
+    assert_equal "deleted", user.status
+    assert_equal "resolved", issue.reload.status
   end
 
   def test_soft_destroy_revokes_oauth2_tokens

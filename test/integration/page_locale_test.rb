@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class PageLocaleTest < ActionDispatch::IntegrationTest
@@ -7,14 +9,14 @@ class PageLocaleTest < ActionDispatch::IntegrationTest
 
       get "/login"
       follow_redirect!
-      post "/login", :params => { :username => user.email, :password => "test" }
+      post "/login", :params => { :username => user.email, :password => "s3cr3t" }
       follow_redirect!
 
       get "/diary/new"
       assert_empty User.find(user.id).languages
       assert_select "html[lang=?]", "en"
 
-      get "/diary/new", :headers => { "HTTP_ACCEPT_LANGUAGE" => "fr, en" }
+      get "/diary/new", :headers => { "Accept-Language" => "fr, en" }
       assert_equal %w[fr en], User.find(user.id).languages
       assert_select "html[lang=?]", "fr"
     end
@@ -32,7 +34,7 @@ class PageLocaleTest < ActionDispatch::IntegrationTest
 
       get "/login"
       follow_redirect!
-      post "/login", :params => { :username => user.email, :password => "test" }
+      post "/login", :params => { :username => user.email, :password => "s3cr3t" }
       follow_redirect!
 
       get "/diary"

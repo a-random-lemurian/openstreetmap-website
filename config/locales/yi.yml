@@ -73,8 +73,6 @@ yi:
     no_comment: (קיין הערות)
     part_of: טייל פֿון
     download_xml: אראפלאדן XML
-    view_history: ווייזן היסטאָריע
-    view_details: ווייזן פרטים
     location: 'לאקאציע:'
   changesets:
     index:
@@ -103,12 +101,13 @@ yi:
           tailor: שניידעריי
           "yes": געשעפט
   layouts:
-    home: גיין צו היים לאקאציע
-    history: היסטאָריע
-    export: עקספארט
-    help: הילף
-    about: וועגן
-    more: נאָך
+    header:
+      about: וועגן
+      export: עקספארט
+      help: הילף
+      history: היסטאָריע
+      home: גיין צו היים לאקאציע
+      more: נאָך
   confirmations:
     confirm:
       heading: קאנטראלירט אײַער ע־פאסט!
@@ -122,8 +121,9 @@ yi:
       message:
         destroy_button: אויסמעקן
   profiles:
-    edit:
-      cancel: אַנולירן
+    descriptions:
+      show:
+        cancel: אַנולירן
   sessions:
     new:
       password: 'פאַסווארט:'
@@ -137,6 +137,15 @@ yi:
       submit_text: גיין
     welcome:
       title: ברוך הבא!
+  share_panes:
+    show:
+      link: לינק אדער HTML
+      long_link: לינק
+      embed: HTML
+      image: בילד
+      format: 'פֿאָרמאַט:'
+      scale: 'סקאלע:'
+      download: אַראָפלאָדן
   traces:
     new:
       help: הילף
@@ -155,16 +164,6 @@ yi:
       showing_page: בלאַט %{page}
   javascripts:
     share:
-      cancel: אַנולירן
-      image: בילד
-      link: לינק אדער HTML
-      long_link: לינק
-      embed: HTML
-      format: 'פֿאָרמאַט:'
-      scale: 'סקאלע:'
-      download: אַראָפלאָדן
-      short_url: קורץ URL
-      center_marker: צענטרירן מאפע אויף מארקירונג
       view_larger_map: באקוקן גרעסערע מאפע
     context:
       show_address: ווײַזן אדרעס

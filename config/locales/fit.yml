@@ -202,8 +202,6 @@ fit:
     no_comment: (ei kommenttia)
     part_of: Osana seuraavia
     download_xml: Lattaa XML-fiilinä
-    view_history: Näytä histuuria
-    view_details: Näytä tieot
     location: 'Sijainti:'
     node:
       title_html: 'Piste: %{name}'
@@ -332,8 +330,6 @@ fit:
       title_nearby: Lähelä olevien käyttäjitten päiväkirjat
       user_title: Käyttäjän %{user} päiväkirja
       in_language_title: Päiväkirjamerkinnät kielellä %{language}
-      new: Lissää päiväkirjamerkintä
-      new_title: Kirjota uusi merkintä minun käyttäjän päiväkirjaan
       no_entries: Päiväkirjassa ei ole merkintöjä.
     page:
       recent_entries: Uusimmat päiväkirjamerkinnät
@@ -383,6 +379,9 @@ fit:
       all:
         title: OpenStreetMap-päiväkirjamerkinnät
         description: Verekset OpenStreetMapin käyttäjitten päiväkirjamerkinnät
+    navigation:
+      new: Lissää päiväkirjamerkintä
+      new_title: Kirjota uusi merkintä minun käyttäjän päiväkirjaan
   geocoder:
     search_osm_nominatim:
       prefix:
@@ -438,9 +437,15 @@ fit:
         tourism:
           museum: Myseymmi
           zoo: Elläintarha
-    results:
-      no_results: Ei hakuresyltaatteja
-      more_results: Lissää resyltaatteja
+  searches:
+    queries:
+      create:
+        no_results: Ei hakuresyltaatteja
+        more_results: Lissää resyltaatteja
+  directions:
+    show:
+      time: Matka-aika
+      directions_courtesy_html: Reittiohjeet tarjoaa %{link}
   issues:
     index:
       title: Tapaukset
@@ -496,7 +501,6 @@ fit:
   reports:
     new:
       title_html: Ilmianna %{link}
-      missing_params: Ilmotuksen luominen epäonnistui
       categories:
         diary_entry:
           other_label: Muu
@@ -509,24 +513,25 @@ fit:
   layouts:
     logo:
       alt_text: OpenStreetMap-logo
-    home: Siiry kotopaikhaan
-    logout: Lokkaa ulos
-    log_in: Lokkaa sisäle
-    sign_up: Luo konttu
     start_mapping: Liity mukhaan
-    edit: Mookkaa
-    history: Histuuria
-    export: Eksporteeraus
-    issues: Ilmiannot
-    gps_traces: GPS-jäljet
-    user_diaries: Päiväkirjamerkinnät
-    edit_with: 'Mookkaa: %{editor}'
     intro_header: Tervetuloa OpenStreetMaphiin!
     tou: Käyttöehdot
-    help: Apua
-    about: Tästä
     learn_more: Lue lissää
-    more: Lissää
+    header:
+      about: Tästä
+      edit: Mookkaa
+      edit_with: 'Mookkaa: %{editor}'
+      export: Eksporteeraus
+      gps_traces: GPS-jäljet
+      help: Apua
+      history: Histuuria
+      home: Siiry kotopaikhaan
+      issues: Ilmiannot
+      log_out: Lokkaa ulos
+      log_in: Lokkaa sisäle
+      more: Lissää
+      sign_up: Luo konttu
+      user_diaries: Päiväkirjamerkinnät
   user_mailer:
     diary_comment_notification:
       hi: Hei %{to_user},
@@ -640,12 +645,14 @@ fit:
       email address: 'E-postiatressi:'
       new password button: Lähätä salasanan palautusohjeet
   profiles:
-    edit:
-      new image: Lissää kuva
-      keep image: Säilytä nykynen kuva
-      delete image: Ota poies nykynen kuva
-      home location: 'Kotopaikka:'
-      no home location: Kotopaikkaa ei ole vielä määritetty.
+    images:
+      show:
+        new image: Lissää kuva
+        keep image: Säilytä nykynen kuva
+        delete image: Ota poies nykynen kuva
+    locations:
+      show:
+        no home location: Kotopaikkaa ei ole vielä määritetty.
   sessions:
     new:
       tab_title: Lokkaa
@@ -672,6 +679,7 @@ fit:
       lede_text: OpenStreetMapia rakentavat vapaaehtoiset yhteisön jäsenet, jotka
         tuottavat ja ylläpitävät karttatietoja teistä, rautateistä, kahviloista, rautatieasemista
         ja monista muista kohteista kaikkialla maailmassa.
+    about_section:
       local_knowledge_title: Paikallistuntemus
       local_knowledge_html: OpenStreetMapissa korostuu paikallistuntemus. Kartoittajat
         käyttävät ilmakuvia, GPS-paikantamia ja jalkautumista pitääkseen OpenStreetMap-kartan
@@ -702,7 +710,6 @@ fit:
         attribution_example:
           alt: Esimerkki siitä, miten nimetä OpenStreetMap nettisivula
           title: Nimeämisesimerkki
-        more_title_html: Lisätietoja
         contributors_title_html: Meän tekijät
     not_public_flash:
       user_page_link: käyttäjätieot
@@ -742,12 +749,18 @@ fit:
       submit_text: Hae
     welcome:
       title: Tervetuloa!
-      add_a_note:
-        title: Eikö mookkaaminen innosta? Ilmoita karttavirheistä!
-  map_keys:
+    add_a_note:
+      title: Eikö mookkaaminen innosta? Ilmoita karttavirheistä!
+  legend_panes:
     show:
       entries:
         university: yniversiteetti
+  share_panes:
+    show:
+      link: Länkki eli HTML-kooti
+      long_link: Länkki
+      short_link: Lyhy länkki
+      download: Lattaa
   traces:
     new:
       upload_trace: Ylöslattaa GPS-jälki
@@ -774,9 +787,6 @@ fit:
       my_traces: Minun GPS-jäljet
   application:
     auth_providers:
-      openid:
-        title: Lokkaa sisäle OpenID:llä
-        alt: Lokkaa sisäle OpenID-atressilla
       google:
         title: Lokkaa sisäle Googlella
       facebook:
@@ -836,20 +846,12 @@ fit:
       showing_page: Sivu %{page}
   javascripts:
     close: Sulje
-    share:
-      cancel: Lopeta
-      link: Länkki eli HTML-kooti
-      long_link: Länkki
-      short_link: Lyhy länkki
-      download: Lattaa
-      short_url: Lyhy atressi
     site:
       edit_tooltip: Mookkaa karttaa
       edit_disabled_tooltip: Lähennä karttaa mookataksesi
     directions:
       instructions:
         unnamed: nimetön tie
-        courtesy: Reittiohjeet tarjoaa %{link}
         exit_counts:
           first: ensimmäisestä
           second: toisesta
@@ -861,7 +863,6 @@ fit:
           eighth: "8."
           ninth: "9."
           tenth: "10."
-      time: Matka-aika
     query:
       node: Piste
       way: Viiva
