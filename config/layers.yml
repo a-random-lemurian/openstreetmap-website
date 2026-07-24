@@ -1,3 +1,14 @@
+- leafletOsmId: "Andirika-Carto"
+  code: "A"
+  layerId: "andirika"
+  nameId: "andirika"
+  tileUrl: "https://tiles.andirika-osm.lem/tile/{z}/{x}/{y}.png?utm_source=railsport.andirika-osm.lem"
+  maxZoom: 19
+  canDownloadImage: true 
+  canEmbed: true
+  credit:
+    id: "lemuria_credit_andirika_carto"
+
 - leafletOsmId: "Mapnik"
   code: "M"
   layerId: "mapnik"
