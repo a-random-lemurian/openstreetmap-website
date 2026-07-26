@@ -362,6 +362,11 @@ be-Tarask:
           Здабыткам.
         already_declared: Вы ўжо заявілі, што ўважаеце свой унёсак Народным Здабыткам.
         did_not_confirm: Вы не пацьвердзілі, што ўважаеце свой унёсак Народным Здабыткам.
+    auth_deletions:
+      show:
+        title: Запыт выдаленьня зьвестак
+        body: Зьвесткі для %{provider} з ідэнтыфікатарам %{id} былі выдалены аб %{time}
+          і адлучаны ад адпаведнага рахунку OpenStreetMap.
   browse:
     deleted_ago_by_html: Выдалена %{user} %{time_ago}
     edited_ago_by_html: Рэдагавана %{user} %{time_ago}
@@ -2379,62 +2384,6 @@ be-Tarask:
       suspended: На жаль, ваш рахунак быў заблякаваны праз падазроную актыўнасьць.
       contact_support_html: Зьвязацца з %{support_link} каб абмяркаваць гэта.
       support: службай дапамогі
-  shared:
-    markdown_help:
-      heading_html: Разабрана з %{kramdown_link}
-      headings: Загалоўкі
-      heading: Загаловак
-      subheading: Падзагаловак
-      unordered: Ненумараваны сьпіс
-      ordered: Нумараваны сьпіс
-      first: Першы элемэнт
-      second: Другі элемэнт
-      link: Спасылка
-      text: Тэкст
-      image: Выява
-      alt: Alt тэкст
-      url: URL
-      codeblock: Блёк коду
-    richtext_field:
-      edit: Рэдагаваць
-      preview: Папярэдні прагляд
-      help: Дапамога
-    pagination:
-      changeset_comments:
-        older: Старэйшыя камэнтары
-        newer: Навейшыя камэнтары
-        oldest: Найстарэйшыя камэнтары
-        newest: Найнавейшыя камэнтары
-      diary_comments:
-        older: Старэйшыя камэнтары
-        newer: Навейшыя камэнтары
-        oldest: Найстарэйшыя камэнтары
-        newest: Найнавейшыя камэнтары
-      diary_entries:
-        older: Старэйшыя допісы
-        newer: Навейшыя допісы
-        oldest: Найстарэйшыя допісы
-        newest: Найнавейшыя допісы
-      issues:
-        older: Старэйшыя праблемы
-        newer: Навейшыя праблемы
-        oldest: Найстарэйшыя праблемы
-        newest: Найнавейшыя праблемы
-      traces:
-        older: Старэйшыя трэкі
-        newer: Навейшыя трэкі
-        oldest: Найстарэйшыя трэкі
-        newest: Найнавейшыя трэкі
-      user_blocks:
-        older: Старэйшыя блякаваньні
-        newer: Навейшыя блякаваньні
-        oldest: Найстарэйшыя блякаваньні
-        newest: Найнавейшыя блякаваньні
-      users:
-        older: Старэйшыя карыстальнікі
-        newer: Навейшыя карыстальнікі
-        oldest: Найстарэйшыя карыстальнікі
-        newest: Найнавейшыя карыстальнікі
   site:
     about:
       heading_html: '%{copyright}OpenStreetMap %{br} удзельнікі'
@@ -2920,7 +2869,7 @@ be-Tarask:
         common: Грамадзкая зямля
         built_up: Зона забудовы
         resident: Жылы раён
-        retail: Гандлёвы раён
+        retail: Гандлёвая зона
         industrial: Прамысловы раён
         commercial: Камэрцыйны раён
         heathland: Верасовая зямля
@@ -3157,6 +3106,63 @@ be-Tarask:
       x:
         title: Абагуліць у X
         alt: X значок
+    markdown_help:
+      heading_html: Разабрана з %{kramdown_link}
+      kramdown_url: https://kramdown.gettalong.org/quickref.html
+      kramdown: kramdown
+      headings: Загалоўкі
+      heading: Загаловак
+      subheading: Падзагаловак
+      unordered: Ненумараваны сьпіс
+      ordered: Нумараваны сьпіс
+      first: Першы элемэнт
+      second: Другі элемэнт
+      link: Спасылка
+      text: Тэкст
+      image: Выява
+      alt: Alt тэкст
+      url: URL
+      codeblock: Блёк коду
+    richtext_field:
+      edit: Рэдагаваць
+      preview: Папярэдні прагляд
+      help: Дапамога
+    pagination:
+      changeset_comments:
+        older: Старэйшыя камэнтары
+        newer: Навейшыя камэнтары
+        oldest: Найстарэйшыя камэнтары
+        newest: Найнавейшыя камэнтары
+      diary_comments:
+        older: Старэйшыя камэнтары
+        newer: Навейшыя камэнтары
+        oldest: Найстарэйшыя камэнтары
+        newest: Найнавейшыя камэнтары
+      diary_entries:
+        older: Старэйшыя запісы
+        newer: Навейшыя допісы
+        oldest: Найстарэйшыя допісы
+        newest: Найнавейшыя допісы
+      issues:
+        older: Старэйшыя праблемы
+        newer: Навейшыя праблемы
+        oldest: Найстарэйшыя праблемы
+        newest: Найнавейшыя праблемы
+      traces:
+        older: Старэйшыя трэкі
+        newer: Навейшыя трэкі
+        oldest: Найстарэйшыя трэкі
+        newest: Найнавейшыя трэкі
+      user_blocks:
+        older: Старэйшыя блякаваньні
+        newer: Навейшыя блякаваньні
+        oldest: Найстарэйшыя блякаваньні
+        newest: Найнавейшыя блякаваньні
+      users:
+        older: Старэйшыя карыстальнікі
+        newer: Навейшыя карыстальнікі
+        oldest: Найстарэйшыя карыстальнікі
+        newest: Найнавейшыя карыстальнікі
   oauth:
     permissions:
       missing: Вы не дазволілі праґраме доступ да гэтай функцыі

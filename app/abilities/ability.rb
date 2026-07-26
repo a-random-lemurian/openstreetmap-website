@@ -12,6 +12,7 @@ class Ability
     can [:index, :permalink, :edit, :help, :fixthemap, :offline, :export, :about, :communities, :preview, :copyright, :id], :site
     can [:create, :show], :export
     can [:create, :read], :search
+    can [:create, :show], :auth_deletion
 
     if Settings.status != "database_offline"
       can [:read, :feed], Changeset
@@ -41,6 +42,7 @@ class Ability
         can :update, :account_terms
         can :create, :account_pd_declaration
         can :read, :dashboard
+        can :index, :notification
         can [:read, :update], [:preferences, :profile]
         can [:create, :subscribe, :unsubscribe], DiaryEntry
         can [:update, :hide, :unhide], DiaryEntry, :user => user

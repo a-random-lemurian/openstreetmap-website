@@ -101,8 +101,9 @@ $(function () {
   // NB: Turns Turbo Drive off by default. Turbo Drive must be opt-in on a per-link and per-form basis
   // See https://turbo.hotwired.dev/reference/drive#turbo.session.drive
   Turbo.session.drive = false;
+  Turbo.session.history.stop();
 
-  const $expandedSecondaryMenu = $("header nav.secondary > ul"),
+  const $expandedSecondaryMenu = $("header nav ul.nav"),
         $collapsedSecondaryMenu = $("#compact-secondary-nav > ul"),
         secondaryMenuItems = [],
         breakpointWidth = 768;
@@ -157,7 +158,7 @@ $(function () {
   function expandSecondaryMenuItem($item) {
     $item.children("a")
       .removeClass("dropdown-item")
-      .addClass("nav-link px-1 py-0")
+      .addClass("nav-link px-1 py-2 py-md-1")
       .addClass(function () {
         return $(this).hasClass("active") ? "text-secondary-emphasis" : "text-secondary";
       });
@@ -168,7 +169,7 @@ $(function () {
   function collapseSecondaryMenuItem($item) {
     $item.children("a")
       .addClass("dropdown-item")
-      .removeClass("nav-link px-1 py-0 text-secondary text-secondary-emphasis");
+      .removeClass("nav-link px-1 py-2 py-md-1 text-secondary text-secondary-emphasis");
     $item.removeClass("nav-item").appendTo($collapsedSecondaryMenu);
     toggleCompactSecondaryNav();
   }
@@ -192,16 +193,8 @@ $(function () {
     $(document).on("turbo:render", updateHeader);
   }, 0);
 
-  const menuIcon = $("#menu-icon");
-  const header = $("header");
-  menuIcon.on("click", function (e) {
-    e.preventDefault();
-    header.toggleClass("closed");
-    menuIcon.prop("ariaExpanded", !header.hasClass("closed"));
-  });
-
-  $("nav.primary li a").on("click", function () {
-    $("header").toggleClass("closed");
+  $("#edit_tab li a").on("click", function () {
+    $(".navbar-toggler:not(.collapsed)").trigger("click");
   });
 
   $("#edit_tab")
