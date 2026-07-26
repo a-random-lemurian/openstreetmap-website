@@ -100,7 +100,7 @@ export default function (map) {
 
     if (!points[0] || !points[1]) return;
 
-    $("header").addClass("closed");
+    $(".navbar-toggler:not(.collapsed)").trigger("click");
 
     OSM.router.replace("/directions?" + new URLSearchParams({
       engine: chosenEngine.id,
@@ -250,14 +250,10 @@ export default function (map) {
       return Promise.resolve();
     }
 
-    if (sidebarReadyPromise) return sidebarReadyPromise;
-
-    sidebarReadyPromise = OSM.loadSidebarContent("/directions");
-
-    return sidebarReadyPromise;
+    return sidebarReadyPromise ??= OSM.loadSidebarContent("/directions");
   }
 
-  page.pushstate = page.popstate = page.load = function () {
+  page.load = page.init = function () {
     initializeFromParams();
 
     $(".search_form").hide();
