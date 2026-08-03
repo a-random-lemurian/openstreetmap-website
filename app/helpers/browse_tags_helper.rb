@@ -82,7 +82,7 @@ module BrowseTagsHelper
     # Some k/v's are wikipedia=http://en.wikipedia.org/wiki/Full%20URL
     return nil if %r{^https?://}.match?(value)
 
-    if key =~ /^(?:#{SECONDARY_WIKI_PREFIX_PATTERN})?wikipedia(?::(#{WIKIPEDIA_PROJECT_IDENTIFIER_PATTERN}))?$/o
+    if key =~ /^(?:#{SECONDARY_WIKI_PREFIX_PATTERN})?(wikipedia|lemuria_wiki)(?::(#{WIKIPEDIA_PROJECT_IDENTIFIER_PATTERN}))?$/o or
       lang = Regexp.last_match(1)
     else
       return nil
@@ -97,13 +97,23 @@ module BrowseTagsHelper
         title_section = Regexp.last_match(2)
       else
         page_lang = lang
+        # the Lemuria Wiki is always in English
+        if key =~ /:?lemuria_wiki$/ 
+          page_lang = 'en'
+        end
         return nil unless page_lang
 
         title_section = wiki_value
       end
 
       title, section = title_section.split("#", 2)
-      url = "https://#{page_lang}.wikipedia.org/wiki/#{wiki_encode(title)}?uselang=#{I18n.locale}"
+
+      wiki_domain = "#{page_lang}.wikipedia.org"
+      if key =~ /:?lemuria_wiki$/
+        wiki_domain = "wiki.lem"
+      end
+
+      url = "https://#{wiki_domain}/wiki/#{wiki_encode(title)}?uselang=#{I18n.locale}"
       url += "##{wiki_encode(section)}" if section
 
       { :url => url, :title => wiki_value }
@@ -119,6 +129,11 @@ module BrowseTagsHelper
     if key == "wikidata" && value =~ /^#{QID_PATTERN}$/o
       return [{
         :url => "//www.wikidata.org/entity/#{value}?uselang=#{I18n.locale}",
+        :title => value
+      }]
+    elsif key =~ /:lemuria_wikibase$/o
+      return [{
+        :url => "//data.wiki.lem/entity/#{value}?uselang=#{I18n.locale}",
         :title => value
       }]
     elsif key =~ /^#{SECONDARY_WIKI_PREFIX_PATTERN}wikidata$/o &&
