@@ -4,6 +4,7 @@ services:
       context: .
     environment:
       PIDFILE: /tmp/pids/server.pid
+      SSL_CERT_FILE: /etc/lemuria.crt
     volumes:
       - .:/app
       # Prevent these directories from mounting so they're not shared between host OS and Docker
@@ -12,6 +13,7 @@ services:
       - web-tmp:/app/tmp
       # Mount a storage directory that will persist between runs
       - web-storage:/app/storage
+      - /etc/ssl/ca-certificates.crt:/etc/lemuria.crt
     tmpfs:
       /tmp/pids/
       #ports:
